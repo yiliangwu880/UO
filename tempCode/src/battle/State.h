@@ -38,7 +38,7 @@ public:
 	State1(Actor &owner, std::vector<any> cfg)
 		:BaseState(owner)
 	{
-		Reg<ActorEventId::ChangeHp>(ChangeHp);
+		Reg<InsEventId::ChangeHp>(ChangeHp);
 	}
 private:
 	void ChangeHp(int &update)
@@ -114,7 +114,7 @@ public:
 	StateTriggerXixue(Actor &owner, std::vector<any> cfg)
 		:BaseState(owner)
 	{
-		Reg<ActorEventId::InterUp>(InterUP);
+		Reg<InsEventId::InterUp>(InterUP);
 	}
 	void Init(std::weak_ptr<Actor> target)
 	{

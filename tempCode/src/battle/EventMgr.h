@@ -5,10 +5,11 @@
 #include <functional>
 #include <memory>
 
-enum ActorEventId
+enum InsEventId
 {
 	ChangeHp,
 	InterUp,//打断技能
+	ChangeXY,
 
 };
 
@@ -62,7 +63,7 @@ class EventMgr
 		std::set<void*> m_cacheRegFuns;
 		std::set<void*> m_cacheUnRegFuns;
 	};
-	std::unordered_map<ActorEventId, SubscribeSet > m_idfuns;
+	std::unordered_map<InsEventId, SubscribeSet > m_idfuns;
 
 	std::unordered_map<void *, void *> m_fun2funObj; //成员函数地址 2 函数对象地址
 	bool m_isForbiding=false;

@@ -28,7 +28,7 @@ public:
 		:PlayerSubSys(owner)
 	{
 
-		Reg<ActorEventId::ChangeHp>(ChangeHp);//注册事件
+		Reg<InsEventId::ChangeHp>(ChangeHp);//注册事件
 	}
 
 	void ChangeHp(int &update)

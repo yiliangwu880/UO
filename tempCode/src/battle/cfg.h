@@ -8,9 +8,16 @@
 using namespace std;
 struct ActionEffect
 {
-	ActionFun action;
+	//actions[0],actions[1]参数必须为 ：
+	//ActionFun action;
+	//ActionChgFun chgFun; 
+	//或者
+	//ActionActorFun action;
+	//ActionActorChgFun chgFun;
+	vector<any> actions;
+
+	//其他配置
 	vector<any> anys;
-	ActionChgFun chgFun; //调整anys方法 ，比如根据技能等级，释放者，目标状体，调整 anys具体值。
 };
 
 struct SkillCfg 
@@ -20,14 +27,19 @@ struct SkillCfg
 };
 
 vector < SkillCfg > allSkillCfg= {
-	{1, 
-		{{Action::EarthQuake, { 3000,"提示" }, ActionChg::EarthQuakeLv}, /*ActionEffect2*/, /*ActionEffect3*/}
-	},//也可以多个行动效果 {1, {ActionSkill::EarthQuake,.。}，  {ActionSkill::EarthQuake2, 。。}}
+{1, 
+	{//ActionEffect
+		{Action::EarthQuake,ActionChg::EarthQuakeLv}, { 3000,"提示" }}
+		/*ActionEffect2*/,
+		/*ActionEffect3*/
+	}
+},//也可以多个行动效果 {1, {ActionSkill::EarthQuake,.。}，  {ActionSkill::EarthQuake2, 。。}}
 
-	{2, {{Action::HaSiKaDebuff, { 3000,"提示" }}}},
-	{3, {{Action::CreateState<State1>, { 3000,"提示" }, ActionChg::Lv0}}}, //action通用，只创建State,吧配置传过去
-	{4, {{Action::AddBuf, { 1/*buffid*/,1/*buffLv*/,}, ActionChg::Lv1}}},//通用加不用buffiD
-	{4, {{Action::GuFaBig, {1}, ActionChg::Lv0}},//古法大，吸血，双方加buff
+{ 2, {{Action::HaSiKaDebuff}, { 3000,"提示" }}} },
+{ 3, {{Action::CreateState<State1>,, ActionChg::Lv0} { 3000,"提示" }}} }, //action通用，只创建State,吧配置传过去
+{ 5, {{Action::AddBuf}, { 1/*buffid*/,1/*buffLv*/,}, ActionChg::Lv1}} },//通用加不用buffiD
+{ 6, {{Action::GuFaBig, ActionChg::Lv0}, {1}}},//古法大，吸血，双方加buff
+{ 7, {{Action::CreateMonster, ActionChg::Lv0}, {1}}},//召唤物
 };
 
 struct BuffCfg

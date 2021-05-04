@@ -36,12 +36,16 @@ public:
 	void HandleCastSkill(int skillId, Actor *target)
 	{	
 		//...
-		//m_SkillMgr.UseSkill
-
+		m_SkillMgr.UseSkill(skillId, target);
+	}
+	void HandleCastSkill(int skillId, int x)
+	{
+		//...
+		m_SkillMgr.UseSkill(skillId, x);
 	}
 	void ChangeHp(int update)
 	{
-		FireEvent<ActorEventId::ChangeHp>(update);
+		FireEvent<InsEventId::ChangeHp>(update);
 		hp += update;
 	}
 private:
