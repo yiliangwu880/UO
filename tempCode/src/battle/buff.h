@@ -25,10 +25,16 @@ class BuffMgr
 public:
 	bool TryAddBuff(int buffId, int buffLv, Actor &trigger, Actor &target)
 	{
+		BuffCfg cfg = GetBuffCfg();
+		if (m_owner.isBkb )
+		{
+			return false
+		}
 		m_id2buff[buffId] = Buff(m_owner);
 		m_id2buff[buffId].Init(buffId, buffLv, Actor &trigger, Actor &target);
 	}
 	bool Remove(int buffId);
+	BuffCfg GetBuffCfg();
 };
 //通用buff,不同效果根据buffId区别。 buffId关联 m_StateId
 class Buff

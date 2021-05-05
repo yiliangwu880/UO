@@ -22,6 +22,13 @@ using ActionFun = void(*)(vector<any>, Actor &trigger, UnionTarget &target) > ;
 //@ActionLv 比如技能等级，buff等级，用来调整配置的系数
 using ActionChgFun = vector<any> (*)(vector<any> > , int ActionLv, Actor  &actor, UnionTarget &target) ;
 
+
+//被动技能更新
+using UpdatePassiveFun = void(*)(vector<any>, Actor &target) > ;
+//@ActionLv 比如技能等级，buff等级，用来调整配置的系数
+using UpdatePassiveChgFun = vector<any>(*)(vector<any> > , int ActionLv);
+
+
 namespace ActionChg
 {
 	vector<any> EarthQuakeLv(vector<any> cfg, int ActionLv, Actor *trigger, UnionTarget &target)
@@ -43,6 +50,24 @@ namespace ActionChg
 	{
 	}
 }
+
+
+namespace PassiveChg
+{
+
+	//通用 changeCfg[0] * skill.lv
+	vector<any> Lv0(vector<any> cfg, int ActionLv)
+	{
+		//可以更复杂，比如根据释放者，目标等级差。改变技能等级效果
+		vector<any> changeCfg = cfg;
+		changeCfg[0] = changeCfg[0] * ActionLv;
+		return changeCfg
+	
+	vector<any> Lv1(vector<any> cfg, int ActionLv, Actor *trigger, Actor *target)
+	{
+	}
+}
+
 namespace Action
 {
 	//地震
@@ -63,6 +88,16 @@ namespace Action
 	{
 		target.m_StateMgr.TryCreateState<State>(cfg);
 	}	
+	template<class State>
+	void UpdateState(vector<any> cfg, Actor &trigger, Actor *target)
+	{
+		target.m_StateMgr.UpdateState<State>(cfg);
+	}
+	template<class State>
+	void UpdatePassive(vector<any> cfg, Actor &target)
+	{
+		target.m_StateMgr.UpdateState<State>(cfg);
+	}
 	//通用add buff
 	void AddBuf(vector<any> cfg, Actor &trigger, Actor *target)
 	{

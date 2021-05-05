@@ -43,7 +43,11 @@ public:
 	{
 		delete m_vecState[State::ID];
 	}
-
+	//ÒÑÓÐstate,¾Í¸²¸Ç
+	template<int State>
+	typename State *UpdateState(std::vector<any> cfg, bool enableReplace)
+	{
+	}
 	template<int State>
 	typename State *TryCreateState(std::vector<any> cfg, bool enableReplace)
 	{

@@ -20,13 +20,14 @@ struct ActionEffect
 	vector<any> anys;
 };
 
-struct SkillCfg 
+//战斗主动释放的技能效果
+struct BattleActSkillCfg 
 {
 	int id;
 	vector<ActionEffect> vecAe;
 };
 
-vector < SkillCfg > allSkillCfg= {
+vector < BattleActSkillCfg > allBattleActSkillCfg= {
 {1, 
 	{//ActionEffect
 		{Action::EarthQuake,ActionChg::EarthQuakeLv}, { 3000,"提示" }}
@@ -42,17 +43,32 @@ vector < SkillCfg > allSkillCfg= {
 { 7, {{Action::CreateMonster, ActionChg::Lv0}, {1}}},//召唤物
 };
 
+//施加buff时，增加的State
 struct BuffCfg
 {
 	int id;
+	bool isGood; //false indicate debuff
 	vector<ActionEffect> vecAe;
 };
 
 vector < BuffCfg > allBuffCfg = {
 	//多个效果例子
 //{1, {{Action::CreateState<State1>, { 3000,"提示" }, ActionChg::Lv0}}, {Action::CreateState<State2>, { 3000,"提示" }, ActionChg::Lv0}}}}
-{BuffId::TriggerXixue, {{ Action::CreateState<StateTriggerXixue>, { 3000,"提示" }, ActionChg::Lv0 }}},//古法大，吸血，自己buf
-{BuffId::TargetXixue, {{ Action::CreateState<StateTargetXixue>, { 3000,"提示" }, ActionChg::Lv0 }}},//古法大，吸血，目标buf
+{BuffId::TriggerXixue, true,{{ Action::CreateState<StateTriggerXixue>, { 3000,"提示" }, ActionChg::Lv0 }}},//古法大，吸血，自己buf
+{BuffId::TargetXixue, false, {{ Action::CreateState<StateTargetXixue>, { 3000,"提示" }, ActionChg::Lv0 }}},//古法大，吸血，目标buf
+};
+
+//被动技能，加载或者升级技能时，更新State
+struct PassiveSkillCfg
+{
+	int id;
+	vector<ActionEffect> vecAe;
+};
+
+vector < PassiveSkillCfg > allPassiveSkillCfg = {
+{1, {{ Action::UpdatePassive<StateTriggerXixue>, { 3000,"提示" }, PassiveChg::Lv0 }}},
+{2, {{ Action::UpdatePassive<StateTargetXixue>, { 3000,"提示" }, PassiveChg::Lv0 }}},
+};
 
 
 //vector<any> anys = {3000,"提示" };
