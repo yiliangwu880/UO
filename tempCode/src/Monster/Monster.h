@@ -15,5 +15,8 @@ public:
 	//int show; 外观
 	//Drop dropCfg;
 	Actor m_actor;//战斗生物基本功能
+	SceneEntity m_SceneEntity;  //实体场景视野管理
+public:
+
 private:
 };

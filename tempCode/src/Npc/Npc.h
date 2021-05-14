@@ -31,6 +31,9 @@ public:
 	//Task m_task;提供任务；
 	Escort m_Escort;
 	Actor m_actor;//战斗生物基本功能
+	SceneEntity m_SceneEntity;  //实体场景视野管理
+
+public:
 	Npc()
 	{
 		

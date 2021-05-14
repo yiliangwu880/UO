@@ -14,7 +14,7 @@ struct BaseAttr
 	int def, at;
 };
 
-//能战斗互动的生物
+//能战斗互动的单位 管理
 class Actor : public BaseWeak<Actor>
 {
 public:

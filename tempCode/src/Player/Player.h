@@ -38,6 +38,9 @@ public:
 };
 
 
+class PlayerScene : public PlayerSubSys, public SceneEntity   //实体场景视野管理
+{};
+
 struct PlayerDb
 {
 	int dbid;
@@ -51,6 +54,7 @@ public:
 	//friend dd;
 	//money;
 	Actor m_actor;//Actor内部出发，需要和player的其他组件之间的互动，只能用event了。不能直接 引用其他组件。因为Actor设计通用Monster,Npc等生物
+	PlayerScene m_PlayerScene; //实体场景视野管理
 
 public:
 	Player()
