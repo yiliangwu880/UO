@@ -18,5 +18,17 @@ public:
 	SceneEntity m_SceneEntity;  //实体场景视野管理
 public:
 
+	//某个函数，从位置触发，动作影响别的生物类型
+	void  PosAction()
+	{
+		int x, y;
+		get all SceneEntity;
+		for (SceneEntity &v: all)
+		{
+			Actor actor = v.getActor;
+			do(m_actor, actor);
+		}
+	}
+
 private:
 };
