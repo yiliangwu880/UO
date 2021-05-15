@@ -10,7 +10,7 @@
 struct BaseAttr
 {
 	int str, dec, ini;
-	int hp, mana;
+	int hits, mana;
 	int def, at;
 };
 
@@ -19,10 +19,15 @@ class Actor : public BaseWeak<Actor>
 {
 public:
 	EventMgr m_owner;
+	SceneEntity m_PlayerScene; //实体场景视野管理
 	BaseAttr attr;
 	StateMgr m_StateMgr;
 	BuffMgr m_BuffMgr;
 	SkillMgr m_SkillMgr;
+	Ai m_Ai;
+	EquipMgr m_EquipMgr;//穿戴
+	Aspect m_Aspect;//外观
+	CorpseCreator m_CorpseCreator; //实体构造器，看类型多不多，类型不多就不用这个，用变量+函数
 public:
 	~Actor()
 	{
