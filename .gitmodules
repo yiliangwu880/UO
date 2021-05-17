@@ -4,3 +4,6 @@
 [submodule "external/svr_util"]
 	path = external/svr_util
 	url = https://github.com/yiliangwu880/svr_util.git
+[submodule "access_svr"]
+	path = access_svr
+	url = https://github.com/yiliangwu880/access_svr.git
