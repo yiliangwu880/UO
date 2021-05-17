@@ -43,7 +43,7 @@ public:
 private:
 	void ChangeHp(int &update)
 	{
-		if (m_owner.attr.hp<30 && update <0)
+		if (m_owner.attr.hits<30 && update <0)
 		{
 			update = -update;
 		}

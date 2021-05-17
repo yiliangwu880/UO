@@ -53,6 +53,9 @@ public:
 	virtual void Init(cfg);
 };
 
+//为什么提供局部对象管理的事件？
+//全局事件最安全好用，但没提供注销事件功能。
+//actor动态创建大量的战斗相关的state对象，用全局的话搜索效率低。
 class EventMgr
 {
 	template<class Fun>
@@ -60,7 +63,7 @@ class EventMgr
 	{
 		std::set<void*> m_funs;//void* 表示任意类型回调函数
 		bool m_is_firing = false; //true表示触发回调中
-		std::set<void*> m_cacheRegFuns;
+		std::set<void*> m_cacheRegFuns; //缓存注册，注销函数。等事件操作完成后执行
 		std::set<void*> m_cacheUnRegFuns;
 	};
 	std::unordered_map<InsEventId, SubscribeSet > m_idfuns;
