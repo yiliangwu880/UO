@@ -18,6 +18,9 @@ INCLUDE_DIRECTORIES(after  ./external)
 INCLUDE_DIRECTORIES(after  ./external/svr_util/include)
 INCLUDE_DIRECTORIES(after  ./external/libevent_cpp/include)
 INCLUDE_DIRECTORIES(after  ./external/libevent_cpp/External/libevent-2.1.8-stable/out/include/)
+INCLUDE_DIRECTORIES(after  ./dbProto/)
+INCLUDE_DIRECTORIES(system ./external/mysql_connector/include/)
+
 
 #运行cmake输出终端消息，调试可以用
 message(PROJECT_SOURCE_DIR_is: ${PROJECT_SOURCE_DIR})
@@ -54,7 +57,7 @@ endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 #SET(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 
-ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(access_svr)
 
 #自定义命令
 ##################################
