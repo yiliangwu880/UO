@@ -3,11 +3,10 @@
 #include "single_progress.h"
 #include "libevent_cpp/include/include_all.h"
 #include "libevent_cpp/include/http.h"
-#include "cfg.h"
-#include "svr.h"
 
 using namespace su;
 using namespace lc;
+using namespace std;
 
 class MyLcLog : public lc::ILogPrinter, public Singleton<MyLcLog>
 {
@@ -17,34 +16,36 @@ public:
 		su::LogMgr::Ins().Printf((su::LogLv)lv, file, line, fun, pattern, vp);
 	}
 };
-void MyPrintf(su::LogLv lv, const char * file, int line, const char *fun, const char * pattern)
-{
-	//su::LogMgr::Ins().Printf((su::LogLv)lv, file, line, fun, pattern);
-}
 
-void AppMgr::Start(int argc, char* argv[], const string &app_name)
+
+void BaseAppMgr::Start(int argc, char* argv[], const string &app_name)
 {
-	FireEvent<AE_CFG_INI>(); //配置初始化
-	SingleProgress::Ins().Check(argc, argv, app_name.c_str(), AppMgr::Ins().m_isDaemon); //启动关闭进程管理
+	su::LogMgr::Ins().DefaultFileName("log_" + app_name + ".txt");
+	OnBeforeStart();
+	bool isDaemon = false;
+	if (argc >= 2 && string("d") == argv[1])
+	{
+		isDaemon = true;
+	}
+	SingleProgress::Ins().Check(argc, argv, app_name.c_str(), isDaemon); //启动关闭进程管理
 	lc::LogMgr::Ins().SetLogPrinter(MyLcLog::Ins());
-	//su::LogMgr::Ins().SetLogPrinter(MyPrintf);
 	SuMgr::Ins().Init();
 	lc::Timer timer; //一个进程只需要一个lc::Timer，其他定时器由  svr_util 驱动
-	auto f = std::bind(&AppMgr::OnTimer, this);
+	auto f = std::bind(&BaseAppMgr::OnTimer, this);
 	timer.StartTimer(30, f, true);
 
-	FireEvent<AE_AFTER_NET_INT>();
+	OnStart();
 	EventMgr::Ins().Dispatch();
 	L_INFO("main end");
 }
 
-void AppMgr::OnTimer()
+void BaseAppMgr::OnTimer()
 {
 	if (SingleProgress::Ins().IsExit())
 	{
 		L_INFO("OnExitProccess");
+		OnExit();
 		EventMgr::Ins().StopDispatch();
-		FireEvent<AE_ON_EXIT>();
 		return;
 	}
 	SuMgr::Ins().OnTimer();

@@ -205,7 +205,6 @@ void db::TableCfg::InitTableCfg()
 
 #define DB_CLASS_NAME(def_name)\
 	{\
-	int idx = 0;\
 	def_name t;\
 	Table &table = m_allTable[t.TableId()];\
 	table.name = #def_name;\

@@ -1,44 +1,29 @@
 /*
 典型 svr_util libevent_cpp 基础的app管理 写法
+项目 https://github.com/yiliangwu880/UO.git 也有，以UO项目为准。这里是旧参考
+
 */
 #pragma once
-#include "game_util/publish_subscribe.h"
 #include "singleton.h"
 #include "include_all.h"
 #include "log_def.h"
 
-//100开始
-enum  APP_EVENT
+class BaseAppMgr 
 {
-	AE_CFG_INI = 1,
-	AE_AFTER_NET_INT = 2, //网络管理初始化完
-	AE_ON_EXIT = 3, //进程结束
-};
-
-namespace su
-{
-	template<>
-	struct EventTraits<AE_CFG_INI> {
-		using Fun = void(*)(); //默认事件函数类型，可以不用定义 EventTraits
-	};
-	template<>
-	struct EventTraits<AE_AFTER_NET_INT> {
-		using Fun = void(*)();
-	};
-	template<>
-	struct EventTraits<AE_ON_EXIT> {
-		using Fun = void(*)();
-	};
-}
-
-class AppMgr : public Singleton<AppMgr>
-{
-	bool m_isDaemon = false;
-
 public:
+	//shell启动命令例子： 
+	//./excute   #启动进程
+	//./excute d #后台启动进程
+	//./excute stop  #停止进程
+	//@argc
+	//@argv main 函数参数。
 	void Start(int argc, char* argv[], const std::string &app_name);
 
-	void IsDaemon(bool val) { m_isDaemon = val; }
+public:
+	virtual void OnBeforeStart()=0;
+	virtual void OnStart() = 0;
+	virtual void OnExit() {};
+
 private:
 	void OnTimer();
 
