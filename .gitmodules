@@ -7,3 +7,6 @@
 [submodule "access_svr"]
 	path = access_svr
 	url = https://github.com/yiliangwu880/access_svr.git
+[submodule "external/cpp_cfg"]
+	path = external/cpp_cfg
+	url = https://github.com/yiliangwu880/cpp_cfg.git
