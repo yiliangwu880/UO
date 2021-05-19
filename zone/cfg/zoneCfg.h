@@ -11,7 +11,7 @@ struct zoneCfg
 
 
 	////////////////////////define member list////////////////////////
-	uint16_t a;
+	uint16_t svrId;
 
 	////////////////////////method list////////////////////////
 	//load or reload cfg file .
@@ -42,7 +42,7 @@ private:
 		try
 		{
 
-			a = js["a"];
+			svrId = js["svrId"];
 
 
 			return true;

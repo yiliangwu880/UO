@@ -20,21 +20,19 @@ public:
 
 void BaseAppMgr::Start(int argc, char* argv[], const string &app_name)
 {
-	su::LogMgr::Ins().DefaultFileName("log_" + app_name + ".txt");
-	OnBeforeStart();
 	bool isDaemon = false;
 	if (argc >= 2 && string("d") == argv[1])
 	{
 		isDaemon = true;
 	}
 	SingleProgress::Ins().Check(argc, argv, app_name.c_str(), isDaemon); //启动关闭进程管理
+	su::LogMgr::Ins().DefaultFileName("log_" + app_name + ".txt");
 	lc::LogMgr::Ins().SetLogPrinter(MyLcLog::Ins());
 	SuMgr::Ins().Init();
 	lc::Timer timer; //一个进程只需要一个lc::Timer，其他定时器由  svr_util 驱动
 	auto f = std::bind(&BaseAppMgr::OnTimer, this);
 	timer.StartTimer(30, f, true);
-
-	OnStart();
+	L_COND_V(OnStart());
 	EventMgr::Ins().Dispatch();
 	L_INFO("main end");
 }

@@ -20,8 +20,7 @@ public:
 	void Start(int argc, char* argv[], const std::string &app_name);
 
 public:
-	virtual void OnBeforeStart()=0;
-	virtual void OnStart() = 0;
+	virtual bool OnStart() = 0;
 	virtual void OnExit() {};
 
 private:

@@ -8,12 +8,20 @@
 
 struct comCfg
 {
+	struct S_access
+	{
+		std::string ip;
+		uint16_t port;
+	};
+	struct S_zone
+	{
+		std::vector<uint16_t> allSvrId;
+	};
 
 
 	////////////////////////define member list////////////////////////
-	uint16_t ip;
-	uint16_t is_daemon;
-	uint16_t port;
+	S_access access;
+	S_zone zone;
 
 	////////////////////////method list////////////////////////
 	//load or reload cfg file .
@@ -44,9 +52,12 @@ private:
 		try
 		{
 
-			ip = js["ip"];
-			is_daemon = js["is_daemon"];
-			port = js["port"];
+			access.ip = js["access"]["ip"];
+			access.port = js["access"]["port"];
+			for (size_t i = 0; i < js["zone"]["allSvrId"].size(); ++i)
+			{
+				zone.allSvrId.push_back(js["zone"]["allSvrId"][i]);
+			}
 
 
 			return true;

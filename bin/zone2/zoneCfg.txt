@@ -1,0 +1,3 @@
+
+svrId = 2 //zone svrid  1-9
+

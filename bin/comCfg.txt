@@ -1,4 +1,9 @@
-is_daemon = 0
-ip=0
-port=12222
 
+access={	//svr 链接 access 的信息
+	ip = "127.0.0.1",
+	port = 54831,
+}
+
+zone={
+	allSvrId = [1,2],
+}

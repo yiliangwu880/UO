@@ -1,20 +1,21 @@
 #include "AppMgr.h"
-#include "eventMgr.h"
+#include "mgr/EventMgr.h"
 using namespace std;
 using namespace su;
 using namespace lc;
 
-
 class AppMgr : public BaseAppMgr
 {
 public:
-	virtual void OnBeforeStart() override
+	virtual bool OnStart() override
 	{
-		FireEvent<EV_CFG_INI>();
-	}
-	virtual void OnStart() override
-	{
-		FireEvent<EV_START>();
+		bool ret = true;
+		FireEvent<EV_CFG_INI>(ret); //任意事件改为ret == false,执行失败
+		L_COND(ret, false);
+		FireEvent<EV_START>(ret);
+		L_COND(ret, false);
+
+		return true;
 	}
 	virtual void OnExit() override
 	{

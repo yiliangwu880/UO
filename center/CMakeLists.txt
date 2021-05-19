@@ -3,11 +3,12 @@ cmake_minimum_required (VERSION 2.8)
 set(project_name "center")
 # 项目信息
 project (${project_name} CXX)
-
+configure_file("version.h.in" "${PROJECT_SOURCE_DIR}/version.h")
 
 # include directories
 INCLUDE_DIRECTORIES(after  ./)
-
+INCLUDE_DIRECTORIES(after  ./mgr/)
+INCLUDE_DIRECTORIES(after  ./cfg/)
 
 # 查找当前目录下的所有源文件
 # 并将名称保存到 DIR_SRCS 变量
