@@ -1,13 +1,13 @@
 #include "eventMgr.h"
-#include "centerCfg.h"
+#include "comCfg.h"
 
 using namespace su;
 
 void InitCfg()
 {
-	centerCfg c;
+	comCfg c;
 	c.LoadFile();
-	L_INFO("c.a=%d", c.a);
+	L_INFO("c.port=%d", c.port);
 
 }
 STATIC_RUN(RegEvent<EV_CFG_INI>(InitCfg))

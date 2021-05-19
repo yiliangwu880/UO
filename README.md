@@ -9,17 +9,21 @@ uo server
 临时伪代码，目的快速演练一遍整体代码设计模式。后期参考他构建代码
 
 #编译
-external目录，参考每个项目说明，全部编译
+external目录，参考每个项目说明，编译
+access_svr目录，参考项目说明，编译
 UO目录执行 sh clearBuild.sh
+
+#tool
+  exportCppCfg.sh --根据配置导出h文件供项目都配置用。配置文件格式有修改才需要使用。
 
 # 目录介绍
 access_svr   --接入服
-Center		 --中心服
-Zone		 --场景服
+center		 --中心服
+zone		 --场景服
 dbproxy_svr  --db代理服
 
 db_driver	 --dbproxy_svr的驱动库
 dbProto		 --db代理服和业务服协议
-CppProto	 --业务服之间协议
-Com			 --多个进程复用的源码
+cppProto	 --业务服之间协议
+com			 --多个进程复用的源码
 bin			 --执行文件

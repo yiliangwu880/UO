@@ -9,7 +9,6 @@ using namespace std;
 using namespace lc;
 using namespace su;
 using namespace db;
-using namespace proto;
 
 namespace
 {
@@ -100,7 +99,7 @@ bool db::Dbproxy::Del(const db::BaseTable &data)
 void db::Dbproxy::ExecuteSql(const std::string &sql, uint32_t sql_id)
 {
 	MsgPack msg;
-	proto::excute_sql_cs *req = new (msg.data)proto::excute_sql_cs;	req->sql_id = sql_id;	L_COND_V(sql.length() + sizeof(*req) < sizeof(msg.data));	req->dataLen = sql.length();	memcpy(req->data, sql.c_str(), sql.length());	msg.len = sizeof(*req) + req->dataLen;
+	excute_sql_cs *req = new (msg.data)excute_sql_cs;	req->sql_id = sql_id;	L_COND_V(sql.length() + sizeof(*req) < sizeof(msg.data));	req->dataLen = sql.length();	memcpy(req->data, sql.c_str(), sql.length());	msg.len = sizeof(*req) + req->dataLen;
 	DbClientCon::Ins().SendData(msg);
 }
 
@@ -119,7 +118,7 @@ void db::Dbproxy::OnRecv(const lc::MsgPack &msg)
 	(*fun)(*pMsg);
 }
 
-void db::Dbproxy::ParseInsert(const proto::insert_sc &msg)
+void db::Dbproxy::ParseInsert(const insert_sc &msg)
 {
 	std::unique_ptr<BaseTable> pTable = TableCfg::Ins().Unpack(msg.data, msg.dataLen);
 	L_COND_V(nullptr != pTable);
@@ -133,7 +132,7 @@ void db::Dbproxy::ParseInsert(const proto::insert_sc &msg)
 	(**fun)(msg.ret, *(pTable.get()));
 }
 
-void db::Dbproxy::ParseQuery(const proto::query_sc &msg)
+void db::Dbproxy::ParseQuery(const query_sc &msg)
 {
 	std::unique_ptr<BaseTable> pTable = TableCfg::Ins().Unpack(msg.data, msg.dataLen);
 	L_COND_V(nullptr != pTable);
@@ -149,7 +148,7 @@ void db::Dbproxy::ParseQuery(const proto::query_sc &msg)
 
 
 
-void db::Dbproxy::ParseDel(const proto::del_sc &msg)
+void db::Dbproxy::ParseDel(const del_sc &msg)
 {
 	std::unique_ptr<BaseTable> pTable = TableCfg::Ins().Unpack(msg.data, msg.dataLen);
 	L_COND_V(nullptr != pTable);
@@ -163,7 +162,7 @@ void db::Dbproxy::ParseDel(const proto::del_sc &msg)
 	(**fun)(msg.ret, *(pTable.get()));
 }
 
-void db::Dbproxy::ParseExcuteSql(const proto::excute_sql_sc &msg)
+void db::Dbproxy::ParseExcuteSql(const excute_sql_sc &msg)
 {
 	if (Dbproxy::Ins().m_sqlCb)
 	{

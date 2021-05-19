@@ -19,9 +19,12 @@ INCLUDE_DIRECTORIES(after  ./external)
 INCLUDE_DIRECTORIES(after  ./external/svr_util/include)
 INCLUDE_DIRECTORIES(after  ./external/libevent_cpp/include)
 INCLUDE_DIRECTORIES(after  ./external/libevent_cpp/External/libevent-2.1.8-stable/out/include/)
-INCLUDE_DIRECTORIES(after  ./dbProto/)
 INCLUDE_DIRECTORIES(after  ./com/)
+INCLUDE_DIRECTORIES(after  ./db_driver/include/)
 INCLUDE_DIRECTORIES(after  ./external/cpp_cfg/com/)
+INCLUDE_DIRECTORIES(after  ./dbProto/)
+INCLUDE_DIRECTORIES(after  ./cppProto/)
+INCLUDE_DIRECTORIES(after  ./access_svr/acc_driver/include/)
 
 
 #运行cmake输出终端消息，调试可以用
@@ -29,12 +32,14 @@ message(PROJECT_SOURCE_DIR_is: ${PROJECT_SOURCE_DIR})
 
 # lib directories
 LINK_DIRECTORIES(
-  #项目生成的静态链接库
-  ${CMAKE_SOURCE_DIR}/lib
 
   #项目引用第三方库
   ${PROJECT_SOURCE_DIR}/external/svr_util/lib
   ${PROJECT_SOURCE_DIR}/external/libevent_cpp/lib
+  ${PROJECT_SOURCE_DIR}/db_driver/lib
+  ${PROJECT_SOURCE_DIR}/external/mysql_connector/lib
+  ${PROJECT_SOURCE_DIR}/access_svr/acc_proto/lib
+  ${PROJECT_SOURCE_DIR}/access_svr/acc_driver/lib
 
   #系统目录
   /usr/local/lib
@@ -59,7 +64,10 @@ endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 #SET(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 
+ADD_SUBDIRECTORY(db_driver)
+ADD_SUBDIRECTORY(dbproxy_svr)
 ADD_SUBDIRECTORY(center)
+ADD_SUBDIRECTORY(zone)
 
 #自定义命令
 ##################################

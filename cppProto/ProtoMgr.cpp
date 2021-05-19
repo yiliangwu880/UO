@@ -58,7 +58,7 @@ namespace proto
 #define DB_CLASS_END\
 	};\
 
-		DB_ALL_STRUCT_INFO
+		ALL_STRUCT_INFO
 
 #undef  DB_CLASS_NAME
 #undef  DB_FIELD
@@ -74,7 +74,7 @@ namespace proto
 #define DB_FIELD(fieldName)	
 #define DB_CLASS_END
 
-			DB_ALL_STRUCT_INFO
+			ALL_STRUCT_INFO
 
 #undef  DB_CLASS_NAME
 #undef  DB_FIELD
@@ -101,7 +101,7 @@ namespace proto
 #define DB_CLASS_END\
 	}\
 
-			DB_ALL_STRUCT_INFO
+			ALL_STRUCT_INFO
 
 #undef  DB_CLASS_NAME
 #undef  DB_FIELD

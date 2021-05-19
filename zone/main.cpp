@@ -1,3 +1,4 @@
+
 #include "AppMgr.h"
 #include "eventMgr.h"
 using namespace std;
@@ -26,7 +27,7 @@ public:
 int main(int argc, char* argv[])
 {
 	AppMgr app;
-	app.Start(argc, argv, "center");
+	app.Start(argc, argv, "zone");
 	return 0;
 }
 
