@@ -3,10 +3,11 @@
 #include "svr_util/include/single_progress.h"
 #include "svr_util/include/log_file.h"
 #include "AppMgr.h"
-#include "Event.h"
+#include "eventMgr.h"
 using namespace std;
 using namespace su;
 using namespace lc;
+
 
 class AppMgr : public BaseAppMgr
 {
@@ -24,6 +25,7 @@ public:
 		FireEvent<EV_ON_EXIT>();
 	}
 };
+
 
 int main(int argc, char* argv[])
 {

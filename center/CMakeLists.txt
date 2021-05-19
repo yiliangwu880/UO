@@ -6,18 +6,21 @@ project (${project_name} CXX)
 
 
 # include directories
-INCLUDE_DIRECTORIES(system ../external/)
-INCLUDE_DIRECTORIES(after  ./cpp_cfg/com/)
+INCLUDE_DIRECTORIES(after  ./)
 
 
 # 查找当前目录下的所有源文件
 # 并将名称保存到 DIR_SRCS 变量
-file(GLOB_RECURSE SRCS  ${PROJECT_SOURCE_DIR} "../dbProto/*.cpp")
-file(GLOB_RECURSE SRCS2  ${PROJECT_SOURCE_DIR} "*.cpp" "../Com/*.cpp")
-file(GLOB_RECURSE SRCS3  ${PROJECT_SOURCE_DIR} "../CppProto/*.cpp")
+file(GLOB_RECURSE SRCS  ${PROJECT_SOURCE_DIR} "*.cpp"
+"../dbProto/*.cpp"
+"../com/*.cpp"
+"../cppProto/*.cpp"
+"../external/cpp_cfg/com/*.cpp"
+)
+
 
 # 指定生成目标
-ADD_EXECUTABLE(${project_name} ${SRCS} ${SRCS2} ${SRCS3})
+ADD_EXECUTABLE(${project_name} ${SRCS})
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 #设置依赖
 #ADD_DEPENDENCIES(${project_name} svr_util libevent_cpp)

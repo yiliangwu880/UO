@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game_util/publish_subscribe.h"
+#include "svr_util/include/static_reg.h"
+
 //100¿ªÊ¼
 enum Event
 {

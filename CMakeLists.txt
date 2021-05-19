@@ -20,7 +20,8 @@ INCLUDE_DIRECTORIES(after  ./external/svr_util/include)
 INCLUDE_DIRECTORIES(after  ./external/libevent_cpp/include)
 INCLUDE_DIRECTORIES(after  ./external/libevent_cpp/External/libevent-2.1.8-stable/out/include/)
 INCLUDE_DIRECTORIES(after  ./dbProto/)
-INCLUDE_DIRECTORIES(after  ./Com/)
+INCLUDE_DIRECTORIES(after  ./com/)
+INCLUDE_DIRECTORIES(after  ./external/cpp_cfg/com/)
 
 
 #运行cmake输出终端消息，调试可以用
