@@ -11,5 +11,5 @@ xcopy /y/i/e/s   %linux_path%\center\cfg\* %win_path%\center\cfg\
 
 
 
-
+pause
 

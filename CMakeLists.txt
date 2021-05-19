@@ -58,7 +58,7 @@ endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 #SET(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 
-ADD_SUBDIRECTORY(Center)
+ADD_SUBDIRECTORY(center)
 
 #自定义命令
 ##################################
