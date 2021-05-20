@@ -66,8 +66,8 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 ADD_SUBDIRECTORY(db_driver)
 ADD_SUBDIRECTORY(dbproxy_svr)
-ADD_SUBDIRECTORY(center)
-ADD_SUBDIRECTORY(zone)
+ADD_SUBDIRECTORY(Center)
+ADD_SUBDIRECTORY(Zone)
 
 #自定义命令
 ##################################

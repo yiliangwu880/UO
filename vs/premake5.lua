@@ -32,6 +32,8 @@ Project "other"
 	"../tool/**",
 	"../tempCode/**",
 	"../external/**",
+	"../*.txt",
+	"../*.md",
 	}
 
 Project "vs"
@@ -54,29 +56,29 @@ Project "access_svr"
 	}
 
 	SrcPath { 
-		"../center/**",  --**递归所有子目录，指定目录可用 "cc/*.cpp" 或者  "cc/**.cpp"
+		"../Center/**",  --**递归所有子目录，指定目录可用 "cc/*.cpp" 或者  "cc/**.cpp"
 	}
 
 Project "Center"
 	IncludeFile(comInclude)
 	IncludeFile { 
-		"./mgr/",
-		"./cfg/",
+		"./Mgr/",
+		"./Cfg/",
 	}
 
 	SrcPath { 
 		"../center/**",  --**递归所有子目录，指定目录可用 "cc/*.cpp" 或者  "cc/**.cpp"
 	}
 
-Project "zone"
+Project "Zone"
 	IncludeFile(comInclude)
 	IncludeFile { 
-		"./mgr/",
-		"./cfg/",
+		"./Mgr/",
+		"./Cfg/",
 	}
 
 	SrcPath { 
-		"../zone/**",  
+		"../Zone/**",  
 	}
 
  Project "dbproxy_svr"
