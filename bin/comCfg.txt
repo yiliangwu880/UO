@@ -1,0 +1,14 @@
+
+access={	//svr 链接 access 的信息
+	ip = "127.0.0.1",
+	port = 54831,
+}
+
+center={
+	ip = "127.0.0.1",
+	port = 54832,
+}
+
+zone={
+	allSvrId = [1,2],
+}

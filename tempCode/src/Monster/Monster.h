@@ -17,5 +17,17 @@ public:
 	Actor m_actor;//战斗生物基本功能
 public:
 
+	//某个函数，从位置触发，动作影响别的生物类型
+	void  PosAction()
+	{
+		int x, y;
+		get all SceneEntity;
+		for (SceneEntity &v: all)
+		{
+			Actor actor = v.getActor;
+			do(m_actor, actor);
+		}
+	}
+
 private:
 };
