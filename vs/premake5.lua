@@ -49,15 +49,22 @@ Project "com"
 	}
 
 Project "access_svr"
-	IncludeFile(comInclude)
-	IncludeFile { 
-		"./mgr/",
-		"./cfg/",
+	IncludeFile(
+	{
+	"../access_svr/external",
+	})
+	SrcPath { 
+		"../access_svr/acc_driver/**",
+		"../access_svr/acc_svr/**",
+		"../access_svr/acc_proto/**",
+	}
+	files {
+		"../access_svr/*.sh",
+		"../access_svr/*.txt",
+		"../access_svr/*.md",
+		"../access_svr/*.lua",
 	}
 
-	SrcPath { 
-		"../Center/**",  --**递归所有子目录，指定目录可用 "cc/*.cpp" 或者  "cc/**.cpp"
-	}
 
 Project "Center"
 	IncludeFile(comInclude)

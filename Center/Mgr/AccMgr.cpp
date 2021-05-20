@@ -4,6 +4,7 @@
 #include "EventMgr.h"
 #include "CenterMgr.h"
 #include "./Account/AccountMgr.h"
+#include "MsgDispatch.h"
 
 using namespace std;
 using namespace su;
@@ -41,8 +42,8 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 {
 	L_COND_V(CenterMgr::Ins().Allok());
 	size_t len = msg_len;
-	proto::login_cs req;
-	L_COND_V(proto::Unpack<proto::login_cs>(req, msg, len));
+	proto::Login_cs req;
+	L_COND_V(proto::Unpack<proto::Login_cs>(req, msg, len));
 
 	Account *account = AccountMgr::Ins().GetAcc(req.name);
 	if (!account)
@@ -61,8 +62,8 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 
 void AccMgr::OnRevClientMsg(const Session &session, uint32 cmd, const char *msg, uint16 msg_len)
 {
-	//接收client 请求消息
-	L_INFO("echo msg. cmd=%x", cmd);
-	SendToClient(session.id, cmd, msg, msg_len);
+	//todo 怎么约定cmd 看具体client 协议再修改
+	SessionId id = session.id;
+	MsgDispatch<SessionId>::Ins().Dispatch(id, msg, (size_t)msg_len);
 }
 
