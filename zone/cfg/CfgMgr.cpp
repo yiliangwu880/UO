@@ -7,18 +7,19 @@ using namespace su;
 CfgMgr *gCfgMgr = &CfgMgr::Ins();
 namespace
 {
-	bool InitEx()
-	{
-		L_COND(gCfgMgr->ZoneCfg().LoadFile(), false);
-		L_COND(gCfgMgr->ComCfg().LoadFile(), false);
-		return true;
-	}
 	void InitCfg(bool &ret)
 	{
-		if (!InitEx())
+		if (!gCfgMgr->Init())
 		{
 			ret = false;
 		}
 	}
 	STATIC_RUN(RegEvent<EV_CFG_INI>(InitCfg))
+}
+
+bool CfgMgr::Init()
+{
+	L_COND(gCfgMgr->m_zoneCfg.LoadFile(), false);
+	L_COND(gCfgMgr->m_comCfg.LoadFile(), false);
+	return true;
 }

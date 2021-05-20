@@ -1,10 +1,10 @@
 #pragma once
-#include "Proto1.h"
-#include "Proto2.h"
+#include "ProtoZoneCenter.h"
+#include "ProtoCom.h"
 
 #define ALL_STRUCT_INFO\
-	PROTO_ALL_PROTO1\
-	PROTO_ALL_PROTO2\
+	PROTO_COM\
+	PROTO_ZONE_CENTER\
 
 #include "ProtoPack.h"
 

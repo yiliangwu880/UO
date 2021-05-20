@@ -9,7 +9,7 @@
 namespace proto {
 
 	//先定义参数信息，以后再具体实现, 域的顺序 和 遗漏，都会初始化的时候检查出来
-#define PROTO_ALL_PROTO1 \
+#define PROTO_COM \
 	DB_CLASS_NAME(Ride)\
 	DB_FIELD(ids)\
 	DB_FIELD(s)\

@@ -42,6 +42,8 @@ def walk_func(rootdir, func, filterfunc):
 def filter_template(filename):
     if filename.endswith('~'):
         return True
+    elif filename.endswith('.TMP'):
+        return True
     else:
         return False
 
@@ -65,6 +67,6 @@ def construct_cfg_file():
 if __name__ == '__main__':
     #跳转目录
     os.chdir(MY_PATH)
-    print "start construct cfg"
+    print("start construct cfg")
     construct_cfg_file()
-    print "construct cfg succ"
+    print("construct cfg succ")

@@ -2,23 +2,34 @@
 #include "mgr/EventMgr.h"
 #include "cfg/CfgMgr.h"
 #include "version.h"
+#include "ZoneSvrCon.h"
 
 using namespace std;
 using namespace su;
+using namespace proto;
 
 namespace
 {
 	void Init(bool &ret)
 	{
+		MsgMgr::Check();
 		CenterMgr::Ins().Init();
 	}
-	STATIC_RUN(RegEvent<EV_START>(Init))
+	STATIC_RUN(RegEvent<EV_START>(Init));
+
+	void HReqZoneOk_cs(ZoneSvrCon &con, const ReqZoneOk_cs &msg)
+	{
+		L_INFO("HReqZoneOk_cs");
+		CenterMgr::Ins().SetZoneOk(msg.svrId);
+	}
+	STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(HReqZoneOk_cs));
+
 }
 
 void CenterMgr::Init()
 {
 	L_INFO("build time %s ", APP_VERSTR);
-	for (auto &svrId : gCfgMgr->m_comCfg.zone.allSvrId)
+	for (auto &svrId : gCfgMgr->ComCfg().zone.allSvrId)
 	{
 		m_zoneId2Ok[svrId] = false;
 	}

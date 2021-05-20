@@ -13,6 +13,11 @@ struct comCfg
 		std::string ip;
 		uint16_t port;
 	};
+	struct S_center
+	{
+		std::string ip;
+		uint16_t port;
+	};
 	struct S_zone
 	{
 		std::vector<uint16_t> allSvrId;
@@ -21,6 +26,7 @@ struct comCfg
 
 	////////////////////////define member list////////////////////////
 	S_access access;
+	S_center center;
 	S_zone zone;
 
 	////////////////////////method list////////////////////////
@@ -54,6 +60,8 @@ private:
 
 			access.ip = js["access"]["ip"];
 			access.port = js["access"]["port"];
+			center.ip = js["center"]["ip"];
+			center.port = js["center"]["port"];
 			for (size_t i = 0; i < js["zone"]["allSvrId"].size(); ++i)
 			{
 				zone.allSvrId.push_back(js["zone"]["allSvrId"][i]);

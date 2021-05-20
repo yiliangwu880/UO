@@ -1,49 +1,10 @@
-#include "ProtoMgr.h"
+#include "MsgDispatch.h"
 
-namespace proto
+
+
+void MsgMgr::Check()
 {
-	ProtoMgr::ProtoMgr()
-	{
-		Check();
-	}
-
-	void ProtoMgr::Dispatch(ConClass &con, const char *msg, size_t len)
-	{
-		using ComMsgFun = void(ConClass &con, const char &); //消息回调函数的抽象。 
-		using ComUnpackFun = bool(char &, CPointChar &, size_t &);//消息解析函数的抽象。 
-
-		uint16_t msgId = *(const uint16_t *)msg; //约定协议前 uint16_t 为 cmdId. 
-		auto it = m_id2MsgData.find(msgId);
-		if (it == m_id2MsgData.end())
-		{
-			L_ERROR("unknow cmdId %d", msgId);
-			return;
-		}
-		MsgData &msgData = it->second;
-		ComMsgFun *fun = (ComMsgFun *)msgData.msgFun;
-		ComUnpackFun *unpack = (ComUnpackFun *)msgData.unpackFun;
-		char *msgType = msgData.createFun();
-		if (unpack(*msgType, msg, len))
-		{
-			if (0 == len)
-			{
-				(*fun)(con, *msgType);
-			}
-			else//还有内容未解包
-			{
-				L_ERROR("have unknow bytes unpack %d", len);
-			}
-		}
-		else
-		{
-			L_ERROR("unpack fail, cmdId=%d", msgId);
-		}
-		msgData.freeFun(msgType);
-	}
-
-
-	void ProtoMgr::Check()
-	{
+	using namespace proto;
 #pragma pack(push)
 #pragma pack(1)
 
@@ -108,8 +69,8 @@ namespace proto
 #undef  DB_CLASS_END
 
 #pragma pack(pop)
-	}
-
-
 }
+
+
+
 

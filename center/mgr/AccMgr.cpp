@@ -22,8 +22,8 @@ void AccMgr::Start()
 	L_INFO("centerAD Start");
 	std::vector<Addr> vec_addr;
 	Addr addr;
-	addr.ip = gCfgMgr->m_comCfg.access.ip;
-	addr.port = gCfgMgr->m_comCfg.access.port;
+	addr.ip = gCfgMgr->ComCfg().access.ip;
+	addr.port = gCfgMgr->ComCfg().access.port;
 	vec_addr.push_back(addr);
 	Init(vec_addr, CENTER_GROUP_ID, true);
 }

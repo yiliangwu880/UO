@@ -1,17 +1,20 @@
 #include "ZoneMgr.h"
 #include "EventMgr.h"
 #include "CfgMgr.h"
+#include "version.h"
 
 using namespace std;
 using namespace su;
+//using namespace proto;
 
 namespace
 {
-	void Init(bool &ret)
+	void Start(bool &ret)
 	{
-		//ZoneMgr::Ins().Init();
+		L_INFO("%s", APP_VERSTR);
+		//ZoneMgr::Ins().Start();
 	}
-	STATIC_RUN(RegEvent<EV_START>(Init))
+	STATIC_RUN(RegEvent<EV_START>(Start))
 }
 
 
