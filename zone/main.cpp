@@ -10,7 +10,7 @@ public:
 	virtual bool OnStart() override
 	{
 		bool ret = true;
-		FireEvent<EV_CFG_INI>(ret); //任意事件改为ret == false,执行失败
+		FireEvent<EV_CFG_INI>(ret); //浠绘剰浜嬩欢鏀逛负ret == false,鎵ц澶辫触
 		L_COND(ret, false);
 		FireEvent<EV_START>(ret);
 		L_COND(ret, false);

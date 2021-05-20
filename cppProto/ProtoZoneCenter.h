@@ -1,3 +1,4 @@
+//zone center é€šè®¯
 //id 50-60
 #pragma once
 #include <string>
@@ -8,7 +9,7 @@
 #pragma pack(1)
 namespace proto {
 
-	//ÏÈ¶¨Òå²ÎÊıĞÅÏ¢£¬ÒÔºóÔÙ¾ßÌåÊµÏÖ, ÓòµÄË³Ğò ºÍ ÒÅÂ©£¬¶¼»á³õÊ¼»¯µÄÊ±ºò¼ì²é³öÀ´
+	//å…ˆå®šä¹‰å‚æ•°ä¿¡æ¯ï¼Œä»¥åå†å…·ä½“å®ç°, åŸŸçš„é¡ºåº å’Œ é—æ¼ï¼Œéƒ½ä¼šåˆå§‹åŒ–çš„æ—¶å€™æ£€æŸ¥å‡ºæ¥
 #define PROTO_ZONE_CENTER \
 	DB_CLASS_NAME(ReqZoneOk_cs)\
 	DB_FIELD(id)\
@@ -32,6 +33,12 @@ namespace proto {
 		uint16 svrId;
 	};
 
+	//tmp 
+	struct NtfOpenActive_sc
+	{
+		const uint16_t id = 51;
+		uint16 activeId;
+	};
 
 }
 #pragma pack(pop)

@@ -1,4 +1,4 @@
-//Á´½Ócenter
+//é“¾æ¥center
 #pragma once
 #include "ProtoInclude.h"
 
@@ -9,24 +9,24 @@ struct MsgMgr
 
 template<class Connecter>
 class MsgDispatch
-{	//¹ÜÀícenterÏûÏ¢ÅÉ·¢
-	//¼ÇÂ¼´¦Àí½ÓÊÕÏûÏ¢ µÄĞÅÏ¢
+{	//ç®¡ç†centeræ¶ˆæ¯æ´¾å‘
+	//è®°å½•å¤„ç†æ¥æ”¶æ¶ˆæ¯ çš„ä¿¡æ¯
 	struct MsgData
 	{
-		void *unpackFun = nullptr;	    //½â°üº¯Êı  bool Unpack(T &t, CPointChar &cur, size_t &len)
-		void *msgFun = nullptr;		//´¦ÀíÏûÏ¢º¯Êı	 void(*fun)(Connecter &con, const MsgType &msg)
-		char *(*createFun)() = nullptr;		//ÏûÏ¢¶ÔÏó ·ÖÅäº¯Êı  
-		void(*freeFun)(char *) = nullptr;	    //ÏûÏ¢¶ÔÏó ÊÍ·Åº¯Êı 
+		void *unpackFun = nullptr;	    //è§£åŒ…å‡½æ•°  bool Unpack(T &t, CPointChar &cur, size_t &len)
+		void *msgFun = nullptr;		//å¤„ç†æ¶ˆæ¯å‡½æ•°	 void(*fun)(Connecter &con, const MsgType &msg)
+		char *(*createFun)() = nullptr;		//æ¶ˆæ¯å¯¹è±¡ åˆ†é…å‡½æ•°  
+		void(*freeFun)(char *) = nullptr;	    //æ¶ˆæ¯å¯¹è±¡ é‡Šæ”¾å‡½æ•° 
 	};
 
-	std::unordered_map<uint16_t, MsgData> m_id2MsgData; //proto ÏûÏ¢ID 2 »Øµ÷
+	std::unordered_map<uint16_t, MsgData> m_id2MsgData; //proto æ¶ˆæ¯ID 2 å›è°ƒ
 public:
 	static MsgDispatch& Ins()
 	{
 		static MsgDispatch ins;
 		return ins;
 	}
-	//×¢²á protoÏûÏ¢»Øµ÷
+	//æ³¨å†Œ protoæ¶ˆæ¯å›è°ƒ
 	template<class MsgType>
 	void RegMsgHandler(void(*fun)(Connecter &con, const MsgType &msg));
 
@@ -54,10 +54,10 @@ void MsgDispatch< Connecter>::RegMsgHandler(void(*fun)(Connecter &con, const Msg
 template<class Connecter>
 void MsgDispatch<Connecter>::Dispatch(Connecter &con, const char *msg, size_t len)
 {
-	using ComMsgFun = void(Connecter &con, const char &); //ÏûÏ¢»Øµ÷º¯ÊıµÄ³éÏó¡£ 
-	using ComUnpackFun = bool(char &, proto::CPointChar &, size_t &);//ÏûÏ¢½âÎöº¯ÊıµÄ³éÏó¡£ 
+	using ComMsgFun = void(Connecter &con, const char &); //æ¶ˆæ¯å›è°ƒå‡½æ•°çš„æŠ½è±¡ã€‚ 
+	using ComUnpackFun = bool(char &, proto::CPointChar &, size_t &);//æ¶ˆæ¯è§£æå‡½æ•°çš„æŠ½è±¡ã€‚ 
 
-	uint16_t msgId = *(const uint16_t *)msg; //Ô¼¶¨Ğ­ÒéÇ° uint16_t Îª cmdId. 
+	uint16_t msgId = *(const uint16_t *)msg; //çº¦å®šåè®®å‰ uint16_t ä¸º cmdId. 
 	auto it = m_id2MsgData.find(msgId);
 	if (it == m_id2MsgData.end())
 	{
@@ -74,7 +74,7 @@ void MsgDispatch<Connecter>::Dispatch(Connecter &con, const char *msg, size_t le
 		{
 			(*fun)(con, *msgType);
 		}
-		else//»¹ÓĞÄÚÈİÎ´½â°ü
+		else//è¿˜æœ‰å†…å®¹æœªè§£åŒ…
 		{
 			L_ERROR("have unknow bytes unpack %d", len);
 		}
