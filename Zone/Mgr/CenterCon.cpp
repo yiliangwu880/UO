@@ -37,7 +37,7 @@ void CenterCon::OnConnected()
 {
 	ReqZoneOk_cs req;
 	req.svrId = gCfgMgr->ZoneCfg().svrId;
-	SendMsg(req);
+	Send(req);
 }
 
 void CenterCon::OnDisconnected()

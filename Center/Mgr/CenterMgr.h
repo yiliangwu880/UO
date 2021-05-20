@@ -2,6 +2,8 @@
 
 #pragma once
 
+
+
 class CenterMgr : public Singleton<CenterMgr>
 {
 	bool m_allok = false; //true 表示所有服务器链接准备好，可以登录游戏

@@ -10,13 +10,6 @@
 using namespace std;
 using namespace db;
 
-std::unique_ptr<BaseTable> CreateT()
-{
-	unique_ptr<BaseTable> p;
-	p.reset(new Player3());
-	return p;
-}
-
 TableCfg::TableCfg()
 {
 	InitTableCfg();

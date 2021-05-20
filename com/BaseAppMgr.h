@@ -10,6 +10,8 @@
 
 class BaseAppMgr 
 {
+	using PostFun = std::function<void(void)>;
+	vector<PostFun> m_postCb;
 public:
 	//shell启动命令例子： 
 	//./excute   #启动进程
@@ -22,6 +24,8 @@ public:
 public:
 	virtual bool OnStart() = 0;
 	virtual void OnExit() {};
+	//延时调用，最近一个timer触发
+	void AddPost(PostFun cb);
 
 private:
 	void OnTimer();

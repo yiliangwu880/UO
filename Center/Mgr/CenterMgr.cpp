@@ -16,14 +16,6 @@ namespace
 		CenterMgr::Ins().Init();
 	}
 	STATIC_RUN(RegEvent<EV_START>(Init));
-
-	void HReqZoneOk_cs(ZoneSvrCon &con, const ReqZoneOk_cs &msg)
-	{
-		L_INFO("HReqZoneOk_cs");
-		CenterMgr::Ins().SetZoneOk(msg.svrId);
-	}
-	STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(HReqZoneOk_cs));
-
 }
 
 void CenterMgr::Init()
@@ -64,3 +56,4 @@ void CenterMgr::checkAllOk()
 	m_allok = true;
 	L_INFO("all svr is ready");
 }
+

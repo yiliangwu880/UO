@@ -92,6 +92,7 @@ Project "db_driver"
 
 	SrcPath { 
 		"../db_driver/src/**",  
+		"../db_driver/include/**",
 	}
 	
 

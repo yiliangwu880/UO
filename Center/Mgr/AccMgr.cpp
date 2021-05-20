@@ -3,6 +3,7 @@
 #include "def.h"
 #include "EventMgr.h"
 #include "CenterMgr.h"
+#include "./Account/AccountMgr.h"
 
 using namespace std;
 using namespace su;
@@ -39,11 +40,23 @@ void AccMgr::OnRegResult(uint16 svr_id)
 void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	L_COND_V(CenterMgr::Ins().Allok());
+	size_t len = msg_len;
+	proto::login_cs req;
+	L_COND_V(proto::Unpack<proto::login_cs>(req, msg, len));
+
+	Account *account = AccountMgr::Ins().GetAcc(req.name);
+	if (!account)
+	{
+		account = AccountMgr::Ins().CreateAcc(req.name);
+	}
+	account->Verify(id, req);
+
+
 	//临时 接收client请求登录消息,无条件通过，原消息号返回,
-	L_INFO("rev verfiy. cmd=%d", cmd);
-	string s(msg, msg_len);
-	string rsp_msg = "verify_ok";
-	ReqVerifyRet(id, true, cmd, rsp_msg.c_str(), rsp_msg.length());
+	//L_INFO("rev verfiy. cmd=%d", cmd);
+	//string s(msg, msg_len);
+	//string rsp_msg = "verify_ok";
+	//ReqVerifyRet(id, true, cmd, rsp_msg.c_str(), rsp_msg.length());
 }
 
 void AccMgr::OnRevClientMsg(const Session &session, uint32 cmd, const char *msg, uint16 msg_len)

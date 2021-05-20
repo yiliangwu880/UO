@@ -17,6 +17,7 @@
 #include "svr_util/include/easy_code.h"
 #include "svr_util/include/typedef.h"
 #include "svr_util/include/stl_boost.h"
+#include "svr_util/include/static_reg.h"
 
 using namespace su; //不区分su命名空间了
 using namespace std;

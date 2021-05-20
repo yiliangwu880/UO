@@ -1,4 +1,4 @@
-#include "AppMgr.h"
+#include "BaseAppMgr.h"
 #include "su_mgr.h"
 #include "single_progress.h"
 #include "libevent_cpp/include/include_all.h"
@@ -37,8 +37,25 @@ void BaseAppMgr::Start(int argc, char* argv[], const string &app_name)
 	L_INFO("main end");
 }
 
+
+void BaseAppMgr::AddPost(PostFun cb)
+{
+	m_postCb.push_back(cb);
+}
+
 void BaseAppMgr::OnTimer()
 {
+	{//post cb
+		if (!m_postCb.empty())
+		{
+			vector<PostFun> tmp;
+			swap(tmp, m_postCb);
+			for (PostFun &cb : tmp)
+			{
+				cb();
+			}
+		}
+	}
 	if (SingleProgress::Ins().IsExit())
 	{
 		L_INFO("OnExitProccess");

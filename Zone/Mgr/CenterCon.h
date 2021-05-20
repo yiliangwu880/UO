@@ -9,13 +9,13 @@ class CenterCon : public lc::ClientCon, public Singleton<CenterCon>
 public:
 
 	template<class Msg>
-	bool SendMsg(const Msg &msg)
+	void Send(const Msg &msg)
 	{
 		lc::MsgPack msgPack;
 		size_t len = sizeof(msgPack.data);
 		char *p = msgPack.data;
 		L_ASSERT(proto::Pack(msg, p, len));
-		return SendData(msgPack);
+		SendData(msgPack);
 	}
 private:
 	virtual void OnRecv(const lc::MsgPack &msg) override;
