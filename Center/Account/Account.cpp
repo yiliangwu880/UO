@@ -32,7 +32,7 @@ Account::Account(const string &name)
 	m_data.name = name;
 }
 
-void Account::Verify(const SessionId &id, const Login_cs &req)
+void Account::ReqVerify(const SessionId &id, const Login_cs &req)
 {
 	switch (m_state)
 	{
@@ -41,14 +41,15 @@ void Account::Verify(const SessionId &id, const Login_cs &req)
 		break;
 	case Account::None:
 		{
-			m_state = Account::WaitVerify;
-			m_verifySid = id;
+			m_state = Account::WaitDbQuery;
+			m_waitVerifySid = id;
 			db::Account acc;
 			acc.name == req.name;
 			db::Dbproxy::Ins().Query(acc);
 		}
 		break;
-	case Account::WaitVerify:
+	case Account::WaitDbQuery:
+	case Account::WaitAccVerify:
 		L_INFO("refuse verify when waiting verify");
 		break;
 	case Account::VerifyOk:
@@ -57,7 +58,6 @@ void Account::Verify(const SessionId &id, const Login_cs &req)
 			{
 				return;
 			}
-			m_sid = id;
 			//return ok
 		}
 		break;
@@ -67,16 +67,24 @@ void Account::Verify(const SessionId &id, const Login_cs &req)
 
 void Account::QueryAccCB(bool ret, const db::Account &data)
 {
-	L_COND_V(Account::WaitVerify == m_state);
+	L_COND_V(Account::WaitDbQuery == m_state);
+	L_COND_V(data.name == m_data.name);
 	if (!ret)
 	{
 		L_INFO("account verify fail");
 		//return fail to client
-		AccountMgr::Ins().PostDel(m_data.name);
+		AccountMgr::Ins().DelAcc(m_data.name);
 		return;
 	}
-	m_sid = m_verifySid;
-	m_state = VerifyOk;
+	m_state = WaitAccVerify;
 	m_data = data;
 
+}
+
+void Account::SetVerifyOk(const acc::Session &sn)
+{
+	L_COND_V(WaitAccVerify == m_state);
+	AccountMgr::Ins().ChangeAccCid(*this, m_sn.id, sn.id);
+	m_state = VerifyOk;
+	m_sn = sn;
 }

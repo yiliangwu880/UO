@@ -50,7 +50,7 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 	{
 		account = AccountMgr::Ins().CreateAcc(req.name);
 	}
-	account->Verify(id, req);
+	account->ReqVerify(id, req);
 
 
 	//临时 接收client请求登录消息,无条件通过，原消息号返回,
@@ -65,5 +65,12 @@ void AccMgr::OnRevClientMsg(const Session &session, uint32 cmd, const char *msg,
 	//todo 怎么约定cmd 看具体client 协议再修改
 	SessionId id = session.id;
 	MsgDispatch<SessionId>::Ins().Dispatch(id, msg, (size_t)msg_len);
+}
+
+void AccMgr::OnClientConnect(const acc::Session &session)
+{
+	Account *account = AccountMgr::Ins().GetAccBySid(session.id);
+	L_COND_V(account);
+	account->SetVerifyOk(session);
 }
 
