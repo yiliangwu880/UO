@@ -9,20 +9,15 @@ using namespace acc;
 
 namespace
 {
-	void QueryAccCB(bool ret, const db::Account &data)
+	void OnDbLoad(bool ret, const db::Account &data)
 	{
 		L_COND_V(!data.name.empty());
 		Account *account = AccountMgr::Ins().GetAcc(data.name);
 		L_COND_V(account);
-		account->QueryAccCB(ret, data);
+		account->OnDbLoad(ret, data);
 	}
-	STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(QueryAccCB));
+	STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(OnDbLoad));
 
-	void HCreateActor_cs(Session &sn, const CreateActor_cs &msg)
-	{
-		
-	}
-	STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(HCreateActor_cs));
 
 }
 
@@ -43,6 +38,7 @@ void Account::ReqVerify(const SessionId &id, const Login_cs &req)
 		{
 			m_state = Account::WaitDbQuery;
 			m_waitVerifySid = id;
+			m_waitVerfyPsw = req.psw;
 			db::Account acc;
 			acc.name == req.name;
 			db::Dbproxy::Ins().Query(acc);
@@ -58,6 +54,10 @@ void Account::ReqVerify(const SessionId &id, const Login_cs &req)
 			{
 				return;
 			}
+			m_state = WaitReplace;
+			SessionId newId;
+			AccountMgr::Ins().ChangeAccCid(*this, m_sn.id, newId);
+			m_sn.Clear();
 			//return ok
 		}
 		break;
@@ -65,11 +65,18 @@ void Account::ReqVerify(const SessionId &id, const Login_cs &req)
 
 }
 
-void Account::QueryAccCB(bool ret, const db::Account &data)
+void Account::OnDbLoad(bool ret, const db::Account &data)
 {
 	L_COND_V(Account::WaitDbQuery == m_state);
 	L_COND_V(data.name == m_data.name);
 	if (!ret)
+	{
+		L_INFO("account verify fail");
+		//return fail to client
+		AccountMgr::Ins().DelAcc(m_data.name);
+		return;
+	}
+	if (m_waitVerfyPsw != data.psw)
 	{
 		L_INFO("account verify fail");
 		//return fail to client
@@ -83,8 +90,25 @@ void Account::QueryAccCB(bool ret, const db::Account &data)
 
 void Account::SetVerifyOk(const acc::Session &sn)
 {
-	L_COND_V(WaitAccVerify == m_state);
+	L_COND_V(WaitAccVerify == m_state || WaitReplace == m_state);
 	AccountMgr::Ins().ChangeAccCid(*this, m_sn.id, sn.id);
 	m_state = VerifyOk;
 	m_sn = sn;
 }
+
+
+
+void Account::CreateActor(acc::SessionId &sid, const proto::CreateActor_cs &msg)
+{
+	Account *p = AccountMgr::Ins().GetAccBySid(sid);
+	L_COND_V(p);
+	if (p->m_data.vecActor.size()>= MAX_ACTOR)
+	{
+		return;
+	}
+	db::Player player;
+	player.uin = 1;
+	db::Dbproxy::Ins().Insert(player);
+}
+
+STATIC_RUN(MsgDispatch<SessionId>::Ins().RegMsgHandler(&Account::CreateActor));
