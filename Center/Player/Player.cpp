@@ -12,3 +12,8 @@ void SceneTran::SetState(State val)
 		//pause msg
 	}
 }
+
+void Player::SetSid(const acc::SessionId &sid)
+{
+	m_sid = sid;
+}

@@ -19,10 +19,11 @@ struct BaseInfo
 	uint64 m_uin = 0;
 	uint16 m_zoneId = 0;
 };
-class Player
+class Player : public WeakPtr<Player>
 {
 	BaseInfo m_BaseInfo;
 
+	acc::SessionId m_sid;
 public:
 
 	void Init(uint64 uin) {};
@@ -34,6 +35,7 @@ public:
 		L_COND_V(svr);
 		svr->SendMsg(msg);
 	}
+	void SetSid(const acc::SessionId &sid);
 
 private:
 

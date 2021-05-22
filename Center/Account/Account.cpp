@@ -55,9 +55,11 @@ void Account::ReqVerify(const SessionId &id, const Login_cs &req)
 				return;
 			}
 			m_state = WaitReplace;
-			SessionId newId;
-			AccountMgr::Ins().ChangeAccCid(*this, m_sid.id, newId);
-			m_sid.cid = 0;
+			AccMgr::Ins().DisconClient(m_sid);
+			VerifyRetStruct d;
+			d.accName = m_data.name;
+			//d.msg = ntf to client login ok
+			AccMgr::Ins().ReqVerifyRet(id, d);
 			//return ok
 		}
 		break;
@@ -88,13 +90,12 @@ void Account::OnDbLoad(bool ret, const db::Account &data)
 	VerifyRetStruct d;
 	d.accName = m_data.name;
 	//d.msg = ntf to client login ok
-	ADFacadeMgr::Ins().ReqVerifyRet(m_waitVerifySid, d);
+	AccMgr::Ins().ReqVerifyRet(m_waitVerifySid, d);
 }
 
 void Account::SetVerifyOk(const acc::SessionId &sid)
 {
 	L_COND_V(WaitAccVerify == m_state || WaitReplace == m_state);
-	//AccountMgr::Ins().ChangeAccCid(*this, m_sid.id, sn.id);
 	m_state = VerifyOk;
 	m_sid = sid;
 }
@@ -104,7 +105,7 @@ void Account::SetVerifyOk(const acc::SessionId &sid)
 STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(&Account::CreateActor));
 void Account::CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg)
 {
-	CenterSnEx *p = (CenterSnEx*)sn.ex.get();
+	CenterSnEx *p = (CenterSnEx*)sn.baseEx.get();
 	shared_ptr<Account> account = p->m_pAccount.lock();
 	L_COND_V(account);
 
@@ -127,5 +128,12 @@ void Account::OnInsert(bool ret, const db::Player &data, any para) //需要做 响应
 	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin);
 	L_COND_V(player);
 
-	ADFacadeMgr::Ins().BroadcastUinToSession(*sid, data.uin);
+	CenterSnEx *p = AccMgr::Ins().FindSessionEx<CenterSnEx>(*sid);
+	L_COND_V(p);
+	p->m_pAccount.reset();
+	p->m_pPlayer = player->GetWeakPtr();
+
+	player->SetSid(sn.id);
+
+	//AccMgr::Ins().BroadcastUinToSession(*sid, data.uin); //不需要了。 zone创建player,根据sid 查找sn,关联起来
 }

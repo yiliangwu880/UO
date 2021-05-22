@@ -66,15 +66,15 @@ void AccMgr::OnRevClientMsg(const Session &session, uint32 cmd, const char *msg,
 	MsgDispatch<Session>::Ins().Dispatch(id, msg, (size_t)msg_len);
 }
 
-void AccMgr::OnClientConnect(const acc::Session &session)
+void AccMgr::OnClientConnect(const acc::Session &sn)
 {
-
-	Account *account = AccountMgr::Ins().GetAcc(session.accName);
+	Account *account = AccountMgr::Ins().GetAcc(sn.accName);
 	L_COND_V(account);
-	session.ex = make_unique<CenterSnEx>();
-	CenterSnEx *p = (CenterSnEx *)session.ex.get();
+
+	CenterSnEx *p = AccMgr::Ins().GetSessionEx<CenterSnEx>(sn);
+	L_COND_V(p);
 	p->m_pAccount = account->GetWeakPtr();
 
-	account->SetVerifyOk(session.id);
+	account->SetVerifyOk(sn.id);
 }
 
