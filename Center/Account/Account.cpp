@@ -9,7 +9,7 @@ using namespace acc;
 
 namespace
 {
-	void OnDbLoad(bool ret, const db::Account &data)
+	void OnDbLoad(bool ret, const db::Account &data, any para)
 	{
 		L_COND_V(!data.name.empty());
 		Account *account = AccountMgr::Ins().GetAcc(data.name);
@@ -114,15 +114,18 @@ void Account::CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg)
 	}
 	db::Player player;
 	player.uin = 1;
-	db::Dbproxy::Ins().Insert(player);
+	any para = sn.id;
+	db::Dbproxy::Ins().Insert(player, para);
 }
 
 STATIC_RUN(db::Dbproxy::Ins().RegInsertCb(OnInsert));
-void Account::OnInsert(bool ret, const db::Player &data) //需要做 响应 session id. 考虑设db有sid.
+void Account::OnInsert(bool ret, const db::Player &data, any para) //需要做 响应 session id. 考虑设db有sid.
 {
+	SessionId *sid = para._Cast<SessionId>();
+	L_COND_V(sid);
 	L_COND_V(ret);
 	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin);
 	L_COND_V(player);
 
-	ADFacadeMgr::Ins().BroadcastUinToSession(SID, data.uin);
+	ADFacadeMgr::Ins().BroadcastUinToSession(*sid, data.uin);
 }

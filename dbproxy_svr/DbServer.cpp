@@ -67,6 +67,7 @@ void InnerSvrCon::ParseInsert(InnerSvrCon &con, const insert_cs &req)
 	insert_sc *rsp = BuildMsgPack<insert_sc>(msg, data);
 	L_COND_V(rsp);
 	rsp->ret = ret;
+	rsp->sid = req.sid;
 	con.SendData(msg);
 }
 
@@ -77,6 +78,7 @@ void InnerSvrCon::ParseQuery(InnerSvrCon &con, const query_cs &req)
 		MsgPack msg;
 		query_sc *rsp = BuildMsgPack<query_sc>(msg, data);
 		L_COND_V(rsp);
+		rsp->sid = req.sid;
 		rsp->ret = true;
 		con.SendData(msg);
 	};
@@ -95,6 +97,7 @@ void InnerSvrCon::ParseQuery(InnerSvrCon &con, const query_cs &req)
 			query_sc *rsp = BuildMsgPack<query_sc>(msg, data);
 			L_COND_V(rsp);
 			rsp->ret = false;
+			rsp->sid = req.sid;
 			con.SendData(msg);
 		}
 	}
@@ -109,6 +112,7 @@ void InnerSvrCon::ParseQuery(InnerSvrCon &con, const query_cs &req)
 			MsgPack msg;
 			query_sc *rsp = BuildMsgPack<query_sc>(msg, data);
 			L_COND_V(rsp);
+			rsp->sid = req.sid;
 			rsp->ret = false;
 			con.SendData(msg);
 		}
@@ -135,6 +139,7 @@ void InnerSvrCon::ParseDel(InnerSvrCon &con, const del_cs &req)
 	del_sc *rsp = BuildMsgPack<del_sc>(msg, data);
 	L_COND_V(rsp);
 	rsp->ret = ret;
+	rsp->sid = req.sid;
 	con.SendData(msg);
 }
 
