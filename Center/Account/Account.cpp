@@ -56,8 +56,8 @@ void Account::ReqVerify(const SessionId &id, const Login_cs &req)
 			}
 			m_state = WaitReplace;
 			SessionId newId;
-			AccountMgr::Ins().ChangeAccCid(*this, m_sn.id, newId);
-			m_sn.Clear();
+			AccountMgr::Ins().ChangeAccCid(*this, m_sid.id, newId);
+			m_sid.cid = 0;
 			//return ok
 		}
 		break;
@@ -85,24 +85,30 @@ void Account::OnDbLoad(bool ret, const db::Account &data)
 	}
 	m_state = WaitAccVerify;
 	m_data = data;
-
+	VerifyRetStruct d;
+	d.accName = m_data.name;
+	//d.msg = ntf to client login ok
+	ADFacadeMgr::Ins().ReqVerifyRet(m_waitVerifySid, d);
 }
 
-void Account::SetVerifyOk(const acc::Session &sn)
+void Account::SetVerifyOk(const acc::SessionId &sid)
 {
 	L_COND_V(WaitAccVerify == m_state || WaitReplace == m_state);
-	AccountMgr::Ins().ChangeAccCid(*this, m_sn.id, sn.id);
+	//AccountMgr::Ins().ChangeAccCid(*this, m_sid.id, sn.id);
 	m_state = VerifyOk;
-	m_sn = sn;
+	m_sid = sid;
 }
 
 
 
-void Account::CreateActor(acc::SessionId &sid, const proto::CreateActor_cs &msg)
+STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(&Account::CreateActor));
+void Account::CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg)
 {
-	Account *p = AccountMgr::Ins().GetAccBySid(sid);
-	L_COND_V(p);
-	if (p->m_data.vecActor.size()>= MAX_ACTOR)
+	CenterSnEx *p = (CenterSnEx*)sn.ex.get();
+	shared_ptr<Account> account = p->m_pAccount.lock();
+	L_COND_V(account);
+
+	if (account->m_data.vecActor.size()>= MAX_ACTOR)
 	{
 		return;
 	}
@@ -111,4 +117,12 @@ void Account::CreateActor(acc::SessionId &sid, const proto::CreateActor_cs &msg)
 	db::Dbproxy::Ins().Insert(player);
 }
 
-STATIC_RUN(MsgDispatch<SessionId>::Ins().RegMsgHandler(&Account::CreateActor));
+STATIC_RUN(db::Dbproxy::Ins().RegInsertCb(OnInsert));
+void Account::OnInsert(bool ret, const db::Player &data) //需要做 响应 session id. 考虑设db有sid.
+{
+	L_COND_V(ret);
+	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin);
+	L_COND_V(player);
+
+	ADFacadeMgr::Ins().BroadcastUinToSession(SID, data.uin);
+}

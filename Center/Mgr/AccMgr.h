@@ -3,6 +3,14 @@
 #pragma once
 #include "acc_driver.h"
 
+class Account;
+class Player;
+struct CenterSnEx : public BaseSnEx
+{
+	weak_ptr<Account> m_pAccount;
+	weak_ptr<Player> m_pPlayer;
+};
+
 class AccMgr : public acc::ADFacadeMgr, public Singleton<AccMgr>
 {
 public:

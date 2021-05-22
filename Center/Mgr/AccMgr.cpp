@@ -63,14 +63,18 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 void AccMgr::OnRevClientMsg(const Session &session, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	//todo 怎么约定cmd 看具体client 协议再修改
-	SessionId id = session.id;
-	MsgDispatch<SessionId>::Ins().Dispatch(id, msg, (size_t)msg_len);
+	MsgDispatch<Session>::Ins().Dispatch(id, msg, (size_t)msg_len);
 }
 
 void AccMgr::OnClientConnect(const acc::Session &session)
 {
-	Account *account = AccountMgr::Ins().GetAccBySid(session.id);
+
+	Account *account = AccountMgr::Ins().GetAcc(session.accName);
 	L_COND_V(account);
-	account->SetVerifyOk(session);
+	session.ex = make_unique<CenterSnEx>();
+	CenterSnEx *p = (CenterSnEx *)session.ex.get();
+	p->m_pAccount = account->GetWeakPtr();
+
+	account->SetVerifyOk(session.id);
 }
 

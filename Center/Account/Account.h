@@ -4,7 +4,7 @@
 #include "AccMgr.h"
 #include "MsgDispatch.h"
 
-class Account
+class Account : public WeakPtr<Account>
 {
 	static const int MAX_ACTOR = 4;
 	enum State
@@ -19,18 +19,19 @@ class Account
 	State m_state = None;
 	acc::SessionId m_waitVerifySid; //等查库授权 中的sid. 未认证。用来发送失败给客户端
 	string m_waitVerfyPsw;
-	acc::Session m_sn;
+	acc::SessionId m_sid;
 	db::Account m_data;
 
 public:
 	Account(const string &name);
 	void ReqVerify(const acc::SessionId &id, const proto::Login_cs &req);
 	void OnDbLoad(bool ret, const db::Account &data);
-	const acc::SessionId &Sid() const { return m_sn.id; }
+	const acc::SessionId &Sid() const { return m_sid.id; }
 	const string &Name() const { return m_data.name; }
-	void SetVerifyOk(const acc::Session &sn);
+	void SetVerifyOk(const acc::SessionId &sid);
 
-	static void CreateActor(acc::SessionId &sid, const proto::CreateActor_cs &msg);
+	static void CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg);
+	static void OnInsert(bool ret, const db::Player &data);
 };
 
 

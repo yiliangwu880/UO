@@ -36,6 +36,7 @@ namespace db {
 
 	using ConCb = std::function<void()>;
 	using ExcuteSqlCb = std::function<void(uint32_t)>;
+	using ExcuteSqlCb = std::function<void(uint32_t)>;
 
 	//db driver 接口
 	class Dbproxy: public Singleton<Dbproxy>
