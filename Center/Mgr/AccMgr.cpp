@@ -71,7 +71,7 @@ void AccMgr::OnClientConnect(const acc::Session &sn)
 	Account *account = AccountMgr::Ins().GetAcc(sn.accName);
 	L_COND_V(account);
 
-	CenterSnEx *p = AccMgr::Ins().GetSessionEx<CenterSnEx>(sn);
+	CenterSnEx *p = sn.GetEx<CenterSnEx>();
 	L_COND_V(p);
 	p->m_pAccount = account->GetWeakPtr();
 

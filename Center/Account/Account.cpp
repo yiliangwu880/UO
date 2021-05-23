@@ -105,7 +105,8 @@ void Account::SetVerifyOk(const acc::SessionId &sid)
 STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(&Account::CreateActor));
 void Account::CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg)
 {
-	CenterSnEx *p = (CenterSnEx*)sn.baseEx.get();
+	CenterSnEx *p = sn.GetEx<CenterSnEx>();
+	L_COND_V(p);
 	shared_ptr<Account> account = p->m_pAccount.lock();
 	L_COND_V(account);
 
@@ -128,7 +129,9 @@ void Account::OnInsert(bool ret, const db::Player &data, any para) //需要做 响应
 	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin);
 	L_COND_V(player);
 
-	CenterSnEx *p = AccMgr::Ins().FindSessionEx<CenterSnEx>(*sid);
+	const Session *sn= AccMgr::Ins().FindSession(*sid);
+
+	CenterSnEx *p = sn->GetEx<CenterSnEx>();
 	L_COND_V(p);
 	p->m_pAccount.reset();
 	p->m_pPlayer = player->GetWeakPtr();

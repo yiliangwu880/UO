@@ -5,7 +5,7 @@
 
 class Account;
 class Player;
-struct CenterSnEx : public BaseSnEx
+struct CenterSnEx
 {
 	weak_ptr<Account> m_pAccount;
 	weak_ptr<Player> m_pPlayer;
