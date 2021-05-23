@@ -96,6 +96,17 @@ bool db::TableCfg::Pack(const BaseTable &obj, char *cur, size_t &packLen)
 #undef SetValue
 }
 
+
+bool db::TableCfg::Pack(const BaseTable &obj, string &str)
+{
+	str.resize(lc::MAX_MSG_DATA_LEN);
+	char *p = const_cast<char *>str.c_str();
+	size_t len = lc::MAX_MSG_DATA_LEN;
+	L_COND(Pack(obj, p, len), false);
+	str.resize(len);
+	return true;
+}
+
 std::unique_ptr<db::BaseTable> db::TableCfg::Unpack(const char *cur, size_t len)
 {
 	L_COND(cur, nullptr);

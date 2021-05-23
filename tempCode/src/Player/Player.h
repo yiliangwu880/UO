@@ -9,7 +9,7 @@
 #include "cfg.h"
 
 
-class PlayerSubSys : public EventReg
+class PlayerSubCom : public EventReg
 {
 	Player m_owner;
 public:
@@ -20,12 +20,12 @@ public:
 };
 
 //活动积分
-class TaskSys : public PlayerSubSys
+class TaskSys : public PlayerSubCom
 {
 	Player m_owner;
 public:
 	TaskSys(Player &owner)
-		:PlayerSubSys(owner)
+		:PlayerSubCom(owner)
 	{
 
 		Reg<InsEventId::ChangeHp>(ChangeHp);//注册事件

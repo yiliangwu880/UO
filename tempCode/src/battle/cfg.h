@@ -76,7 +76,7 @@ vector < PassiveSkillCfg > allPassiveSkillCfg = {
 ////any Int = 69,		//初始化的时候，把 typeinfo相关内容动态赋值，等_Cast的时候会检查是否合法。
 ////	Double = 8.8,	//浮点型
 ////	CStr = "hello",			//字符数组
-////	Str = string("world!");		//string类
+////	Str = string("center!");		//string类
 ////vector<any> anys = { Int,Double,CStr,Str };	//可直接放入序列容器中
 //////set < any > any_set{ Int,Double,CStr,Str };	//Error:不能直接放入关联容器内,需要提供operator<，但 any 很难比较
 ////cout << *Int._Cast<int>() << endl;	//T* _Cast<typenampe T>():返回any对象的"值"，但需要一个模板参数确定对象值的类型

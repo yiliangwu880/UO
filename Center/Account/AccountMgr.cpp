@@ -38,12 +38,6 @@ void AccountMgr::DelAcc(const string &name)
 	AppMgr::Ins().AddPost(f);
 }
 
-
-
-
-
-
-
 void AccountMgr::DelAccEx(const string &name)
 {
 	auto it = m_name2Acc.find(name);

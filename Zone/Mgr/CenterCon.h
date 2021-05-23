@@ -8,8 +8,8 @@ class CenterCon : public lc::ClientCon, public Singleton<CenterCon>
 {
 public:
 
-	template<class Msg>
-	void Send(const Msg &msg)
+	template<class ProtoMsg>
+	void Send(const ProtoMsg &msg)
 	{
 		lc::MsgPack msgPack;
 		size_t len = sizeof(msgPack.data);

@@ -31,7 +31,10 @@ public:
 	void SetVerifyOk(const acc::SessionId &sid);
 
 	static void CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg);
-	static void OnInsert(bool ret, const db::Player &data);
+	static void OnInsert(bool ret, const db::Player &data, any para);
+
+	static void SelectActor(acc::Session &sn, const proto::SelectActor_cs &msg);
+	static void OnSelect(bool ret, const db::Player &data, any para);
 };
 
 

@@ -21,3 +21,6 @@
 
 using namespace su; //不区分su命名空间了
 using namespace std;
+
+
+#define RegZoneMsg(fun) STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&(fun));

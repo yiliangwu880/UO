@@ -1,19 +1,19 @@
 #include "Player.h"
 
-void SceneTran::SetState(State val)
-{
-	m_State = val;
-	if (State::Playing == m_State)
-	{
-		//resume msg
-	}
-	else if (State::Moving == m_State)
-	{
-		//pause msg
-	}
-}
 
 void Player::SetSid(const acc::SessionId &sid)
 {
 	m_sid = sid;
 }
+
+void Player::EnterZone()
+{
+	uint16 svrId = 1; //find by data db.
+//req zone enter player
+	ZoneSvr *svr = ZoneSvrMgr::Ins().FindZoneSvr(svrId);
+	L_COND_V(svr);
+	proto::ReqLoginZone_sc msg;
+	TableCfg::Ins().Pack(data, msg.playerData);
+	svr->Send(msg);
+}
+

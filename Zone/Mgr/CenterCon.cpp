@@ -45,7 +45,7 @@ void CenterCon::OnDisconnected()
 }
 
 //for tmp test
-static void Hanlder1(CenterCon &con, const RspZoneOk_cs &msg)
+static void Hanlder1(CenterCon &con, const RspZoneOk_sc &msg)
 {
 	L_INFO("Hanlder1");
 }

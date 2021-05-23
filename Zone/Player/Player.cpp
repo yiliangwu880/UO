@@ -1,13 +1,13 @@
 #include "Player.h"
 
-void SceneTran::SetState(State val)
+void PlayerScene::SetState(State val)
 {
-	m_State = val;
-	if (State::Playing == m_State)
+	State(val);
+	if (State::Playing == State())
 	{
 		//resume msg
 	}
-	else if (State::Moving == m_State)
+	else if (State::Moving == State())
 	{
 		//pause msg
 	}

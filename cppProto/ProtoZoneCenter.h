@@ -27,18 +27,52 @@ namespace proto {
 		uint16 svrId;
 	};
 	//for tmp test, will del
-	struct RspZoneOk_cs
+	struct RspZoneOk_sc
 	{
 		const uint16_t id = 51;
 		uint16 svrId;
 	};
 
-	//tmp 
-	struct NtfOpenActive_sc
+	struct ReqLoginZone_sc
 	{
-		const uint16_t id = 51;
-		uint16 activeId;
+		const uint16_t id = 52;
+		uint64 uin;
+		std::string playerData; //db::player pack data
 	};
+	struct RspLoginZone_cs
+	{
+		const uint16_t id = 53;
+		uint64 uin;
+		bool ret;
+	};
+
+
+	struct ReqZoneReserve
+	{
+		const uint16_t id = 54;
+		uint64 uin;
+		uint16_t srcSvrId;
+		uint16_t dstZoneId;
+		uint32_t sceneId;
+	};
+	struct RspZoneReserve
+	{
+		const uint16_t id = 55;
+		uint64 uin;
+		uint16_t srcZoneId;
+		bool ret;
+	};
+
+	//zone 请求切换 zone, zone , center 之间都可以互相发送
+	struct ReqTranZone
+	{
+		const uint16_t id = 56;
+		uint16_t zoneId;
+		uint64 uin;
+		std::string playerData; //db::player pack data
+	};
+
+
 
 }
 #pragma pack(pop)

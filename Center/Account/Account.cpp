@@ -101,7 +101,6 @@ void Account::SetVerifyOk(const acc::SessionId &sid)
 }
 
 
-
 STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(&Account::CreateActor));
 void Account::CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg)
 {
@@ -119,17 +118,16 @@ void Account::CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg)
 	any para = sn.id;
 	db::Dbproxy::Ins().Insert(player, para);
 }
-
 STATIC_RUN(db::Dbproxy::Ins().RegInsertCb(OnInsert));
-void Account::OnInsert(bool ret, const db::Player &data, any para) //需要做 响应 session id. 考虑设db有sid.
+void Account::OnInsert(bool ret, const db::Player &data, any para) 
 {
 	SessionId *sid = para._Cast<SessionId>();
 	L_COND_V(sid);
 	L_COND_V(ret);
-	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin);
+	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin, data.name);
 	L_COND_V(player);
 
-	const Session *sn= AccMgr::Ins().FindSession(*sid);
+	const Session *sn = AccMgr::Ins().FindSession(*sid);
 
 	CenterSnEx *p = sn->GetEx<CenterSnEx>();
 	L_COND_V(p);
@@ -140,3 +138,41 @@ void Account::OnInsert(bool ret, const db::Player &data, any para) //需要做 响应
 
 	//AccMgr::Ins().BroadcastUinToSession(*sid, data.uin); //不需要了。 zone创建player,根据sid 查找sn,关联起来
 }
+
+STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(&Account::SelectActor));
+void Account::SelectActor(acc::Session &sn, const proto::SelectActor_cs &msg)
+{
+	CenterSnEx *p = sn.GetEx<CenterSnEx>();
+	L_COND_V(p);
+	shared_ptr<Account> account = p->m_pAccount.lock();
+	L_COND_V(account);
+
+
+	db::Player player;
+	player.uin = 1;
+	any para = sn.id;
+	db::Dbproxy::Ins().Query(player, para);
+}
+
+STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(OnSelect));
+void Account::OnSelect(bool ret, const db::Player &data, any para) 
+{
+	SessionId *sid = para._Cast<SessionId>();
+	L_COND_V(sid);
+	L_COND_V(ret);
+	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin, data.name);
+	L_COND_V(player);
+
+	const Session *sn = AccMgr::Ins().FindSession(*sid);
+
+	CenterSnEx *p = sn->GetEx<CenterSnEx>();
+	L_COND_V(p);
+	p->m_pAccount.reset();
+	p->m_pPlayer = player->GetWeakPtr();
+
+	player->SetSid(sn.id);
+
+	player->EnterZone();
+
+}
+

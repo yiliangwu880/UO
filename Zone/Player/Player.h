@@ -3,18 +3,10 @@
 #include "AccMgr.h"
 #include "MsgDispatch.h"
 
-class SceneTran
+class PlayerSubCom
 {
-	enum class State
-	{
-		Playing,
-		Moving,
-	};
-	State m_State;
-
 public:
-	State GetState() const { return m_State; }
-	void SetState(State val);
+	Player m_owner;
 };
 
 struct BaseData 
@@ -26,14 +18,14 @@ struct BaseData
 class Player
 {
 	BaseData m_BaseData;
-	SceneTran m_SceneTran;
+	PlayerScene m_SceneTran;
 
 public:
 	void Init(uint64 uin) {};
 	bool Load(db::Player &data);
 
-	template<class Msg>
-	void Send(const Msg &msg)
+	template<class ProtoMsg>
+	void Send(const ProtoMsg &msg)
 	{
 		lc::MsgPack msgPack;
 		size_t len = sizeof(msgPack.data);

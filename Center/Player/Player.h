@@ -1,29 +1,28 @@
 #pragma once
 #include "ZoneSvr.h"
 
-class SceneTran
-{
-	enum class State
-	{
-		Playing,
-		Moving,
-	};
-	State m_State;
 
+class PlayerSubCom 
+{
 public:
-	State GetState() const { return m_State; }
-	void SetState(State val);
+	Player m_owner;
 };
-struct BaseInfo 
+
+struct BaseData 
 {
 	uint64 m_uin = 0;
 	uint16 m_zoneId = 0;
+	string name;
 };
+
 class Player : public WeakPtr<Player>
 {
-	BaseInfo m_BaseInfo;
-
 	acc::SessionId m_sid;
+
+public:
+	BaseData m_BaseData;
+	PlayerScene m_SceneTran;
+
 public:
 
 	void Init(uint64 uin) {};
@@ -31,13 +30,18 @@ public:
 	template<class Msg>
 	void SendToZone(const Msg &msg)
 	{
-		ZoneSvr *svr = ZoneSvrMgr::Ins().GetZoneSvr(m_BaseInfo.m_zoneId);
+		ZoneSvr *svr = ZoneSvrMgr::Ins().FindZoneSvr(m_BaseData.m_zoneId);
 		L_COND_V(svr);
-		svr->SendMsg(msg);
+		svr->Send(msg);
 	}
 	void SetSid(const acc::SessionId &sid);
+	void EnterZone();
+	uint64 Uin() { return m_BaseData.m_uin; }
+	uint64 Name() { return m_BaseData.name; }
+	uint64 ZoneId() { return m_BaseData.m_zoneId; }
+	uint64 Cid() { return m_sid.cid; }
+public:
 
 private:
-
 };
 

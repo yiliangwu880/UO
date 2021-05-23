@@ -1,10 +1,15 @@
 #include "PlayerMgr.h"
 
-Player * PlayerMgr::CreatePlayer(uint64 uin)
+Player * PlayerMgr::CreatePlayer(uint64 uin, const string &name)
 {
-	return nullptr;
+	return m_players.emplace(uin, name, Player());
 }
 Player * PlayerMgr::GetPlayer(uint64 uin)
 {
-	return nullptr;
+	return m_players.Find(uin);
+}
+
+void PlayerMgr::SetCacheMsg(uint64 uin, bool isCache)
+{
+
 }

@@ -31,6 +31,7 @@ Project "other"
 	"../dbProto/**",
 	"../tool/**",
 	"../tempCode/**",
+	"../doc/**",
 	"../external/**",
 	"../*.txt",
 	"../*.md",
