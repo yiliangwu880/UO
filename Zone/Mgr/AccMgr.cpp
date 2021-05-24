@@ -37,18 +37,32 @@ void AccMgr::OnRegResult(uint16 svr_id)
 
 
 
-void AccMgr::OnRevClientMsg(const Session &session, uint32 cmd, const char *msg, uint16 msg_len)
+void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	//接收client 请求消息
 	L_INFO("echo msg. cmd=%x", cmd);
-	SendToClient(session.id, cmd, msg, msg_len);
+	SendToClient(sn.id, cmd, msg, msg_len);
+}
+
+void AccMgr::GetPlayer(const acc::Session &sn)
+{
+	WeakPlayer *p = sn.GetEx<WeakPlayer>();
+	L_COND_V(p);
+	shared_ptr<Player> player = p->lock();
+	return player.get();
 }
 
 void AccMgr::OnMsgRspCacheMsg(const acc::Session &sn, bool isCache)
 {
-	ZoneSnEx *p = sn.GetEx<ZoneSnEx>();
-	L_COND_V(p);
-	auto player = p->m_pPlayer.lock();
+	Player *player = AccMgr::Ins().GetPlayer(sn);
+	L_COND_V(player);
 	player->m_SceneTran.OnMsgRspCacheMsg(isCache);
+}
+
+void AccMgr::OnClientDisCon(const acc::Session &sn)
+{
+	Player *player = AccMgr::Ins().GetPlayer(sn);
+	L_COND_V(player);
+	player->m_LoginPlayer.ClientDisCon();
 }
 

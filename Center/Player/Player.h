@@ -36,7 +36,7 @@ public:
 		svr->Send(msg);
 	}
 	void SetSid(const acc::SessionId &sid);
-	void LoginZone();
+
 	uint64 Uin() { return m_BaseData.m_uin; }
 	uint64 Name() { return m_BaseData.name; }
 	uint64 ZoneId() { return m_BaseData.m_zoneId; }

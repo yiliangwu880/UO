@@ -136,7 +136,7 @@ void Account::OnInsert(bool ret, const db::Player &data, any para)
 
 	player->SetSid(sn.id);
 
-	player->LoginZone();
+	player->m_LoginPlayer.LoginZone(data);
 }
 
 STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(&Account::SelectActor));
@@ -147,11 +147,17 @@ void Account::SelectActor(acc::Session &sn, const proto::SelectActor_cs &msg)
 	shared_ptr<Account> account = p->m_pAccount.lock();
 	L_COND_V(account);
 
-
+	//if no player exit
 	db::Player player;
 	player.uin = 1;
 	any para = sn.id;
 	db::Dbproxy::Ins().Query(player, para);
+
+	//if find player exit
+	{
+		Player *player = nullptr;
+		player->m_LoginPlayer.LoginZone(data);
+	}
 }
 
 STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(OnSelect));
@@ -172,7 +178,6 @@ void Account::OnSelect(bool ret, const db::Player &data, any para)
 
 	player->SetSid(sn.id);
 
-	player->LoginZone();
-
+	player->m_LoginPlayer.LoginZone(data);
 }
 

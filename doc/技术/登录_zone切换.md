@@ -35,14 +35,13 @@
 
 		WaitLogin:
 			请求登录，拒绝。
-			请求zone 登录player.				--ReqLoginZone_sc
+			请求zone 登录player.							--ReqLoginZone_sc
 			接收 zone 登录player 成功， 进入 LoginOk		--RspLoginZone_cs
 
-		LoginOk:
-			请求登录，进入 WaitReLogin
+		LoginOk: 不区分在线离线状态
+			请求重登录，请求zone 重登录， 进入 WaitReLogin	--ReqReLoginZone_sc
 
 		WaitReLogin: 
-			请求zone 重登录player.				--ReqReLoginZone_sc
 			接收 zone 重登录player 成功， 进入 LoginOk		--RspReLoginZone_cs
 			
 ## zone Player

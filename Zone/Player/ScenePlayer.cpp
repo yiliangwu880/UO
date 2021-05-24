@@ -82,7 +82,7 @@ RegCenterMsg(ScenePlayer::ReqTranZone);
 void ScenePlayer::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
 {
 	L_INFO("ReqZoneOk_cs");
-	Player *player = PlayerMgr::Ins().GetPlayer(msg.uin);
+	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);
 	L_COND_V(WaitTranIn == player->m_SceneTran.m_State);
 	PlayerMgr::Ins().SetCacheMsg(msg.uin, false);
@@ -94,7 +94,7 @@ RegCenterMsg(ScenePlayer::RspZoneReserve);
 void ScenePlayer::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg)
 {
 	L_INFO("RspZoneReserve");
-	Player *player = PlayerMgr::Ins().GetPlayer(msg.uin);
+	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);
 	L_COND_V(WaitReserve == player->m_SceneTran.m_State);
 	if (msg.ret)

@@ -37,6 +37,7 @@ namespace proto {
 	{
 		const uint16_t id = 52;
 		uint64 uin;
+		uint64 cid;
 		std::string playerData; //db::player pack data
 	};
 	struct RspLoginZone_cs
@@ -46,10 +47,24 @@ namespace proto {
 		bool ret;
 	};
 
+	struct ReqReLoginZone_sc
+	{
+		const uint16_t id = 54;
+		uint64 uin;
+		uint64 cid;
+		std::string playerData; //db::player pack data
+	};
+	struct RspReLoginZone_cs
+	{
+		const uint16_t id = 55;
+		uint64 uin;
+		bool ret;
+	};
+
 
 	struct ReqZoneReserve
 	{
-		const uint16_t id = 54;
+		const uint16_t id = 154;
 		uint64 uin;
 		uint16_t srcSvrId;
 		uint16_t dstZoneId;
@@ -57,7 +72,7 @@ namespace proto {
 	};
 	struct RspZoneReserve
 	{
-		const uint16_t id = 55;
+		const uint16_t id = 155;
 		uint64 uin;
 		uint16_t srcZoneId;
 		bool ret;
@@ -66,7 +81,7 @@ namespace proto {
 	//zone 请求切换 zone, zone , center 之间都可以互相发送
 	struct ReqTranZone
 	{
-		const uint16_t id = 56;
+		const uint16_t id = 156;
 		uint16_t zoneId;
 		uint64 uin;
 		std::string playerData; //db::player pack data
