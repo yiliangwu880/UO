@@ -44,3 +44,11 @@ void AccMgr::OnRevClientMsg(const Session &session, uint32 cmd, const char *msg,
 	SendToClient(session.id, cmd, msg, msg_len);
 }
 
+void AccMgr::OnMsgRspCacheMsg(const acc::Session &sn, bool isCache)
+{
+	ZoneSnEx *p = sn.GetEx<ZoneSnEx>();
+	L_COND_V(p);
+	auto player = p->m_pPlayer.lock();
+	player->m_SceneTran.OnMsgRspCacheMsg(isCache);
+}
+

@@ -18,11 +18,14 @@ struct BaseData
 class Player
 {
 	BaseData m_BaseData;
-	PlayerScene m_SceneTran;
-
+	ScenePlayer m_SceneTran;
+	db::Player m_db;
 public:
 	void Init(uint64 uin) {};
 	bool Load(db::Player &data);
+	const db::Player &GetDb() {
+		return m_db;
+	};
 
 	template<class ProtoMsg>
 	void Send(const ProtoMsg &msg)

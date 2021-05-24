@@ -1,6 +1,6 @@
 #include "Player.h"
 
-void PlayerScene::SetState(State val)
+void ScenePlayer::SetState(State val)
 {
 	State(val);
 	if (State::Playing == State())

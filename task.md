@@ -9,7 +9,7 @@ zone跨服协调。
 
 
 #game com
-
+日志宏， 带player信息。 l_INFO(..)
 #acc
 	继续完善创建角色流程
 	转发client消息 从 cmd, msg. 改为 msg

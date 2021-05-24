@@ -21,7 +21,8 @@ class Player : public WeakPtr<Player>
 
 public:
 	BaseData m_BaseData;
-	PlayerScene m_SceneTran;
+	ScenePlayer m_SceneTran;
+	LoginPlayer m_LoginPlayer;
 
 public:
 
@@ -35,7 +36,7 @@ public:
 		svr->Send(msg);
 	}
 	void SetSid(const acc::SessionId &sid);
-	void EnterZone();
+	void LoginZone();
 	uint64 Uin() { return m_BaseData.m_uin; }
 	uint64 Name() { return m_BaseData.name; }
 	uint64 ZoneId() { return m_BaseData.m_zoneId; }

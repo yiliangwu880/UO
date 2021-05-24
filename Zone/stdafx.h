@@ -21,3 +21,5 @@
 
 using namespace su; //不区分su命名空间了
 using namespace std;
+
+#define RegCenterMsg(fun) STATIC_RUN(MsgDispatch<CenterCon>::Ins().RegMsgHandler(&(fun));

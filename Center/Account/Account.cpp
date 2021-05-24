@@ -136,7 +136,7 @@ void Account::OnInsert(bool ret, const db::Player &data, any para)
 
 	player->SetSid(sn.id);
 
-	//AccMgr::Ins().BroadcastUinToSession(*sid, data.uin); //不需要了。 zone创建player,根据sid 查找sn,关联起来
+	player->LoginZone();
 }
 
 STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(&Account::SelectActor));
@@ -172,7 +172,7 @@ void Account::OnSelect(bool ret, const db::Player &data, any para)
 
 	player->SetSid(sn.id);
 
-	player->EnterZone();
+	player->LoginZone();
 
 }
 

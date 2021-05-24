@@ -6,7 +6,7 @@ void Player::SetSid(const acc::SessionId &sid)
 	m_sid = sid;
 }
 
-void Player::EnterZone()
+void Player::LoginZone()
 {
 	uint16 svrId = 1; //find by data db.
 //req zone enter player

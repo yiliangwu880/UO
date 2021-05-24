@@ -1,6 +1,6 @@
-#include "PlayerScene.h"
+#include "ScenePlayer.h"
 //µÄ¿´·¨
-void PlayerScene::State(State val)
+void ScenePlayer::State(State val)
 {
 	State(val);
 	if (State::Playing == State())
@@ -17,34 +17,10 @@ void PlayerScene::State(State val)
 	}
 }
 
-RegZoneMsg(PlayerScene::RspLoginZone_cs);
-void PlayerScene::RspLoginZone_cs(ZoneSvrCon &con, const proto::RspLoginZone_cs &msg)
-{
-	L_INFO("ReqZoneOk_cs");
-	Player *player = PlayerMgr::Ins().GetPlayer(msg.uin);
-	L_COND_V(player);
-	L_COND_V(Playing == player->m_SceneTran.m_State);
 
-	if (State::Playing == State())
-	{
-		//resume msg
-	}
-	else if (State::Moving == State())
-	{
-		//pause msg
-	}
-	else if (State::WaitEnterZone == State())
-	{
-		State(Playing);
-	}
-	else
-	{
-		L_ERROR("unknow state %d", (int)State());
-	}
-}
 
-RegZoneMsg(PlayerScene::ReqZoneReserve);
-void PlayerScene::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg)
+RegZoneMsg(ScenePlayer::ReqZoneReserve);
+void ScenePlayer::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg)
 {
 	Player *player = PlayerMgr::Ins().GetPlayer(msg.uin);
 	L_COND_V(player);
@@ -53,8 +29,8 @@ void PlayerScene::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &m
 	svr->Send(msg);
 }
 
-RegZoneMsg(PlayerScene::RspZoneReserve);
-void PlayerScene::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg)
+RegZoneMsg(ScenePlayer::RspZoneReserve);
+void ScenePlayer::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg)
 {
 	Player *player = PlayerMgr::Ins().GetPlayer(msg.uin);
 	L_COND_V(player);
@@ -67,8 +43,8 @@ void PlayerScene::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &m
 	} 
 }
 
-RegZoneMsg(PlayerScene::ReqTranZone);
-void PlayerScene::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
+RegZoneMsg(ScenePlayer::ReqTranZone);
+void ScenePlayer::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
 {
 	Player *player = PlayerMgr::Ins().GetPlayer(msg.uin);
 	L_COND_V(player);
