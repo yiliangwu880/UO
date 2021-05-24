@@ -3,12 +3,7 @@
 
 
 
-RegCenterMsg(LoginPlayer::ReqLoginZone_sc);
 
-void LoginPlayer::LoginZone(const db::Player &data)
-{
-	proto::ReqLoginZone_sc
-}
 
 void LoginPlayer::ClientDisCon()
 {
@@ -16,6 +11,7 @@ void LoginPlayer::ClientDisCon()
 	m_State = OffLine;
 }
 
+RegCenterMsg(LoginPlayer::ReqLoginZone_sc);
 void LoginPlayer::ReqLoginZone_sc(ZoneSvrCon &con, const proto::ReqLoginZone_sc &msg)
 {
 	L_INFO("ReqLoginZone_sc");

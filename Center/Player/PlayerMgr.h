@@ -31,7 +31,9 @@ class PlayerMgr : Singleton<PlayerMgr>
 	vector<PlayerCacheMsg> m_PlayerCacheMsg; //player Moving状态，缓存的消息。因为uin数量极少。用vector比map效率高。
 public:
 	Player *CreatePlayer(uint64 uin, const string &name);
-	Player *GetPlayer(uint64 uin);
+	Player *FindPlayer(uint64 uin);
+	Player *FindPlayer(const string &name);
+	void DelPlayer(uint64 uin);
 	void SetCacheMsg(uint64 uin, bool isCache);
 private:
 

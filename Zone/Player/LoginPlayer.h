@@ -13,7 +13,6 @@ class LoginPlayer : public PlayerSubCom
 public:
 	State State() const { return m_State; }
 
-	void LoginZone(const db::Player &data);
 	void ClientDisCon();
 
 public:

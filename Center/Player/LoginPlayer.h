@@ -5,21 +5,21 @@ class LoginPlayer : public PlayerSubCom
 {
 	enum State
 	{
+		None,
+		WaitLogin,
 		LoginOk,
-		OffLine,
+		WaitReLogin,
 	};
-	State m_State = LoginOk;
+	State m_State = None;
 
 public:
 	State State() const { return m_State; }
+	void State(State state);
 
 	void LoginZone(const db::Player &data);
-	void ClientDisCon();
-
+	void ReLogin();
 public:
-	static void ReqLoginZone_sc(ZoneSvrCon &con, const proto::ReqLoginZone_sc &msg);
-	static void ReqReLoginZone_sc(ZoneSvrCon &con, const proto::ReqReLoginZone_sc &msg);
-
+	static void RspLoginZone_cs(ZoneSvrCon &con, const proto::ReqZoneReserve &msg);
+	static void RspReLoginZone_cs(ZoneSvrCon &con, const proto::RspReLoginZone_cs &msg);
 };
-
 
