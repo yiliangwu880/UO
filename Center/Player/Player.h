@@ -21,7 +21,7 @@ class Player : public WeakPtr<Player>
 
 public:
 	BaseData m_BaseData;
-	ScenePlayer m_SceneTran;
+	SceneTran m_SceneTran;
 	LoginPlayer m_LoginPlayer;
 
 public:
@@ -39,7 +39,7 @@ public:
 
 	uint64 Uin() { return m_BaseData.m_uin; }
 	uint64 Name() { return m_BaseData.name; }
-	uint64 ZoneId() { return m_BaseData.m_zoneId; }
+	uint64 ZoneId() { return m_SceneTran.ZoneId(); }
 	uint64 Cid() { return m_sid.cid; }
 public:
 

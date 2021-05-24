@@ -1,6 +1,6 @@
-#include "ScenePlayer.h"
+#include "SceneTran.h"
 //µÄ¿´·¨
-void ScenePlayer::State(State val)
+void SceneTran::State(State val)
 {
 	State(val);
 	if (State::Playing == State())
@@ -19,8 +19,8 @@ void ScenePlayer::State(State val)
 
 
 
-RegZoneMsg(ScenePlayer::ReqZoneReserve);
-void ScenePlayer::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg)
+RegZoneMsg(SceneTran::ReqZoneReserve);
+void SceneTran::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg)
 {
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);
@@ -29,8 +29,8 @@ void ScenePlayer::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &m
 	svr->Send(msg);
 }
 
-RegZoneMsg(ScenePlayer::RspZoneReserve);
-void ScenePlayer::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg)
+RegZoneMsg(SceneTran::RspZoneReserve);
+void SceneTran::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg)
 {
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);
@@ -43,8 +43,8 @@ void ScenePlayer::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &m
 	} 
 }
 
-RegZoneMsg(ScenePlayer::ReqTranZone);
-void ScenePlayer::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
+RegZoneMsg(SceneTran::ReqTranZone);
+void SceneTran::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
 {
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);

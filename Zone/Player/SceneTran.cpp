@@ -1,6 +1,6 @@
-#include "ScenePlayer.h"
+#include "SceneTran.h"
 
-void ScenePlayer::State(State val)
+void SceneTran::State(State val)
 {
 	State(val);
 	if (WaitTranIn == State())
@@ -23,7 +23,7 @@ void ScenePlayer::State(State val)
 }
 
 
-bool ScenePlayer::TranZone(uint16 zoneId, uint32 sceneId)
+bool SceneTran::TranZone(uint16 zoneId, uint32 sceneId)
 {
 	L_COND_F(Playing == m_State);//传送过程，被动触发传送的情况，先忽略不处理。
 	ReqZoneReserve req;
@@ -34,7 +34,7 @@ bool ScenePlayer::TranZone(uint16 zoneId, uint32 sceneId)
 	m_SceneTran.State(WaitReserve);
 }
 
-void ScenePlayer::CheckReserve()
+void SceneTran::CheckReserve()
 {
 	if (m_isAccCacheOk && m_isReserveOk)
 	{
@@ -47,7 +47,7 @@ void ScenePlayer::CheckReserve()
 	}
 }
 
-void ScenePlayer::OnMsgRspCacheMsg(bool isCache)
+void SceneTran::OnMsgRspCacheMsg(bool isCache)
 {
 	if (isCache)
 	{
@@ -61,8 +61,8 @@ void ScenePlayer::OnMsgRspCacheMsg(bool isCache)
 	}
 }
 
-RegCenterMsg(ScenePlayer::ReqZoneReserve);
-void ScenePlayer::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg)
+RegCenterMsg(SceneTran::ReqZoneReserve);
+void SceneTran::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg)
 {
 	RspZoneReserve rsp;
 	Player *player = PlayerMgr::Ins().CreatePlayer(msg.uin);
@@ -78,8 +78,8 @@ void ScenePlayer::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &m
 }
 
 
-RegCenterMsg(ScenePlayer::ReqTranZone);
-void ScenePlayer::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
+RegCenterMsg(SceneTran::ReqTranZone);
+void SceneTran::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
 {
 	L_INFO("ReqZoneOk_cs");
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
@@ -90,8 +90,8 @@ void ScenePlayer::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
 	player->m_SceneTran.State(Playing);
 }
 
-RegCenterMsg(ScenePlayer::RspZoneReserve);
-void ScenePlayer::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg)
+RegCenterMsg(SceneTran::RspZoneReserve);
+void SceneTran::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg)
 {
 	L_INFO("RspZoneReserve");
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);

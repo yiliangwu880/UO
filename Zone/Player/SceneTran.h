@@ -1,6 +1,6 @@
 #pragma once
 
-class ScenePlayer : public PlayerSubCom
+class SceneTran : public PlayerSubCom
 {
 	enum State
 	{

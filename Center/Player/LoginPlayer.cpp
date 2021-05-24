@@ -22,10 +22,7 @@ void LoginPlayer::ReLogin()
 {
 	L_COND_V(LoginOk == m_State);
 	ReqReLoginZone_sc req;
-
-	ZoneSvr *svr = ZoneSvrMgr::Ins().FindZoneSvr(1);
-	L_COND_V(svr);
-	svr->Send(req);
+	m_owner.SendToZone(req);
 	m_State = WaitReLogin;
 
 }

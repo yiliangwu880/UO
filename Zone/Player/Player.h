@@ -18,7 +18,7 @@ struct BaseData
 class Player
 {
 	BaseData m_BaseData;
-	ScenePlayer m_SceneTran;
+	SceneTran m_SceneTran;
 	db::Player m_db;
 public:
 	void Init(uint64 uin) {};
