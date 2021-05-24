@@ -18,9 +18,10 @@
 #include "svr_util/include/typedef.h"
 #include "svr_util/include/stl_boost.h"
 #include "svr_util/include/static_reg.h"
+#include "svr_util/include/misc.h"
 
 using namespace su; //不区分su命名空间了
 using namespace std;
 
 
-#define RegZoneMsg(fun) STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&(fun));
+#define RegZoneMsg(fun) //STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&(fun));

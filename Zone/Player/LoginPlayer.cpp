@@ -1,9 +1,5 @@
 #include "LoginPlayer.h"
-
-
-
-
-
+#include "PlayerMgr.h"
 
 void LoginPlayer::ClientDisCon()
 {
@@ -12,7 +8,7 @@ void LoginPlayer::ClientDisCon()
 }
 
 RegCenterMsg(LoginPlayer::ReqLoginZone_sc);
-void LoginPlayer::ReqLoginZone_sc(ZoneSvrCon &con, const proto::ReqLoginZone_sc &msg)
+void LoginPlayer::ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &msg)
 {
 	L_INFO("ReqLoginZone_sc");
 	Player *player = PlayerMgr::Ins().CreatePlayer(msg.uin);
@@ -27,7 +23,7 @@ void LoginPlayer::ReqLoginZone_sc(ZoneSvrCon &con, const proto::ReqLoginZone_sc 
 }
 
 RegCenterMsg(LoginPlayer::ReqReLoginZone_sc);
-void LoginPlayer::ReqReLoginZone_sc(ZoneSvrCon &con, const proto::ReqReLoginZone_sc &msg)
+void LoginPlayer::ReqReLoginZone_sc(CenterCon &con, const proto::ReqReLoginZone_sc &msg)
 {
 	L_INFO("ReqReLoginZone_sc");
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);

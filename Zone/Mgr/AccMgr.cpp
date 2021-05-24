@@ -3,6 +3,8 @@
 #include "def.h"
 #include "EventMgr.h"
 #include "ZoneMgr.h"
+#include "Player/Player.h"
+
 
 using namespace std;
 using namespace su;
@@ -44,10 +46,10 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 	SendToClient(sn.id, cmd, msg, msg_len);
 }
 
-void AccMgr::GetPlayer(const acc::Session &sn)
+Player *AccMgr::GetPlayer(const acc::Session &sn)
 {
 	WeakPlayer *p = sn.GetEx<WeakPlayer>();
-	L_COND_V(p);
+	L_COND(p, nullptr);
 	shared_ptr<Player> player = p->lock();
 	return player.get();
 }

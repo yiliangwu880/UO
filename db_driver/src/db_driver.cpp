@@ -50,7 +50,7 @@ namespace
 	void Check(M &m_sid2QuerySn)
 	{
 		std::vector<uint16_t> vecSid;
-		time_t now = timer(nullptr);
+		time_t now = time(nullptr);
 		for (auto &v : m_sid2QuerySn)
 		{
 			const Session &sn = v.second;
@@ -111,12 +111,11 @@ bool db::Dbproxy::Query(const db::BaseTable &data, any para, uint32 limit_num /*
 	m_sid2Sn.emplace(make_pair(m_sidSeed, sn));
 
 	MsgPack msg;
-	query_cs *req = new (msg.data)query_cs;
+	auto req = BuildMsgPack<query_cs>(msg, data);
+	L_COND(req, false);
 	req->sid = m_sidSeed;
+	req->isStr = false;
 	req->limit_num = limit_num;
-	req->isStr = true;
-	req->table_id = data.TableId();
-	L_COND(cond.length() + sizeof(*req) < sizeof(msg.data), false);	req->dataLen = cond.length();	memcpy(req->data, cond.c_str(), cond.length());	msg.len = sizeof(*req) + req->dataLen;
 	return DbClientCon::Ins().SendData(msg);
 }
 
@@ -177,16 +176,17 @@ void db::Dbproxy::ParseInsert(const insert_sc &msg)
 	std::unique_ptr<BaseTable> pTable = TableCfg::Ins().Unpack(msg.data, msg.dataLen);
 	L_COND_V(nullptr != pTable);
 
-	using ComFun = void(bool, const BaseTable& ); //查询回调， 抽象类型。 
+	using ComFun = void(bool, const BaseTable&, std::any); //查询回调， 抽象类型。 
 	ComFun **fun = (ComFun **)(su::MapFind(Dbproxy::Ins().m_id2InertCb, pTable->TableId()));
 	if (nullptr == fun)
 	{
 		return;
 	}
-	auto it = m_sid2Sn.find(msg.sid);
-	L_COND_V(it != m_sid2Sn.end());
+	
+	auto it = Dbproxy::Ins().m_sid2Sn.find(msg.sid);
+	L_COND_V(it != Dbproxy::Ins().m_sid2Sn.end());
 	(**fun)(msg.ret, *(pTable.get()), (it->second).para);
-	m_sid2Sn.erase(it);
+	Dbproxy::Ins().m_sid2Sn.erase(it);
 }
 
 void db::Dbproxy::ParseQuery(const query_sc &msg)
@@ -194,16 +194,16 @@ void db::Dbproxy::ParseQuery(const query_sc &msg)
 	std::unique_ptr<BaseTable> pTable = TableCfg::Ins().Unpack(msg.data, msg.dataLen);
 	L_COND_V(nullptr != pTable);
 
-	using ComFun = void(bool, const BaseTable&); //查询回调， 抽象类型。 
+	using ComFun = void(bool, const BaseTable&, std::any); //查询回调， 抽象类型。 
 	ComFun **fun = (ComFun **)(su::MapFind(Dbproxy::Ins().m_id2QueryCb, pTable->TableId()));
 	if (nullptr == fun)
 	{
 		return;
 	}
-	auto it = m_sid2Sn.find(msg.sid);
-	L_COND_V(it != m_sid2Sn.end());
+	auto it = Dbproxy::Ins().m_sid2Sn.find(msg.sid);
+	L_COND_V(it != Dbproxy::Ins().m_sid2Sn.end());
 	(**fun)(msg.ret, *(pTable.get()), (it->second).para);
-	m_sid2Sn.erase(it);
+	Dbproxy::Ins().m_sid2Sn.erase(it);
 }
 
 
@@ -213,16 +213,16 @@ void db::Dbproxy::ParseDel(const del_sc &msg)
 	std::unique_ptr<BaseTable> pTable = TableCfg::Ins().Unpack(msg.data, msg.dataLen);
 	L_COND_V(nullptr != pTable);
 
-	using ComFun = void(bool, const BaseTable&); //查询回调， 抽象类型。 
+	using ComFun = void(bool, const BaseTable&, std::any); //查询回调， 抽象类型。 
 	ComFun **fun = (ComFun **)(su::MapFind(Dbproxy::Ins().m_id2DelCb, pTable->TableId()));
 	if (nullptr == fun)
 	{
 		return;
 	}
-	auto it = m_sid2Sn.find(msg.sid);
-	L_COND_V(it != m_sid2Sn.end());
+	auto it = Dbproxy::Ins().m_sid2Sn.find(msg.sid);
+	L_COND_V(it != Dbproxy::Ins().m_sid2Sn.end());
 	(**fun)(msg.ret, *(pTable.get()), (it->second).para);
-	m_sid2Sn.erase(it);
+	Dbproxy::Ins().m_sid2Sn.erase(it);
 }
 
 void db::Dbproxy::ParseExcuteSql(const excute_sql_sc &msg)

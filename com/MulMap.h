@@ -65,12 +65,12 @@ public:
 		auto subIt = sub.find(subKey);
 		if (subIt == sub.end())
 		{
-			UNIT_ERROR("subkey change!");
+			L_ERROR("subkey change!");
 			return false;
 		}
 		if (p != (subIt->second))
 		{
-			UNIT_ERROR("subkey change!");
+			L_ERROR("subkey change!");
 			return false;
 		}
 

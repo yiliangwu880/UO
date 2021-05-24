@@ -19,7 +19,7 @@ class Actor : public BaseWeak<Actor>
 {
 public:
 	EventMgr m_owner;
-	SceneEntity m_ScenePlayer; //实体场景视野管理
+	SceneEntity m_SceneTran; //实体场景视野管理
 	BaseAttr attr;
 	StateMgr m_StateMgr;
 	BuffMgr m_BuffMgr;

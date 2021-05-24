@@ -12,9 +12,7 @@ void LoginPlayer::LoginZone(const db::Player &data)
 	L_COND_V(None == m_State);
 	proto::ReqLoginZone_sc req;
 	TableCfg::Ins().Pack(data, req.playerData);
-	ZoneSvr *svr = ZoneSvrMgr::Ins().FindZoneSvr(1);
-	L_COND_V(svr);
-	svr->Send(req);
+	m_owner.SendToZone(req);
 	m_State = WaitLogin;
 }
 

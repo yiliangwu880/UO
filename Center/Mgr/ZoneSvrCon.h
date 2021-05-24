@@ -1,4 +1,4 @@
-//链接center
+//链接 zone
 #pragma once
 #include "libevent_cpp/include/include_all.h"
 #include "MsgDispatch.h"

@@ -1,7 +1,8 @@
 #pragma once
 #include "ZoneSvr.h"
+#include "SubComCenter.h"
 
-class LoginPlayer : public PlayerSubCom
+class LoginPlayer : public SubComCenter
 {
 	enum State
 	{

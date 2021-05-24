@@ -1,32 +1,35 @@
 #include "SceneTran.h"
 
-void SceneTran::State(State val)
+using namespace proto;
+
+void SceneTran::SetState(State val)
 {
-	State(val);
-	if (WaitTranIn == State())
+	if (WaitTranIn == m_State)
 	{
 	//	PlayerMgr::Ins().SetCacheMsg(m_owner.Uin(), false);
 	}
-	else if (Playing == State())
+	else if (Playing == m_State)
 	{
 	//	PlayerMgr::Ins().SetCacheMsg(m_owner.Uin(), true);
 	}
-	else if (WaitReserve == State())
+	else if (WaitReserve == m_State)
 	{
 		m_isReserveOk = false;
 		m_isAccCacheOk = false;
 	}
 	else
 	{
-		L_ERROR("unknow state %d", (int)State());
+		L_ERROR("unknow state %d", (int)m_State);
 	}
+	m_State = val;
 }
+
 
 
 bool SceneTran::TranZone(uint16 zoneId, uint32 sceneId)
 {
 	L_COND_F(Playing == m_State);//传送过程，被动触发传送的情况，先忽略不处理。
-	ReqZoneReserve req;
+	proto::ReqZoneReserve req;
 	req.dstZoneId = zoneId;
 	req.sceneId = sceneId;
 	CenterCon::Ins().Send(req);
@@ -62,7 +65,7 @@ void SceneTran::OnMsgRspCacheMsg(bool isCache)
 }
 
 RegCenterMsg(SceneTran::ReqZoneReserve);
-void SceneTran::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg)
+void SceneTran::ReqZoneReserve(CenterCon &con, const proto::ReqZoneReserve &msg)
 {
 	RspZoneReserve rsp;
 	Player *player = PlayerMgr::Ins().CreatePlayer(msg.uin);
@@ -79,7 +82,7 @@ void SceneTran::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg
 
 
 RegCenterMsg(SceneTran::ReqTranZone);
-void SceneTran::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
+void SceneTran::ReqTranZone(CenterCon &con, const proto::ReqTranZone &msg)
 {
 	L_INFO("ReqZoneOk_cs");
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
@@ -91,7 +94,7 @@ void SceneTran::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
 }
 
 RegCenterMsg(SceneTran::RspZoneReserve);
-void SceneTran::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg)
+void SceneTran::RspZoneReserve(CenterCon &con, const proto::RspZoneReserve &msg)
 {
 	L_INFO("RspZoneReserve");
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);

@@ -22,5 +22,5 @@ public:
 	ZoneSvr *FindZoneSvr(uint16 svrId);
 
 public:
-	static void ReqZoneOk_cs(ZoneSvrCon &con, const ReqZoneOk_cs &msg);
+	static void ReqZoneOk_cs(ZoneSvrCon &con, const proto::ReqZoneOk_cs &msg);
 };

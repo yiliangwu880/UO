@@ -1,7 +1,7 @@
 #pragma once
-#include "ZoneSvr.h"
+#include "SubCom.h"
 
-class LoginPlayer : public PlayerSubCom
+class LoginPlayer : public SubCom
 {
 	enum State
 	{
@@ -16,8 +16,8 @@ public:
 	void ClientDisCon();
 
 public:
-	static void ReqLoginZone_sc(ZoneSvrCon &con, const proto::ReqLoginZone_sc &msg);
-	static void ReqReLoginZone_sc(ZoneSvrCon &con, const proto::ReqReLoginZone_sc &msg);
+	static void ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &msg);
+	static void ReqReLoginZone_sc(CenterCon &con, const proto::ReqReLoginZone_sc &msg);
 
 };
 

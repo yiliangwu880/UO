@@ -6,6 +6,7 @@
 #include <limits>
 #include <string.h>
 #include "dbStructPack.h"
+#include "libevent_cpp/include/include_all.h"
 
 using namespace std;
 using namespace db;
@@ -97,10 +98,10 @@ bool db::TableCfg::Pack(const BaseTable &obj, char *cur, size_t &packLen)
 }
 
 
-bool db::TableCfg::Pack(const BaseTable &obj, string &str)
+bool db::TableCfg::Pack(const BaseTable &obj, std::string &str)
 {
 	str.resize(lc::MAX_MSG_DATA_LEN);
-	char *p = const_cast<char *>str.c_str();
+	char *p = const_cast<char *>(str.c_str());
 	size_t len = lc::MAX_MSG_DATA_LEN;
 	L_COND(Pack(obj, p, len), false);
 	str.resize(len);

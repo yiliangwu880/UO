@@ -1,5 +1,5 @@
 #include "SceneTran.h"
-//µÄ¿´·¨
+
 void SceneTran::State(State val)
 {
 	State(val);

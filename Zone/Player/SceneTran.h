@@ -1,6 +1,7 @@
 #pragma once
+#include "SubCom.h"
 
-class SceneTran : public PlayerSubCom
+class SceneTran : public SubCom
 {
 	enum State
 	{
@@ -15,15 +16,15 @@ class SceneTran : public PlayerSubCom
 	bool m_isAccCacheOk = false;
 	bool m_isReserveOk = false;
 public:
-	State State() const { return m_State; }
+	void SetState(State val);
 	bool TranZone(uint16 zoneId, uint32 sceneId);
 	void CheckReserve();
 	void OnMsgRspCacheMsg(bool isCache);
 
 public:
-	static void ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg);
-	static void ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg);
-	static void RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg);
+	static void ReqZoneReserve(CenterCon &con, const proto::ReqZoneReserve &msg);
+	static void ReqTranZone(CenterCon &con, const proto::ReqTranZone &msg);
+	static void RspZoneReserve(CenterCon &con, const proto::RspZoneReserve &msg);
 
 };
 

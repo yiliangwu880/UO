@@ -18,8 +18,11 @@
 #include "svr_util/include/typedef.h"
 #include "svr_util/include/stl_boost.h"
 #include "svr_util/include/static_reg.h"
+#include "svr_util/include/misc.h"
+
+#include "Mgr/CenterCon.h"
 
 using namespace su; //不区分su命名空间了
 using namespace std;
 
-#define RegCenterMsg(fun) STATIC_RUN(MsgDispatch<CenterCon>::Ins().RegMsgHandler(&(fun));
+#define RegCenterMsg(fun) //STATIC_RUN(MsgDispatch<CenterCon>::Ins().RegMsgHandler(&(fun))

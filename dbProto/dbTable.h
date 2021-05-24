@@ -144,10 +144,10 @@ namespace db {
 
 		//@len [in] str 内存长度， [out] str 打包的有效长度
 		bool Pack(const BaseTable &obj, char *str, size_t &len);
-		bool Pack(const BaseTable &obj, string &str);//同上方便，但不高效
+		bool Pack(const BaseTable &obj, std::string &str);//同上方便，但不高效
 		std::unique_ptr<BaseTable> Unpack(const char *str, size_t len);
 		template<class MyTable>
-		std::unique_ptr<MyTable> Unpack(const string &str);
+		std::unique_ptr<MyTable> Unpack(const std::string &str);
 
 		const Table *GetTable(uint16_t tableId) const;
 		const std::unordered_map<uint16_t, Table> &GetAllTable()const { return m_allTable; }
@@ -158,7 +158,7 @@ namespace db {
 	};
 
 	template<class MyTable>
-	std::unique_ptr<MyTable> db::TableCfg::Unpack(const string &str)
+	std::unique_ptr<MyTable> db::TableCfg::Unpack(const std::string &str)
 	{
 		auto p = Unpack(str.c_str(), str.length());
 		return dynamic_cast<MyTable *>(p.get());

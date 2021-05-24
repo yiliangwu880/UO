@@ -2,12 +2,9 @@
 #include "dbTableDef.h"
 #include "AccMgr.h"
 #include "MsgDispatch.h"
-
-class PlayerSubCom
-{
-public:
-	Player m_owner;
-};
+#include "LoginPlayer.h"
+#include "SceneTran.h"
+#include "SubCom.h"
 
 struct BaseData 
 {
@@ -17,9 +14,12 @@ struct BaseData
 
 class Player
 {
+	db::Player m_db;
+public:
 	BaseData m_BaseData;
 	SceneTran m_SceneTran;
-	db::Player m_db;
+	LoginPlayer m_LoginPlayer;
+
 public:
 	void Init(uint64 uin) {};
 	bool Load(db::Player &data);

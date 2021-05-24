@@ -73,7 +73,7 @@ void InnerSvrCon::ParseInsert(InnerSvrCon &con, const insert_cs &req)
 
 void InnerSvrCon::ParseQuery(InnerSvrCon &con, const query_cs &req)
 {
-	QueryResultRowCb cb = [&con](const db::BaseTable &data)
+	QueryResultRowCb cb = [&con, req](const db::BaseTable &data)
 	{
 		MsgPack msg;
 		query_sc *rsp = BuildMsgPack<query_sc>(msg, data);

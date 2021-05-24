@@ -4,7 +4,6 @@
 #include "acc_driver.h"
 
 class Player;
-
 using WeakPlayer = weak_ptr<Player>;
 
 class AccMgr : public acc::ADFacadeMgr, public Singleton<AccMgr>

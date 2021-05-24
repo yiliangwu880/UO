@@ -2,16 +2,12 @@
 #include "ZoneSvr.h"
 
 
-class PlayerSubCom 
-{
-public:
-	Player m_owner;
-};
 
 struct BaseData 
 {
 	uint64 m_uin = 0;
 	uint16 m_zoneId = 0;
+	uint32 m_sceneId = 0;
 	string name;
 };
 
@@ -39,7 +35,7 @@ public:
 
 	uint64 Uin() { return m_BaseData.m_uin; }
 	uint64 Name() { return m_BaseData.name; }
-	uint64 ZoneId() { return m_SceneTran.ZoneId(); }
+	uint64 ZoneId() {return m_BaseData.m_zoneId;}
 	uint64 Cid() { return m_sid.cid; }
 public:
 
