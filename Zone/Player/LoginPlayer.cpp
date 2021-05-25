@@ -1,5 +1,7 @@
-#include "LoginPlayer.h"
 #include "PlayerMgr.h"
+
+using namespace proto;
+using namespace acc;
 
 void LoginPlayer::ClientDisCon()
 {
@@ -11,10 +13,12 @@ RegCenterMsg(LoginPlayer::ReqLoginZone_sc);
 void LoginPlayer::ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &msg)
 {
 	L_INFO("ReqLoginZone_sc");
-	Player *player = PlayerMgr::Ins().CreatePlayer(msg.uin);
-	L_COND_V(player);
-	db::Player *playerData = db::TableCfg::Unpack<db::Player>(msg.playerData);
+	std::unique_ptr<BaseTable> baseTable = TableCfg::Ins().Unpack(msg.playerData);
+	DbPlayer * playerData = dynamic_cast<DbPlayer *>(baseTable.get());
 	L_COND_V(playerData);
+
+	Player *player = PlayerMgr::Ins().CreatePlayer(playerData->uin, playerData->name);
+	L_COND_V(player);
 
 	//do create player, enter
 	Player *p;

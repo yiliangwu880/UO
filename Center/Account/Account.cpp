@@ -10,7 +10,7 @@ using namespace acc;
 
 namespace
 {
-	void OnDbLoad(bool ret, const db::Account &data, any para)
+	void OnDbLoad(bool ret, const DbAccount &data, any para)
 	{
 		L_COND_V(!data.name.empty());
 		Account *account = AccountMgr::Ins().GetAcc(data.name);
@@ -40,7 +40,7 @@ void Account::ReqVerify(const SessionId &id, const Login_cs &req)
 			m_state = Account::WaitDbQuery;
 			m_waitVerifySid = id;
 			m_waitVerfyPsw = req.psw;
-			db::Account acc;
+			DbAccount acc;
 			acc.name == req.name;
 			db::Dbproxy::Ins().Query(acc);
 		}
@@ -68,7 +68,7 @@ void Account::ReqVerify(const SessionId &id, const Login_cs &req)
 
 }
 
-void Account::OnDbLoad(bool ret, const db::Account &data)
+void Account::OnDbLoad(bool ret, const DbAccount &data)
 {
 	L_COND_V(Account::WaitDbQuery == m_state);
 	L_COND_V(data.name == m_data.name);
@@ -102,7 +102,7 @@ void Account::SetVerifyOk(const acc::SessionId &sid)
 }
 
 
-STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&Account::CreateActor));
+RegAccMsg(Account::CreateActor);
 void Account::CreateActor(const acc::Session &sn, const proto::CreateActor_cs &msg)
 {
 	CenterSnEx *p = sn.GetEx<CenterSnEx>();
@@ -114,13 +114,13 @@ void Account::CreateActor(const acc::Session &sn, const proto::CreateActor_cs &m
 	{
 		return;
 	}
-	db::Player player;
+	DbPlayer player;
 	player.uin = 1;
 	any para = sn.id;
 	db::Dbproxy::Ins().Insert(player, para);
 }
 STATIC_RUN(db::Dbproxy::Ins().RegInsertCb(&Account::OnInsert));
-void Account::OnInsert(bool ret, const db::Player &data, any para) 
+void Account::OnInsert(bool ret, const DbPlayer &data, any para) 
 {
 	SessionId *sid = std::any_cast<SessionId>(&para);
 	L_COND_V(sid);
@@ -140,7 +140,7 @@ void Account::OnInsert(bool ret, const db::Player &data, any para)
 	player->m_LoginPlayer.LoginZone(data);
 }
 
-STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&Account::SelectActor));
+RegAccMsg(Account::SelectActor);
 void Account::SelectActor(const acc::Session &sn, const proto::SelectActor_cs &msg)
 {
 	CenterSnEx *p = sn.GetEx<CenterSnEx>();
@@ -149,7 +149,7 @@ void Account::SelectActor(const acc::Session &sn, const proto::SelectActor_cs &m
 	L_COND_V(account);
 
 	//if no player exit
-	db::Player data;
+	DbPlayer data;
 	data.uin = 1;
 	any para = sn.id;
 	db::Dbproxy::Ins().Query(data, para);
@@ -157,7 +157,7 @@ void Account::SelectActor(const acc::Session &sn, const proto::SelectActor_cs &m
 }
 
 STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(&Account::OnSelect));
-void Account::OnSelect(bool ret, const db::Player &data, any para) 
+void Account::OnSelect(bool ret, const DbPlayer &data, any para) 
 {
 	SessionId *sid = std::any_cast<SessionId>(&para);
 	L_COND_V(sid);

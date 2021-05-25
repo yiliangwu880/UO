@@ -39,11 +39,11 @@ namespace db {
 	using ConCb = std::function<void()>;
 	using ExcuteSqlCb = std::function<void(uint32_t)>;
 
-	struct Session
+	struct DbSession
 	{
 		time_t m_time;
 		std::any para;
-		Session() {
+		DbSession() {
 			m_time = time(nullptr);
 		};
 	};
@@ -62,7 +62,7 @@ namespace db {
 		std::unordered_map<uint16_t, void *> m_id2DelCb;
 		lc::Timer m_tm;
 
-		std::unordered_map<uint16_t, Session> m_sid2Sn; //sid 2 会话
+		std::unordered_map<uint16_t, DbSession> m_sid2Sn; //sid 2 会话
 
 	public:
 		Dbproxy();

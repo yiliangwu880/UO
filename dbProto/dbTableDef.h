@@ -13,16 +13,16 @@ unordered_map 比较少用，新增的需要定义对应类型的 packMap，Unpa
 
 namespace db
 {
-	struct Account : public BaseTable
+	struct DbAccount : public BaseTable
 	{
-		Account() : BaseTable(1) {}
+		DbAccount() : BaseTable(1) {}
 		std::string name;
 		std::string psw;
 		std::vector<ActorBrief> vecActor;
 	};
-	struct Player : public BaseTable
+	struct DbPlayer : public BaseTable
 	{
-		Player() : BaseTable(2) {}
+		DbPlayer() : BaseTable(2) {}
 		uint64_t uin;
 		std::string name;
 		std::string myblob;
@@ -31,13 +31,13 @@ namespace db
 //先定义宏参数信息，以后再具体实现
 //域的顺序 和 遗漏，都会初始化的时候检查出来
 #define DB_ALL_TABLE_INFO \
-	DB_CLASS_NAME(Account)\
+	DB_CLASS_NAME(DbAccount)\
 	DB_MAIN_KEY(name)\
 	DB_FIELD(psw)\
 	DB_FIELD(vecActor)\
 	DB_CLASS_END\
 \
-	DB_CLASS_NAME(Player)\
+	DB_CLASS_NAME(DbPlayer)\
 	DB_MAIN_KEY(uin)\
 	DB_FIELD(name)\
 	DB_FIELD(myblob)\

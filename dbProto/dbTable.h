@@ -146,8 +146,7 @@ namespace db {
 		bool Pack(const BaseTable &obj, char *str, size_t &len);
 		bool Pack(const BaseTable &obj, std::string &str);//同上方便，但不高效
 		std::unique_ptr<BaseTable> Unpack(const char *str, size_t len);
-		template<class MyTable>
-		std::unique_ptr<MyTable> Unpack(const std::string &str);
+		std::unique_ptr<BaseTable> Unpack(const std::string &str) { return Unpack(str.c_str(), str.length()); };
 
 		const Table *GetTable(uint16_t tableId) const;
 		const std::unordered_map<uint16_t, Table> &GetAllTable()const { return m_allTable; }
@@ -156,12 +155,5 @@ namespace db {
 		void CheckMissField();
 		void CheckStructField();
 	};
-
-	template<class MyTable>
-	std::unique_ptr<MyTable> db::TableCfg::Unpack(const std::string &str)
-	{
-		auto p = Unpack(str.c_str(), str.length());
-		return dynamic_cast<MyTable *>(p.get());
-	}
 
 }

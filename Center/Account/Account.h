@@ -20,21 +20,21 @@ class Account : public WeakPtr<Account>
 	acc::SessionId m_waitVerifySid; //等查库授权 中的sid. 未认证。用来发送失败给客户端
 	string m_waitVerfyPsw;
 	acc::SessionId m_sid;
-	db::Account m_data;
+	DbAccount m_data;
 
 public:
 	Account(const string &name);
 	void ReqVerify(const acc::SessionId &id, const proto::Login_cs &req);
-	void OnDbLoad(bool ret, const db::Account &data);
+	void OnDbLoad(bool ret, const DbAccount &data);
 	const acc::SessionId &Sid() const { return m_sid; }
 	const string &Name() const { return m_data.name; }
 	void SetVerifyOk(const acc::SessionId &sid);
 
 	static void CreateActor(const acc::Session &sn, const proto::CreateActor_cs &msg);
-	static void OnInsert(bool ret, const db::Player &data, any para);
+	static void OnInsert(bool ret, const DbPlayer &data, any para);
 
 	static void SelectActor(const acc::Session &sn, const proto::SelectActor_cs &msg);
-	static void OnSelect(bool ret, const db::Player &data, any para);
+	static void OnSelect(bool ret, const DbPlayer &data, any para);
 };
 
 

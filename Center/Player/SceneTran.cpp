@@ -1,4 +1,5 @@
 #include "PlayerMgr.h"
+#include "svr_util/include/static_reg.h"
 
 void SceneTran::SetState(State val)
 {
@@ -52,5 +53,4 @@ void SceneTran::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
 	ZoneSvr *svr = ZoneSvrMgr::Ins().FindZoneSvr(msg.zoneId);
 	svr->Send(msg);
 	player->m_SceneTran.SetState(Playing);
-
 }

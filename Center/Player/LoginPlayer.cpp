@@ -9,7 +9,7 @@ void LoginPlayer::SetState(State state)
 }
 
 
-void LoginPlayer::LoginZone(const db::Player &data)
+void LoginPlayer::LoginZone(const DbPlayer &data)
 {
 	L_COND_V(None == m_State);
 	proto::ReqLoginZone_sc req;

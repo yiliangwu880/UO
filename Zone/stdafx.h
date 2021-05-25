@@ -23,7 +23,22 @@
 
 #include "Mgr/CenterCon.h"
 
-using namespace su; //不区分su命名空间了
+//不区分命名空间
+namespace acc
+{
+}
+namespace proto
+{
+}
+namespace db
+{
+}
+using namespace su;
+using namespace acc;
+using namespace proto;
 using namespace std;
+using namespace db;
 
-#define RegCenterMsg(fun) //STATIC_RUN(MsgDispatch<CenterCon>::Ins().RegMsgHandler(&(fun))
+
+#define RegCenterMsg(fun) STATIC_RUN(MsgDispatch<CenterCon>::Ins().RegMsgHandler(&fun))
+#define RegAccMsg(fun) STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&fun));

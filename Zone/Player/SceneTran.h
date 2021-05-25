@@ -16,7 +16,6 @@ class SceneTran : public SubCom
 	bool m_isAccCacheOk = false;
 	bool m_isReserveOk = false;
 public:
-	void SetState(State val);
 	bool TranZone(uint16 zoneId, uint32 sceneId);
 	void CheckReserve();
 	void OnMsgRspCacheMsg(bool isCache);

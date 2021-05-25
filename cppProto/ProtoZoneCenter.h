@@ -79,7 +79,7 @@ namespace proto {
 		const uint16_t id = 52;
 		uint64 uin;
 		uint64 cid;
-		std::string playerData; //db::player pack data
+		std::string playerData; //DbPlayer pack data
 	};
 	struct RspLoginZone_cs
 	{
@@ -93,7 +93,7 @@ namespace proto {
 		const uint16_t id = 54;
 		uint64 uin;
 		uint64 cid;
-		std::string playerData; //db::player pack data
+		std::string playerData; //DbPlayer pack data
 	};
 	struct RspReLoginZone_cs
 	{
@@ -125,7 +125,7 @@ namespace proto {
 		const uint16_t id = 156;
 		uint16_t zoneId;
 		uint64 uin;
-		std::string playerData; //db::player pack data
+		std::string playerData; //DbPlayer pack data
 	};
 
 

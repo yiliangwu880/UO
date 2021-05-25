@@ -9,12 +9,14 @@
 struct BaseData 
 {
 	uint64 m_uin = 0;
+	string name;
 	acc::SessionId sid;
 };
 
-class Player
+class Player : public WeakPtr<Player>
 {
-	db::Player m_db;
+	DbPlayer m_db;
+
 public:
 	BaseData m_BaseData;
 	SceneTran m_SceneTran;
@@ -22,8 +24,8 @@ public:
 
 public:
 	void Init(uint64 uin) {};
-	bool Load(db::Player &data);
-	const db::Player &GetDb() {
+	bool Load(DbPlayer &data);
+	const DbPlayer &GetDb() {
 		return m_db;
 	};
 
@@ -38,6 +40,10 @@ public:
 		AccMgr::Ins().SendToClient(m_BaseData.sid, 0, msgPack.data, msgPack.len);
 	}
 
+	uint64 Uin() { return m_BaseData.m_uin; }
+	string &Name() { return m_BaseData.name; }
+	uint64 Cid() { return m_BaseData.sid.cid; }
+	const SessionId &Sid() { return m_BaseData.sid; }
 private:
 
 };
