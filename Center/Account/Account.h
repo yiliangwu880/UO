@@ -9,15 +9,15 @@ class Account : public WeakPtr<Account>
 	static const int MAX_ACTOR = 4;
 	enum State
 	{
-		None,          //³õÊ¼»¯×´Ì¬£¬¸Õ´´½¨
-		WaitDbQuery,   //µÈ²é¿âÊÚÈ¨,
-		WaitAccVerify, //¼ìÑé³É¹¦£¬ µÈaccÍ¨ÖªÊÚÈ¨³É¹¦¡£
-		VerifyOk,      //ÊÚÈ¨³É¹¦£¬¿ÉÒÔÊÕ·¢ÏûÏ¢¡£ ÓĞĞÂÁ´½ÓÑéÖ¤Í¨¹ı£¬--¡·WaitReplace
-		WaitReplace,   //¶¥ºÅ¼ìÑé³É¹¦£¬ µÈaccÍ¨ÖªÊÚÈ¨³É¹¦¡£
+		None,          //åˆå§‹åŒ–çŠ¶æ€ï¼Œåˆšåˆ›å»º
+		WaitDbQuery,   //ç­‰æŸ¥åº“æˆæƒ,
+		WaitAccVerify, //æ£€éªŒæˆåŠŸï¼Œ ç­‰accé€šçŸ¥æˆæƒæˆåŠŸã€‚
+		VerifyOk,      //æˆæƒæˆåŠŸï¼Œå¯ä»¥æ”¶å‘æ¶ˆæ¯ã€‚ æœ‰æ–°é“¾æ¥éªŒè¯é€šè¿‡ï¼Œ--ã€‹WaitReplace
+		WaitReplace,   //é¡¶å·æ£€éªŒæˆåŠŸï¼Œ ç­‰accé€šçŸ¥æˆæƒæˆåŠŸã€‚
 	};
 
 	State m_state = None;
-	acc::SessionId m_waitVerifySid; //µÈ²é¿âÊÚÈ¨ ÖĞµÄsid. Î´ÈÏÖ¤¡£ÓÃÀ´·¢ËÍÊ§°Ü¸ø¿Í»§¶Ë
+	acc::SessionId m_waitVerifySid; //ç­‰æŸ¥åº“æˆæƒ ä¸­çš„sid. æœªè®¤è¯ã€‚ç”¨æ¥å‘é€å¤±è´¥ç»™å®¢æˆ·ç«¯
 	string m_waitVerfyPsw;
 	acc::SessionId m_sid;
 	db::Account m_data;
