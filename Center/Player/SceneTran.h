@@ -11,8 +11,8 @@ class SceneTran : public SubComCenter
 	};
 	State m_State = Playing;
 public:
-	State State() const { return m_State; }
-	void State(State state);
+	State GetState() const { return m_State; }
+	void SetState(State state);
 
 public:
 	static void ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg);

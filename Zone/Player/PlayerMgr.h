@@ -21,7 +21,7 @@ struct MulMapTraits<Player>
 using MulMapPlayer = MulMap<uint64, string, Player>;
 
 
-class PlayerMgr : Singleton<PlayerMgr>
+class PlayerMgr : public Singleton<PlayerMgr>
 {
 	MulMapPlayer m_players;
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "ZoneSvr.h"
 #include "SubComCenter.h"
+#include "dbTableDef.h"
 
 class LoginPlayer : public SubComCenter
 {
@@ -14,13 +15,13 @@ class LoginPlayer : public SubComCenter
 	State m_State = None;
 
 public:
-	State State() const { return m_State; }
-	void State(State state);
+	State GetState() const { return m_State; }
+	void SetState(State state);
 
 	void LoginZone(const db::Player &data);
 	void ReLogin();
 public:
-	static void RspLoginZone_cs(ZoneSvrCon &con, const proto::ReqZoneReserve &msg);
+	static void RspLoginZone_cs(ZoneSvrCon &con, const proto::RspLoginZone_cs &msg);
 	static void RspReLoginZone_cs(ZoneSvrCon &con, const proto::RspReLoginZone_cs &msg);
 };
 

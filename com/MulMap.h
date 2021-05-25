@@ -20,8 +20,8 @@ struct MulMapTraits {};
 //	}
 //};
 
-//Ë«Ë÷Òımap. 
-//×¢Òâ£ºÒ»µ«´´½¨£¬Á½¸ökey²»ÄÜÈÃÓÃ»§ĞŞ¸Ä¡££¬ĞŞ¸Ä¾Í³ö´í
+//åŒç´¢å¼•map. 
+//æ³¨æ„ï¼šä¸€ä½†åˆ›å»ºï¼Œä¸¤ä¸ªkeyä¸èƒ½è®©ç”¨æˆ·ä¿®æ”¹ã€‚ï¼Œä¿®æ”¹å°±å‡ºé”™
 template<class MainKey, class SubKey, class mapped_type>
 class MulMap
 {
@@ -34,12 +34,12 @@ public:
 		auto it = main.find(mainKey);
 		if (it != main.end())
 		{
-			return false;
+			return nullptr;
 		}
 		auto subIt = sub.find(subKey);
 		if (subIt != sub.end())
 		{
-			return false;
+			return nullptr;
 		}
 		it = main.emplace(make_pair(mainKey, forward<_Valty>(_Val)...)).first;
 		mapped_type *p = &(it->second);

@@ -7,6 +7,7 @@ using namespace std;
 using namespace su;
 using namespace proto;
 
+static ZoneSvrMgr &gZoneSvrMgr = ZoneSvrMgr::Ins();
 
 ZoneSvr * ZoneSvrMgr::FindZoneSvr(uint16 svrId)
 {
@@ -16,16 +17,15 @@ ZoneSvr * ZoneSvrMgr::FindZoneSvr(uint16 svrId)
 
 
 STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&ZoneSvrMgr::ReqZoneOk_cs));
-void ZoneSvrMgr::ReqZoneOk_cs(ZoneSvrCon &con, const ReqZoneOk_cs &msg)
+void ZoneSvrMgr::ReqZoneOk_cs(ZoneSvrCon &con, const proto::ReqZoneOk_cs &msg)
 {
 	L_INFO("ReqZoneOk_cs");
-	ZoneSvr * svr = MapFind(m_svrId2Zone, svrId);
-	if (svr != nullptr)
+	if (nullptr != MapFind(gZoneSvrMgr.m_svrId2Zone, msg.svrId))
 	{
 		L_ERROR("repeated reg zone");
 		return;
 	}
-	ZoneSvr &svr = m_svrId2Zone[svrId];
+	ZoneSvr &svr = gZoneSvrMgr.m_svrId2Zone[msg.svrId];
 	svr.m_cid = con.GetId();
 	svr.m_svrId = msg.svrId;
 	CenterMgr::Ins().SetZoneOk(msg.svrId);

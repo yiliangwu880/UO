@@ -16,13 +16,14 @@
 #include "svr_util/include/singleton.h"
 #include "svr_util/include/easy_code.h"
 #include "svr_util/include/typedef.h"
+#include "svr_util/include/cnt_typedef.h"
 #include "svr_util/include/stl_boost.h"
 #include "svr_util/include/static_reg.h"
 #include "svr_util/include/misc.h"
 
 #include "Mgr/CenterCon.h"
 
-using namespace su; //²»Çø·ÖsuÃüÃû¿Õ¼äÁË
+using namespace su; //ä¸åŒºåˆ†suå‘½åç©ºé—´äº†
 using namespace std;
 
 #define RegCenterMsg(fun) //STATIC_RUN(MsgDispatch<CenterCon>::Ins().RegMsgHandler(&(fun))

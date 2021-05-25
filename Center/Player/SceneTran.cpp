@@ -1,20 +1,20 @@
-#include "SceneTran.h"
+#include "PlayerMgr.h"
 
-void SceneTran::State(State val)
+void SceneTran::SetState(State val)
 {
-	State(val);
-	if (State::Playing == State())
+	if (Playing == m_State)
 	{
 		PlayerMgr::Ins().SetCacheMsg(m_owner.Uin(), false);
 	}
-	else if (State::Moving == State())
+	else if (Moving == m_State)
 	{
 		PlayerMgr::Ins().SetCacheMsg(m_owner.Uin(), true);
 	}
 	else
 	{
-		L_ERROR("unknow state %d", (int)State());
+		L_ERROR("unknow state %d", (int)m_State);
 	}
+	m_State = val;
 }
 
 
@@ -25,7 +25,7 @@ void SceneTran::ReqZoneReserve(ZoneSvrCon &con, const proto::ReqZoneReserve &msg
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);
 	L_COND_V(Playing == player->m_SceneTran.m_State);
-	ZoneSvr *svr = ZoneSvrMgr::FindZoneSvr(msg.dstZoneId);
+	ZoneSvr *svr = ZoneSvrMgr::Ins().FindZoneSvr(msg.dstZoneId);
 	svr->Send(msg);
 }
 
@@ -35,11 +35,11 @@ void SceneTran::RspZoneReserve(ZoneSvrCon &con, const proto::RspZoneReserve &msg
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);
 	L_COND_V(Playing == player->m_SceneTran.m_State);
-	ZoneSvr *svr = ZoneSvrMgr::FindZoneSvr(msg.srcZoneId);
+	ZoneSvr *svr = ZoneSvrMgr::Ins().FindZoneSvr(msg.srcZoneId);
 	svr->Send(msg);
 	if (msg.ret)
 	{
-		SetState(Moving);
+		player->m_SceneTran.SetState(Moving);
 	} 
 }
 
@@ -49,11 +49,8 @@ void SceneTran::ReqTranZone(ZoneSvrCon &con, const proto::ReqTranZone &msg)
 	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);
 	L_COND_V(Moving == player->m_SceneTran.m_State);
-	ZoneSvr *svr = ZoneSvrMgr::FindZoneSvr(msg.zoneId);
+	ZoneSvr *svr = ZoneSvrMgr::Ins().FindZoneSvr(msg.zoneId);
 	svr->Send(msg);
-	if (msg.ret)
-	{
-		player->m_SceneTran.SetState(Playing);
-	}
+	player->m_SceneTran.SetState(Playing);
 
 }

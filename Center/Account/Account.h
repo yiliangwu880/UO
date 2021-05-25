@@ -26,14 +26,14 @@ public:
 	Account(const string &name);
 	void ReqVerify(const acc::SessionId &id, const proto::Login_cs &req);
 	void OnDbLoad(bool ret, const db::Account &data);
-	const acc::SessionId &Sid() const { return m_sid.id; }
+	const acc::SessionId &Sid() const { return m_sid; }
 	const string &Name() const { return m_data.name; }
 	void SetVerifyOk(const acc::SessionId &sid);
 
-	static void CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg);
+	static void CreateActor(const acc::Session &sn, const proto::CreateActor_cs &msg);
 	static void OnInsert(bool ret, const db::Player &data, any para);
 
-	static void SelectActor(acc::Session &sn, const proto::SelectActor_cs &msg);
+	static void SelectActor(const acc::Session &sn, const proto::SelectActor_cs &msg);
 	static void OnSelect(bool ret, const db::Player &data, any para);
 };
 

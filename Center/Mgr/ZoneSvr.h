@@ -8,7 +8,7 @@ struct ZoneSvr
 	template<class Msg>
 	void Send(const Msg &msg)
 	{
-		ZoneSvrCon *con = Svr::Ins().m_Listener.GetConnMgr().FindConn(m_cid);
+		ZoneSvrCon *con = (ZoneSvrCon *)Svr::Ins().m_Listener.GetConnMgr().FindConn(m_cid);
 		L_COND_V(con);
 		con->Send(msg);
 	}

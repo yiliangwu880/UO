@@ -1,4 +1,5 @@
 #include "PlayerMgr.h"
+#include "AppMgr.h"
 
 Player * PlayerMgr::CreatePlayer(uint64 uin, const string &name)
 {

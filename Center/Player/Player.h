@@ -1,6 +1,8 @@
 #pragma once
 #include "ZoneSvr.h"
-
+#include "AccMgr.h"
+#include "SceneTran.h"
+#include "LoginPlayer.h"
 
 
 struct BaseData 
@@ -34,7 +36,7 @@ public:
 	void SetSid(const acc::SessionId &sid);
 
 	uint64 Uin() { return m_BaseData.m_uin; }
-	uint64 Name() { return m_BaseData.name; }
+	const string &Name() { return m_BaseData.name; }
 	uint64 ZoneId() {return m_BaseData.m_zoneId;}
 	uint64 Cid() { return m_sid.cid; }
 public:

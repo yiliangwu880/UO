@@ -1,58 +1,57 @@
 
-# ¿ç·şÇĞ»»³¡¾°
-## ÎÒµÄÉè¼Æ
-	Éè¶¨»·¾³£¬¶à·şÎñÆ÷¶à³¡¾°£¬ÍøÂçÎÈ¶¨¡£å´»ú»òÕßÍøÂç¶Ï¿ªÖØÁ¬²»¿¼ÂÇ¡£È«²¿ÖØÆô½â¾ö¡£
+# è·¨æœåˆ‡æ¢åœºæ™¯
+	è®¾å®šç¯å¢ƒï¼Œå¤šæœåŠ¡å™¨å¤šåœºæ™¯ï¼Œç½‘ç»œç¨³å®šã€‚å®•æœºæˆ–è€…ç½‘ç»œæ–­å¼€é‡è¿ä¸è€ƒè™‘ã€‚å…¨éƒ¨é‡å¯è§£å†³ã€‚
 ## center player
 	state: 
 		Playing,
-				//enter:Õı³£×ª·¢ ÏûÏ¢. ÉèÖÃzoneId
-				//½ÓÊÕ Ô¤¶¨£¬×ª·¢Ä¿±êzone.						--ReqZoneReserve
-				//½ÓÊÕ ÏìÓ¦Ô¤¶¨£¬×ª·¢Ô´zone, ³É¹¦Ô¤¶¨½øÈë Moving¡£--RspZoneReserve
+				//enter:æ­£å¸¸è½¬å‘ æ¶ˆæ¯. è®¾ç½®zoneId
+				//æ¥æ”¶ é¢„å®šï¼Œè½¬å‘ç›®æ ‡zone.						--ReqZoneReserve
+				//æ¥æ”¶ å“åº”é¢„å®šï¼Œè½¬å‘æºzone, æˆåŠŸé¢„å®šè¿›å…¥ Movingã€‚--RspZoneReserve
 
-		Moving, //enter:»º´æ send to zoneÏûÏ¢
-				//ÊÕµ½zone ×ª»» zone£¬ ×ª·¢Ä¿±êzone ¡£½øÈëPlaying	--ReqTranZone
+		Moving, //enter:ç¼“å­˜ send to zoneæ¶ˆæ¯
+				//æ”¶åˆ°zone è½¬æ¢ zoneï¼Œ è½¬å‘ç›®æ ‡zone ã€‚è¿›å…¥Playing	--ReqTranZone
 
 ## zone Player
 	state: 
-		None   : //½ÓÊÕ ReqZoneReserve,³É¹¦´´½¨WaitTranIn£¬Ê§°ÜÍ¨Öªcenter --RspZoneReserve
+		None   : //æ¥æ”¶ ReqZoneReserve,æˆåŠŸåˆ›å»ºWaitTranInï¼Œå¤±è´¥é€šçŸ¥center --RspZoneReserve
 				
 		Playing: 
-				//ÇëÇóacc »º´æ£¬ÇëÇó center Ô¤¶¨Î»ÖÃ,½øÈëWaitReserve¡£		--MsgReqCacheMsg£¬ ReqZoneReserve
+				//è¯·æ±‚acc ç¼“å­˜ï¼Œè¯·æ±‚ center é¢„å®šä½ç½®,è¿›å…¥WaitReserveã€‚		--MsgReqCacheMsgï¼Œ ReqZoneReserve
 
-		WaitTranIn:  //½ÓÊÕ ReqTranZone£¬ ÇëÇóacc»Ö¸´,ÇëÇóacc »º´æ, ½øÈëPlaying.  --MsgReqCacheMsg
+		WaitTranIn:  //æ¥æ”¶ ReqTranZoneï¼Œ è¯·æ±‚accæ¢å¤,è¯·æ±‚acc ç¼“å­˜, è¿›å…¥Playing.  --MsgReqCacheMsg
 
 
-		WaitReserve: (·ÀÖ¹ÖØ¸´ÇëÇóÔ¤¶¨)
-				// ½ÓÊÕÏìÓ¦ acc»º´æ, center Ô¤¶¨¶¼ok£¬ ÇëÇó ×ª»»zone. É¾³ı×Ô¼º¡£ --RspZoneReserve£¬MsgRspCacheMsg£¬ReqTranZone
-					(±£Ö¤ É¾³ıºó£¬²»»áÊÕµ½ Player µÄÒµÎñÇëÇó)
-				//½ÓÊÕcenter Ô¤¶¨Ê§°Ü£¬½øÈëPlaying.				--RspZoneReserve
+		WaitReserve: (é˜²æ­¢é‡å¤è¯·æ±‚é¢„å®š)
+				// æ¥æ”¶å“åº” accç¼“å­˜, center é¢„å®šéƒ½okï¼Œ è¯·æ±‚ è½¬æ¢zone. åˆ é™¤è‡ªå·±ã€‚ --RspZoneReserveï¼ŒMsgRspCacheMsgï¼ŒReqTranZone
+					(ä¿è¯ åˆ é™¤åï¼Œä¸ä¼šæ”¶åˆ° Player çš„ä¸šåŠ¡è¯·æ±‚)
+				//æ¥æ”¶center é¢„å®šå¤±è´¥ï¼Œè¿›å…¥Playing.				--RspZoneReserve
 
-#µÇÂ¼Á÷³Ì
+#ç™»å½•æµç¨‹
 ## center player
 	state:
 		None:
-			ÇëÇóµÇÂ¼£¬¶Ádb,´´½¨player. ½øÈëWaitLogin
+			è¯·æ±‚ç™»å½•ï¼Œè¯»db,åˆ›å»ºplayer. è¿›å…¥WaitLogin
 
 		WaitLogin:
-			ÇëÇóµÇÂ¼£¬¾Ü¾ø¡£
-			ÇëÇózone µÇÂ¼player.							--ReqLoginZone_sc
-			½ÓÊÕ zone µÇÂ¼player ³É¹¦£¬ ½øÈë LoginOk		--RspLoginZone_cs
+			è¯·æ±‚ç™»å½•ï¼Œæ‹’ç»ã€‚
+			è¯·æ±‚zone ç™»å½•player.							--ReqLoginZone_sc
+			æ¥æ”¶ zone ç™»å½•player æˆåŠŸï¼Œ è¿›å…¥ LoginOk		--RspLoginZone_cs
 
-		LoginOk: ²»Çø·ÖÔÚÏßÀëÏß×´Ì¬
-			ÇëÇóÖØµÇÂ¼£¬ÇëÇózone ÖØµÇÂ¼£¬ ½øÈë WaitReLogin	--ReqReLoginZone_sc
+		LoginOk: ä¸åŒºåˆ†åœ¨çº¿ç¦»çº¿çŠ¶æ€
+			è¯·æ±‚é‡ç™»å½•ï¼Œè¯·æ±‚zone é‡ç™»å½•ï¼Œ è¿›å…¥ WaitReLogin	--ReqReLoginZone_sc
 
 		WaitReLogin: 
-			½ÓÊÕ zone ÖØµÇÂ¼player ³É¹¦£¬ ½øÈë LoginOk		--RspReLoginZone_cs
+			æ¥æ”¶ zone é‡ç™»å½•player æˆåŠŸï¼Œ è¿›å…¥ LoginOk		--RspReLoginZone_cs
 			
 ## zone Player
 	state: 
 		None   : 
-				½ÓÊÕ µÇÂ¼£¬´´½¨ player£¬½øÈëLoginOk  --ReqLoginZone_sc RspLoginZone_cs
+				æ¥æ”¶ ç™»å½•ï¼Œåˆ›å»º playerï¼Œè¿›å…¥LoginOk  --ReqLoginZone_sc RspLoginZone_cs
 
 		LoginOk:
-				½ÓÊÕ ÖØµÇÂ¼£¬Ìæ»»session 	--ReqReLoginZone_sc RspReLoginZone_cs
-				µ± session É¾³ı£¬½øÈë OffLine
+				æ¥æ”¶ é‡ç™»å½•ï¼Œæ›¿æ¢session 	--ReqReLoginZone_sc RspReLoginZone_cs
+				å½“ session åˆ é™¤ï¼Œè¿›å…¥ OffLine
 
 		OffLine:
-				½ÓÊÕ µÇÂ¼£¬½øÈëLoginOk  --ReqLoginZone_sc RspLoginZone_cs
-				ÀëÏß³¬Ê±£¬del player.
+				æ¥æ”¶ ç™»å½•ï¼Œè¿›å…¥LoginOk  --ReqLoginZone_sc RspLoginZone_cs
+				ç¦»çº¿è¶…æ—¶ï¼Œdel player.

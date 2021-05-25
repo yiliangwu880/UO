@@ -2,6 +2,7 @@
 #include "AccountMgr.h"
 #include "db_driver.h"
 #include "AppMgr.h"
+#include "Player/PlayerMgr.h"
 
 using namespace proto;
 using namespace acc;
@@ -101,8 +102,8 @@ void Account::SetVerifyOk(const acc::SessionId &sid)
 }
 
 
-STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(&Account::CreateActor));
-void Account::CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg)
+STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&Account::CreateActor));
+void Account::CreateActor(const acc::Session &sn, const proto::CreateActor_cs &msg)
 {
 	CenterSnEx *p = sn.GetEx<CenterSnEx>();
 	L_COND_V(p);
@@ -118,10 +119,10 @@ void Account::CreateActor(acc::Session &sn, const proto::CreateActor_cs &msg)
 	any para = sn.id;
 	db::Dbproxy::Ins().Insert(player, para);
 }
-STATIC_RUN(db::Dbproxy::Ins().RegInsertCb(OnInsert));
+STATIC_RUN(db::Dbproxy::Ins().RegInsertCb(&Account::OnInsert));
 void Account::OnInsert(bool ret, const db::Player &data, any para) 
 {
-	SessionId *sid = para._Cast<SessionId>();
+	SessionId *sid = std::any_cast<SessionId>(&para);
 	L_COND_V(sid);
 	L_COND_V(ret);
 	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin, data.name);
@@ -134,13 +135,13 @@ void Account::OnInsert(bool ret, const db::Player &data, any para)
 	p->m_pAccount.reset();
 	p->m_pPlayer = player->GetWeakPtr();
 
-	player->SetSid(sn.id);
+	player->SetSid(sn->id);
 
 	player->m_LoginPlayer.LoginZone(data);
 }
 
-STATIC_RUN(MsgDispatch<Session>::Ins().RegMsgHandler(&Account::SelectActor));
-void Account::SelectActor(acc::Session &sn, const proto::SelectActor_cs &msg)
+STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&Account::SelectActor));
+void Account::SelectActor(const acc::Session &sn, const proto::SelectActor_cs &msg)
 {
 	CenterSnEx *p = sn.GetEx<CenterSnEx>();
 	L_COND_V(p);
@@ -148,22 +149,17 @@ void Account::SelectActor(acc::Session &sn, const proto::SelectActor_cs &msg)
 	L_COND_V(account);
 
 	//if no player exit
-	db::Player player;
-	player.uin = 1;
+	db::Player data;
+	data.uin = 1;
 	any para = sn.id;
-	db::Dbproxy::Ins().Query(player, para);
+	db::Dbproxy::Ins().Query(data, para);
 
-	//if find player exit
-	{
-		Player *player = nullptr;
-		player->m_LoginPlayer.LoginZone(data);
-	}
 }
 
-STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(OnSelect));
+STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(&Account::OnSelect));
 void Account::OnSelect(bool ret, const db::Player &data, any para) 
 {
-	SessionId *sid = para._Cast<SessionId>();
+	SessionId *sid = std::any_cast<SessionId>(&para);
 	L_COND_V(sid);
 	L_COND_V(ret);
 	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin, data.name);
@@ -176,7 +172,7 @@ void Account::OnSelect(bool ret, const db::Player &data, any para)
 	p->m_pAccount.reset();
 	p->m_pPlayer = player->GetWeakPtr();
 
-	player->SetSid(sn.id);
+	player->SetSid(sn->id);
 
 	player->m_LoginPlayer.LoginZone(data);
 }

@@ -63,7 +63,7 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 void AccMgr::OnRevClientMsg(const Session &session, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	//todo 怎么约定cmd 看具体client 协议再修改
-	MsgDispatch<Session>::Ins().Dispatch(id, msg, (size_t)msg_len);
+	MsgDispatch<const Session>::Ins().Dispatch(session, msg, (size_t)msg_len);
 }
 
 void AccMgr::OnClientConnect(const acc::Session &sn)

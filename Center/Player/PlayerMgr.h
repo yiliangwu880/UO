@@ -24,17 +24,19 @@ struct PlayerCacheMsg
 	uint64 uin;
 	VecStr vecMsg;
 };
-class PlayerMgr : Singleton<PlayerMgr>
+class PlayerMgr : public Singleton<PlayerMgr>
 {
 	MulMapPlayer m_players;
 
-	vector<PlayerCacheMsg> m_PlayerCacheMsg; //player Moving×´Ì¬£¬»º´æµÄÏûÏ¢¡£ÒòÎªuinÊıÁ¿¼«ÉÙ¡£ÓÃvector±ÈmapĞ§ÂÊ¸ß¡£
+	vector<PlayerCacheMsg> m_PlayerCacheMsg; //player MovingçŠ¶æ€ï¼Œç¼“å­˜çš„æ¶ˆæ¯ã€‚å› ä¸ºuinæ•°é‡æå°‘ã€‚ç”¨vectoræ¯”mapæ•ˆç‡é«˜ã€‚
+
 public:
 	Player *CreatePlayer(uint64 uin, const string &name);
 	Player *FindPlayer(uint64 uin);
 	Player *FindPlayer(const string &name);
 	void DelPlayer(uint64 uin);
 	void SetCacheMsg(uint64 uin, bool isCache);
+
 private:
 
 };
