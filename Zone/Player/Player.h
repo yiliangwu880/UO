@@ -13,6 +13,8 @@ struct BaseData
 	acc::SessionId sid;
 };
 
+
+
 class Player : public WeakPtr<Player>
 {
 	DbPlayer m_db;
