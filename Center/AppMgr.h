@@ -10,16 +10,16 @@ public:
 	virtual bool OnStart() override
 	{
 		bool ret = true;
-		FireEvent<EV_CFG_INI>(ret); //任意事件改为ret == false,执行失败
+		FireEvent<EV_SVR_CFG_INI>(ret); //任意事件改为ret == false,执行失败
 		L_COND(ret, false);
-		FireEvent<EV_START>(ret);
+		FireEvent<EV_SVR_START>(ret);
 		L_COND(ret, false);
 
 		return true;
 	}
 	virtual void OnExit() override
 	{
-		FireEvent<EV_ON_EXIT>();
+		FireEvent<EV_SVR_EXIT>();
 	}
 };
 

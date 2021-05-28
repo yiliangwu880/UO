@@ -1,22 +1,23 @@
 #include "proto.h"
 #include <limits>
 
+using namespace acc;
 namespace
 {
 	//简化解包操作。赋值并移动指针
 	template<class T>
-	void ParseCp(T &dst, const char *&src)
+	void ParseCp(T &dst, const char *&cur)
 	{
-		dst = (decltype(dst))(*src); // 类似 dst = (uint32 &)(*src)
-		src = src + sizeof(dst);
+		dst = (decltype(dst))(*cur); // 类似 dst = (uint32 &)(*src)
+		cur = cur + sizeof(dst);
 	}
 	template<>
-	void ParseCp<std::string>(std::string &dst, const char *&src)
+	void ParseCp<std::string>(std::string &dst, const char *&cur)
 	{
 		size_t len;
-		ParseCp(len, src);
-		dst.append(src, len);
-		src = src + len;
+		ParseCp(len, cur);
+		dst.append(cur, len);
+		cur = cur + len;
 	}
 	template<class T>
 	void ParseVector(T &vec, const char *&cur)
@@ -32,13 +33,20 @@ namespace
 		}
 	}
 
+	template<>
+	void ParseCp<Cmd2GrpId>(Cmd2GrpId &dst, const char *&cur)
+	{
+		ParseCp(dst.grpId, cur);
+		ParseVector(dst.vecCmd, cur);
+	}
+
 	//简化打包操作。赋值并移动指针
 	//不建议用这个， 推荐用 SerialStrCp，
 	template<class T>
-	void SerializeCp(const T &src, char *&dst)
+	void SerializeCp(const T &cur, char *&dst)
 	{
-		memcpy(dst, (const char *)&src, sizeof(src));
-		dst += sizeof(src);
+		memcpy(dst, (const char *)&cur, sizeof(cur));
+		dst += sizeof(cur);
 	}  	
 	template<class T>
 	void SerialStrCp(std::string &tcp_pack, const T &v)
@@ -52,7 +60,6 @@ namespace
 		SerialStrCp(tcp_pack, len);
 		tcp_pack.append(v);
 	}
-
 	template<class T>
 	void SerialStrCpVector(std::string &tcp_pack, const T &vec)
 	{
@@ -62,6 +69,13 @@ namespace
 			SerialStrCp(tcp_pack, v);
 		}
 	}
+	template<>
+	void SerialStrCp<Cmd2GrpId>(std::string &tcp_pack, const Cmd2GrpId &v)
+	{
+		SerialStrCp(tcp_pack, v.grpId);
+		SerialStrCpVector(tcp_pack, v.vecCmd);
+	}
+
 }
 
 bool acc::ASMsg::Parse(const char *tcp_pack, uint16 tcp_pack_len)
@@ -311,6 +325,10 @@ bool acc::MsgAccSeting::Parse(const char *tcp_pack, uint16 tcp_pack_len)
 	cur += max_client_msg_len;
 	ParseCp(no_msg_interval_sec, cur);
 	ParseCp(defaultGrpId, cur);
+
+
+	ParseVector(vecCmd2GrupId, cur);
+
 	return true;
 }
 
@@ -330,6 +348,9 @@ bool acc::MsgAccSeting::Serialize(std::string &tcp_pack) const
 
 	tcp_pack.append((const char *)&no_msg_interval_sec, sizeof(no_msg_interval_sec));
 	tcp_pack.append((const char *)&defaultGrpId, sizeof(defaultGrpId));
+
+	// 上面代码旧风格，先不动
+	SerialStrCpVector(tcp_pack, vecCmd2GrupId);
 	return true;
 }
 
@@ -381,26 +402,4 @@ bool acc::ClientSvrMsg::Serialize(std::string &tcp_pack) const
 	return true;
 }
 
-bool acc::MsgReqSetCmd2GrpId::Parse(const char *tcp_pack, uint16 tcp_pack_len)
-{
-	if (0 == tcp_pack_len || nullptr == tcp_pack)
-	{
-		return false;
-	}
 
-	const char *cur = tcp_pack; //读取指针
-	ParseCp(grpId, cur);
-	ParseVector(vecCmd, cur);
-	if (tcp_pack_len != (cur - tcp_pack))
-	{
-		return false;
-	}
-	return true;
-}
-
-bool acc::MsgReqSetCmd2GrpId::Serialize(std::string &tcp_pack) const
-{
-	SerialStrCp(tcp_pack, grpId);
-	SerialStrCpVector(tcp_pack, vecCmd);
-	return true;
-}

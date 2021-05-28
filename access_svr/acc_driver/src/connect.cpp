@@ -269,6 +269,7 @@ void acc::ADClientCon::HandleMsgBroadcastUin(const ASMsg &msg)
 	}
 	Session &sn = it->second;
 	sn.uin = rsp.uin;
+	sn.accName = rsp.accName;
 	//L_DEBUG("cb OnRevBroadcastUinToSession ");
 	m_facade.OnRevBroadcastUinToSession(sn);
 }

@@ -3,6 +3,7 @@
 #include "external_con.h"
 #include "com.h"
 #include "server.h"
+#include "AccMgr.h"
 
 using namespace std;
 using namespace acc;
@@ -19,7 +20,15 @@ namespace
 		L_COND(ret, "parse ctrl msg fail");
 		L_INFO("rev CMD_REQ_ACC_SETING");
 //		L_DEBUG("req no msg sec=%d", req.no_msg_interval_sec);
-		AccSeting::Ins().m_seting = req;
+		g_AccSeting->m_seting = req;
+
+		for (const Cmd2GrpId &v : req.vecCmd2GrupId)
+		{
+			for (auto &cmd : v.vecCmd)
+			{
+				g_AccSeting->m_cmd2GrpId[cmd] = v.grpId;
+			}
+		}
 	}
 
 	void Parse_CMD_REQ_DISCON_ALL(InnerSvrCon &con, const acc::ASMsg &msg)
@@ -169,20 +178,7 @@ namespace
 	}
 
 
-	void Parse_CMD_REQ_SET_CMD_2_GRP(InnerSvrCon &con, const acc::ASMsg &msg)
-	{
-		MsgReqSetCmd2GrpId req;
-		L_COND(req.Parse(msg.msg, msg.msg_len), "parse ctrl msg fail");
-		if (req.grpId == 0)
-		{
-			L_ERROR("MsgReqSetCmd2GrpId::grpId==0");
-			return;
-		}
-		for (auto &v : req.vecCmd)
-		{
-			g_AccSeting->m_cmd2GrpId[v] = req.grpId;
-		}
-	}
+
 	void Parse_CMD_REQ_SET_ACTIVE_SVR(InnerSvrCon &con, const acc::ASMsg &msg)
 	{
 		MsgReqSetActiveSvrId req;
@@ -306,7 +302,6 @@ void SvrCtrlMsgDispatch::Init()
 	m_cmd_2_handle[CMD_REQ_REG]                = Parse_CMD_REQ_REG;
 	m_cmd_2_handle[CMD_REQ_VERIFY_RET]         = Parse_CMD_REQ_VERIFY_RET;
 	m_cmd_2_handle[CMD_REQ_BROADCAST]          = Parse_CMD_REQ_BROADCAST;
-	m_cmd_2_handle[CMD_REQ_SET_CMD_2_GRP] = Parse_CMD_REQ_SET_CMD_2_GRP;
 	m_cmd_2_handle[CMD_REQ_SET_ACTIVE_SVR]	   = Parse_CMD_REQ_SET_ACTIVE_SVR;
 	m_cmd_2_handle[CMD_REQ_DISCON]             = Parse_CMD_REQ_DISCON;
 	m_cmd_2_handle[CMD_REQ_DISCON_ALL]         = Parse_CMD_REQ_DISCON_ALL;

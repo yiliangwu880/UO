@@ -14,7 +14,7 @@ namespace
 		L_INFO("%s", APP_VERSTR);
 		//ZoneMgr::Ins().Start();
 	}
-	STATIC_RUN(RegEvent<EV_START>(Start))
+	STATIC_RUN(RegEvent<EV_SVR_START>(Start))
 }
 
 

@@ -6,19 +6,19 @@
 //100开始
 enum Event
 {
-	EV_CFG_INI = 1,
-	EV_START = 2, 
-	EV_ON_EXIT = 3, //进程结束
+	EV_SVR_CFG_INI = 1,
+	EV_SVR_START = 2, 
+	EV_SVR_EXIT = 3, //进程结束
 };
 
 namespace su
 {
 	template<>
-	struct EventTraits<EV_CFG_INI> {
+	struct EventTraits<EV_SVR_CFG_INI> {
 		using Fun = void(*)(bool &);
 	};
 	template<>
-	struct EventTraits<EV_START> {
+	struct EventTraits<EV_SVR_START> {
 		using Fun = void(*)(bool &);
 	};
 

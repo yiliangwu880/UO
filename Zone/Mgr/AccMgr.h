@@ -9,7 +9,7 @@ using WeakPlayer = weak_ptr<Player>;
 class AccMgr : public acc::ADFacadeMgr, public Singleton<AccMgr>
 {
 public:
-	void Start();
+	static void Start(bool &ret);
 	Player *GetPlayer(const acc::Session &sn);
 
 public:
@@ -21,4 +21,6 @@ public:
 
 	//client断线通知
 	virtual void OnClientDisCon(const acc::Session &sn) override;
+	//当设置uin,accName
+	virtual void OnRevBroadcastUinToSession(const acc::Session &session) override;
 };

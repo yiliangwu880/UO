@@ -5,29 +5,42 @@
 #include "CenterMgr.h"
 #include "./Account/AccountMgr.h"
 #include "MsgDispatch.h"
+#include "CenterClientMsgMgr.h"
 
 using namespace std;
 using namespace su;
 using namespace acc;
 
-namespace
-{
-	void Start(bool &ret)
-	{
-		AccMgr::Ins().Start();
-	}
-	STATIC_RUN(RegEvent<EV_START>(Start))
-}
 
-void AccMgr::Start()
+STATIC_RUN(RegEvent<EV_SVR_START>(AccMgr::Start));
+
+void AccMgr::Start(bool &ret)
 {
 	L_INFO("centerAD Start");
+	{//ACC SETING
+		MsgAccSeting set;
+		{//初始化所有 cmd 2 grpId. 没设置的cmd 2 默认 zone svr group
+			set.defaultGrpId = ZONE_GROUP_ID;
+			Cmd2GrpId d;
+			d.grpId = CENTER_GROUP_ID;
+			for (const PacketHandler &v : PacketHandlers::Ins().GetHandlers())
+			{
+				if (v.m_PacketID != 0)
+				{
+					d.vecCmd.push_back(v.m_PacketID);
+				}
+			}
+			set.vecCmd2GrupId.push_back(d);
+		}
+		AccMgr::Ins().SetAccSeting(set);
+	}
+
 	std::vector<Addr> vec_addr;
 	Addr addr;
 	addr.ip = gCfgMgr->ComCfg().access.ip;
 	addr.port = gCfgMgr->ComCfg().access.port;
 	vec_addr.push_back(addr);
-	Init(vec_addr, CENTER_GROUP_ID, true);
+	AccMgr::Ins().Init(vec_addr, CENTER_GROUP_ID, true);
 }
 
 void AccMgr::OnRegResult(uint16 svr_id)
@@ -41,17 +54,24 @@ void AccMgr::OnRegResult(uint16 svr_id)
 void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	L_COND_V(CenterMgr::Ins().Allok());
-	LoginServerSeed req;
-	msg++;
-	msg_len--;
-	size_t len = msg_len;
-	L_COND_V(proto::Unpack<LoginServerSeed>(req, msg, len));
-	L_DEBUG("%d : %d %d %d %d", req.seed, req.clientMaj, req.clientMin, req.clientRev, req.clientPat);
+	Session tmpSn;
+	tmpSn.id = id;
+	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
+	if (nullptr == handler)
+	{
+		L_ERROR("find msg handler fail. packetId=%d", msg[0]);
+		return;
+	}
+	PacketReader r(msg, msg_len, handler->m_Length != 0);
+	handler->m_OnReceive(tmpSn, r);
 
-	//无条件认证通过
-	VerifyRetStruct d;
-	//d.msg = ntf to client login ok
-	AccMgr::Ins().ReqVerifyRet(id, d);
+	{
+		//无条件认证通过
+		VerifyRetStruct d;
+		d.is_success = true;
+		//d.msg = ntf to client login ok
+		AccMgr::Ins().ReqVerifyRet(id, d);
+	}
 
 	return;
 	{
@@ -76,10 +96,19 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 	//ReqVerifyRet(id, true, cmd, rsp_msg.c_str(), rsp_msg.length());
 }
 
-void AccMgr::OnRevClientMsg(const Session &session, uint32 cmd, const char *msg, uint16 msg_len)
+void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint16 msg_len)
 {
-	//todo 怎么约定cmd 看具体client 协议再修改
-	MsgDispatch<const Session>::Ins().Dispatch(session, msg, (size_t)msg_len);
+	L_INFO("OnRevClientMsg. cmd=%x", cmd);
+	L_COND_V(msg_len > 0);
+
+	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
+	if (nullptr == handler)
+	{
+		L_ERROR("find msg handler fail. packetId=%d", msg[0]);
+		return;
+	}
+	PacketReader r(msg, msg_len, handler->m_Length != 0);
+	handler->m_OnReceive(sn, r);
 }
 
 void AccMgr::OnClientConnect(const acc::Session &sn)
@@ -94,3 +123,14 @@ void AccMgr::OnClientConnect(const acc::Session &sn)
 	account->SetVerifyOk(sn.id);
 }
 
+void AccMgr::OnRevBroadcastUinToSession(const acc::Session &sn)
+{
+	Account *account = AccountMgr::Ins().GetAcc(sn.accName);
+	L_COND_V(account);
+
+	CenterSnEx *p = sn.GetEx<CenterSnEx>();
+	L_COND_V(p);
+	p->m_pAccount = account->GetWeakPtr();
+
+	account->SetVerifyOk(sn.id);
+}

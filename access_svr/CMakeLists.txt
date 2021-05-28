@@ -58,8 +58,8 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 ADD_SUBDIRECTORY(acc_proto)
 ADD_SUBDIRECTORY(acc_svr)
 ADD_SUBDIRECTORY(acc_driver)
-ADD_SUBDIRECTORY(test)
-ADD_SUBDIRECTORY(samples)
+#ADD_SUBDIRECTORY(test)
+#ADD_SUBDIRECTORY(samples)
 
 #自定义命令
 ##################################

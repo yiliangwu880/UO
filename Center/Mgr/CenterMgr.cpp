@@ -15,7 +15,7 @@ namespace
 		MsgMgr::Check();
 		CenterMgr::Ins().Init();
 	}
-	STATIC_RUN(RegEvent<EV_START>(Init));
+	STATIC_RUN(RegEvent<EV_SVR_START>(Init));
 }
 
 void CenterMgr::Init()

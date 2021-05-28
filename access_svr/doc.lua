@@ -9,8 +9,6 @@
 	svr  	 == 通过acc做转发，和client通讯服务器. 比如业务逻辑服务器，登录服务器, 排行榜服务等。
 	ad   	 == acc driver, 驱动，作为库给svr调用。
 	Cmd  	 == client和svr通讯的消息号
-	main_cmd == Cmd 的 高16位。 默认表达svr id, 用来给acc实现路由到正确的svr。 有时候需要多个svr处理相同cmd,就需要请求acc设置 main_cmd动态映射svr_id
-	sub_cmd  == Cmd 的 低16位。 子消息号，内容无限制， 用户自定义。 
 
 运行时架构：
 {
@@ -60,6 +58,11 @@
 		会话信息保存登录用户uin， svr重启，恢复svr会话信息的.  (参考： 为什么acc需要玩家登录uin呢)
 		验证服务器异常，导致没验证响应。当连接失败处理，断开client.
 		client连接成功，不发第一条消息。超时断开
+		acc认证成功后转发流程：
+		{
+			根据cmd 找grpId，找不到用缺省grpId
+			根据grpId 找 svrid,找不到用svrid==grpId （从 client链接对象状态查找）
+		}
 	}
 	
 	ad:
@@ -125,6 +128,10 @@
 {
 	acc
 	{
+		map<svrid, SvrConnecter> Id2Svr;
+		Id2Svr id_2_svr;//管理 连接的svr
+		m_cmd2GrpId //cmd 2 groupId, 找不到取缺省groupId
+
 		struct Session{
 			uint64 cid; //acc的connect id
 			uint64 uin; //登录后玩家id
@@ -142,12 +149,12 @@
 		{
 			uint16 svr_id;
 		}
-		map<svrid, SvrConnecter> Id2Svr;
-		Id2Svr id_2_svr;//管理 连接的svr
+
 
 		client connector
 		{
 			Session session;
+			m_grpId2SvrId;//group id 2 svrid. 找不到任务svrid == groupId
 		}
 
 		多个外部client connector;

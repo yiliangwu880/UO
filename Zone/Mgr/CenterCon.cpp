@@ -19,7 +19,7 @@ namespace
 			ret = false;
 		}
 	}
-	STATIC_RUN(RegEvent<EV_START>(Start));
+	STATIC_RUN(RegEvent<EV_SVR_START>(Start));
 
 
 	

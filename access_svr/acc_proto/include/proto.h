@@ -30,6 +30,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <limits>
 
 #ifndef uint32
 using uint16 = uint16_t;
@@ -113,7 +114,6 @@ namespace acc {
 
 		CMD_REQ_BROADCAST,              //MsgReqBroadCast 请求全局广播，或者指定cid列表广播.
 											
-		CMD_REQ_SET_CMD_2_GRP,			//MsgReqSetCmd2GrpId
 		CMD_REQ_SET_ACTIVE_SVR,			//MsgReqSetActiveSvrId 
 		CMD_RSP_SET_ACTIVE_SVR,			//MsgRspSetActiveSvrId
 
@@ -190,10 +190,19 @@ namespace acc {
 
 	struct ClientLimitInfo
 	{
-		uint32 max_num;			    //acc 支持 client最大数量，默认 uint32最大数
-		uint32 rsp_cmd;				//acc超出 client数量，给client响应. cmd
+		uint32 max_num = std::numeric_limits<uint32>::max();			    //acc 支持 client最大数量，默认 uint32最大数
+		uint32 rsp_cmd = 0;				//acc超出 client数量，给client响应. cmd
 		std::string rsp_msg;	    //acc超出 client数量，给client响应. msg,不用效率的格式。方便内存保存。
 	};
+
+
+
+	struct Cmd2GrpId
+	{
+		uint16 grpId = 0;
+		std::vector<uint16> vecCmd;
+	};
+
 
 	//	svr请求设置acc设置。
 	struct  MsgAccSeting
@@ -202,8 +211,9 @@ namespace acc {
 
 		HeartBeatInfo hbi;			//client 和 acc 心跳相关
 		ClientLimitInfo cli;		//client 相关设置
-		uint32 no_msg_interval_sec;        //client连接成功，不发消息的超时时间。
+		uint32 no_msg_interval_sec=60;        //client连接成功，不发消息的超时时间。
 		uint16 defaultGrpId=0;		//cmd 缺省映射 grpId
+		std::vector<Cmd2GrpId> vecCmd2GrupId;//所有cmd 2 grpId. 不用map ,节省点内存
  
 		bool Parse(const char *tcp_pack, uint16 tcp_pack_len);
 		//@para[out] std::string &tcp_pack
@@ -222,14 +232,6 @@ namespace acc {
 		bool Serialize(std::string &tcp_pack) const;
 	};
 
-	struct MsgReqSetCmd2GrpId
-	{
-		uint16 grpId = 0;
-		std::vector<uint16> vecCmd;
-		bool Parse(const char *tcp_pack, uint16 tcp_pack_len);
-		//@para[out] std::string &tcp_pack
-		bool Serialize(std::string &tcp_pack) const;
-	};
 
 
 
@@ -246,7 +248,20 @@ namespace acc {
 	struct MsgBroadcastUin
 	{
 		uint64 cid;
-		uint64 uin; 
+		uint64 uin;
+		char accName[MAX_NAME_LEN + 1];
+
+		bool SetAccName(const std::string &name)
+		{
+			if (name.length() >= sizeof(accName))
+			{
+				printf("accName is too long。 %s", name.c_str());
+				return false;
+			}
+			memset(accName, 0, sizeof(accName));
+			memcpy(accName, name.c_str(), name.length());
+			return true;
+		}
 	};
 
 	struct MsgRspReg

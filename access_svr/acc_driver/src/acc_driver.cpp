@@ -74,7 +74,7 @@ bool acc::ADFacadeMgr::ReqVerifyRet(const SessionId &id, bool is_success, uint32
 	return ReqVerifyRet(id, d);
 }
 
-bool acc::ADFacadeMgr::BroadcastUinToSession(const SessionId &id, uint64 uin)
+bool acc::ADFacadeMgr::BroadcastUinToSession(const SessionId &id, uint64 uin, const std::string &accName)
 {
 	ADClientCon *con = m_con_mgr.FindADClientCon(id);
 	L_COND_F(con);
@@ -83,6 +83,7 @@ bool acc::ADFacadeMgr::BroadcastUinToSession(const SessionId &id, uint64 uin)
 	MsgBroadcastUin req;
 	req.uin = uin;
 	req.cid = id.cid;
+	L_COND_F(req.SetAccName(accName));
 
 	string tcp_pack;
 	L_COND_F(ASMsg::Serialize(CMD_REQ_BROADCAST_UIN, req, tcp_pack));
@@ -190,23 +191,7 @@ void acc::ADFacadeMgr::DisconAllClient()
 }
 
 
-void acc::ADFacadeMgr::SetMainCmd2GrpId(uint16 grpId, const std::vector<uint16> &vecCmd)
-{
-	//const std::vector<ADClientCon *> &vec = m_con_mgr.GetAllCon();
-	for (ADClientCon *p : m_con_mgr.GetAllCon())
-	{
-		L_COND(p);
-		if (!p->IsReg())
-		{
-			L_ERROR("SetMainCmd2GrpId find UnReg acc connect");
-			continue;
-		}
-		MsgReqSetCmd2GrpId req;
-		req.grpId = grpId;
-		req.vecCmd = vecCmd;
-		p->Send(CMD_REQ_SET_CMD_2_GRP, req);
-	}
-}
+
 
 bool acc::ADFacadeMgr::SetActiveSvrId(const SessionId &id, uint16 grpId, uint16 svrId)
 {

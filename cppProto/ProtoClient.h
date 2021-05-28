@@ -1,4 +1,5 @@
 //game client --> game server通讯
+//应该不需要了，待分析
 
 #pragma once
 #include <string>
@@ -9,17 +10,7 @@
 #pragma pack(1)
 namespace proto {
 
-	//约定前 uint16_t 必须为 消息号id.
-	struct LoginServerSeed
-	{
-		const uint16_t id = 0xEF;
-		uint32_t seed	   ;
-		uint32_t clientMaj ;
-		uint32_t clientMin ;
-		uint32_t clientRev ;
-		uint32_t clientPat ;
-	
-	};
+
 
 	//约定前 uint16_t 必须为 消息号id.
 	struct Login_cs

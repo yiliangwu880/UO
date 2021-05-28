@@ -14,18 +14,6 @@ struct GroupData
 	uint16 grpId;
 	uint16 svrId;
 };
-class AccSeting : public Singleton<AccSeting>
-{
-public:
-	AccSeting() 
-	{
-	}
-public:
-	acc:: MsgAccSeting m_seting;
-	std::unordered_map<uint16, uint16> m_cmd2GrpId;
-};
-
-extern AccSeting *g_AccSeting;
 
 //连接外网client的sever connect
 class ExternalSvrCon : public lc::SvrCon

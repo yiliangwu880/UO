@@ -7,6 +7,7 @@
 #include <signal.h>
 #include "inner_con.h"
 #include "external_con.h"
+#include "AccMgr.h"
 
 using namespace su;
 using namespace std;
@@ -49,7 +50,6 @@ namespace {
 			L_ERROR("server init fail");
 			return false;
 		}
-		g_AccSeting = &AccSeting::Ins();
 		return true;
 	}
 }

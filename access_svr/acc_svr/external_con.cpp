@@ -2,11 +2,11 @@
 #include "inner_con.h"
 #include "com.h"
 #include "server.h"
+#include "AccMgr.h"
 
 using namespace std;
 using namespace acc;
 using namespace lc;
-AccSeting *g_AccSeting = nullptr;
 ExternalSvrCon::ExternalSvrCon()
 	:m_state(State::INIT)
 	, m_uin(0)
@@ -72,7 +72,7 @@ void ExternalSvrCon::SetActiveSvrId(uint16 grpId, uint16 svr_id)
 {
 	L_COND(0 != grpId);
 	L_COND(0 != svr_id);
-	L_COND(grpId < 100); // 组ID用来当数组下标，设计不能过大
+	L_COND(grpId < 100); // groupId用来当数组下标，设计不能过大
 	if (m_grpId2SvrId.size() < (size_t)grpId+1)
 	{
 		m_grpId2SvrId.resize(grpId + 1);
@@ -400,8 +400,8 @@ void ExternalSvrCon::Forward2Svr(const char *pMsg, int len)
 		return;
 	}
 	//真正处理转发
-	//s1:cmd 找 组id,找不到转发到缺省组. end
-	//s2:组id 找 svrId,找不到转发到svrId==组id
+	//s1:cmd 找 groupId,找不到转发到缺省组. end
+	//s2:groupId 找 svrId,找不到转发到svrId==groupId
 	//end
 	uint16 cmd = (uint16_t)f_msg.cmd;
 	uint16 svr_id = 0;

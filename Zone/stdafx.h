@@ -12,6 +12,7 @@
 #include <set>
 #include <string.h>
 #include <utility>
+#include <limits>
 #include "log_def.h"
 #include "svr_util/include/singleton.h"
 #include "svr_util/include/easy_code.h"

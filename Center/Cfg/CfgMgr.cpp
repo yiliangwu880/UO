@@ -14,7 +14,7 @@ namespace
 			ret = false;
 		}
 	}
-	STATIC_RUN(RegEvent<EV_CFG_INI>(InitCfg))
+	STATIC_RUN(RegEvent<EV_SVR_CFG_INI>(InitCfg))
 }
 
 bool CfgMgr::Init()

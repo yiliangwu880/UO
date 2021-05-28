@@ -94,7 +94,7 @@ namespace acc {
 		ADFacadeMgr();
 		~ADFacadeMgr();
 
-		//@svr_id 默认组ID == svr_id. 需要设置组ID隐射多个svrId ,参考 SetActiveSvrId
+		//@svr_id 默认groupId == svr_id. 需要设置groupId隐射多个svrId ,参考 SetActiveSvrId
 		bool Init(const std::vector<Addr> &vec_addr, uint16 svr_id, bool is_verify_svr = false);
 
 		//acc设置，具体内容参考 MsgAccSeting
@@ -102,9 +102,7 @@ namespace acc {
 		//当未注册时，会请求注册后，自动发送给acc。
 		//当已经注册了，自动马上发送给acc。
 		void SetAccSeting(const MsgAccSeting &seting);
-		//请求设置  cmd映射 grpId, 默认映射 参考 SetAccSeting
-		void SetMainCmd2GrpId(uint16 grpId, const std::vector<uint16> &vecCmd);
-
+	
 		//运行期，新增acc
 		bool AddAcc(const Addr &addr); 
 
@@ -113,8 +111,8 @@ namespace acc {
 		//等删除，留着让测试代码编译通过
 		bool ReqVerifyRet(const SessionId &id, bool is_success, uint32 cmd, const char *msg, uint16 msg_len);
 
-		//广播uin 一个svr向所有svr的指定会话
-		bool BroadcastUinToSession(const SessionId &id, uint64 uin);
+		//向所有svr的指定会话广播uin accName
+		bool BroadcastUinToSession(const SessionId &id, uint64 uin, const std::string &accName);
 
 		//发送消息包到client
 		bool SendToClient(const SessionId &id, uint32 cmd, const char *msg, uint16 msg_len);
@@ -165,7 +163,7 @@ namespace acc {
 		//acc 断线通知
 		virtual void OnAccDisCon(const std::string &acc_ip, uint16 acc_port);
 
-		//当设置uin
+		//当设置uin,accName
 		virtual void OnRevBroadcastUinToSession(const acc::Session &session) {};
 
 	};

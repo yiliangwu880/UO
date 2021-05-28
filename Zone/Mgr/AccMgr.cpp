@@ -5,22 +5,17 @@
 #include "ZoneMgr.h"
 #include "Player/Player.h"
 #include "UoProto.h"
+#include "ZoneClientMsgMgr.h"
 
 
 using namespace std;
 using namespace su;
 using namespace acc;
 
-namespace
-{
-	void Start(bool &ret)
-	{
-		AccMgr::Ins().Start();
-	}
-	STATIC_RUN(RegEvent<EV_START>(Start))
-}
 
-void AccMgr::Start()
+
+STATIC_RUN(RegEvent<EV_SVR_START>(AccMgr::Start));
+void AccMgr::Start(bool &ret)
 {
 	L_INFO("ZoneAcc Start");
 	std::vector<Addr> vec_addr;
@@ -28,7 +23,9 @@ void AccMgr::Start()
 	addr.ip = gCfgMgr->ComCfg().access.ip;
 	addr.port = gCfgMgr->ComCfg().access.port;
 	vec_addr.push_back(addr);
-	Init(vec_addr, gCfgMgr->ZoneCfg().svrId);
+
+	L_ASSERT(gCfgMgr->ZoneCfg().svrId >= ZONE_GROUP_ID && gCfgMgr->ZoneCfg().svrId <= MAX_ZONE_GROUP_ID);
+	AccMgr::Ins().Init(vec_addr, gCfgMgr->ZoneCfg().svrId);
 }
 
 void AccMgr::OnRegResult(uint16 svr_id)
@@ -39,27 +36,21 @@ void AccMgr::OnRegResult(uint16 svr_id)
 }
 
 
-namespace
-{
 
-
-	//Register(0xEF, 21, false, LoginServerSeed);
-	void LoginServerSeed(const Session &sn, const PacketReader &pvSrc)
-	{
-		//int msgSize = pvSrc.ReadUInt16();
-		//byte flag = pvSrc.ReadByte();
-	}
-//	STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&LoginServerSeed));
-}
-
+//接收client 请求消息
 void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint16 msg_len)
 {
-	//接收client 请求消息
-	L_INFO("echo msg. cmd=%x", cmd);
+	L_INFO("OnRevClientMsg. cmd=%x", cmd);
+	L_COND_V(msg_len > 0);
 
-	//unfinished, 需要改名，不让和svr center 通讯冲突
-	MsgDispatch<const Session>::Ins().Dispatch(sn, msg, msg_len);
-	//SendToClient(sn.id, cmd, msg, msg_len);
+	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
+	if (nullptr == handler)
+	{
+		L_ERROR("find msg handler fail. packetId=%d", msg[0]);
+		return;
+	}
+	PacketReader r(msg, msg_len, handler->m_Length != 0);
+	handler->m_OnReceive(sn, r);
 }
 
 Player *AccMgr::GetPlayer(const acc::Session &sn)
@@ -82,5 +73,10 @@ void AccMgr::OnClientDisCon(const acc::Session &sn)
 	Player *player = AccMgr::Ins().GetPlayer(sn);
 	L_COND_V(player);
 	player->m_LoginPlayer.ClientDisCon();
+}
+
+void AccMgr::OnRevBroadcastUinToSession(const acc::Session &session)
+{
+
 }
 
