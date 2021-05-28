@@ -3,7 +3,6 @@
 #include "game_util/publish_subscribe.h"
 #include "svr_util/include/static_reg.h"
 
-//100开始
 enum Event
 {
 	EV_SVR_CFG_INI = 1,

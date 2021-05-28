@@ -21,6 +21,8 @@
 #include "svr_util/include/stl_boost.h"
 #include "svr_util/include/static_reg.h"
 #include "svr_util/include/misc.h"
+#include "EventMgr.h"
+#include "SendToClientMgr.h"
 
 //不区分命名空间
 namespace acc
@@ -41,3 +43,5 @@ using namespace db;
 
 #define RegZoneMsg(fun) STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&fun));
 #define RegAccMsg(fun) STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&fun));
+//注册全局事件
+#define RegGlobalEvent(ev, fun) STATIC_RUN(RegEvent<ev>(&(fun)))

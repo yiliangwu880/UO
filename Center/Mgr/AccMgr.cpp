@@ -13,7 +13,6 @@ using namespace acc;
 
 
 STATIC_RUN(RegEvent<EV_SVR_START>(AccMgr::Start));
-
 void AccMgr::Start(bool &ret)
 {
 	L_INFO("centerAD Start");
@@ -87,7 +86,15 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 		}
 		account->ReqVerify(id, req);
 	}
+	{//tmp code, 发送到client
+		class MobileHitsN : public Packet
+		{
 
+		};
+		MobileHitsN hitsPacket;
+		//Send(id, hitsPacket);
+		//AccMgr::Ins().SendToClient
+	}
 
 	//临时 接收client请求登录消息,无条件通过，原消息号返回,
 	//L_INFO("rev verfiy. cmd=%d", cmd);

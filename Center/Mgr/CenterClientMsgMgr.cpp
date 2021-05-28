@@ -16,6 +16,12 @@ namespace
 
 	}
 }
+
+RegGlobalEvent(EV_SVR_CFG_INI, PacketHandlers::CfgInit);
+void PacketHandlers::CfgInit(bool &ret)
+{
+	PacketHandlers::Ins().Init();
+}
 void PacketHandlers::Init()
 {
 	m_Handlers.resize(256);
