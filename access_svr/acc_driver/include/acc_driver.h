@@ -81,7 +81,7 @@ namespace acc {
 		uint64 uin = 0;
 		std::string accName;
 		uint32 cmd = 0;
-		const char *msg;
+		const char *msg = nullptr;
 		uint16 msg_len = 0;
 	};
 	//外观模式，acc driver 接口

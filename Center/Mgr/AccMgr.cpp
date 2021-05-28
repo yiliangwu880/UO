@@ -41,16 +41,32 @@ void AccMgr::OnRegResult(uint16 svr_id)
 void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	L_COND_V(CenterMgr::Ins().Allok());
+	LoginServerSeed req;
+	msg++;
+	msg_len--;
 	size_t len = msg_len;
-	proto::Login_cs req;
-	L_COND_V(proto::Unpack<proto::Login_cs>(req, msg, len));
+	L_COND_V(proto::Unpack<LoginServerSeed>(req, msg, len));
+	L_DEBUG("%d : %d %d %d %d", req.seed, req.clientMaj, req.clientMin, req.clientRev, req.clientPat);
 
-	Account *account = AccountMgr::Ins().GetAcc(req.name);
-	if (!account)
+	//无条件认证通过
+	VerifyRetStruct d;
+	//d.msg = ntf to client login ok
+	AccMgr::Ins().ReqVerifyRet(id, d);
+
+	return;
 	{
-		account = AccountMgr::Ins().CreateAcc(req.name);
+		L_COND_V(CenterMgr::Ins().Allok());
+		size_t len = msg_len;
+		proto::Login_cs req;
+		L_COND_V(proto::Unpack<proto::Login_cs>(req, msg, len));
+
+		Account *account = AccountMgr::Ins().GetAcc(req.name);
+		if (!account)
+		{
+			account = AccountMgr::Ins().CreateAcc(req.name);
+		}
+		account->ReqVerify(id, req);
 	}
-	account->ReqVerify(id, req);
 
 
 	//临时 接收client请求登录消息,无条件通过，原消息号返回,

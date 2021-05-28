@@ -33,15 +33,6 @@
 	保持心跳 （可选用）
 }
 
-限制： 规定了client 和svr 消息包规则，如下
-{
-	client和svr层：len, cmd,msg
-	{
-		len cmd+msg字节数
-		cmd 消息号。 uint32, 通过高16位叫main_cmd, 来实现路由到正确的svr。
-		msg 为自定义消息包，比如可以用protobuf。
-	}
-}
 
 具体功能：
 {
@@ -102,22 +93,27 @@
 {
 	分三层图：
 									client             acc                svr
-	client和svr层：cmd,msg			  --------------------------------
-	client和acc层：cmd,msg			  -------------
+	client和svr层：UO接收包			  --------------------------------
+	client和acc层：UO接收包			  -------------
 	acc和svr层:	as_cmd,as_msg					  		----------------
 
 	每层协议说明
-	client和svr层：cmd,msg
+	client和svr层：	
+	{
+		UO接收包 里面能获取 cmd,msg
+	}
 	client和acc层：cmd,msg
 	{
-		cmd 消息号。 uint32, 通过高16位为main_cmd， 来实现路由到正确的svr。 main_cmd通常表达svr_id，有时候需要多个svr处理相同cmd,就需要main_cmd动态映射svr_id
-		msg 为自定义消息包，比如可以用protobuf。
+		UO接收包
+		cmd 消息号。也是从UO接收包获取，实现路由到正确的svr。 
+		
 	}
 	acc和svr层:	as_cmd,as_msg
 	{
 		as_cmd acc和svr的消息号。
 		as_msg 消息体。比如转发消息就为【cid,cmd,msg】。其中cid为 client到acc的连接id
 	}
+
 }
 
 具体实现注意项：

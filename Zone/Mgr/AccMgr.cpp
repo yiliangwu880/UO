@@ -4,6 +4,7 @@
 #include "EventMgr.h"
 #include "ZoneMgr.h"
 #include "Player/Player.h"
+#include "UoProto.h"
 
 
 using namespace std;
@@ -38,12 +39,27 @@ void AccMgr::OnRegResult(uint16 svr_id)
 }
 
 
+namespace
+{
+
+
+	//Register(0xEF, 21, false, LoginServerSeed);
+	void LoginServerSeed(const Session &sn, const PacketReader &pvSrc)
+	{
+		//int msgSize = pvSrc.ReadUInt16();
+		//byte flag = pvSrc.ReadByte();
+	}
+//	STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&LoginServerSeed));
+}
 
 void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	//接收client 请求消息
 	L_INFO("echo msg. cmd=%x", cmd);
-	SendToClient(sn.id, cmd, msg, msg_len);
+
+	//unfinished, 需要改名，不让和svr center 通讯冲突
+	MsgDispatch<const Session>::Ins().Dispatch(sn, msg, msg_len);
+	//SendToClient(sn.id, cmd, msg, msg_len);
 }
 
 Player *AccMgr::GetPlayer(const acc::Session &sn)

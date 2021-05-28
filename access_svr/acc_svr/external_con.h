@@ -59,8 +59,8 @@ public:
 	~ExternalSvrCon();
 	void SetVerify(bool is_success);
 	bool IsVerify();
-	//发送 client和svr层：cmd,msg 到client
-	bool SendMsg(uint32 cmd, const char *msg, uint16 msg_len);
+	//发送 client和svr层：消息包 到client
+	bool SendMsg(const char *msg, uint16 msg_len);
 	void SetActiveSvrId(uint16 grpId, uint16 svr_id);
 	void SetCache(bool isCache);
 	uint64 GetUin()const { return m_uin; }

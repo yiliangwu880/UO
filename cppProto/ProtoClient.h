@@ -10,6 +10,18 @@
 namespace proto {
 
 	//约定前 uint16_t 必须为 消息号id.
+	struct LoginServerSeed
+	{
+		const uint16_t id = 0xEF;
+		uint32_t seed	   ;
+		uint32_t clientMaj ;
+		uint32_t clientMin ;
+		uint32_t clientRev ;
+		uint32_t clientPat ;
+	
+	};
+
+	//约定前 uint16_t 必须为 消息号id.
 	struct Login_cs
 	{
 		const uint16_t id = 1;

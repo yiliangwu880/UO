@@ -60,10 +60,9 @@ bool ExternalSvrCon::IsVerify()
 	return State::VERIFYED == m_state;
 }
 
-bool ExternalSvrCon::SendMsg(uint32 cmd, const char *msg, uint16 msg_len)
+bool ExternalSvrCon::SendMsg(const char *msg, uint16 msg_len)
 {
 	string s;
-	s.append((char *)&cmd, sizeof(cmd));
 	s.append(msg, msg_len);
 	return SendPack(s.c_str(), s.length());
 }
@@ -293,7 +292,7 @@ void ExternalSvrCon::OnConnected()
 	if (Server::Ins().GetExConSize() > cli.max_num)
 	{
 		L_INFO("external con too much. cur size=%d. rsp_cmd=%d", Server::Ins().GetExConSize(), cli.rsp_cmd);
-		SendMsg(cli.rsp_cmd, cli.rsp_msg.c_str(), cli.rsp_msg.length());
+		SendMsg(cli.rsp_msg.c_str(), cli.rsp_msg.length());
 		//延时断开，等上面消息发送出去。这个方法不可靠，可能发送失败。 以后再想办法。
 		auto f = std::bind(&ExternalSvrCon::DisConnect, this);
 		m_cls_tm.StartTimer(1000, f);
@@ -397,7 +396,7 @@ void ExternalSvrCon::Forward2Svr(const char *pMsg, int len)
 		auto f = std::bind(&ExternalSvrCon::OnHeartbeatTimeOut, this);
 		L_DEBUG("rev beat, start time sec=%d", hbi.interval_sec);
 		m_heartbeat_tm.StartTimer(hbi.interval_sec*1000, f);
-		SendMsg(hbi.rsp_cmd, "", 0);
+		SendMsg("a", 0);//unfinished
 		return;
 	}
 	//真正处理转发

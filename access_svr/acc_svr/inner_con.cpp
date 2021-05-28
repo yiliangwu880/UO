@@ -85,26 +85,33 @@ namespace
 			return;
 		}
 		//notify verify result to client
-		pClient->SendMsg(f_msg.cmd, f_msg.msg, f_msg.msg_len);
+		if (f_msg.msg_len != 0)
+		{
+			pClient->SendMsg(f_msg.msg, f_msg.msg_len);
+		}
+		else
+		{
+			L_WARN("no notify verify result to client");
+		}
 		if (!req.is_success)
 		{
 			return;
 		}
 		if (pClient->IsVerify())
 		{
-			L_DEBUG("repeated verify"); //¿Í»§¶ËÖØ¸´ÇëÇóÑéÖ¤£¬ÖØ¸´½ÓÊÕÑéÖ¤³É¹¦¡£
+			L_DEBUG("repeated verify"); //å®¢æˆ·ç«¯é‡å¤è¯·æ±‚éªŒè¯ï¼Œé‡å¤æ¥æ”¶éªŒè¯æˆåŠŸã€‚
 			return;
 		}
 
 		pClient->SetVerify(req.is_success);
 
-		//Í¨Öª´´½¨»á»°
+		//é€šçŸ¥åˆ›å»ºä¼šè¯
 		MsgNtfCreateSession ntf;
 		ntf.cid = req.cid;
 		ntf.uin = req.uin;
 		if (req.accName.length() >= su::ArrayLen(ntf.accName))
 		{
-			L_ERROR("accName is too long¡£ %s", req.accName.c_str());
+			L_ERROR("accName is too longã€‚ %s", req.accName.c_str());
 			return;
 		}
 		memset(ntf.accName, 0, sizeof(ntf.accName));
@@ -142,14 +149,14 @@ namespace
 		}
 		pClient->SetUin(req.uin);
 
-		//Í¨Öª svr Uin
+		//é€šçŸ¥ svr Uin
 		auto f = [&req, &con](SvrCon &f_con)
 		{
 			InnerSvrCon *pCon = dynamic_cast<InnerSvrCon *>(&f_con);
 			L_COND(pCon);
 			if (pCon == &con)
 			{
-				return;//²»·¢ËÍ¸øÀ´Ô´svr
+				return;//ä¸å‘é€ç»™æ¥æºsvr
 			}
 			if (!pCon->IsReg())
 			{
@@ -278,13 +285,13 @@ namespace
 					continue;
 				}
 				ExternalSvrCon *pClient = Server::Ins().FindClientSvrCon(req.cid_s[i]);
-				if (nullptr == pClient)//¿Í»§¶Ë¸Õ¸Õ¶Ï¿ª£¬svr»¹Ã»ÊÕµ½ÏûÏ¢£¬Õı³£¡£
+				if (nullptr == pClient)//å®¢æˆ·ç«¯åˆšåˆšæ–­å¼€ï¼Œsvrè¿˜æ²¡æ”¶åˆ°æ¶ˆæ¯ï¼Œæ­£å¸¸ã€‚
 				{
 					continue;
 				}
 				if (!pClient->IsVerify())
 				{
-					L_ERROR("unverifyed client can't be broadcast, %llx", req.cid_s[i]);//ÄÄÀï´íÎóÁË£¬Î´ÈÏÖ¤²»ÄÜÉèÖÃ¹ã²¥
+					L_ERROR("unverifyed client can't be broadcast, %llx", req.cid_s[i]);//å“ªé‡Œé”™è¯¯äº†ï¼Œæœªè®¤è¯ä¸èƒ½è®¾ç½®å¹¿æ’­
 					continue;
 				}
 				pClient->SendPack(tcp_pack.c_str(), tcp_pack.length());
@@ -350,7 +357,7 @@ InnerSvrCon::~InnerSvrCon()
 
 void InnerSvrCon::RevertSession()
 {
-	//Í¨Öª´´½¨»á»°
+	//é€šçŸ¥åˆ›å»ºä¼šè¯
 	auto f = [&](SvrCon &con)
 	{
 		ExternalSvrCon *pCon = dynamic_cast<ExternalSvrCon *>(&con);
@@ -406,7 +413,7 @@ void InnerSvrCon::OnRecv(const lc::MsgPack &msg)
 	ASMsg as_data;
 	L_COND(as_data.Parse(msg.data, msg.len));
 //	L_DEBUG("as_data.cmd=%d as_data.msg_len=%d tcp_pack.length=%d", as_data.cmd, as_data.msg_len, msg.len);
-	if (CMD_REQ_FORWARD == as_data.cmd)//Ö±½Ó×ª·¢£¬²»ÓÃ·Ö·¢£¬¿ìµã
+	if (CMD_REQ_FORWARD == as_data.cmd)//ç›´æ¥è½¬å‘ï¼Œä¸ç”¨åˆ†å‘ï¼Œå¿«ç‚¹
 	{
 		MsgForward f_msg;
 		L_COND(f_msg.Parse(as_data.msg, as_data.msg_len));
@@ -426,7 +433,7 @@ void InnerSvrCon::OnRecv(const lc::MsgPack &msg)
 			L_ERROR("client is not verify. cid=%lld", f_msg.cid);
 			return;
 		}
-		pClient->SendMsg(f_msg.cmd, f_msg.msg, f_msg.msg_len);
+		pClient->SendMsg(f_msg.msg, f_msg.msg_len);
 	}
 	else
 	{
