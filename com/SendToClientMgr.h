@@ -3,18 +3,18 @@
 */
 #pragma once
 #include "log_def.h"
-
+#include "Compression.h"
 //class Packet
 //{
 //public:
 //	void Serialize(std::string &str) {};
 //};
 
+using byte = std::byte;
 
 using ushort = uint16_t;
-
 template<class T>
-void Serial2Str(std::string &str, const T &v)
+inline void Serial2Str(std::string &str, const T &v)
 {
 	str.append((const char *)&v, sizeof(v));
 }
@@ -26,24 +26,47 @@ struct StreamAdaptor : std::string
 	{
 		Serial2Str(*this, v);
 	}
+	void Write(const char* buffer, int offset, int size)
+	{
+		append(buffer+offset, size);
+	}
+	const std::string &GetBuffer() { return *this; };
+	size_t Length() { return length(); }
+
 };
 class PacketWriter
 {
 	
 	StreamAdaptor m_Stream;
 
-	int m_Capacity;
-
+	int m_Capacity;//m_Stream长度
+public:
 	PacketWriter()
 		: PacketWriter(32)
 	{ }
 
 	PacketWriter(int capacity)
 	{
-		m_Stream.resize(capacity);
+	//	m_Stream.resize(capacity);
 		m_Capacity = capacity;
 	}
+	void SetCapacity(int cap)
+	{
+		m_Capacity = cap;
+	}
 
+	StreamAdaptor &UnderlyingStream() { return m_Stream; }
+	//string指定索引写入
+	void WriteByOffset(size_t offset, ushort value)
+	{
+		if (m_Stream.length() < offset + sizeof(value))
+		{
+			L_ERROR("WriteByOffset overflow offset,size=%d %d", offset, m_Stream.length());
+			return;
+		}
+		m_Stream[offset++] = (char)(value >> 8);
+		m_Stream[offset] = (char)value;
+	}
 	void Write(bool value)
 	{
 		m_Stream.WriteByte((byte)(value ? 1 : 0));
@@ -63,62 +86,49 @@ class PacketWriter
 
 	void Write(short value)
 	{
-		m_Buffer[0] = (byte)(value >> 8);
-		m_Buffer[1] = (byte)value;
+		m_Stream.WriteByte((byte)(value >> 8));
+		m_Stream.WriteByte((byte)value);
 
-		m_Stream.Write(m_Buffer, 0, 2);
 	}
 
 	void Write(ushort value)
 	{
-		m_Buffer[0] = (byte)(value >> 8);
-		m_Buffer[1] = (byte)value;
-
-		m_Stream.Write(m_Buffer, 0, 2);
+		m_Stream.WriteByte((byte)(value >> 8));
+		m_Stream.WriteByte((byte)value);
 	}
 
-	/// <summary>
-	///     Writes a 4-byte signed integer value to the underlying stream.
-	/// </summary>
+
 	void Write(int value)
 	{
-		m_Buffer[0] = (byte)(value >> 24);
-		m_Buffer[1] = (byte)(value >> 16);
-		m_Buffer[2] = (byte)(value >> 8);
-		m_Buffer[3] = (byte)value;
-
-		m_Stream.Write(m_Buffer, 0, 4);
+		m_Stream.WriteByte((byte)(value >> 24));
+		m_Stream.WriteByte((byte)(value >> 16));
+		m_Stream.WriteByte((byte)(value >> 8));
+		m_Stream.WriteByte((byte)value);
 	}
 
-	/// <summary>
-	///     Writes a 4-byte unsigned integer value to the underlying stream.
-	/// </summary>
+
 	void Write(uint value)
 	{
-		m_Buffer[0] = (byte)(value >> 24);
-		m_Buffer[1] = (byte)(value >> 16);
-		m_Buffer[2] = (byte)(value >> 8);
-		m_Buffer[3] = (byte)value;
-
-		m_Stream.Write(m_Buffer, 0, 4);
+		m_Stream.WriteByte((byte)(value >> 24));
+		m_Stream.WriteByte((byte)(value >> 16));
+		m_Stream.WriteByte((byte)(value >> 8));
+		m_Stream.WriteByte((byte)value);
 	}
 
-	/// <summary>
-	///     Writes a sequence of bytes to the underlying stream
-	/// </summary>
-	void Write(byte[] buffer, int offset, int size)
+
+	void Write(const char* buffer, int offset, int size)
 	{
 		m_Stream.Write(buffer, offset, size);
 	}
 
-	/// <summary>
-	///     Writes a fixed-length ASCII-encoded string value to the underlying stream. To fit (size), the string content is either truncated or padded with null characters.
-	/// </summary>
-	void WriteAsciiFixed(string value, int size)
+
+	void WriteAsciiFixed(const std::string &value, int size)
 	{
+		L_ERROR("unfinished");
+#if 0
 		if (value == null)
 		{
-			Console.WriteLine("Network: Attempted to WriteAsciiFixed() with null value");
+			L_ERROR("Network: Attempted to WriteAsciiFixed() with null value");
 			value = String.Empty;
 		}
 
@@ -136,24 +146,14 @@ class PacketWriter
 			m_Stream.Position += size;
 		}
 
-		/*byte[] buffer = Encoding.ASCII.GetBytes( value );
-
-		if ( buffer.Length >= size )
-		{
-			m_Stream.Write( buffer, 0, size );
-		}
-		else
-		{
-			m_Stream.Write( buffer, 0, buffer.Length );
-			Fill( size - buffer.Length );
-		}*/
+#endif
 	}
 
-	/// <summary>
-	///     Writes a dynamic-length ASCII-encoded string value to the underlying stream, followed by a 1-byte null character.
-	/// </summary>
-	void WriteAsciiNull(string value)
+
+	void WriteAsciiNull(const std::string &value)
 	{
+		L_ERROR("unfinished");
+#if 0
 		if (value == null)
 		{
 			Console.WriteLine("Network: Attempted to WriteAsciiNull() with null value");
@@ -167,17 +167,14 @@ class PacketWriter
 		Encoding.ASCII.GetBytes(value, 0, length, m_Stream.GetBuffer(), (int)m_Stream.Position);
 		m_Stream.Position += length + 1;
 
-		/*byte[] buffer = Encoding.ASCII.GetBytes( value );
-
-		m_Stream.Write( buffer, 0, buffer.Length );
-		m_Stream.WriteByte( 0 );*/
+#endif
 	}
 
-	/// <summary>
-	///     Writes a dynamic-length little-endian unicode string value to the underlying stream, followed by a 2-byte null character.
-	/// </summary>
-	void WriteLittleUniNull(string value)
+
+	void WriteLittleUniNull(const std::string &value)
 	{
+		L_ERROR("unfinished");
+#if 0
 		if (value == null)
 		{
 			Console.WriteLine("Network: Attempted to WriteLittleUniNull() with null value");
@@ -191,20 +188,15 @@ class PacketWriter
 		m_Stream.Position += Encoding.Unicode.GetBytes(value, 0, length, m_Stream.GetBuffer(), (int)m_Stream.Position);
 		m_Stream.Position += 2;
 
-		/*byte[] buffer = Encoding.Unicode.GetBytes( value );
 
-		m_Stream.Write( buffer, 0, buffer.Length );
-
-		m_Buffer[0] = 0;
-		m_Buffer[1] = 0;
-		m_Stream.Write( m_Buffer, 0, 2 );*/
+#endif
 	}
 
-	/// <summary>
-	///     Writes a fixed-length little-endian unicode string value to the underlying stream. To fit (size), the string content is either truncated or padded with null characters.
-	/// </summary>
-	void WriteLittleUniFixed(string value, int size)
+
+	void WriteLittleUniFixed(const std::string &value, int size)
 	{
+		L_ERROR("unfinished");
+#if 0
 		if (value == null)
 		{
 			Console.WriteLine("Network: Attempted to WriteLittleUniFixed() with null value");
@@ -227,26 +219,14 @@ class PacketWriter
 			m_Stream.Position += size;
 		}
 
-		/*size *= 2;
 
-		byte[] buffer = Encoding.Unicode.GetBytes( value );
-
-		if ( buffer.Length >= size )
-		{
-			m_Stream.Write( buffer, 0, size );
-		}
-		else
-		{
-			m_Stream.Write( buffer, 0, buffer.Length );
-			Fill( size - buffer.Length );
-		}*/
+#endif
 	}
 
-	/// <summary>
-	///     Writes a dynamic-length big-endian unicode string value to the underlying stream, followed by a 2-byte null character.
-	/// </summary>
-	void WriteBigUniNull(string value)
+	void WriteBigUniNull(const std::string &value)
 	{
+		L_ERROR("unfinished");
+#if 0
 		if (value == null)
 		{
 			Console.WriteLine("Network: Attempted to WriteBigUniNull() with null value");
@@ -261,20 +241,14 @@ class PacketWriter
 			value, 0, length, m_Stream.GetBuffer(), (int)m_Stream.Position);
 		m_Stream.Position += 2;
 
-		/*byte[] buffer = Encoding.BigEndianUnicode.GetBytes( value );
-
-		m_Stream.Write( buffer, 0, buffer.Length );
-
-		m_Buffer[0] = 0;
-		m_Buffer[1] = 0;
-		m_Stream.Write( m_Buffer, 0, 2 );*/
+#endif
 	}
 
-	/// <summary>
-	///     Writes a fixed-length big-endian unicode string value to the underlying stream. To fit (size), the string content is either truncated or padded with null characters.
-	/// </summary>
-	void WriteBigUniFixed(string value, int size)
+
+	void WriteBigUniFixed(const std::string &value, int size)
 	{
+		L_ERROR("unfinished");
+#if 0
 		if (value == null)
 		{
 			Console.WriteLine("Network: Attempted to WriteBigUniFixed() with null value");
@@ -298,136 +272,86 @@ class PacketWriter
 			m_Stream.Position += size;
 		}
 
-		/*size *= 2;
 
-		byte[] buffer = Encoding.BigEndianUnicode.GetBytes( value );
-
-		if ( buffer.Length >= size )
-		{
-			m_Stream.Write( buffer, 0, size );
-		}
-		else
-		{
-			m_Stream.Write( buffer, 0, buffer.Length );
-			Fill( size - buffer.Length );
-		}*/
+#endif
 	}
 
-	/// <summary>
-	///     Fills the stream from the current position up to (capacity) with 0x00's
-	/// </summary>
+
 	void Fill()
 	{
-		Fill((int)(m_Capacity - m_Stream.Length));
+		Fill((int)(m_Capacity - m_Stream.length()));
 	}
 
-	/// <summary>
-	///     Writes a number of 0x00 byte values to the underlying stream.
-	/// </summary>
 	void Fill(int length)
 	{
-		if (m_Stream.Position == m_Stream.Length)
+		if (length>0)
 		{
-			m_Stream.SetLength(m_Stream.Length + length);
-			m_Stream.Seek(0, SeekOrigin.End);
-		}
-		else
-		{
-			m_Stream.Write(new byte[length], 0, length);
+			m_Stream.append(length, char());
 		}
 	}
 
-	/// <summary>
-	///     Gets the total stream length.
-	/// </summary>
-	long Length{ get { return m_Stream.Length; } }
 
-		/// <summary>
-		///     Gets or sets the current stream position.
-		/// </summary>
-	long Position{ get { return m_Stream.Position; } set { m_Stream.Position = value; } }
+	long Length() const{ return m_Stream.length(); }
 
-		/// <summary>
-		///     The internal stream used by this PacketWriter instance.
-		/// </summary>
-	MemoryStream UnderlyingStream{ get { return m_Stream; } }
 
-		/// <summary>
-		///     Offsets the current position from an origin.
-		/// </summary>
-		long Seek(long offset, SeekOrigin origin)
-	{
-		return m_Stream.Seek(offset, origin);
-	}
+	//long Position{ get { return m_Stream.Position; } set { m_Stream.Position = value; } }
 
-	/// <summary>
-	///     Gets the entire stream content as a byte array.
-	/// </summary>
-	byte[] ToArray()
-	{
-		return m_Stream.ToArray();
-	}
-}
+};
+
+struct PacketState
+{
+	static const int Inactive = 0x00;
+	static const int Static = 0x01;
+	static const int Acquired = 0x02;
+	static const int Accessed = 0x04;
+	static const int Buffered = 0x08;
+	static const int Warned = 0x10;
+};
 
 //发送客户端网络包基类
-/*
 class Packet
 {
-	protected PacketWriter m_Stream;
+	PacketWriter m_Stream;
+	int m_PacketID;
+	int m_Length;//固定长度的消息 长度。 0 表示可变长度
+	int m_State; //PacketState mask
 
-	readonly int m_PacketID;
-	readonly int m_Length;//固定长度的消息 长度。 0 表示可变长度
+public:
+	int PacketID(){  return m_PacketID; }
 
-	PacketState m_State;
+	int State(){  return m_State; } 
 
-	int PacketID{ get { return m_PacketID; } }
-
-	PacketState State{ get { return m_State; } }
-
-		protected Packet(int packetID)
+protected:
+	Packet(int packetID)
 	{
 		m_PacketID = packetID;
 
-		if (Core.Profiling)
-		{
-			PacketSendProfile prof = PacketSendProfile.Acquire(GetType());
-			prof.Increment();
-		}
 	}
 
-	protected Packet(int packetID, int length)
-		: this(packetID, length, PacketWriter.CreateInstance(length))
-	{ }
-
-	protected Packet(int packetID, int length, PacketWriter stream)
+	Packet(int packetID, int length)
 	{
 		m_PacketID = packetID;
 		m_Length = length;
-
-		m_Stream = stream;
 		m_Stream.Write((byte)packetID);
-
-		if (Core.Profiling)
-		{
-			PacketSendProfile prof = PacketSendProfile.Acquire(GetType());
-			prof.Increment();
-		}
 	}
 
+public:
 	void EnsureCapacity(int length)
 	{
-		m_Stream = PacketWriter.CreateInstance(length);// new PacketWriter( length );
+		m_Stream.SetCapacity(length);
 		m_Stream.Write((byte)m_PacketID);
-		m_Stream.Write((short)0);
+		m_Stream.Write((short)0);//预留2字节，等写长度
 	}
 
-	PacketWriter UnderlyingStream{ get { return m_Stream; } }
+	PacketWriter &UnderlyingStream(){ return m_Stream;  }
 
 	const int CompressorBufferSize = 0x10000;
-	static readonly BufferPool m_CompressorBuffers = new BufferPool("Compressor", 4, CompressorBufferSize);
+	//数组内存池
+	//static readonly BufferPool m_CompressorBuffers = new BufferPool("Compressor", 4, CompressorBufferSize);
 
 	const int BufferSize = 4096;
-	static readonly BufferPool m_Buffers = new BufferPool("Compressed", 16, BufferSize);
+	//数组内存池
+	//static readonly BufferPool m_Buffers = new BufferPool("Compressed", 16, BufferSize);
 
 	static Packet SetStatic(Packet p)
 	{
@@ -440,6 +364,7 @@ class Packet
 		p.Acquire();
 		return p;
 	}
+#if 0
 
 	static void Release(ref ObjectPropertyList p)
 	{
@@ -498,30 +423,32 @@ class Packet
 			p.Release();
 		}
 	}
+#endif
 
 	void SetStatic()
 	{
-		m_State |= PacketState.Static | PacketState.Acquired;
+		m_State |= (PacketState::Static | PacketState::Acquired);
 	}
 
 	void Acquire()
 	{
-		m_State |= PacketState.Acquired;
+		m_State |= (int)PacketState::Acquired;
 	}
 
 	void OnSend()
 	{
-		Core.Set();
+		////Core.Set(); C#发信号
 
-		lock(this)
-		{
-			if ((m_State & (PacketState.Acquired | PacketState.Static)) == 0)
-			{
-				Free();
-			}
-		}
+		//lock(this)
+		//{
+		//	if ((m_State & (PacketState::Acquired | PacketState::Static)) == 0)
+		//	{
+		//		Free();
+		//	}
+		//}
 	}
 
+#if 0
 	void Free()
 	{
 		if (m_CompiledBuffer == null)
@@ -529,168 +456,141 @@ class Packet
 			return;
 		}
 
-		if ((m_State & PacketState.Buffered) != 0)
+		if ((m_State & PacketState::Buffered) != 0)
 		{
 			m_Buffers.ReleaseBuffer(m_CompiledBuffer);
 		}
 
-		m_State &= ~(PacketState.Static | PacketState.Acquired | PacketState.Buffered);
+		m_State &= ~(PacketState::Static | PacketState::Acquired | PacketState::Buffered);
 
 		m_CompiledBuffer = null;
 	}
 
 	void Release()
 	{
-		if ((m_State & PacketState.Acquired) != 0)
+		if ((m_State & PacketState::Acquired) != 0)
 		{
 			Free();
 		}
 	}
+#endif
 
-	byte[] m_CompiledBuffer;
+	std::string m_CompiledBuffer;
 	int m_CompiledLength;
 
-	byte[] Compile(bool compress, out int length)
+	const std::string &Compile(bool compress)
 	{
-		lock(this)
+		if (m_CompiledBuffer.empty())
 		{
-			if (m_CompiledBuffer == null)
+			if ((m_State & PacketState::Accessed) == 0)
 			{
-				if ((m_State & PacketState.Accessed) == 0)
+				m_State |= PacketState::Accessed;
+			}
+			else
+			{
+				if ((m_State & PacketState::Warned) == 0)
 				{
-					m_State |= PacketState.Accessed;
+					m_State |= PacketState::Warned;
+
+					L_WARN("Redundant compile for packet %x, use Acquire() and Release()", m_PacketID);
 				}
-				else
-				{
-					if ((m_State & PacketState.Warned) == 0)
-					{
-						m_State |= PacketState.Warned;
-
-						try
-						{
-							using (StreamWriter op = new StreamWriter("net_opt.log", true))
-							{
-								op.WriteLine("Redundant compile for packet {0}, use Acquire() and Release()", GetType());
-								op.WriteLine(new StackTrace());
-							}
-						}
-						catch
-						{ }
-					}
-
-					m_CompiledBuffer = new byte[0];
-					m_CompiledLength = 0;
-
-					length = m_CompiledLength;
-					return m_CompiledBuffer;
-				}
-
-				InternalCompile(compress);
+				L_WARN("Compile get empty string");
+				m_CompiledBuffer.clear();
+				return m_CompiledBuffer;
 			}
 
-			length = m_CompiledLength;
-			return m_CompiledBuffer;
+			InternalCompile(compress);
 		}
+
+		return m_CompiledBuffer;
 	}
 
 	void InternalCompile(bool compress)
 	{
+		//加入可变长度， 参考 EnsureCapacity 函数，预留2字节写长度。 
 		if (m_Length == 0)
 		{
-			long streamLen = m_Stream.Length;
+			long streamLen = m_Stream.Length();
 
-			m_Stream.Seek(1, SeekOrigin.Begin);
-			m_Stream.Write((ushort)streamLen);
+			//m_Stream.Seek(1, SeekOrigin::Begin);//指针设置到偏移1位置
+			//m_Stream.Write((ushort)streamLen);//覆盖写入索引 1，2位置
+			m_Stream.WriteByOffset(1, (ushort)streamLen);
 		}
-		else if (m_Stream.Length != m_Length)
+		else if (m_Stream.Length() != m_Length)
 		{
-			int diff = (int)m_Stream.Length - m_Length;
+			int diff = (int)m_Stream.Length() - m_Length;
 
-			Console.WriteLine("Packet: 0x{0:X2}: Bad packet length! ({1}{2} bytes)", m_PacketID, diff >= 0 ? "+" : "", diff);
+			L_ERROR("Packet: %x: Bad packet length! (%d %d bytes)", m_PacketID, diff >= 0 ? "+" : "", diff);
 		}
 
-		MemoryStream ms = m_Stream.UnderlyingStream;
+	//	MemoryStream ms = m_Stream.UnderlyingStream();
+		StreamAdaptor ms = m_Stream.UnderlyingStream();
 
-		m_CompiledBuffer = ms.GetBuffer();
-		int length = (int)ms.Length;
+		m_CompiledBuffer = ms.GetBuffer();//复制，待优化
+		int length = (int)ms.Length();
 
 		if (compress)
 		{
-			byte[] buffer;
+			std::string buffer;
 
-			lock(m_CompressorBuffers)
-				buffer = m_CompressorBuffers.AcquireBuffer();
 			int oldLen = length;
-			Compression.Compress(m_CompiledBuffer, 0, length, buffer, ref length);
-
-			//if (compress)
-			//{//会运行的，需要压缩
-			//    Utility.PushColor(ConsoleColor.Red);
-			//    Console.WriteLine("tmp log. Packet compress size {0}-> {1}", oldLen, length);
-			//    Utility.PopColor();
-			//}
+			Compression::Compress(m_CompiledBuffer, 0, length, buffer, length);
 
 			if (length <= 0)
 			{
-				Console.WriteLine(
-					"Warning: Compression buffer overflowed on packet 0x{0:X2} ('{1}') (length={2})",
+				L_ERROR(
+					"Warning: Compression buffer overflowed on packet %x length=%d)",
 					m_PacketID,
-					GetType().Name,
 					length);
-				using (StreamWriter op = new StreamWriter("compression_overflow.log", true))
-				{
-					op.WriteLine(
-						"{0} Warning: Compression buffer overflowed on packet 0x{1:X2} ('{2}') (length={3})",
-						DateTime.UtcNow,
-						m_PacketID,
-						GetType().Name,
-						length);
-					op.WriteLine(new StackTrace());
-				}
 			}
 			else
 			{
 				m_CompiledLength = length;
 
-				if (length > BufferSize || (m_State & PacketState.Static) != 0)
-				{
-					m_CompiledBuffer = new byte[length];
-				}
-				else
-				{
-					lock(m_Buffers)
-						m_CompiledBuffer = m_Buffers.AcquireBuffer();
-					m_State |= PacketState.Buffered;
+				{//这代码块应该删掉，待分析
+					if (length > BufferSize || (m_State & PacketState::Static) != 0)
+					{
+						//m_CompiledBuffer = new byte[length];
+					}
+					else
+					{
+						//lock(m_Buffers)
+						//	m_CompiledBuffer = m_Buffers.AcquireBuffer();
+						m_State |= PacketState::Buffered;
+					}
 				}
 
-				Buffer.BlockCopy(buffer, 0, m_CompiledBuffer, 0, length);
+				//Buffer.BlockCopy(buffer, 0, m_CompiledBuffer, 0, length);
+				m_CompiledBuffer = buffer; //待优化
 
-				lock(m_CompressorBuffers)
-					m_CompressorBuffers.ReleaseBuffer(buffer);
+				//lock(m_CompressorBuffers)
+				//	m_CompressorBuffers.ReleaseBuffer(buffer);
 			}
 		}
 		else if (length > 0)
 		{
-			var old = m_CompiledBuffer;
+			//var old = m_CompiledBuffer;
 			m_CompiledLength = length;
 
-			if (length > BufferSize || (m_State & PacketState.Static) != 0)
-			{
-				m_CompiledBuffer = new byte[length];
-			}
-			else
-			{
-				lock(m_Buffers)
-					m_CompiledBuffer = m_Buffers.AcquireBuffer();
-				m_State |= PacketState.Buffered;
+			{//待删除
+				if (length > BufferSize || (m_State & PacketState::Static) != 0)
+				{
+					//m_CompiledBuffer = new byte[length];
+				}
+				else
+				{
+					//lock(m_Buffers)
+					//	m_CompiledBuffer = m_Buffers.AcquireBuffer();
+					m_State |= PacketState::Buffered;
+				}
 			}
 
-			Buffer.BlockCopy(old, 0, m_CompiledBuffer, 0, length);
+			//Buffer.BlockCopy(old, 0, m_CompiledBuffer, 0, length);
 		}
 
-		PacketWriter.ReleaseInstance(m_Stream);
-		m_Stream = null;
+		//PacketWriter.ReleaseInstance(m_Stream);
+		//m_Stream = null;
+		ms.clear();
 	}
-}
+};
 
-*/

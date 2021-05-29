@@ -6,6 +6,7 @@
 #include "./Account/AccountMgr.h"
 #include "MsgDispatch.h"
 #include "CenterClientMsgMgr.h"
+#include "SendToClientMgr.h"
 
 using namespace std;
 using namespace su;
@@ -49,7 +50,16 @@ void AccMgr::OnRegResult(uint16 svr_id)
 	L_INFO("center reg ok");
 	CenterMgr::Ins().SetCenterOk();
 }
+namespace
+{
+	class MobileHitsN : public Packet
+	{
+	public:
+		MobileHitsN() :Packet(0)
+		{}
 
+	};
+}
 void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	L_COND_V(CenterMgr::Ins().Allok());
@@ -87,10 +97,7 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 		account->ReqVerify(id, req);
 	}
 	{//tmp code, 发送到client
-		class MobileHitsN : public Packet
-		{
 
-		};
 		MobileHitsN hitsPacket;
 		//Send(id, hitsPacket);
 		//AccMgr::Ins().SendToClient

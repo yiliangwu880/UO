@@ -13,6 +13,7 @@
 #include <string.h>
 #include <utility>
 #include <limits>
+#include <cstddef>
 #include "log_def.h"
 #include "svr_util/include/singleton.h"
 #include "svr_util/include/easy_code.h"
@@ -22,7 +23,6 @@
 #include "svr_util/include/static_reg.h"
 #include "svr_util/include/misc.h"
 #include "EventMgr.h"
-#include "SendToClientMgr.h"
 
 //不区分命名空间
 namespace acc
@@ -39,7 +39,6 @@ using namespace acc;
 using namespace proto;
 using namespace std;
 using namespace db;
-
 
 #define RegZoneMsg(fun) STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&fun));
 #define RegAccMsg(fun) STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&fun));

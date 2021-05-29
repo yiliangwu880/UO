@@ -3,7 +3,6 @@
 */
 #pragma once
 #include "log_def.h"
-#include <cstddef>
 enum class SeekOrigin {
 	Begin,
 	Current,

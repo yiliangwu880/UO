@@ -13,6 +13,7 @@
 #include <string.h>
 #include <utility>
 #include <limits>
+#include <cstddef>
 #include "log_def.h"
 #include "svr_util/include/singleton.h"
 #include "svr_util/include/easy_code.h"
@@ -24,7 +25,6 @@
 
 #include "EventMgr.h"
 #include "Mgr/CenterCon.h"
-#include "SendToClientMgr.h"
 
 //不区分命名空间
 namespace acc
