@@ -20,6 +20,7 @@ local comInclude={
 	"../dbProto/",
 	"../cppProto/",
 	"../access_svr/acc_driver/include/",
+	"./",
 }
 
 WorkSpaceInit  "UO"

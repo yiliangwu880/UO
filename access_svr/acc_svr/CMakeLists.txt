@@ -20,6 +20,8 @@ ADD_EXECUTABLE(acc_svr ${SRCS} ${SRCS2})
 #设置依赖
 #ADD_DEPENDENCIES(acc_svr svr_util libevent_cpp)
 
+SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/../bin/Acc/)
+
 # 设置链接库
 target_link_libraries(acc_svr svr_util libcevent_cpp.a acc_proto )
 

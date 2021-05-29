@@ -22,7 +22,7 @@ file(GLOB_RECURSE SRCS  ${PROJECT_SOURCE_DIR} "*.cpp"
 
 # 指定生成目标
 ADD_EXECUTABLE(${project_name} ${SRCS})
-SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/Center/)
 #设置依赖
 #ADD_DEPENDENCIES(db_driver svr_util libevent_cpp)
 
