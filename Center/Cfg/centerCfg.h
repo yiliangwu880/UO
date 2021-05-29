@@ -20,7 +20,7 @@ struct centerCfg
 		//default load original cfg file name
 		if (nullptr == file_name)
 		{
-			file_name = "../bin/Center/centerCfg.txt";
+			file_name = "centerCfg.txt";
 		}
 		SimpleCfg js;
 		if (!js.ParseFile(file_name))

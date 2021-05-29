@@ -15,6 +15,8 @@ public:
 		size_t len = sizeof(msgPack.data);
 		char *p = msgPack.data;
 		L_ASSERT(proto::Pack(msg, p, len));
+		msgPack.len = sizeof(msgPack.data) - len;
+		L_DEBUG("send len =%d", msgPack.len);
 		SendData(msgPack);
 	}
 private:

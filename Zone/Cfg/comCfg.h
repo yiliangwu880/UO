@@ -36,7 +36,7 @@ struct comCfg
 		//default load original cfg file name
 		if (nullptr == file_name)
 		{
-			file_name = "../bin/comCfg.txt";
+			file_name = "../comCfg.txt";
 		}
 		SimpleCfg js;
 		if (!js.ParseFile(file_name))

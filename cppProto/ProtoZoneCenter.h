@@ -22,28 +22,33 @@ namespace proto {
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(ReqLoginZone_sc)\
+	DB_FIELD(id)\
 	DB_FIELD(uin)\
 	DB_FIELD(cid)\
 	DB_FIELD(playerData)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(RspLoginZone_cs)\
+	DB_FIELD(id)\
 	DB_FIELD(uin)\
 	DB_FIELD(ret)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(ReqReLoginZone_sc)\
+	DB_FIELD(id)\
 	DB_FIELD(uin)\
 	DB_FIELD(cid)\
 	DB_FIELD(playerData)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(RspReLoginZone_cs)\
+	DB_FIELD(id)\
 	DB_FIELD(uin)\
 	DB_FIELD(ret)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(ReqZoneReserve)\
+	DB_FIELD(id)\
 	DB_FIELD(uin)\
 	DB_FIELD(srcSvrId)\
 	DB_FIELD(dstZoneId)\
@@ -51,12 +56,14 @@ namespace proto {
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(RspZoneReserve)\
+	DB_FIELD(id)\
 	DB_FIELD(uin)\
 	DB_FIELD(srcZoneId)\
 	DB_FIELD(ret)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(ReqTranZone)\
+	DB_FIELD(id)\
 	DB_FIELD(zoneId)\
 	DB_FIELD(uin)\
 	DB_FIELD(playerData)\

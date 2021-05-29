@@ -6,7 +6,7 @@ access={	//svr 链接 access 的信息
 
 center={
 	ip = "127.0.0.1",
-	port = 54832,
+	port = 54833,
 }
 
 zone={

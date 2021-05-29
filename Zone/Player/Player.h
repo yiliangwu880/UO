@@ -38,6 +38,7 @@ public:
 		size_t len = sizeof(msgPack.data);
 		char *p = msgPack.data;
 		L_ASSERT(proto::Pack(msg, p, len));
+		msgPack.len = sizeof(msgPack.data) - len;
 		//todo cmd 合并一起
 		AccMgr::Ins().SendToClient(m_BaseData.sid, 0, msgPack.data, msgPack.len);
 	}
