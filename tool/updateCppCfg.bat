@@ -6,8 +6,8 @@ set win_path=F:\codelib\UO
 
 
 
-xcopy /y/i/e/s   %linux_path%\center\cfg\* %win_path%\center\cfg\
-xcopy /y/i/e/s   %linux_path%\zone\cfg\* %win_path%\zone\cfg\
+xcopy /y/i/e/s   %linux_path%\Center\Cfg\* %win_path%\Center\Cfg\
+xcopy /y/i/e/s   %linux_path%\Zone\Cfg\* %win_path%\Zone\Cfg\
 
 
 

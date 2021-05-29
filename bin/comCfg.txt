@@ -1,5 +1,5 @@
 
-access={	//svr а╢╫с access ╣дпео╒
+access={	//svr И⌠╬Ф▌╔ access Г └Д©║Ф│╞
 	ip = "127.0.0.1",
 	port = 54831,
 }
@@ -10,5 +10,5 @@ center={
 }
 
 zone={
-	allSvrId = [1,2],
+	allSvrId = [1], //[1,2]
 }

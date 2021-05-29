@@ -37,7 +37,6 @@ uint32 Server::GetExConSize() const
 CfgMgr::CfgMgr()
 	:m_inner_port(0)
 	, m_ex_port(0)
-	, is_daemon(false)
 {
 
 }
@@ -57,9 +56,6 @@ bool CfgMgr::Init()
 	L_DEBUG("ex_ip=%s", m_ex_ip.c_str());
 	m_ex_port = (uint16)cfg.GetInt("ex_port");
 	L_DEBUG("ex_port=%d", m_ex_port);
-
-	is_daemon = (bool)cfg.GetInt("is_daemon");
-	L_DEBUG("is_daemon=%d", is_daemon);
 
 	max_send_buf_size = (bool)cfg.GetInt("max_send_buf_size");
 	L_DEBUG("max_send_buf_size=%d", max_send_buf_size);

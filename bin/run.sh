@@ -6,7 +6,7 @@
 start() {
 	echo "start all svr"
 	cd Center
-	./center
+	./center  # 后台启动 ./center d 
 	cd ../Acc
 	./acc_svr
 	cd ../Zone1

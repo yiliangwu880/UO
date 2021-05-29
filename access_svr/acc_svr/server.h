@@ -13,7 +13,7 @@ class Server: public Singleton<Server>
 public:
 	bool Init();
 	ExternalSvrCon *FindClientSvrCon(uint64 cid);
-	uint32 GetExConSize() const;//Íâ²¿Á¬½ÓÊıÁ¿
+	uint32 GetExConSize() const;//å¤–éƒ¨è¿æ¥æ•°é‡
 public:
 	lc::Listener<InnerSvrCon> m_svr_listener;
 	lc::Listener<ExternalSvrCon> m_client_listener;
@@ -29,14 +29,12 @@ public:
 	const char *GetInnerIp() const { return m_inner_ip.c_str(); }
 	unsigned short GetExPort() const { return m_ex_port; }
 	const char *GetExIp() const { return m_ex_ip.c_str(); }
-	bool IsDaemon()const { return is_daemon; }
 	uint32 GetMsbs() const { return max_send_buf_size; }
 private:
 	unsigned short m_inner_port;
 	std::string m_inner_ip;
-	//ÍâÍøµØÖ·£¬¸øclientÁ¬½ÓÓÃ
+	//å¤–ç½‘åœ°å€ï¼Œç»™clientè¿æ¥ç”¨
 	unsigned short m_ex_port; 
 	std::string m_ex_ip;
-	bool is_daemon;
 	uint32 max_send_buf_size = 0;
 };

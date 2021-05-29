@@ -59,7 +59,13 @@ int main(int argc, char* argv[])
 	SuMgr::Ins().Init();
 	L_COND_F(CfgMgr::Ins().Init());
 
-	if (CfgMgr::Ins().IsDaemon())
+	bool isDaemon = false;
+	if (argc >= 2 && string("d") == argv[1])
+	{
+		isDaemon = true;
+	}
+
+	if (isDaemon)
 	{
 		//当nochdir为0时，daemon将更改进城的根目录为root(“ / ”)。
 		//当noclose为0是，daemon将进城的STDIN, STDOUT, STDERR都重定向到 / dev / null。

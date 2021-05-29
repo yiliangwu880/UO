@@ -1,3 +1,0 @@
-
-svrId = 1 //zone svrid  1-9
-
