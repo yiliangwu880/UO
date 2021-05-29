@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cstddef>
 #include <unordered_map>
 #include "svr_util/include/log_file.h"
 

@@ -8,6 +8,7 @@
 #include "inner_con.h"
 #include "external_con.h"
 #include "AccMgr.h"
+#include "UoClientMsgMgr.h"
 
 using namespace su;
 using namespace std;
@@ -81,6 +82,7 @@ int main(int argc, char* argv[])
 	{
 		return 0;
 	}
+	PacketHandlers::Ins().Init();
 
 	lc::EventMgr::Ins().Dispatch();
 	return 0;

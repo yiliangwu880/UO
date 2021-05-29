@@ -44,11 +44,9 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 	L_COND_V(msg_len > 0);
 
 	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
-	if (nullptr == handler)
-	{
-		L_ERROR("find msg handler fail. packetId=%d", msg[0]);
-		return;
-	}
+	L_COND_V(handler, "find msg handler fail. packetId=%d", msg[0]);
+
+	L_DEBUG("rev packetId %x", msg[0]);
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
 	handler->m_OnReceive(sn, r);
 }

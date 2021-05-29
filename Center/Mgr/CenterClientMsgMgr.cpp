@@ -25,22 +25,22 @@ void PacketHandlers::CfgInit(bool &ret)
 
 void PacketHandlers::Init()
 {
-	m_Handlers.resize(256);
+	m_Handlers.resize(numeric_limits<uint8_t>::max());
 	Register(0x00, 104, false, CreateCharacter);
 	Register(0xEF, 21, false, LoginServerSeed);
 }
 
-void PacketHandlers::Register(int packetID, int length, bool ingame, OnPacketReceive onReceive)
+void PacketHandlers::Register(uint8_t packetID, int length, bool ingame, OnPacketReceive onReceive)
 {
-	if (packetID >= (int)m_Handlers.size())
+	if (0 != m_Handlers[packetID].m_PacketID)
 	{
-		L_ERROR("packetId overload %d", packetID);
+		L_ERROR("repeated reg packetId %d", packetID);
 		return;
 	}
 	m_Handlers[packetID] = PacketHandler(packetID, length, ingame, onReceive);
 }
 
-PacketHandler *PacketHandlers::GetHandler(int packetID)
+PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
 {
 	if (packetID >= (int)m_Handlers.size())
 	{

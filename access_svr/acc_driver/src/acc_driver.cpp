@@ -46,7 +46,6 @@ bool acc::ADFacadeMgr::ReqVerifyRet(const SessionId &id, const VerifyRetStruct &
 	ADClientCon *con = m_con_mgr.FindADClientCon(id);
 	L_COND_F(con);
 	L_COND_F(con->IsReg());
-	L_COND_F(d.msg);
 
 	MsgReqVerifyRet req;
 	req.cid = id.cid;

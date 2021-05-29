@@ -73,5 +73,5 @@ private:
 	void OnHeartbeatTimeOut();
 
 	bool HandleSeed(CPointChar &cur, int &len);
-	bool CheckEncrypted(int packetID);
+	bool CheckEncrypted(uint8_t packetID);
 };

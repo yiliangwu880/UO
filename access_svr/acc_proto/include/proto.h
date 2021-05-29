@@ -56,9 +56,9 @@ namespace acc {
 	struct ClientSvrMsg
 	{
 		ClientSvrMsg();
-		uint32 cmd;	//应该不需要了，待确认
-		uint16 msg_len;     //msg字节数。
-		const char *msg;    //client和svr层：svr->UO包. 注意：你内存指针，别弄野了
+		uint32 cmd=0;	//应该不需要了，待确认
+		uint16 msg_len=0;     //msg字节数。
+		const char *msg=nullptr;    //client和svr层：svr->UO包. 注意：你内存指针，别弄野了
 		bool Parse(const char *tcp_pack, uint16 tcp_pack_len);
 		//@para[out] std::string &tcp_pack
 		bool Serialize(std::string &tcp_pack) const;

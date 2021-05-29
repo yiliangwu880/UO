@@ -98,10 +98,6 @@ namespace
 		{
 			pClient->SendMsg(f_msg.msg, f_msg.msg_len);
 		}
-		else
-		{
-			L_WARN("no notify verify result to client");
-		}
 		if (!req.is_success)
 		{
 			return;

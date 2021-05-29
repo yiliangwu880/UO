@@ -398,7 +398,10 @@ bool acc::ClientSvrMsg::Serialize(std::string &tcp_pack) const
 	}
 	tcp_pack.append((const char *)&cmd, sizeof(cmd));
 	tcp_pack.append((const char *)&msg_len, sizeof(msg_len));
-	tcp_pack.append(msg, msg_len);
+	if (0 != msg_len)
+	{
+		tcp_pack.append(msg, msg_len);
+	}
 	return true;
 }
 

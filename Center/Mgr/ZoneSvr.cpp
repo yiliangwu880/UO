@@ -19,7 +19,7 @@ ZoneSvr * ZoneSvrMgr::FindZoneSvr(uint16 svrId)
 STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&ZoneSvrMgr::ReqZoneOk_cs));
 void ZoneSvrMgr::ReqZoneOk_cs(ZoneSvrCon &con, const proto::ReqZoneOk_cs &msg)
 {
-	L_INFO("ReqZoneOk_cs");
+	L_INFO("ReqZoneOk_cs, zoneId=%d", msg.svrId);
 	if (nullptr != MapFind(gZoneSvrMgr.m_svrId2Zone, msg.svrId))
 	{
 		L_ERROR("repeated reg zone");

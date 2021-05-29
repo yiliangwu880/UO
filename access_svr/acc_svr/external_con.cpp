@@ -1,3 +1,4 @@
+#include "UoClientMsgMgr.h"
 #include "external_con.h"
 #include "inner_con.h"
 #include "com.h"
@@ -132,13 +133,13 @@ bool ExternalSvrCon::HandleSeed(CPointChar &cur, int &len)
 }
 
 
-bool ExternalSvrCon::CheckEncrypted(int packetID)
+bool ExternalSvrCon::CheckEncrypted(uint8_t packetID)
 {
 	bool SentFirstPacket = m_state == State::VERIFYED;
 	if (!SentFirstPacket && packetID != 0xF0 && packetID != 0xF1 && packetID != 0xCF && packetID != 0x80 &&
 		packetID != 0x91 && packetID != 0xA4 && packetID != 0xEF && packetID != 0xE4 && packetID != 0xFF)
 	{
-		L_ERROR("Client: {0}: Encrypted Client Unsupported");
+		L_ERROR("Client: Encrypted Client Unsupported. packetId =%x ", packetID);
 		DisConnect();
 		return true;
 	}
@@ -155,6 +156,17 @@ int GetPacketLength(const char *pMsg, int len)
 	}
 
 	return 0;
+}
+
+
+unsigned char GetPacketID(const char *m_Buffer, int m_Size)
+{
+	if (m_Size >= 1)
+	{
+		return (unsigned char)m_Buffer[0];
+	}
+
+	return (unsigned char)0xFF;
 }
 
 }
@@ -185,27 +197,28 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 		}
 
 		int length = len; //int length = buffer.Length;
-
+		
 		while (length > 0 )
 		{
-			int packetID = pMsg[0];
+			uint8_t packetID = (uint8_t)GetPacketID(pMsg, len);
 
 			if (CheckEncrypted(packetID))
 			{
 				return 0;//Encrypted Client Unsupported
 			}
+			if (0 == packetID)
+			{
+				L_ERROR("packetID ==0");
+				return 0;
+			}
+			PacketHandler *handler = PacketHandlers::Ins().GetHandler(packetID);
+			if (handler == nullptr)
+			{
+				L_ERROR("find Handler Fail. %x", packetID);
+				return 0;
+			}
 
-			//todo
-			//PacketHandler handler = ns.GetHandler(packetID);
-
-			//if (handler == null)
-			//{
-			//	L_ERROR("find Handler Fail. %d", packetID);
-			//	return 0;
-			//}
-
-			//int packetLength = handler.Length;
-			int packetLength = 0;
+			int packetLength = handler->m_Length;
 			if (packetLength <= 0)
 			{
 				if (length >= 3)
@@ -229,7 +242,7 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 			{
 				return 0;
 			}
-
+			L_DEBUG("rev packetID,packetLength=0x%x %d", packetID, packetLength);
 			return packetLength;
 
 		}
@@ -242,6 +255,10 @@ int ExternalSvrCon::OnRawRecv(const char *pMsg, int len)
 	int totalGetLen = 0;
 	for (;;)
 	{
+		if (len == 0)
+		{
+			return totalGetLen;
+		}
 		//分割每个包，交给后续RevPacket处理
 		int packetLen = ParsePacket(pMsg, len);
 		if (packetLen == 0)//未接收完整
@@ -266,6 +283,7 @@ void ExternalSvrCon::RevPacket(const char *pMsg, int len)
 		Forward2VerifySvr(pMsg, len);
 		break;
 	case ExternalSvrCon::State::WAIT_VERIFY:
+		Forward2VerifySvr(pMsg, len);
 		L_WARN("client repeated req verify, ignore");
 		break;
 	case ExternalSvrCon::State::VERIFYED:

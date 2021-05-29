@@ -27,8 +27,8 @@ class PacketHandlers : public Singleton<PacketHandlers>
 public:
 	void Init();
 	//@length 包固定长度。 0表示包是可变长度
-	void Register(int packetID, int length, bool ingame, OnPacketReceive onReceive);
-	PacketHandler *GetHandler(int packetID);
+	void Register(uint8_t packetID, int length, bool ingame, OnPacketReceive onReceive);
+	PacketHandler *GetHandler(uint8_t packetID);
 
 private:
 

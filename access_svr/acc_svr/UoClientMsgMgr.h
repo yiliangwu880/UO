@@ -1,23 +1,18 @@
-//链接center
+//UO项目特有，为了根据ID 获取包 长度
 #pragma once
 #include "AccMgr.h"
-#include "UoProto.h"
+#include <numeric>
 
-using OnPacketReceive = void (*)(const Session &sn, PacketReader pvSrc);
 
 struct PacketHandler
 {
 	int m_PacketID=0;
 	int m_Length=0;
-	bool m_Ingame=false;
-	OnPacketReceive m_OnReceive=nullptr;
 	PacketHandler() {};
-	PacketHandler(int packetID, int length, bool ingame, OnPacketReceive onReceive)
+	PacketHandler(int packetID, int length, bool ingame)
 	{
 		m_PacketID = packetID;
 		m_Length = length;
-		m_Ingame = ingame;
-		m_OnReceive = onReceive;
 	}
 };
 
@@ -26,13 +21,14 @@ class PacketHandlers : public Singleton<PacketHandlers>
 	std::vector<PacketHandler> m_Handlers;
 	
 public:
-	static void CfgInit(bool &ret);
 	void Init();
 	//@length 包固定长度。 0表示包是可变长度
-	void Register(uint8_t packetID, int length, bool ingame, OnPacketReceive onReceive);
+	void Register(uint8_t packetID, int length, bool ingame);		
+	//猜测和 6017 客户端版本有关，先和Register相同处理
+	void Register6017(int packetID, int length, bool ingame) { Register(packetID, length, ingame); };
+	void RegisterExtended(int packetID, bool ingame) { };
+	void RegisterEncoded(int packetID, bool ingame) { };
 	PacketHandler *GetHandler(uint8_t packetID);
 	const std::vector<PacketHandler> &GetHandlers()const  { return m_Handlers; };
-
-private:
 
 };
