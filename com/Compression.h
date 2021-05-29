@@ -8,12 +8,12 @@ class Compression
 {
 	//temp
 public:
-	static void Compress(const std::string &input, int offset, int count, std::string &output, int &length)
-	{
+	//static void Compress(const std::string &input, int offset, int count, std::string &output, int &length)
+	//{
 
-	}
-#if 0
-	private static readonly int[] _huffmanTable = new int[514]
+	//}
+
+	constexpr static const int _huffmanTable[514]=
 	{
 		0x2, 0x000, 0x5, 0x01F, 0x6, 0x022, 0x7, 0x034, 0x7, 0x075, 0x6, 0x028, 0x6, 0x03B, 0x7, 0x032, 0x8, 0x0E0, 0x8,
 		0x062, 0x7, 0x056, 0x8, 0x079, 0x9, 0x19D, 0x8, 0x097, 0x6, 0x02A, 0x7, 0x057, 0x8, 0x071, 0x8, 0x05B, 0x9, 0x1CC,
@@ -45,69 +45,81 @@ public:
 		0x00D
 	};
 
-	private const int CountIndex = 0;
-	private const int ValueIndex = 1;
+	static const int CountIndex = 0;
+	static const int ValueIndex = 1;
 
 	// UO packets may not exceed 64kb in length
-	private const int BufferSize = 0x10000;
+	static const int BufferSize = 0x10000;
 
 	// Optimal compression ratio is 2 / 8;  worst compression ratio is 11 / 8
-	private const int MinimalCodeLength = 2;
-	private const int MaximalCodeLength = 11;
+	static const int MinimalCodeLength = 2;
+	static const int MaximalCodeLength = 11;
 
 	// Fixed overhead, in bits, per compression call
-	private const int TerminalCodeLength = 4;
+	static const int TerminalCodeLength = 4;
 
 	// If our input exceeds this length, we cannot possibly compress it within the buffer
-	private const int DefiniteOverflow = ((BufferSize * 8) - TerminalCodeLength) / MinimalCodeLength;
+	static const int DefiniteOverflow = ((BufferSize * 8) - TerminalCodeLength) / MinimalCodeLength;
 
 	// If our input exceeds this length, we may potentially overflow the buffer
-	private const int PossibleOverflow = ((BufferSize * 8) - TerminalCodeLength) / MaximalCodeLength;
+	static const int PossibleOverflow = ((BufferSize * 8) - TerminalCodeLength) / MaximalCodeLength;
 
-	public static unsafe void Compress(byte[] input, int offset, int count, byte[] output, ref int length)
+	//@input，offset 输入 字符串,开始便宜
+	//@count 输入 input 长度
+	//@output，length 输出
+	static void Compress(const std::string &input, int offset, int count, std::string &output, int &length)
 	{
-		if (input == null)
+		if (input.empty())
 		{
-			throw new ArgumentNullException("input");
+			L_ERROR("empty input");
+			return;
 		}
-		else if (offset < 0 || offset >= input.Length)
+		else if (offset < 0 || offset >= (int)input.length())
 		{
-			throw new ArgumentOutOfRangeException("offset");
+			L_ERROR("offset");
+			return;
 		}
-		else if (count < 0 || count > input.Length)
+		else if (count < 0 || count >(int)input.length())
 		{
-			throw new ArgumentOutOfRangeException("count");
+			L_ERROR("count");
+			return;
 		}
-		else if ((input.Length - offset) < count)
+		else if (((int)input.length() - offset) < count)
 		{
-			throw new ArgumentException();
+			L_ERROR("count");
+			return;
 		}
 
 		length = 0;
 
 		if (count > DefiniteOverflow)
 		{
+			L_ERROR("u");
 			return;
 		}
 
 		int bitCount = 0;
 		int bitValue = 0;
 
-		fixed(int* pTable = _huffmanTable)
+#define fixed if //留着C#痕迹
+		if(const int* pTable = _huffmanTable)
 		{
-			int* pEntry;
+			const int* pEntry = nullptr;
 
-			fixed(byte* pInputBuffer = input)
+			if(const byte* pInputBuffer = (const byte*)input.c_str())
 			{
-				byte* pInput = pInputBuffer + offset, pInputEnd = pInput + count;
+				const byte* pInput = pInputBuffer + offset;
+				const byte* pInputEnd = pInput + count;
 
-				fixed(byte* pOutputBuffer = output)
+				output.resize(BufferSize);
+				if(byte* pOutputBuffer = (byte*)output.c_str())
 				{
-					byte* pOutput = pOutputBuffer, pOutputEnd = pOutput + BufferSize;
+					byte* pOutput = pOutputBuffer;
+					byte* pOutputEnd = pOutput + BufferSize;
 
 					while (pInput < pInputEnd)
 					{
-						pEntry = &pTable[*pInput++ << 1];
+						pEntry = &pTable[(int)(*pInput++ << 1)];
 
 						bitCount += pEntry[CountIndex];
 
@@ -125,6 +137,7 @@ public:
 							else
 							{
 								length = 0;
+								L_ERROR("output too long");
 								return;
 							}
 						}
@@ -156,6 +169,7 @@ public:
 						else
 						{
 							length = 0;
+							L_ERROR("output too long");
 							return;
 						}
 					}
@@ -165,9 +179,11 @@ public:
 				}
 			}
 		}
-	}
 
-	public static readonly ICompressor Compressor;
+#undef fixed
+	}
+#if 0
+	static readonly ICompressor Compressor;
 
 	static Compression()
 	{
@@ -192,19 +208,21 @@ public:
 		}
 	}
 
-	public static ZLibError Pack(byte[] dest, ref int destLength, byte[] source, int sourceLength)
+	static ZLibError Pack(byte[] dest, ref int destLength, byte[] source, int sourceLength)
 	{
 		return Compressor.Compress(dest, ref destLength, source, sourceLength);
 	}
 
-	public static ZLibError Pack(byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality)
+	static ZLibError Pack(byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality)
 	{
 		return Compressor.Compress(dest, ref destLength, source, sourceLength, quality);
 	}
 
-	public static ZLibError Unpack(byte[] dest, ref int destLength, byte[] source, int sourceLength)
+	static ZLibError Unpack(byte[] dest, ref int destLength, byte[] source, int sourceLength)
 	{
 		return Compressor.Decompress(dest, ref destLength, source, sourceLength);
 	}
+
+
 #endif
 };
