@@ -70,7 +70,8 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 
 	L_DEBUG("OnRevVerifyReq rev packetId %x", (uint8_t)msg[0]);
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
-	handler->m_OnReceive(tmpSn, r);
+	NetState ns(tmpSn);
+	handler->m_OnReceive(ns, r);
 
 	{
 		static bool f = true;
@@ -124,19 +125,20 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 
 	L_DEBUG("rev packetId %x", msg[0]);
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
-	handler->m_OnReceive(sn, r);
+	NetState ns(sn);
+	handler->m_OnReceive(ns, r);
 }
 
 void AccMgr::OnClientConnect(const acc::Session &sn)
 {
-	Account *account = AccountMgr::Ins().GetAcc(sn.accName);
-	L_COND_V(account);
+	//Account *account = AccountMgr::Ins().GetAcc(sn.accName);
+	//L_COND_V(account);
 
-	CenterSnEx *p = sn.GetEx<CenterSnEx>();
-	L_COND_V(p);
-	p->m_pAccount = account->GetWeakPtr();
+	//CenterSnEx *p = sn.GetEx<CenterSnEx>();
+	//L_COND_V(p);
+	//p->m_pAccount = account->GetWeakPtr();
 
-	account->SetVerifyOk(sn.id);
+	//account->SetVerifyOk(sn.id);
 }
 
 void AccMgr::OnRevBroadcastUinToSession(const acc::Session &sn)

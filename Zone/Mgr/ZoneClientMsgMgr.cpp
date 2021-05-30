@@ -2,12 +2,11 @@
 #include "UoProto.h"
 #include "ZoneClientMsgMgr.h"
 
-using NetState = const Session &;
 
 namespace
 {
 
-	void CreateCharacter(NetState state, PacketReader pvSrc)
+	void CreateCharacter(NetState &state, PacketReader &pvSrc)
 	{
 
 	}
@@ -187,4 +186,15 @@ PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
 		return nullptr;
 	}
 	return p;
+}
+
+
+void NetState::Dispose()
+{
+	AccMgr::Ins().DisconClient(m_sn.id);
+}
+
+void NetState::Send(Packet &packet)
+{
+	AccMgr::Ins().SendToClient(m_sn.id, 0, packet.m_Stream.m_Stream.c_str(), packet.m_Stream.m_Stream.Length());
 }

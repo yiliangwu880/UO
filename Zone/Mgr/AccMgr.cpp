@@ -48,7 +48,8 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 
 	L_DEBUG("rev packetId %x", msg[0]);
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
-	handler->m_OnReceive(sn, r);
+	NetState ns(sn);
+	handler->m_OnReceive(ns, r);
 }
 
 Player *AccMgr::GetPlayer(const acc::Session &sn)

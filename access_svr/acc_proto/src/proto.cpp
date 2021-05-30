@@ -200,10 +200,6 @@ bool acc::MsgForward::Parse(const char *tcp_pack, uint16 tcp_pack_len)
 
 bool acc::MsgForward::Serialize(std::string &tcp_pack) const
 {
-	if (cmd == 0)
-	{
-		return false;
-	}
 	if (msg_len >= ASMSG_MAX_LEN)
 	{
 		return false;

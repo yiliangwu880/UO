@@ -284,7 +284,7 @@ void ExternalSvrCon::RevPacket(const char *pMsg, int len)
 		break;
 	case ExternalSvrCon::State::WAIT_VERIFY:
 		Forward2VerifySvr(pMsg, len);
-		L_WARN("client repeated req verify, ignore");
+//		L_WARN("client repeated req verify, ignore");
 		break;
 	case ExternalSvrCon::State::VERIFYED:
 		if (m_isCache)
@@ -352,7 +352,7 @@ bool ExternalSvrCon::ClientTcpPack2MsgForward(const char *pMsg, int len, acc::Ms
 
 void ExternalSvrCon::Forward2VerifySvr(const char *pMsg, int len)
 {
-	L_COND(State::INIT == m_state);
+//	L_COND(State::INIT == m_state); //UO临时不验证
 
 	m_wfm_tm.StopTimer();
 	string tcp_pack;

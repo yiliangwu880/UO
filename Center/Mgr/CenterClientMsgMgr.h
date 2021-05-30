@@ -3,7 +3,22 @@
 #include "AccMgr.h"
 #include "UoProto.h"
 
-using OnPacketReceive = void (*)(const Session &sn, PacketReader pvSrc);
+class Packet;
+//适配C# 写法
+struct NetState
+{
+	const Session &m_sn;
+	bool Seeded = false;
+	uint32 Seed = 0;
+
+	NetState(const Session & sn)
+		:m_sn(sn)
+	{
+	}
+	void Dispose();
+	void Send(Packet &packet);
+};
+using OnPacketReceive = void(*)(NetState &sn, PacketReader &pvSrc);
 
 struct PacketHandler
 {

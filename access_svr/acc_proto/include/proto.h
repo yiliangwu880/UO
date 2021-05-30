@@ -69,7 +69,7 @@ namespace acc {
 	struct MsgForward
 	{
 		uint64 cid;      //其中cid为 client到acc的连接id. 当个acc内唯一
-		uint32 cmd;      //client和svr层：cmd,msg
+		uint32 cmd;      //client和svr层：cmd,msg. //UO没用
 		uint16 msg_len;  //msg字节数。网络包不包含这个内容
 		const char *msg; //UO接收包. 注意：你内存指针，别弄野了
 
@@ -85,7 +85,7 @@ namespace acc {
 		bool is_success; //true表示验证成功
 		uint64 uin;
 		std::string accName; 
-		ClientSvrMsg rsp_msg;// 验证结果给客户端。 
+		ClientSvrMsg rsp_msg;// 验证结果给客户端。 等删掉，用直接发
 		bool Parse(const char *tcp_pack, uint16 tcp_pack_len);
 		//@para[out] std::string &tcp_pack
 		bool Serialize(std::string &tcp_pack) const;

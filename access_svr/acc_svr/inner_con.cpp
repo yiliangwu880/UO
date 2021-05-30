@@ -4,11 +4,12 @@
 #include "com.h"
 #include "server.h"
 #include "AccMgr.h"
+#include "svr_util/include/str_util.h"
 
 using namespace std;
 using namespace acc;
 using namespace lc;
-
+using namespace su;
 
 namespace
 {
@@ -425,6 +426,10 @@ void InnerSvrCon::OnRecv(const lc::MsgPack &msg)
 			return;
 		}
 		pClient->SendMsg(f_msg.msg, f_msg.msg_len);
+		{
+			std::string t(f_msg.msg, f_msg.msg_len);
+			L_DEBUG("Send client len=%d, %s", f_msg.msg_len, StrUtil::BinaryToHex(t).c_str());
+		}
 	}
 	else
 	{

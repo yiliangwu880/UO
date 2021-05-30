@@ -11,6 +11,7 @@
 //};
 
 using byte = std::byte;
+using sbyte = int8_t;
 
 using ushort = uint16_t;
 template<class T>
@@ -20,8 +21,9 @@ inline void Serial2Str(std::string &str, const T &v)
 }
 
 //适配UO C#写法
-struct StreamAdaptor : std::string
+struct StreamAdaptor : public std::string
 {
+public:
 	inline void WriteByte(byte v)
 	{
 		Serial2Str(*this, v);
@@ -36,10 +38,12 @@ struct StreamAdaptor : std::string
 };
 class PacketWriter
 {
-	
-	StreamAdaptor m_Stream;
 
+public:
+	StreamAdaptor m_Stream;
+private:
 	int m_Capacity;//m_Stream长度
+
 public:
 	PacketWriter()
 		: PacketWriter(32)
@@ -124,7 +128,17 @@ public:
 
 	void WriteAsciiFixed(const std::string &value, int size)
 	{
-		L_ERROR("unfinished");
+
+		if ((int)value.length() >= size)
+		{
+			m_Stream.append(value.c_str(), size);
+		}
+		else
+		{
+			std::string t = value;
+			t.resize(size);
+			m_Stream.append(t);
+		}
 #if 0
 		if (value == null)
 		{
@@ -145,8 +159,8 @@ public:
 			Encoding.ASCII.GetBytes(value, 0, length, m_Stream.GetBuffer(), (int)m_Stream.Position);
 			m_Stream.Position += size;
 		}
-
-#endif
+#endif		
+		
 	}
 
 
@@ -311,10 +325,12 @@ struct PacketState
 //发送客户端网络包基类
 class Packet
 {
-	PacketWriter m_Stream;
+private:
 	int m_PacketID;
 	int m_Length;//固定长度的消息 长度。 0 表示可变长度
 	int m_State; //PacketState mask
+public:
+	PacketWriter m_Stream;
 
 public:
 	int PacketID(){  return m_PacketID; }

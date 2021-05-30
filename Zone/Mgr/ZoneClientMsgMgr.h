@@ -1,8 +1,23 @@
 //链接center
 #pragma once
 #include "AccMgr.h"
+#include "SendToClientMgr.h"
 
-using OnPacketReceive = void (*)(const Session &sn, PacketReader pvSrc);
+//适配C# 写法
+struct NetState
+{
+	const Session &m_sn;
+	bool Seeded = false;
+	uint32 Seed = 0;
+
+	NetState(const Session & sn)
+		:m_sn(sn)
+	{
+	}
+	void Dispose();
+	void Send(Packet &packet);
+};
+using OnPacketReceive = void (*)(NetState &state, PacketReader &pvSrc);
 
 struct PacketHandler
 {

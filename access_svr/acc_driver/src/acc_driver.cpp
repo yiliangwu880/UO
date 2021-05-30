@@ -95,8 +95,8 @@ bool acc::ADFacadeMgr::SendToClient(const SessionId &id, uint32 cmd, const char 
 	ADClientCon *con = m_con_mgr.FindADClientCon(id);
 	L_COND_F(con);
 	L_COND_F(con->IsReg());
-	L_COND_F(nullptr != con->FindSession(id), "can't find session");//todo 待优化，不用查。acc检查失败，通知删掉session
-
+	//L_COND_F(nullptr != con->FindSession(id), "can't find session. cid=%ld", id.cid);//todo 待优化，不用查。acc检查失败，通知删掉session
+	
 	MsgForward req;
 	req.cid = id.cid;
 	req.cmd = cmd;
