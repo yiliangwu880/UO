@@ -54,27 +54,15 @@ bool acc::ADFacadeMgr::ReqVerifyRet(const SessionId &id, const VerifyRetStruct &
 	req.uin = d.uin;
 	req.accName = d.accName;
 	
-	req.rsp_msg.cmd = d.cmd;
-	req.rsp_msg.msg = d.msg;
-	req.rsp_msg.msg_len = d.msg_len;
+
 
 	string as_msg;
-	req.Serialize(as_msg);
-	L_DEBUG("MsgReqVerifyRet req. serial=%s", StrUtil::BinaryToHex(as_msg).c_str());
+	L_COND_F(req.Serialize(as_msg));
 	string tcp_pack;
-	ASMsg::Serialize(CMD_REQ_VERIFY_RET, as_msg, tcp_pack);
-	L_DEBUG("tcp_pack. serial=%s", StrUtil::BinaryToHex(tcp_pack).c_str());
+	L_COND_F(ASMsg::Serialize(CMD_REQ_VERIFY_RET, as_msg, tcp_pack));
 	return con->SendPack(tcp_pack);
 }
 
-bool acc::ADFacadeMgr::ReqVerifyRet(const SessionId &id, bool is_success, uint32 cmd, const char *msg, uint16 msg_len)
-{
-	VerifyRetStruct d;
-	d.cmd = cmd;
-	d.msg = msg;
-	d.msg_len = (uint16)msg_len;
-	return ReqVerifyRet(id, d);
-}
 
 bool acc::ADFacadeMgr::BroadcastUinToSession(const SessionId &id, uint64 uin, const std::string &accName)
 {

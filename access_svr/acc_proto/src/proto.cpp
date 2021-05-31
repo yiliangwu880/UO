@@ -266,7 +266,6 @@ bool acc::MsgReqVerifyRet::Parse(const char *tcp_pack, uint16 tcp_pack_len)
 	ParseCp(is_success, cur);
 	ParseCp(uin, cur);
 	ParseCp(accName, cur);
-	rsp_msg.Parse(cur, tcp_pack_len - sizeof(cid) - sizeof(is_success));
 	return  true;
 }
 
@@ -281,7 +280,7 @@ bool acc::MsgReqVerifyRet::Serialize(std::string &tcp_pack) const
 	SerialStrCp(tcp_pack, is_success);
 	SerialStrCp(tcp_pack, uin);
 	SerialStrCp(tcp_pack, accName);
-	return rsp_msg.Serialize(tcp_pack);
+	return true;
 }
 
 acc::MsgAccSeting::MsgAccSeting()
@@ -362,6 +361,7 @@ bool acc::ClientSvrMsg::Parse(const char *tcp_pack, uint16 tcp_pack_len)
 {
 	if (0 == tcp_pack_len || nullptr == tcp_pack)
 	{
+		printf("error 0 == tcp_pack_len || nullptr == tcp_pack\n");
 		return false;
 	}
 	const char *cur = tcp_pack; //读取指针
@@ -384,12 +384,9 @@ bool acc::ClientSvrMsg::Parse(const char *tcp_pack, uint16 tcp_pack_len)
 
 bool acc::ClientSvrMsg::Serialize(std::string &tcp_pack) const
 {
-	if (cmd == 0)
-	{
-		return false;
-	}
 	if (msg_len >= ASMSG_MAX_LEN)
 	{
+		printf("error msg_len >= ASMSG_MAX_LEN\n");
 		return false;
 	}
 	tcp_pack.append((const char *)&cmd, sizeof(cmd));

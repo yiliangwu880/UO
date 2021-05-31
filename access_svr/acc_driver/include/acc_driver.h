@@ -80,9 +80,6 @@ namespace acc {
 		bool is_success = false;
 		uint64 uin = 0;
 		std::string accName;
-		uint32 cmd = 0;//等删掉，用直接发
-		const char *msg = nullptr; //等删掉，用直接发
-		uint16 msg_len = 0;
 	};
 	//外观模式，acc driver 接口
 	class ADFacadeMgr 
@@ -108,8 +105,6 @@ namespace acc {
 
 		//请求验证结果. 
 		bool ReqVerifyRet(const SessionId &id, const VerifyRetStruct &d);
-		//等删除，留着让测试代码编译通过
-		bool ReqVerifyRet(const SessionId &id, bool is_success, uint32 cmd, const char *msg, uint16 msg_len);
 
 		//向所有svr的指定会话广播uin accName
 		bool BroadcastUinToSession(const SessionId &id, uint64 uin, const std::string &accName);

@@ -85,7 +85,6 @@ namespace acc {
 		bool is_success; //true表示验证成功
 		uint64 uin;
 		std::string accName; 
-		ClientSvrMsg rsp_msg;// 验证结果给客户端。 等删掉，用直接发
 		bool Parse(const char *tcp_pack, uint16 tcp_pack_len);
 		//@para[out] std::string &tcp_pack
 		bool Serialize(std::string &tcp_pack) const;

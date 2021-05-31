@@ -85,10 +85,9 @@ namespace
 	{
 		MsgReqVerifyRet req;
 
-		L_DEBUG("ASMsg.msg. serial=%s", StrUtil::BinaryToHex(string(msg.msg, msg.msg_len)).c_str() );
+//		L_DEBUG("ASMsg.msg. serial=%s", StrUtil::BinaryToHex(string(msg.msg, msg.msg_len)).c_str() );
 		L_COND(req.Parse(msg.msg, msg.msg_len), "parse ctrl msg fail");
 		L_COND(req.cid != 0, "CMD_REQ_VERIFY_RET cid==0");
-		const ClientSvrMsg &f_msg = req.rsp_msg;
 
 		ExternalSvrCon *pClient = Server::Ins().FindClientSvrCon(req.cid);
 		if (nullptr == pClient)
@@ -96,12 +95,7 @@ namespace
 			L_DEBUG("find cid fail. cid=%lld", req.cid);
 			return;
 		}
-		//notify verify result to client
-		L_DEBUG("f_msg.msg_len=%d", f_msg.msg_len);
-		if (f_msg.msg_len != 0)
-		{
-			pClient->SendMsg(f_msg.msg, f_msg.msg_len);
-		}
+
 		if (!req.is_success)
 		{
 			return;
