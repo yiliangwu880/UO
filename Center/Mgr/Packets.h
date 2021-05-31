@@ -1,13 +1,14 @@
+//发送消息包结构，参考 c#
 #pragma once
 #include "SendToClientMgr.h"
 
 struct ServerInfo
 {
-	string Name;
+	string Name = "Endless Of Journey";
 
 	int FullPercent=0;
 
-	int TimeZone=0;
+	int TimeZone=8;
 
 	uint32 Address;
 

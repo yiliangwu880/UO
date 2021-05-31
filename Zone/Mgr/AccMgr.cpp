@@ -6,6 +6,7 @@
 #include "Player/Player.h"
 #include "UoProto.h"
 #include "ZoneClientMsgMgr.h"
+#include "NetState.h"
 
 
 using namespace std;
@@ -48,7 +49,7 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 
 	L_DEBUG("rev packetId %x", msg[0]);
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
-	NetState ns(sn);
+	NetState ns(sn, *this);
 	handler->m_OnReceive(ns, r);
 }
 
@@ -69,9 +70,9 @@ void AccMgr::OnMsgRspCacheMsg(const acc::Session &sn, bool isCache)
 
 void AccMgr::OnClientDisCon(const acc::Session &sn)
 {
-	Player *player = AccMgr::Ins().GetPlayer(sn);
-	L_COND_V(player);
-	player->m_LoginPlayer.ClientDisCon();
+	//Player *player = AccMgr::Ins().GetPlayer(sn);
+	//L_COND_V(player);
+	//player->m_LoginPlayer.ClientDisCon();
 }
 
 void AccMgr::OnRevBroadcastUinToSession(const acc::Session &session)

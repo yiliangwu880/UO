@@ -3,6 +3,7 @@
 #include "../../acc_proto/include/proto.h"
 #include "log_def.h"
 #include "connect.h"
+#include "svr_util/include/str_util.h"
 
 using namespace std;
 using namespace lc;
@@ -59,8 +60,10 @@ bool acc::ADFacadeMgr::ReqVerifyRet(const SessionId &id, const VerifyRetStruct &
 
 	string as_msg;
 	req.Serialize(as_msg);
+	L_DEBUG("MsgReqVerifyRet req. serial=%s", StrUtil::BinaryToHex(as_msg).c_str());
 	string tcp_pack;
 	ASMsg::Serialize(CMD_REQ_VERIFY_RET, as_msg, tcp_pack);
+	L_DEBUG("tcp_pack. serial=%s", StrUtil::BinaryToHex(tcp_pack).c_str());
 	return con->SendPack(tcp_pack);
 }
 

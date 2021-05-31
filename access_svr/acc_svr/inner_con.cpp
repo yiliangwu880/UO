@@ -84,6 +84,8 @@ namespace
 	void Parse_CMD_REQ_VERIFY_RET(InnerSvrCon &con, const acc::ASMsg &msg)
 	{
 		MsgReqVerifyRet req;
+
+		L_DEBUG("ASMsg.msg. serial=%s", StrUtil::BinaryToHex(string(msg.msg, msg.msg_len)).c_str() );
 		L_COND(req.Parse(msg.msg, msg.msg_len), "parse ctrl msg fail");
 		L_COND(req.cid != 0, "CMD_REQ_VERIFY_RET cid==0");
 		const ClientSvrMsg &f_msg = req.rsp_msg;
@@ -95,6 +97,7 @@ namespace
 			return;
 		}
 		//notify verify result to client
+		L_DEBUG("f_msg.msg_len=%d", f_msg.msg_len);
 		if (f_msg.msg_len != 0)
 		{
 			pClient->SendMsg(f_msg.msg, f_msg.msg_len);
@@ -426,10 +429,7 @@ void InnerSvrCon::OnRecv(const lc::MsgPack &msg)
 			return;
 		}
 		pClient->SendMsg(f_msg.msg, f_msg.msg_len);
-		{
-			std::string t(f_msg.msg, f_msg.msg_len);
-			L_DEBUG("Send client len=%d, %s", f_msg.msg_len, StrUtil::BinaryToHex(t).c_str());
-		}
+
 	}
 	else
 	{

@@ -7,6 +7,7 @@
 #include "MsgDispatch.h"
 #include "CenterClientMsgMgr.h"
 #include "SendToClientMgr.h"
+#include "NetState.h"
 
 using namespace std;
 using namespace su;
@@ -70,22 +71,10 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 
 	L_DEBUG("OnRevVerifyReq rev packetId %x", (uint8_t)msg[0]);
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
-	NetState ns(tmpSn);
+	NetState ns(tmpSn, *this);
 	handler->m_OnReceive(ns, r);
 
-	{
-		static bool f = true;
-		if (f)
-		{
-			f = false;
-			//无条件认证通过
-			VerifyRetStruct d;
-			d.is_success = true;
-			//d.msg = ntf to client login ok
-			L_DEBUG("req verify ret ok");
-			AccMgr::Ins().ReqVerifyRet(id, d);
-		}
-	}
+
 
 	return;
 	{
@@ -125,7 +114,7 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 
 	L_DEBUG("rev packetId %x", msg[0]);
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
-	NetState ns(sn);
+	NetState ns(sn, *this);
 	handler->m_OnReceive(ns, r);
 }
 

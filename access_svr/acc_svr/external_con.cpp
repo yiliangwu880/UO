@@ -4,10 +4,12 @@
 #include "com.h"
 #include "server.h"
 #include "AccMgr.h"
+#include "svr_util/include/str_util.h"
 
 using namespace std;
 using namespace acc;
 using namespace lc;
+using namespace su;
 ExternalSvrCon::ExternalSvrCon()
 	:m_state(State::INIT)
 	, m_uin(0)
@@ -65,7 +67,10 @@ bool ExternalSvrCon::SendMsg(const char *msg, uint16 msg_len)
 {
 	string s;
 	s.append(msg, msg_len);
-	return SendPack(s.c_str(), s.length());
+	{
+		L_DEBUG("Send client len=%d, %s", msg_len, StrUtil::BinaryToHex(s).c_str());
+	}
+	return SendData(s.c_str(), s.length());
 }
 
 
@@ -252,6 +257,7 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 }
 int ExternalSvrCon::OnRawRecv(const char *pMsg, int len)
 {
+	L_ERROR("OnRawRecv msg len = %d", len);
 	int totalGetLen = 0;
 	for (;;)
 	{
@@ -305,7 +311,7 @@ void ExternalSvrCon::OnRecv(const lc::MsgPack &msg)
 
 void ExternalSvrCon::OnConnected()
 {
-	//L_DEBUG("ExternalSvrCon OnConnected . sec=%d", AccSeting::Ins().m_seting.no_msg_interval_sec);
+	L_DEBUG("ExternalSvrCon OnConnected . client=%s %d", GetRemoteIp(), GetRemotePort());
 	const ClientLimitInfo &cli = AccSeting::Ins().m_seting.cli;
 	if (Server::Ins().GetExConSize() > cli.max_num)
 	{

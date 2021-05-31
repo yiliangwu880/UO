@@ -11,7 +11,7 @@
 //};
 
 using byte = std::byte;
-using sbyte = int8_t;
+using sbyte = char;
 
 using ushort = uint16_t;
 template<class T>
@@ -81,7 +81,6 @@ public:
 	{
 		m_Stream.WriteByte(value);
 	}
-
 
 	void Write(char value)
 	{
@@ -326,9 +325,9 @@ struct PacketState
 class Packet
 {
 private:
-	int m_PacketID;
-	int m_Length;//固定长度的消息 长度。 0 表示可变长度
-	int m_State; //PacketState mask
+	int m_PacketID = 0;
+	int m_Length=0;//固定长度的消息 长度。 0 表示可变长度
+	int m_State = 0; //PacketState mask
 public:
 	PacketWriter m_Stream;
 
@@ -524,6 +523,7 @@ public:
 	void InternalCompile(bool compress)
 	{
 		//加入可变长度， 参考 EnsureCapacity 函数，预留2字节写长度。 
+		L_DEBUG("m_Length=%d", m_Length);
 		if (m_Length == 0)
 		{
 			long streamLen = m_Stream.Length();

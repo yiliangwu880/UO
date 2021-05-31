@@ -9,6 +9,7 @@
 #include <arpa/inet.h>  
 #include "svr_util/include/str_util.h"
 #include "libevent_cpp/include/include_all.h"
+#include "NetState.h"
 
 using namespace lc;
 namespace
@@ -30,7 +31,13 @@ namespace
 		int clientMin = pvSrc.ReadInt32();
 		int clientRev = pvSrc.ReadInt32();
 		int clientPat = pvSrc.ReadInt32();
-
+		{
+			//无条件认证通过
+			VerifyRetStruct d;
+			d.is_success = true;
+			L_DEBUG("req verify ret ok");
+			AccMgr::Ins().ReqVerifyRet(state.m_sn.id, d);
+		}
 	//	state.Version = new ClientVersion(clientMaj, clientMin, clientRev, clientPat);
 	}
 
@@ -62,7 +69,6 @@ namespace
 		//}
 		vector<ServerInfo> info;
 		ServerInfo i;
-		i.Name = "mytest";
 		{
 #if 0
 			//sockaddr_in（在netinet / in.h中定义）：
@@ -151,13 +157,3 @@ PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
 	return p;
 }
 
-void NetState::Dispose()
-{
-	AccMgr::Ins().DisconClient(m_sn.id);
-}
-
-void NetState::Send(Packet &packet)
-{
-	L_DEBUG("Send client len=%d, %s", packet.m_Stream.m_Stream.length(), StrUtil::BinaryToHex(packet.m_Stream.m_Stream).c_str());
-	AccMgr::Ins().SendToClient(m_sn.id, 0, packet.m_Stream.m_Stream.c_str(), packet.m_Stream.m_Stream.Length());
-}
