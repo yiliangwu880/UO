@@ -13,7 +13,7 @@ public:
 
 	//}
 
-	constexpr static const int _huffmanTable[514]=
+	constexpr static const uint32_t _huffmanTable[514]=
 	{
 		0x2, 0x000, 0x5, 0x01F, 0x6, 0x022, 0x7, 0x034, 0x7, 0x075, 0x6, 0x028, 0x6, 0x03B, 0x7, 0x032, 0x8, 0x0E0, 0x8,
 		0x062, 0x7, 0x056, 0x8, 0x079, 0x9, 0x19D, 0x8, 0x097, 0x6, 0x02A, 0x7, 0x057, 0x8, 0x071, 0x8, 0x05B, 0x9, 0x1CC,
@@ -98,13 +98,13 @@ public:
 			return;
 		}
 
-		int bitCount = 0;
-		int bitValue = 0;
+		uint32_t bitCount = 0;
+		uint32_t bitValue = 0;
 
 #define fixed if //留着C#痕迹
-		if(const int* pTable = _huffmanTable)
+		if(const uint32_t* pTable = _huffmanTable)
 		{
-			const int* pEntry = nullptr;
+			const uint32_t* pEntry = nullptr;
 
 			if(const byte* pInputBuffer = (const byte*)input.c_str())
 			{
@@ -119,7 +119,7 @@ public:
 
 					while (pInput < pInputEnd)
 					{
-						pEntry = &pTable[(int)(*pInput++ << 1)];
+						pEntry = &pTable[(uint8_t)*pInput++ << 1];
 
 						bitCount += pEntry[CountIndex];
 
