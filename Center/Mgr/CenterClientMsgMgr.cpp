@@ -138,8 +138,14 @@ namespace
 	//第二个链接，第一条接收
 	static void GameLogin(NetState &state, PacketReader &pvSrc)
 	{
-
 		L_DEBUG("GameLogin")
+		{
+			//无条件认证通过
+			VerifyRetStruct d;
+			d.is_success = true;
+			L_DEBUG("req verify ret ok");
+			AccMgr::Ins().ReqVerifyRet(state.m_sn.id, d);
+		}
 		//state.SentFirstPacket = true;
 
 		uint32 authID = pvSrc.ReadUInt32();

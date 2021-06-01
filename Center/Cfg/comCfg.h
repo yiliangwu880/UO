@@ -10,6 +10,7 @@ struct comCfg
 {
 	struct S_access
 	{
+		uint16_t ex_port;
 		std::string ip;
 		uint16_t port;
 	};
@@ -58,6 +59,7 @@ private:
 		try
 		{
 
+			access.ex_port = js["access"]["ex_port"];
 			access.ip = js["access"]["ip"];
 			access.port = js["access"]["port"];
 			center.ip = js["center"]["ip"];

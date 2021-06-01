@@ -3,13 +3,12 @@
 cd ../bin/Center
 ../../external/cpp_cfg/bin/export_cpp_cfg centerCfg.txt 
 mv -f centerCfg.h ../../Center/Cfg/
-cd - # tool Ŀ¼
+cd - # tool 
 
-exit
 cd ../bin/Zone1
 ../../external/cpp_cfg/bin/export_cpp_cfg zoneCfg.txt 
 mv -f zoneCfg.h ../../Zone/Cfg/
-cd - # tool Ŀ¼
+cd - # tool 
 
 
 cd ../bin/Center

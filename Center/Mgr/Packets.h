@@ -88,6 +88,12 @@ public:
 		{
 			m_Stream.Write((ushort)flags);
 		}
+		{//temp B9 0 FF 92 DB
+			char ar[5]={ (char)0xB9, (char)0x0 , (char)0xFF , (char)0x92 , (char)0xDB };
+			string t;
+			t.append(ar, 5);
+			m_Stream.DebugReset(t);
+		}
 	}
 };
 

@@ -54,6 +54,10 @@ public:
 	//	m_Stream.resize(capacity);
 		m_Capacity = capacity;
 	}
+	void DebugReset(CStr &str)
+	{
+		m_Stream.assign(str);
+	}
 	void SetCapacity(int cap)
 	{
 		m_Capacity = cap;
@@ -523,7 +527,6 @@ public:
 	void InternalCompile(bool compress)
 	{
 		//加入可变长度， 参考 EnsureCapacity 函数，预留2字节写长度。 
-		L_DEBUG("m_Length=%d", m_Length);
 		if (m_Length == 0)
 		{
 			long streamLen = m_Stream.Length();

@@ -106,7 +106,7 @@ void ExternalSvrCon::SetCache(bool isCache)
 //@len [in]cur有效长度，[out]解包后，cur未使用字节长度
 bool ExternalSvrCon::HandleSeed(CPointChar &cur, int &len)
 {
-	if (cur[0] == 0xEF)
+	if ((uint8_t)cur[0] == 0xEF)
 	{
 		// new packet in client	6.0.5.0	replaces the traditional seed method with a	seed packet
 		// 0xEF	= 239 =	multicast IP, so this should never appear in a normal seed.	 So	this is	backwards compatible with older	clients.
@@ -122,13 +122,14 @@ bool ExternalSvrCon::HandleSeed(CPointChar &cur, int &len)
 
 		uint32 seed = (uint32)((m_Peek[0] << 24) | (m_Peek[1] << 16) | (m_Peek[2] << 8) | m_Peek[3]);
 		len -= 4;
+		cur += 4;
 		if (seed == 0)
 		{
 			L_ERROR("Login: {0}: Invalid Client");
 			DisConnect();
 			return false;
 		}
-
+		L_DEBUG("HandleSeed get 4 bytes.seed = %d", seed);
 		Seed = seed;
 		Seeded = true;
 		return true;
@@ -195,10 +196,15 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 	}
 
 	
-		if (!Seeded && !HandleSeed(pMsg, len))
+	int readSeedLen = 0;
+		if (!Seeded) 
 		{
-			L_ERROR("read seed fail");
-			return 0;
+			if (!HandleSeed(pMsg, len))
+			{
+				L_ERROR("read seed fail");
+				return 0;
+			}
+			readSeedLen = 4;
 		}
 
 		int length = len; //int length = buffer.Length;
@@ -209,18 +215,18 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 
 			if (CheckEncrypted(packetID))
 			{
-				return 0;//Encrypted Client Unsupported
+				return readSeedLen;//Encrypted Client Unsupported
 			}
 			if (0 == packetID)
 			{
 				L_ERROR("packetID ==0");
-				return 0;
+				return readSeedLen;
 			}
 			PacketHandler *handler = PacketHandlers::Ins().GetHandler(packetID);
 			if (handler == nullptr)
 			{
 				L_ERROR("find Handler Fail. %x", packetID);
-				return 0;
+				return readSeedLen;
 			}
 
 			int packetLength = handler->m_Length;
@@ -234,26 +240,26 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 					{
 						L_ERROR("packetLength < 3");
 						DisConnect();
-						return 0;
+						return readSeedLen;
 					}
 				}
 				else
 				{
-					return 0;
+					return readSeedLen;
 				}
 			}
 
 			if (length < packetLength)
 			{
-				return 0;
+				return readSeedLen;
 			}
-			L_DEBUG("rev packetID,packetLength=0x%x %d", packetID, packetLength);
-			return packetLength;
+			L_DEBUG("rev packetID,len=0x%x %d", packetID, packetLength);
+			return packetLength+ readSeedLen;
 
 		}
 	
 
-	return 0;
+	return readSeedLen;
 }
 int ExternalSvrCon::OnRawRecv(const char *pMsg, int len)
 {
@@ -311,7 +317,7 @@ void ExternalSvrCon::OnRecv(const lc::MsgPack &msg)
 
 void ExternalSvrCon::OnConnected()
 {
-	L_DEBUG("ExternalSvrCon OnConnected . client=%s %d", GetRemoteIp(), GetRemotePort());
+	L_DEBUG("OnConnected . client=%s %d. cid=%ld", GetRemoteIp(), GetRemotePort(), GetId());
 	const ClientLimitInfo &cli = AccSeting::Ins().m_seting.cli;
 	if (Server::Ins().GetExConSize() > cli.max_num)
 	{
@@ -349,7 +355,7 @@ bool ExternalSvrCon::ClientTcpPack2MsgForward(const lc::MsgPack &msg, MsgForward
 bool ExternalSvrCon::ClientTcpPack2MsgForward(const char *pMsg, int len, acc::MsgForward &f_msg) const
 {
 	f_msg.cid = GetId();
-	f_msg.cmd = *(char*)(pMsg);
+	f_msg.cmd = *(uint8_t*)(pMsg);
 	f_msg.msg = pMsg;
 	f_msg.msg_len = len ;
 	return true;

@@ -175,6 +175,7 @@ public:
 					}
 
 					length = (int)(pOutput - pOutputBuffer);
+					output.resize(length);
 					return;
 				}
 			}
