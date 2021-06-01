@@ -176,7 +176,7 @@ unsigned char GetPacketID(const char *m_Buffer, int m_Size)
 
 }
 //@param pMsg, len  网络缓存字节
-//return 返回包字节数， 0表示包未接收完整。
+//return 返回已经读取的字节数， 0表示包未接收完整。
 int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 {
 //##接收包格式
@@ -197,7 +197,7 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 	
 		if (!Seeded && !HandleSeed(pMsg, len))
 		{
-			L_INFO("read seed fail");
+			L_ERROR("read seed fail");
 			return 0;
 		}
 
@@ -257,7 +257,7 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 }
 int ExternalSvrCon::OnRawRecv(const char *pMsg, int len)
 {
-	L_ERROR("OnRawRecv msg len = %d", len);
+	L_DEBUG("OnRawRecv msg len = %d", len);
 	int totalGetLen = 0;
 	for (;;)
 	{
@@ -348,7 +348,6 @@ bool ExternalSvrCon::ClientTcpPack2MsgForward(const lc::MsgPack &msg, MsgForward
 //uo网络格式，其他 游戏需要修改
 bool ExternalSvrCon::ClientTcpPack2MsgForward(const char *pMsg, int len, acc::MsgForward &f_msg) const
 {
-	L_COND_F(len >= (int)sizeof(f_msg.cmd));
 	f_msg.cid = GetId();
 	f_msg.cmd = *(char*)(pMsg);
 	f_msg.msg = pMsg;
@@ -408,7 +407,7 @@ void ExternalSvrCon::Forward2Svr(const char *pMsg, int len)
 	MsgForward f_msg;
 	if (!ClientTcpPack2MsgForward(pMsg, len, f_msg))
 	{
-		L_WARN("client illegal msg");
+		L_ERROR("client illegal msg");
 		return;
 	}
 	const HeartBeatInfo &hbi = AccSeting::Ins().m_seting.hbi;
@@ -427,7 +426,7 @@ void ExternalSvrCon::Forward2Svr(const char *pMsg, int len)
 	//s1:cmd 找 groupId,找不到转发到缺省组. end
 	//s2:groupId 找 svrId,找不到转发到svrId==groupId
 	//end
-	uint16 cmd = (uint16_t)f_msg.cmd;
+	uint16 cmd = (uint8_t)f_msg.msg[0]; //UO 获取第一个字节为消息号
 	uint16 svr_id = 0;
 	{//get svr_id
 		auto it = g_AccSeting->m_cmd2GrpId.find(cmd);

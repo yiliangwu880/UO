@@ -10,7 +10,7 @@ struct NetState
 	acc::ADFacadeMgr &m_accMgr;
 	bool Seeded = false;
 	uint32 Seed = 0;
-	bool CompressionEnabled = false;
+	bool CompressionEnabled = true;
 
 	NetState(const acc::Session & sn, acc::ADFacadeMgr &accMgr);
 

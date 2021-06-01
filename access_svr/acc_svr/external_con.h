@@ -61,7 +61,7 @@ private:
 	virtual void OnRecv(const lc::MsgPack &msg)override;
 private:
 	//@param pMsg, len  网络缓存字节
-	//return 返回包字节数， 0表示包未接收完整。
+	//return 返回已经读取的字节数， 0表示包未接收完整。
 	int ParsePacket(const char *pMsg, int len);
 	void RevPacket(const char *pMsg, int len);
 	bool ClientTcpPack2MsgForward(const lc::MsgPack &msg, acc::MsgForward &f_msg) const;

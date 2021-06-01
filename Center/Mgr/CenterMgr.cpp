@@ -3,10 +3,12 @@
 #include "CfgMgr.h"
 #include "version.h"
 #include "ZoneSvrCon.h"
+#include "libevent_cpp/include/include_all.h"
 
 using namespace std;
 using namespace su;
 using namespace proto;
+using namespace lc;
 
 namespace
 {
@@ -25,6 +27,22 @@ void CenterMgr::Init()
 	{
 		m_zoneId2Ok[svrId] = false;
 	}
+	{//init server info
+		const char* connect_ip = CfgMgr::Ins().ComCfg().access.ip.c_str();
+		unsigned short connect_port = CfgMgr::Ins().ComCfg().access.port;
+		sockaddr_in m_addr;
+		memset(&m_addr, 0, sizeof(m_addr));
+		m_addr.sin_family = AF_INET;
+		m_addr.sin_addr.s_addr = inet_addr(connect_ip);
+		m_addr.sin_port = auto_hton(connect_port);
+
+		//L_DEBUG("sin_addr = %x ", *(unsigned long *)&m_addr.sin_addr);
+		//L_DEBUG("sin_port = %x ", m_addr.sin_port);
+		m_ServerInfo.Address.Address = *(int32 *)&m_addr.sin_addr;
+		//L_DEBUG("m_ServerInfo.Address = %x", i.Address);
+		m_ServerInfo.Address.Port = connect_port;
+	}
+	
 	L_INFO("CenterMgr::Init");
 }
 

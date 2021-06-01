@@ -12,6 +12,7 @@
 #include "NetState.h"
 
 using namespace lc;
+
 namespace
 {
 
@@ -99,25 +100,110 @@ namespace
 			} IN_ADDR;
 
 #endif
-			const char* connect_ip = CfgMgr::Ins().ComCfg().access.ip.c_str();
-			unsigned short connect_port = CfgMgr::Ins().ComCfg().access.port;
-			sockaddr_in m_addr;
-
-			memset(&m_addr, 0, sizeof(m_addr));
-			m_addr.sin_family = AF_INET;
-			m_addr.sin_addr.s_addr = inet_addr(connect_ip);
-			m_addr.sin_port = auto_hton(connect_port);
-
-			L_DEBUG("sin_addr = %x ", *(unsigned long *)&m_addr.sin_addr);
-			L_DEBUG("sin_port = %x ", m_addr.sin_port);
-			i.Address = *(uint32 *)&m_addr.sin_addr;
-			L_DEBUG("i.Address = %x", i.Address);
 		}
-		info.push_back(i);
+		info.push_back(CenterMgr::Ins().GetServerInfo());
 		AccountLoginAck rsp(info);
+		state.CompressionEnabled = false;
 		state.Send(rsp);
 	}
+
+	static void PlayServer(NetState &state, PacketReader &pvSrc)
+	{
+		int index = pvSrc.ReadInt16();
+
+		//判断账号，选服合法
+		//var info = state.ServerInfo;
+		//IAccount a = state.Account;
+
+		//if (info == null || a == null || index < 0 || index >= info.Length)
+		//{
+		//	Utility.PushColor(ConsoleColor.Red);
+		//	Console.WriteLine("Client: {0}: Invalid Server ({1})", state, index);
+		//	Utility.PopColor();
+
+		//	state.Dispose();
+		//}
+		//else
+		//{
+		//	state.AuthID = GenerateAuthID(state);
+
+		//	state.SentFirstPacket = false;
+		//	state.Send(new PlayServerAck(info[index], state.AuthID));
+		//}
+		PlayServerAck p(CenterMgr::Ins().GetServerInfo(), 1);
+		state.CompressionEnabled = false;
+		state.Send(p);
+	}
+
+	//第二个链接，第一条接收
+	static void GameLogin(NetState &state, PacketReader &pvSrc)
+	{
+
+		L_DEBUG("GameLogin")
+		//state.SentFirstPacket = true;
+
+		uint32 authID = pvSrc.ReadUInt32();
+#if 0
+		if (m_AuthIDWindow.ContainsKey(authID))
+		{
+			AuthIDPersistence ap = m_AuthIDWindow[authID];
+			m_AuthIDWindow.Remove(authID);
+
+			state.Version = ap.Version;
+		}
+		else if (m_ClientVerification)
+		{
+			Utility.PushColor(ConsoleColor.Red);
+			Console.WriteLine("Login: {0}: Invalid Client", state);
+			Utility.PopColor();
+
+			state.Dispose();
+			return;
+		}
+
+		if (state.AuthID != 0 && authID != state.AuthID)
+		{
+			Utility.PushColor(ConsoleColor.Red);
+			Console.WriteLine("Login: {0}: Invalid Client", state);
+			Utility.PopColor();
+
+			state.Dispose();
+			return;
+		}
+
+		if (state.AuthID == 0 && authID != state.Seed)
+		{
+			Utility.PushColor(ConsoleColor.Red);
+			Console.WriteLine("Login: {0}: Invalid Client", state);
+			Utility.PopColor();
+
+			state.Dispose();
+			return;
+		}
+#endif
+		string username = pvSrc.ReadString(30);
+		string password = pvSrc.ReadString(30);
+
+
+		// 接受登录
+		//state.CityInfo = e.CityInfo;
+		SupportedFeatures sf;
+		state.Send(sf);
+
+		//if (state.NewCharacterList)
+		//{
+			CharacterList cl;
+			state.Send(cl);
+		//}
+		//else
+		//{
+		//	state.Send(new CharacterListOld(state.Account, state.CityInfo));
+		//}
+	
+	}
+
 }
+
 
 RegGlobalEvent(EV_SVR_CFG_INI, PacketHandlers::CfgInit);
 void PacketHandlers::CfgInit(bool &ret)
@@ -125,12 +211,6 @@ void PacketHandlers::CfgInit(bool &ret)
 	PacketHandlers::Ins().Init();
 }
 
-void PacketHandlers::Init()
-{
-	m_Handlers.resize(numeric_limits<uint8_t>::max());
-	Register(0xEF, 21, false, LoginServerSeed);
-	Register(0x80, 62, false, AccountLogin);
-}
 
 void PacketHandlers::Register(uint8_t packetID, int length, bool ingame, OnPacketReceive onReceive)
 {
@@ -157,3 +237,12 @@ PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
 	return p;
 }
 
+
+void PacketHandlers::Init()
+{
+	m_Handlers.resize(numeric_limits<uint8_t>::max());
+	Register(0xEF, 21, false, LoginServerSeed);
+	Register(0x80, 62, false, AccountLogin);
+	Register(0xA0, 3, false, PlayServer);
+	Register(0x91, 65, false, GameLogin);
+}

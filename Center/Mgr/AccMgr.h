@@ -9,6 +9,7 @@ struct CenterSnEx
 {
 	weak_ptr<Account> m_pAccount;
 	weak_ptr<Player> m_pPlayer;
+
 };
 
 class AccMgr : public acc::ADFacadeMgr, public Singleton<AccMgr>
