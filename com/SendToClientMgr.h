@@ -10,8 +10,8 @@
 //	void Serialize(std::string &str) {};
 //};
 
-using byte = std::byte;
-using sbyte = char;
+#define byte uint8_t
+using sbyte = int8_t;
 
 using ushort = uint16_t;
 template<class T>
@@ -613,3 +613,5 @@ public:
 	}
 };
 
+
+#undef byte

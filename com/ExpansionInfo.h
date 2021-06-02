@@ -1,6 +1,25 @@
 #pragma once
 #include "log_def.h"
 
+//((int)Direction & 0x1) == 0x1;//true indicate diagonals. right,left,down,up
+//(((int) Direction - 1) & 0x7)  逆时针 偏移一个方向
+//(((int) Direction + 1) & 0x7) 表示顺时针 偏移一个方向
+//[CustomEnum(new[] {"North", "Right", "East", "Down", "South", "Left", "West", "Up"})]
+enum class Direction : uint8_t
+{
+	North = 0x0,
+	Right = 0x1,
+	East = 0x2,
+	Down = 0x3,
+	South = 0x4,
+	Left = 0x5,
+	West = 0x6,
+	Up = 0x7,
+
+	Mask = 0x7,
+	Running = 0x80,
+	ValueMask = 0x87
+};
 
 enum class FeatureFlags
 {

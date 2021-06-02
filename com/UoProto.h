@@ -72,14 +72,14 @@ public:
 		return ret;
 	}
 
-	byte ReadByte()
+	uint8_t ReadByte()
 	{
 		if ((m_Index + 1) > m_Size)
 		{
-			return (byte)0;
+			return (uint8_t)0;
 		}
 
-		return (byte)(m_Data[m_Index++]);
+		return (uint8_t)(m_Data[m_Index++]);
 	}
 
 	uint32 ReadUInt32()

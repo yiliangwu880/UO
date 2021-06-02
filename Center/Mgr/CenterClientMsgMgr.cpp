@@ -208,6 +208,222 @@ namespace
 	
 	}
 
+
+	
+	static void DoLogin(NetState &state)
+	{
+#if 0
+		Mobile m;
+
+		state.Send(new LoginConfirm(m));
+
+		if (m.Map != null)
+		{
+			state.Send(new MapChange(m));
+		}
+
+		state.Send(new MapPatches());
+
+		{
+			SupportedFeatures t;
+			state.Send(t);
+		}
+
+		state.Sequence = 0;
+
+		{
+			MobileIncoming t;
+			state.Send(t);
+		}
+
+		if (state.NewMobileIncoming)
+		{
+			state.Send(new MobileUpdate(m));
+		}
+		else if (state.StygianAbyss)
+		{
+			state.Send(new MobileUpdate(m));
+		}
+		else
+		{
+			state.Send(new MobileUpdateOld(m));
+		}
+
+		m.SendEverything();
+
+		m.CheckLightLevels(true);
+
+		state.Send(LoginComplete.Instance);
+
+		state.Send(MobileIncoming.Create(state, m, m));
+
+		state.Send(new MobileStatus(m, m));
+
+		state.Send(Network.SetWarMode.Instantiate(m.Warmode));
+
+		state.Send(SeasonChange.Instantiate(m.GetSeason(), true));
+
+		state.Send(new CurrentTime());
+
+		state.Send(new MapChange(m));
+
+		EventSink.InvokeLogin(new LoginEventArgs(m));
+
+		Console.WriteLine("Client: {0}: Entered World ({1})", state, m);
+
+		m.SendEverything();
+		m.ClearFastwalkStack();
+#endif
+	}
+
+
+	//接收 创建角色
+	static void CreateCharacter70160(NetState &state, PacketReader &pvSrc)
+	{
+		int unk1 = pvSrc.ReadInt32();
+		int unk2 = pvSrc.ReadInt32();
+		int unk3 = pvSrc.ReadByte();
+		string name = pvSrc.ReadString(30);
+
+		pvSrc.Seek(2, SeekOrigin::Current);
+		int flags = pvSrc.ReadInt32();
+		pvSrc.Seek(8, SeekOrigin::Current);
+		int prof = pvSrc.ReadByte();
+		pvSrc.Seek(15, SeekOrigin::Current);
+
+		int genderRace = pvSrc.ReadByte();
+
+		int str = pvSrc.ReadByte();
+		int dex = pvSrc.ReadByte();
+		int intl = pvSrc.ReadByte();
+		int is1 = pvSrc.ReadByte();
+		int vs1 = pvSrc.ReadByte();
+		int is2 = pvSrc.ReadByte();
+		int vs2 = pvSrc.ReadByte();
+		int is3 = pvSrc.ReadByte();
+		int vs3 = pvSrc.ReadByte();
+		int is4 = pvSrc.ReadByte();
+		int vs4 = pvSrc.ReadByte();
+
+		int hue = pvSrc.ReadUInt16();
+		int hairVal = pvSrc.ReadInt16();
+		int hairHue = pvSrc.ReadInt16();
+		int hairValf = pvSrc.ReadInt16();
+		int hairHuef = pvSrc.ReadInt16();
+		pvSrc.ReadByte();
+		int cityIndex = pvSrc.ReadByte();
+		int charSlot = pvSrc.ReadInt32();
+		int clientIP = pvSrc.ReadInt32();
+		int shirtHue = pvSrc.ReadInt16();
+		int pantsHue = pvSrc.ReadInt16();
+
+		/*
+		0x00, 0x01
+		0x02, 0x03 -> Human Male, Human Female
+		0x04, 0x05 -> Elf Male, Elf Female
+		0x05, 0x06 -> Gargoyle Male, Gargoyle Female
+		*/
+
+		bool female = ((genderRace % 2) != 0);
+
+		//Race race = null;
+
+		byte raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
+		//race = Race.Races[raceID];
+
+		//if (race == null)
+		//{
+		//	race = Race.DefaultRace;
+		//}
+
+		//var info = state.CityInfo;
+		//IAccount a = state.Account;
+
+		//if (info == null || a == null || cityIndex < 0 || cityIndex >= info.Length)
+		//{
+		//	L_ERROR("");
+		//	state.Dispose();
+		//}
+		//else
+		{
+#if 0
+
+			// Check if anyone is using this account
+			//for (int i = 0; i < a.Length; ++i)
+			//{
+			//	Mobile check = a[i];
+
+			//	if (check != null && check.Map != Map.Internal)
+			//	{
+			//		Utility.PushColor(ConsoleColor.Red);
+			//		Console.WriteLine("Login: {0}: Account in use", state);
+			//		Utility.PopColor();
+			//		state.Send(new PopupMessage(PMMessage.CharInWorld));
+			//		return;
+			//	}
+			//}
+
+			state.Flags = (ClientFlags)flags;
+
+			CharacterCreatedEventArgs args = new CharacterCreatedEventArgs(
+				state,
+				a,
+				name,
+				female,
+				hue,
+				str,
+				dex,
+				intl,
+				info[cityIndex],
+				new SkillNameValue[4]
+				{
+					new SkillNameValue((SkillName)is1, vs1), new SkillNameValue((SkillName)is2, vs2),
+					new SkillNameValue((SkillName)is3, vs3), new SkillNameValue((SkillName)is4, vs4),
+				},
+				shirtHue,
+				pantsHue,
+				hairVal,
+				hairHue,
+				hairValf,
+				hairHuef,
+				prof,
+				race);
+
+			if (state.Version == null)
+			{
+				state.Send(new ClientVersionReq());
+
+				state.BlockAllPackets = true;
+			}
+
+			EventSink.InvokeCharacterCreated(args);
+
+			Mobile m = args.Mobile;
+			if (m != null)
+			{
+				state.Mobile = m;
+				m.NetState = state;
+
+				if (state.Version == null)
+				{
+					new LoginTimer(state).Start();
+				}
+				else
+				{
+					DoLogin(state);
+				}
+			}
+			else
+			{
+				state.BlockAllPackets = false;
+				state.Dispose();
+			}
+
+#endif
+			DoLogin(state); //tmp code
+		}
+	}
+
 }
 
 
@@ -251,4 +467,5 @@ void PacketHandlers::Init()
 	Register(0x80, 62, false, AccountLogin);
 	Register(0xA0, 3, false, PlayServer);
 	Register(0x91, 65, false, GameLogin);
+	Register(0xF8, 106, false, CreateCharacter70160);
 }

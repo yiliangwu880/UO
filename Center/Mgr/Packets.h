@@ -7,6 +7,7 @@
 //c#适配
 #define base Packet
 #define uint uint32
+#define byte uint8_t
 
 
 
@@ -229,6 +230,103 @@ public:
 	CharacterListFlags AdditionalFlags = CharacterListFlags::None;
 };
 
+//tmp Mobile
+struct Mobile
+{
+	int Serial=92;
+	int Body = 400;
+	int X	=350;
+	int Y	=257;
+	int Z	=14	;
+	Direction dir = Direction::North;
+
+};
+
+class LoginConfirm : public Packet
+{
+public:
+	 LoginConfirm(Mobile m)
+		: base(0x1B, 37)
+	{
+		m_Stream.Write(m.Serial);
+		m_Stream.Write(0);
+		m_Stream.Write((short)m.Body);
+		m_Stream.Write((short)m.X);
+		m_Stream.Write((short)m.Y);
+		m_Stream.Write((short)m.Z);
+		m_Stream.Write((byte)m.dir);
+		m_Stream.Write((byte)0);
+		m_Stream.Write(-1);
+
+		//Map map = m.Map;
+
+		//if (map == null || map == Map.Internal)
+		//{
+		//	map = m.LogoutMap;
+		//}
+
+		m_Stream.Write((short)0);
+		m_Stream.Write((short)0);
+		m_Stream.Write((short)(6144));//m_Stream.Write((short)(map == null ? 6144 : map.Width));
+		m_Stream.Write((short)(4096));//m_Stream.Write((short)(map == null ? 4096 : map.Height));
+
+		m_Stream.Fill();
+	}
+};
+
+class MapChange : public Packet
+{
+public:
+	 MapChange(Mobile m)
+		: base(0xBF)
+	{
+		EnsureCapacity(6);
+
+		m_Stream.Write((short)0x08);
+		m_Stream.Write((byte)1);//((byte)(m.Map == null ? 0 : m.Map.MapID));
+	}
+};
+
+
+class MapPatches : public Packet
+{
+public:
+	 MapPatches()
+		: base(0xBF)
+	{
+		EnsureCapacity(9 + (3 * 8));
+
+		m_Stream.Write((short)0x0018);
+
+		m_Stream.Write(4);
+
+		//m_Stream.Write(Map.Felucca.Tiles.Patch.StaticBlocks);
+		//m_Stream.Write(Map.Felucca.Tiles.Patch.LandBlocks);
+
+		//m_Stream.Write(Map.Trammel.Tiles.Patch.StaticBlocks);
+		//m_Stream.Write(Map.Trammel.Tiles.Patch.LandBlocks);
+
+		//m_Stream.Write(Map.Ilshenar.Tiles.Patch.StaticBlocks);
+		//m_Stream.Write(Map.Ilshenar.Tiles.Patch.LandBlocks);
+
+		//m_Stream.Write(Map.Malas.Tiles.Patch.StaticBlocks);
+		//m_Stream.Write(Map.Malas.Tiles.Patch.LandBlocks);
+
+
+		m_Stream.Write((int)0);
+		m_Stream.Write((int)0);
+		m_Stream.Write((int)0);
+		m_Stream.Write((int)0);
+		m_Stream.Write((int)0);
+		m_Stream.Write((int)0);
+		m_Stream.Write((int)0);
+		m_Stream.Write((int)0);
+
+		//TODO: Should this include newer facets?
+	}
+};
+
 
 #undef base
 #undef uint
+#undef byte
