@@ -1,7 +1,7 @@
 //链接center
 #pragma once
 #include "AccMgr.h"
-#include "SendToClientMgr.h"
+#include "ComPackets.h"
 
 struct NetState;
 using OnPacketReceive = void (*)(NetState &state, PacketReader &pvSrc);

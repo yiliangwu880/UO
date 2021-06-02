@@ -1,5 +1,5 @@
 #include "NetState.h"
-#include "SendToClientMgr.h"
+#include "ComPackets.h"
 #include "svr_util/include/str_util.h"
 
 using namespace acc;

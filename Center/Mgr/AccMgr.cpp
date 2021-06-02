@@ -6,7 +6,7 @@
 #include "./Account/AccountMgr.h"
 #include "MsgDispatch.h"
 #include "CenterClientMsgMgr.h"
-#include "SendToClientMgr.h"
+#include "ComPackets.h"
 #include "NetState.h"
 
 using namespace std;
@@ -106,7 +106,7 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 
 void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint16 msg_len)
 {
-	L_INFO("OnRevClientMsg. cmd=%x", cmd);
+	//L_INFO("OnRevClientMsg.");
 	L_COND_V(msg_len > 0);
 
 	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
