@@ -1,9 +1,9 @@
 #include "SubComCenter.h"
-#include "Player.h"
+#include "CPlayer.h"
 
 
 SubComCenter::SubComCenter()
-	:m_owner(*(Player*)(nullptr))
+	:m_owner(*(CPlayer*)(nullptr))
 {
 
 }

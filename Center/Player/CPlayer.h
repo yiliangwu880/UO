@@ -13,7 +13,7 @@ struct BaseData
 	string name;
 };
 
-class Player : public WeakPtr<Player>
+class CPlayer : public WeakPtr<CPlayer>
 {
 	acc::SessionId m_sid;
 

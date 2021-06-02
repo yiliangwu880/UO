@@ -1,10 +1,10 @@
 #pragma once
 
-class Player;
+class CPlayer;
 class SubComCenter
 {
 public:
-	Player &m_owner;
+	CPlayer &m_owner;
 	SubComCenter();
 };
 

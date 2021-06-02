@@ -2,7 +2,7 @@
 #include "AccountMgr.h"
 #include "db_driver.h"
 #include "AppMgr.h"
-#include "Player/PlayerMgr.h"
+#include "Player/CPlayerMgr.h"
 
 using namespace proto;
 using namespace acc;
@@ -125,7 +125,7 @@ void Account::OnInsert(bool ret, const DbPlayer &data, any para)
 	SessionId *sid = std::any_cast<SessionId>(&para);
 	L_COND_V(sid);
 	L_COND_V(ret);
-	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin, data.name);
+	CPlayer *player = CPlayerMgr::Ins().CreatePlayer(data.uin, data.name);
 	L_COND_V(player);
 
 	const Session *sn = AccMgr::Ins().FindSession(*sid);
@@ -162,7 +162,7 @@ void Account::OnSelect(bool ret, const DbPlayer &data, any para)
 	SessionId *sid = std::any_cast<SessionId>(&para);
 	L_COND_V(sid);
 	L_COND_V(ret);
-	Player *player = PlayerMgr::Ins().CreatePlayer(data.uin, data.name);
+	CPlayer *player = CPlayerMgr::Ins().CreatePlayer(data.uin, data.name);
 	L_COND_V(player);
 
 	const Session *sn = AccMgr::Ins().FindSession(*sid);

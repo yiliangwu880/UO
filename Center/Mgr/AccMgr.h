@@ -4,11 +4,11 @@
 #include "acc_driver.h"
 
 class Account;
-class Player;
+class CPlayer;
 struct CenterSnEx
 {
 	weak_ptr<Account> m_pAccount;
-	weak_ptr<Player> m_pPlayer;
+	weak_ptr<CPlayer> m_pPlayer;
 
 };
 
