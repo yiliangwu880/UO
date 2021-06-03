@@ -55,8 +55,9 @@ namespace acc {
 		SessionId id;
 		std::string remote_ip;
 		uint16 remote_port=0;
-		uint64 uin=0; //登录后玩家id， 
-		std::string accName;
+
+		uint64 uin=0; //登录后角色id， 需要使用，可以支持svr发组播给uin列表
+		std::string accName; //accName应该不用了，待分析。
 
 		void Clear();
 
@@ -79,7 +80,7 @@ namespace acc {
 	{
 		bool is_success = false;
 		uint64 uin = 0;
-		std::string accName;
+		std::string accName;//等分析，删掉
 	};
 	//外观模式，acc driver 接口
 	class ADFacadeMgr 

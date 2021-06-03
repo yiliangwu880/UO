@@ -3,38 +3,48 @@
 #include "dbTableDef.h"
 #include "AccMgr.h"
 #include "MsgDispatch.h"
+#include "Verify.h"
+
+//核心组件，先随便命名
+class AccData : public AccountSubCom
+{
+	static const int MAX_ACTOR = 4;
+
+	acc::SessionId m_sid;
+	DbAccount m_data;
+public:
+	AccData(Account &owner, CStr &name);
+	
+	void LoadDb(const DbAccount &data);
+	CStr &Name() const;
+	CStr &Psw() const;
+	const acc::SessionId &GetSid() const { return m_sid; }
+	void SetSid(const acc::SessionId &id) { m_sid = id; }
+
+
+	static void OnDbLoad(bool ret, const DbAccount &data, any para);
+	static void OnInsert(bool ret, const DbPlayer &data, any para);
+	static void OnSelect(bool ret, const DbPlayer &data, any para);
+private:
+
+	static void CreateActor(const acc::Session &sn);
+	static void SelectActor(const acc::Session &sn);
+};
 
 class Account : public WeakPtr<Account>
 {
-	static const int MAX_ACTOR = 4;
-	enum State
-	{
-		None,          //初始化状态，刚创建
-		WaitDbQuery,   //等查库授权,
-		WaitAccVerify, //检验成功， 等acc通知授权成功。
-		VerifyOk,      //授权成功，可以收发消息。 有新链接验证通过，--》WaitReplace
-		WaitReplace,   //顶号检验成功， 等acc通知授权成功。
-	};
 
-	State m_state = None;
-	acc::SessionId m_waitVerifySid; //等查库授权 中的sid. 未认证。用来发送失败给客户端
-	string m_waitVerfyPsw;
-	acc::SessionId m_sid;
-	DbAccount m_data;
+public:
+	Verify m_Verify;
+	AccData m_AccData;
 
 public:
 	Account(const string &name);
-	void ReqVerify(const acc::SessionId &id, const proto::Login_cs &req);
-	void OnDbLoad(bool ret, const DbAccount &data);
-	const acc::SessionId &Sid() const { return m_sid; }
-	const string &Name() const { return m_data.name; }
-	void SetVerifyOk(const acc::SessionId &sid);
 
-	static void CreateActor(const acc::Session &sn, const proto::CreateActor_cs &msg);
-	static void OnInsert(bool ret, const DbPlayer &data, any para);
+	const string &Name() const;
 
-	static void SelectActor(const acc::Session &sn, const proto::SelectActor_cs &msg);
-	static void OnSelect(bool ret, const DbPlayer &data, any para);
+private:
+
 };
 
 

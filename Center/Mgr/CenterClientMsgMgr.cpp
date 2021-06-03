@@ -10,6 +10,7 @@
 #include "svr_util/include/str_util.h"
 #include "libevent_cpp/include/include_all.h"
 #include "NetState.h"
+#include "Account/AccountMgr.h"
 
 using namespace lc;
 
@@ -36,77 +37,31 @@ namespace
 			//无条件认证通过
 			VerifyRetStruct d;
 			d.is_success = true;
-			L_DEBUG("req verify ret ok");
 			AccMgr::Ins().ReqVerifyRet(state.m_sn.id, d);
 		}
-	//	state.Version = new ClientVersion(clientMaj, clientMin, clientRev, clientPat);
 	}
 
 	static void AccountLogin(NetState &state, PacketReader &pvSrc)
 	{
-		//if (state.SentFirstPacket)
-		//{
-		//	state.Dispose();
-		//	return;
-		//}
-
-	//	state.SentFirstPacket = true;
-
 		string username = pvSrc.ReadString(30);
 		string password = pvSrc.ReadString(30);
 		L_INFO("AccountLogin %s %s", username.c_str(), password.c_str());
 
-		//AccountLoginEventArgs e = new AccountLoginEventArgs(state, username, password);
+		Account &acc = AccountMgr::Ins().DoGetAcc(username);
+		acc.m_Verify.ReqVerify(state.m_sn.id, password);
+#if 0
 
-		//EventSink.InvokeAccountLogin(e);
-
-		//if (e.Accepted)
-		//{
-		//	AccountLogin_ReplyAck(state);
-		//}
-		//else
-		//{
-		//	AccountLogin_ReplyRej(state, e.RejectReason);
-		//}
 		vector<ServerInfo> info;
 		ServerInfo i;
-		{
-#if 0
-			//sockaddr_in（在netinet / in.h中定义）：
-			struct sockaddr_in {
-				short int sin_family;                      /* Address family */
-				unsigned short int sin_port;       /* Port number */
-				struct in_addr sin_addr;              /* Internet address */
-				unsigned char sin_zero[8];         /* Same size as struct sockaddr */
-			};
-			struct in_addr {
-				unsigned long s_addr;
-			};
 
-			typedef struct in_addr {
-				union {
-					struct {
-						unsigned char s_b1,
-							s_b2,
-							s_b3,
-							s_b4;
-					} S_un_b;
-					struct {
-						unsigned short s_w1,
-							s_w2;
-					} S_un_w;
-					unsigned long S_addr;
-				} S_un;
-			} IN_ADDR;
-
-#endif
-		}
 		info.push_back(CenterMgr::Ins().GetServerInfo());
 		AccountLoginAck rsp(info);
 		state.CompressionEnabled = false;
 		state.Send(rsp);
+#endif
 	}
 
+	//选服请求 
 	static void PlayServer(NetState &state, PacketReader &pvSrc)
 	{
 		int index = pvSrc.ReadInt16();

@@ -77,25 +77,22 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 
 
 	return;
-	{
-		L_COND_V(CenterMgr::Ins().Allok());
-		size_t len = msg_len;
-		proto::Login_cs req;
-		L_COND_V(proto::Unpack<proto::Login_cs>(req, msg, len));
+	//{
+	//	L_COND_V(CenterMgr::Ins().Allok());
+	//	size_t len = msg_len;
+	//	proto::Login_cs req;
+	//	L_COND_V(proto::Unpack<proto::Login_cs>(req, msg, len));
 
-		Account *account = AccountMgr::Ins().GetAcc(req.name);
-		if (!account)
-		{
-			account = AccountMgr::Ins().CreateAcc(req.name);
-		}
-		account->ReqVerify(id, req);
-	}
-	{//tmp code, 发送到client
+	//	//Account *account = AccountMgr::Ins().DoGetAcc(req.name);
+	//	//
+	//	//account->ReqVerify(id, req);
+	//}
+	//{//tmp code, 发送到client
 
-		MobileHitsN hitsPacket;
-		//Send(id, hitsPacket);
-		//AccMgr::Ins().SendToClient
-	}
+	//	MobileHitsN hitsPacket;
+	//	//Send(id, hitsPacket);
+	//	//AccMgr::Ins().SendToClient
+	//}
 
 	//临时 接收client请求登录消息,无条件通过，原消息号返回,
 	//L_INFO("rev verfiy. cmd=%d", cmd);
@@ -139,5 +136,5 @@ void AccMgr::OnRevBroadcastUinToSession(const acc::Session &sn)
 	L_COND_V(p);
 	p->m_pAccount = account->GetWeakPtr();
 
-	account->SetVerifyOk(sn.id);
+	account->m_Verify.SetVerifyOk(sn.id);
 }

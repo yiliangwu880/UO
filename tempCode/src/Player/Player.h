@@ -19,7 +19,7 @@ public:
 
 };
 
-//»î¶¯»ı·Ö
+//æ´»åŠ¨ç§¯åˆ†
 class TaskSys : public PlayerSubCom
 {
 	Player m_owner;
@@ -28,7 +28,7 @@ public:
 		:PlayerSubCom(owner)
 	{
 
-		Reg<InsEventId::ChangeHp>(ChangeHp);//×¢²áÊÂ¼ş
+		Reg<InsEventId::ChangeHp>(ChangeHp);//æ³¨å†Œäº‹ä»¶
 	}
 
 	void ChangeHp(int &update)
@@ -48,10 +48,10 @@ struct PlayerDb
 class Player : public EventMgr;
 {
 public:
-	//PlayerSkill skill; Éı¼¶¼¼ÄÜ£»
+	//PlayerSkill skill; å‡çº§æŠ€èƒ½ï¼›
 	//friend dd;
 	//money;
-	Actor m_actor;//ActorÄÚ²¿³ö·¢£¬ĞèÒªºÍplayerµÄÆäËû×é¼şÖ®¼äµÄ»¥¶¯£¬Ö»ÄÜÓÃeventÁË¡£²»ÄÜÖ±½Ó ÒıÓÃÆäËû×é¼ş¡£ÒòÎªActorÉè¼ÆÍ¨ÓÃMonster,NpcµÈÉúÎï
+	Actor m_actor;//Actorå†…éƒ¨å‡ºå‘ï¼Œéœ€è¦å’Œplayerçš„å…¶ä»–ç»„ä»¶ä¹‹é—´çš„äº’åŠ¨ï¼Œåªèƒ½ç”¨eventäº†ã€‚ä¸èƒ½ç›´æ¥ å¼•ç”¨å…¶ä»–ç»„ä»¶ã€‚å› ä¸ºActorè®¾è®¡é€šç”¨Monster,Npcç­‰ç”Ÿç‰©
 	
 
 public:
@@ -61,13 +61,13 @@ public:
 	void OnLoad(const PlayerDb &db)
 	{
 		m_actor.OnLoad(db);
-		//ÆäËû×ÓÏµÍ³£¬otherSys.OnLoad(db);
+		//å…¶ä»–å­ç³»ç»Ÿï¼ŒotherSys.OnLoad(db);
 	}
 	void OnSave()
 	{
 		PlayerDb db;
-		m_actor.Get(db);//»ñÈ¡ x,y,hpµÈµ½ m_PlayerDb£»
-		//ÆäËû×ÓÏµÍ³£¬otherSys(m_PlayerDb);
+		m_actor.Get(db);//è·å– x,y,hpç­‰åˆ° m_PlayerDbï¼›
+		//å…¶ä»–å­ç³»ç»Ÿï¼ŒotherSys(m_PlayerDb);
 		sendtoDb(db);
 	}
 private:
@@ -87,7 +87,7 @@ public:
 			tm.StartTimer(0, std::bind(&OnNextEvent, this));
 		}
 	}
-	//ÏÂÒ»¸öÏµÍ³ÊÂ¼ş£¬É¾³ıplayer
+	//ä¸‹ä¸€ä¸ªç³»ç»Ÿäº‹ä»¶ï¼Œåˆ é™¤player
 	void OnNextEvent()
 	{
 		m_id2Player.erase(id);

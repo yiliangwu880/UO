@@ -7,10 +7,11 @@
 
 
 class AccountMgr : public Singleton<AccountMgr>
-{
-	std::unordered_map<string, shared_ptr<Account> > m_name2Acc;
+{ 
+	std::unordered_map<string, Account *> m_name2Acc;
 public:
-	Account *CreateAcc(const string &name);
+	//或者ACC，没有就创建个新的
+	Account &DoGetAcc(const string &name);
 	Account *GetAcc(const string &name);
 	void DelAcc(const string &name);
 private:

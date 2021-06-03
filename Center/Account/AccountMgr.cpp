@@ -10,24 +10,31 @@ namespace
 {
 
 }
-Account *AccountMgr::CreateAcc(const string &name)
+Account &AccountMgr::DoGetAcc(const string &name)
 {
-	shared_ptr<Account> acc = make_shared<Account>(name);
-	L_ASSERT(MapInsert(m_name2Acc, name, acc));
-	return acc.get();
+	auto it = m_name2Acc.find(name);
+	if (it != m_name2Acc.end())
+	{
+		return *it->second;
+	}
+
+
+	Account *pAcc = new Account(name);
+	m_name2Acc[name] = pAcc;
+	return *pAcc;
 }
 
 Account *AccountMgr::GetAcc(const string &name)
 {
-	auto *pAcc = MapFind(m_name2Acc, name);
-	if (nullptr == pAcc)
+	auto it = m_name2Acc.find(name);
+	if (it != m_name2Acc.end())
 	{
-		return nullptr;
+		return it->second;
 	}
 
-	return (*pAcc).get();
+	return nullptr;
 }
-
+ 
 
 void AccountMgr::DelAcc(const string &name)
 {
@@ -46,5 +53,6 @@ void AccountMgr::DelAccEx(const string &name)
 		L_ERROR("del fail");
 		return;
 	}
+	delete it->second;
 	m_name2Acc.erase(it);
 }
