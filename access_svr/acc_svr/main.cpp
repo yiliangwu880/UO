@@ -9,6 +9,7 @@
 #include "external_con.h"
 #include "AccMgr.h"
 #include "UoClientMsgMgr.h"
+#include "Cfg/CfgMgr.h"
 
 using namespace su;
 using namespace std;

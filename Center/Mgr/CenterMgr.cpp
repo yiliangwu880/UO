@@ -28,7 +28,7 @@ void CenterMgr::Init()
 		m_zoneId2Ok[svrId] = false;
 	}
 	{//init server info
-		const char* connect_ip = CfgMgr::Ins().ComCfg().access.ip.c_str();
+		const char* connect_ip = CfgMgr::Ins().ComCfg().access.ex_ip.c_str();
 		unsigned short connect_port = CfgMgr::Ins().ComCfg().access.ex_port;
 		sockaddr_in m_addr;
 		memset(&m_addr, 0, sizeof(m_addr));

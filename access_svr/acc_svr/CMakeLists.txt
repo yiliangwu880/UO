@@ -12,7 +12,9 @@ project (acc_svr CXX)
 # 查找当前目录下的所有源文件
 # 并将名称保存到 DIR_SRCS 变量
 file(GLOB_RECURSE SRCS  ${PROJECT_SOURCE_DIR} "*.cc")
-file(GLOB_RECURSE SRCS2  ${PROJECT_SOURCE_DIR} "*.cpp")
+file(GLOB_RECURSE SRCS2  ${PROJECT_SOURCE_DIR} "*.cpp"
+"../../external/cpp_cfg/com/*.cpp"
+)
 
 # 指定生成目标
 ADD_EXECUTABLE(acc_svr ${SRCS} ${SRCS2})

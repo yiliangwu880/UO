@@ -10,9 +10,10 @@ struct comCfg
 {
 	struct S_access
 	{
+		std::string ex_ip;
 		uint16_t ex_port;
-		std::string ip;
-		uint16_t port;
+		std::string inner_ip;
+		uint16_t inner_port;
 	};
 	struct S_center
 	{
@@ -59,9 +60,10 @@ private:
 		try
 		{
 
+			access.ex_ip = js["access"]["ex_ip"];
 			access.ex_port = js["access"]["ex_port"];
-			access.ip = js["access"]["ip"];
-			access.port = js["access"]["port"];
+			access.inner_ip = js["access"]["inner_ip"];
+			access.inner_port = js["access"]["inner_port"];
 			center.ip = js["center"]["ip"];
 			center.port = js["center"]["port"];
 			for (size_t i = 0; i < js["zone"]["allSvrId"].size(); ++i)

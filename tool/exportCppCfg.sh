@@ -20,4 +20,5 @@ cd ../bin/Center
 ../../external/cpp_cfg/bin/export_cpp_cfg ../comCfg.txt
 cp -f comCfg.h ../../Center/Cfg/
 cp -f comCfg.h ../../Zone/Cfg/
+cp -f comCfg.h ../../access_svr/acc_svr/Cfg/
 rm comCfg.h

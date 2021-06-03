@@ -13,10 +13,14 @@ INCLUDE(cotire)
 
 # include directories
 INCLUDE_DIRECTORIES(system ./include/)
+INCLUDE_DIRECTORIES(after  ../external/svr_util/include)
+INCLUDE_DIRECTORIES(after  ../external/libevent_cpp/include)
 INCLUDE_DIRECTORIES(system ../external/libevent_cpp/External/libevent-2.1.8-stable/out/include)
 INCLUDE_DIRECTORIES(after  ${PROJECT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(after  ../external)
 INCLUDE_DIRECTORIES(after  ./acc_proto)
+INCLUDE_DIRECTORIES(after  ../external/cpp_cfg/com/)
+INCLUDE_DIRECTORIES(after  ${PROJECT_SOURCE_DIR}/../com/)
 
 #运行cmake输出终端消息，调试可以用
 message(PROJECT_SOURCE_DIR_is: ${PROJECT_SOURCE_DIR})
@@ -41,7 +45,7 @@ LINK_DIRECTORIES(
 #指定编译器
 if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -lrt -pthread -DDEBUG -Werror -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -fmax-errors=3 -Wall -lrt -pthread   -Werror -DDEBUG -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -fmax-errors=3 -Wall -lrt -pthread -Wno-unused-variable -Wno-unused-function  -Werror -DDEBUG -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
 else( CMAKE_BUILD_TYPE STREQUAL "Release" )
     #set(CMAKE_BUILD_TYPE "Release")
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O2 -lrt -DGMPERMISSION -pthread -Werror -Wno-unused-result -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free ")

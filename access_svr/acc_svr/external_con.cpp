@@ -15,10 +15,10 @@ ExternalSvrCon::ExternalSvrCon()
 	, m_uin(0)
 {
 	SetRawReadCb(true);
-	if (0 != CfgMgr::Ins().GetMsbs())
-	{
-		SetMaxSendBufSize(CfgMgr::Ins().GetMsbs());
-	}
+	//if (0 != CfgMgr::Ins().GetMsbs())
+	//{
+	//	SetMaxSendBufSize(CfgMgr::Ins().GetMsbs());
+	//}
 }
 
 ExternalSvrCon::~ExternalSvrCon()
@@ -32,7 +32,11 @@ ExternalSvrCon::~ExternalSvrCon()
 		for (auto &v: id_2_svr)
 		{
 			InnerSvrCon *p = v.second;
-			L_COND(p);
+			if (nullptr == p)
+			{
+				L_ERROR("nullptr == p");
+				return;
+			}
 			p->Send(CMD_NTF_DISCON, ntf);
 		}
 		L_DEBUG("external client destroy . cid=%llx", GetId());
@@ -76,9 +80,9 @@ bool ExternalSvrCon::SendMsg(const char *msg, uint16 msg_len)
 
 void ExternalSvrCon::SetActiveSvrId(uint16 grpId, uint16 svr_id)
 {
-	L_COND(0 != grpId);
-	L_COND(0 != svr_id);
-	L_COND(grpId < 100); // groupId用来当数组下标，设计不能过大
+	L_COND_V(0 != grpId);
+	L_COND_V(0 != svr_id);
+	L_COND_V(grpId < 100); // groupId用来当数组下标，设计不能过大
 	if (m_grpId2SvrId.size() < (size_t)grpId+1)
 	{
 		m_grpId2SvrId.resize(grpId + 1);
@@ -363,7 +367,7 @@ bool ExternalSvrCon::ClientTcpPack2MsgForward(const char *pMsg, int len, acc::Ms
 
 void ExternalSvrCon::Forward2VerifySvr(const char *pMsg, int len)
 {
-//	L_COND(State::INIT == m_state); //UO临时不验证
+//	L_COND_V(State::INIT == m_state); //UO临时不验证
 
 	m_wfm_tm.StopTimer();
 	string tcp_pack;
@@ -376,7 +380,7 @@ void ExternalSvrCon::Forward2VerifySvr(const char *pMsg, int len)
 			return;
 		}
 		//L_DEBUG("f_msg.cmd = %x", f_msg.cmd);
-		L_COND(ASMsg::Serialize(CMD_NTF_VERIFY_REQ, f_msg, tcp_pack));
+		L_COND_V(ASMsg::Serialize(CMD_NTF_VERIFY_REQ, f_msg, tcp_pack));
 	}
 
 	InnerSvrCon *pSvr = VerifySvrMgr::Ins().GetBLVerifySvr();
@@ -474,7 +478,7 @@ void ExternalSvrCon::Forward2Svr(const char *pMsg, int len)
 	}
 
 	string tcp_pack;
-	L_COND(ASMsg::Serialize(CMD_NTF_FORWARD, f_msg, tcp_pack));
+	L_COND_V(ASMsg::Serialize(CMD_NTF_FORWARD, f_msg, tcp_pack));
 	pSvr->SendPack(tcp_pack.c_str(), tcp_pack.length());
 
 }

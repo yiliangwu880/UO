@@ -21,8 +21,8 @@ void AccMgr::Start(bool &ret)
 	L_INFO("ZoneAcc Start");
 	std::vector<Addr> vec_addr;
 	Addr addr;
-	addr.ip = gCfgMgr->ComCfg().access.ip;
-	addr.port = gCfgMgr->ComCfg().access.port;
+	addr.ip = gCfgMgr->ComCfg().access.inner_ip;
+	addr.port = gCfgMgr->ComCfg().access.inner_port;
 	vec_addr.push_back(addr);
 
 	L_ASSERT(gCfgMgr->ZoneCfg().svrId >= ZONE_GROUP_ID && gCfgMgr->ZoneCfg().svrId <= MAX_ZONE_GROUP_ID);

@@ -7,6 +7,7 @@
 #include "svr_util/include/easy_code.h"
 #include "external_con.h"
 #include "inner_con.h"
+#include "Cfg/CfgMgr.h"
 
 class Server: public Singleton<Server>
 {
@@ -19,22 +20,3 @@ public:
 	lc::Listener<ExternalSvrCon> m_client_listener;
 };
 
-class CfgMgr : public Singleton<CfgMgr>
-{
-public:
-	CfgMgr();
-	bool Init();
-
-	unsigned short GetInnerPort() const { return m_inner_port; }
-	const char *GetInnerIp() const { return m_inner_ip.c_str(); }
-	unsigned short GetExPort() const { return m_ex_port; }
-	const char *GetExIp() const { return m_ex_ip.c_str(); }
-	uint32 GetMsbs() const { return max_send_buf_size; }
-private:
-	unsigned short m_inner_port;
-	std::string m_inner_ip;
-	//外网地址，给client连接用
-	unsigned short m_ex_port; 
-	std::string m_ex_ip;
-	uint32 max_send_buf_size = 0;
-};

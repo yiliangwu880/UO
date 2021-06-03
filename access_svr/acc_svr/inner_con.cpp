@@ -18,7 +18,7 @@ namespace
 	{
 		MsgAccSeting req;
 		bool ret = req.Parse(msg.msg, msg.msg_len);
-		L_COND(ret, "parse ctrl msg fail");
+		L_COND_V(ret, "parse ctrl msg fail");
 		L_INFO("rev CMD_REQ_ACC_SETING");
 //		L_DEBUG("req no msg sec=%d", req.no_msg_interval_sec);
 		g_AccSeting->m_seting = req;
@@ -49,14 +49,14 @@ namespace
 	{
 		MsgReqDiscon req;
 		bool ret = CtrlMsgProto::Parse(msg, req);
-		L_COND(ret, "parse ctrl msg fail");
+		L_COND_V(ret, "parse ctrl msg fail");
 		if (req.cid==0)
 		{
 			L_WARN("CMD_REQ_DISCON cid==0");
 			return;
 		}
 		ExternalSvrCon *pClient = Server::Ins().FindClientSvrCon(req.cid);
-		L_COND(pClient);
+		L_COND_V(pClient);
 		pClient->DisConnect();
 	}
 
@@ -64,7 +64,7 @@ namespace
 	{
 		MsgReqReg req;
 		bool ret = CtrlMsgProto::Parse(msg, req);
-		L_COND(ret, "parse ctrl msg fail");
+		L_COND_V(ret, "parse ctrl msg fail");
 		MsgRspReg rsp;
 		rsp.svr_id = req.svr_id;
 		L_DEBUG("Parse_CMD_REQ_REG svr_id=%d, is_verify=%d", req.svr_id, req.is_verify);
@@ -86,8 +86,8 @@ namespace
 		MsgReqVerifyRet req;
 
 //		L_DEBUG("ASMsg.msg. serial=%s", StrUtil::BinaryToHex(string(msg.msg, msg.msg_len)).c_str() );
-		L_COND(req.Parse(msg.msg, msg.msg_len), "parse ctrl msg fail");
-		L_COND(req.cid != 0, "CMD_REQ_VERIFY_RET cid==0");
+		L_COND_V(req.Parse(msg.msg, msg.msg_len), "parse ctrl msg fail");
+		L_COND_V(req.cid != 0, "CMD_REQ_VERIFY_RET cid==0");
 
 		ExternalSvrCon *pClient = Server::Ins().FindClientSvrCon(req.cid);
 		if (nullptr == pClient)
@@ -124,7 +124,7 @@ namespace
 		auto f = [&ntf](SvrCon &con)
 		{
 			InnerSvrCon *pCon = dynamic_cast<InnerSvrCon *>(&con);
-			L_COND(pCon);
+			L_COND_V(pCon);
 			if (pCon->IsReg())
 			{
 				pCon->Send(CMD_NTF_CREATE_SESSION, ntf);
@@ -137,7 +137,7 @@ namespace
 	{
 		MsgBroadcastUin req;
 		bool ret = CtrlMsgProto::Parse(msg, req);
-		L_COND(ret, "parse ctrl msg fail");
+		L_COND_V(ret, "parse ctrl msg fail");
 	//	L_DEBUG("Parse_CMD_REQ_BROADCAST_UIN uin=%llx", req.uin);
 		if (req.cid == 0)
 		{
@@ -156,7 +156,7 @@ namespace
 		auto f = [&req, &con](SvrCon &f_con)
 		{
 			InnerSvrCon *pCon = dynamic_cast<InnerSvrCon *>(&f_con);
-			L_COND(pCon);
+			L_COND_V(pCon);
 			if (pCon == &con)
 			{
 				return;//不发送给来源svr
@@ -177,7 +177,7 @@ namespace
 	{
 		MsgReqSetActiveSvrId req;
 		bool ret = CtrlMsgProto::Parse(msg, req);
-		L_COND(ret, "parse ctrl msg fail");
+		L_COND_V(ret, "parse ctrl msg fail");
 		MsgRspSetActiveSvrId rsp;
 		rsp.cid = req.cid;
 		rsp.grpId = req.grpId;
@@ -214,7 +214,7 @@ namespace
 	{
 		MsgReqCacheMsg req;
 		bool ret = CtrlMsgProto::Parse(msg, req);
-		L_COND(ret, "parse ctrl msg fail");
+		L_COND_V(ret, "parse ctrl msg fail");
 		MsgRspCacheMsg rsp;
 		rsp.cid = req.cid;
 		rsp.isCache = req.isCache;
@@ -242,7 +242,7 @@ namespace
 	void Parse_CMD_REQ_BROADCAST(InnerSvrCon &con, const acc::ASMsg &msg)
 	{
 		MsgReqBroadCast req;
-		L_COND(req.Parse(msg.msg, msg.msg_len), "parse ctrl msg fail");
+		L_COND_V(req.Parse(msg.msg, msg.msg_len), "parse ctrl msg fail");
 		if (req.cid_len > acc::MAX_BROADCAST_CID_NUM)
 		{
 			L_WARN("CMD_REQ_BROADCAST cid_len> acc::MAX_BROADCAST_CID_NUM");
@@ -257,7 +257,7 @@ namespace
 			auto f = [&req, &tcp_pack](SvrCon &con)
 			{
 				ExternalSvrCon *pClient = dynamic_cast<ExternalSvrCon *>(&con);
-				L_COND(pClient);
+				L_COND_V(pClient);
 				if (pClient->IsVerify())
 				{
 					pClient->SendPack(tcp_pack.c_str(), tcp_pack.length());
@@ -350,7 +350,7 @@ void InnerSvrCon::RevertSession()
 	auto f = [&](SvrCon &con)
 	{
 		ExternalSvrCon *pCon = dynamic_cast<ExternalSvrCon *>(&con);
-		L_COND(pCon);
+		L_COND_V(pCon);
 		if (pCon->IsVerify())
 		{
 			MsgNtfCreateSession ntf;
@@ -386,7 +386,7 @@ bool InnerSvrCon::RegSvrId(uint16 id)
 
 void InnerSvrCon::SetVerifySvr()
 {
-	L_COND(VerifySvrMgr::Ins().InsertVerify(this));
+	L_COND_V(VerifySvrMgr::Ins().InsertVerify(this));
 	m_is_verify = true;
 }
 
@@ -400,12 +400,12 @@ bool InnerSvrCon::Send(const acc::ASMsg &as_data)
 void InnerSvrCon::OnRecv(const lc::MsgPack &msg)
 {
 	ASMsg as_data;
-	L_COND(as_data.Parse(msg.data, msg.len));
+	L_COND_V(as_data.Parse(msg.data, msg.len));
 //	L_DEBUG("as_data.cmd=%d as_data.msg_len=%d tcp_pack.length=%d", as_data.cmd, as_data.msg_len, msg.len);
 	if (CMD_REQ_FORWARD == as_data.cmd)//直接转发，不用分发，快点
 	{
 		MsgForward f_msg;
-		L_COND(f_msg.Parse(as_data.msg, as_data.msg_len));
+		L_COND_V(f_msg.Parse(as_data.msg, as_data.msg_len));
 		if (0 == f_msg.cid)
 		{
 			L_WARN("CMD_REQ_FORWARD 0 == f_msg.cid");
@@ -462,13 +462,13 @@ bool RegSvrMgr::Remove(uint16 svr_id)
 
 InnerSvrCon * RegSvrMgr::Find(uint16 svr_id)
 {
-	L_COND_R(0 != svr_id, nullptr);
+	L_COND(0 != svr_id, nullptr);
 	auto it = m_id_2_svr.find(svr_id);
 	if (it == m_id_2_svr.end())
 	{
 		return nullptr;
 	}
-	L_COND_R(nullptr != it->second, nullptr);
+	L_COND(nullptr != it->second, nullptr);
 	return it->second;
 }
 
@@ -517,5 +517,5 @@ InnerSvrCon * VerifySvrMgr::GetBLVerifySvr()
 		}
 		idx++;
 	}
-	L_COND_R(false, nullptr);
+	L_COND(false, nullptr);
 }

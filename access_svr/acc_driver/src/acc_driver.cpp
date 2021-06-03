@@ -112,12 +112,12 @@ void acc::ADFacadeMgr::BroadCastToClient(uint32 cmd, const char *msg, uint16 msg
 	string req_tcp_pack;
 	req.Serialize(req_tcp_pack);
 	string tcp_pack;
-	L_COND(ASMsg::Serialize(CMD_REQ_BROADCAST, req_tcp_pack, tcp_pack));
-
+	L_COND_V(ASMsg::Serialize(CMD_REQ_BROADCAST, req_tcp_pack, tcp_pack));
+	
 	const std::vector<ADClientCon *> &vec = m_con_mgr.GetAllCon();
 	for (ADClientCon *p : vec)
 	{
-		L_COND(p);
+		L_COND_V(p);
 		if (!p->IsReg())
 		{
 			continue;
@@ -139,12 +139,12 @@ void acc::ADFacadeMgr::BroadCastToClient(const std::vector<uint64> &vec_cid, uin
 	req.Serialize(req_tcp_pack);
 
 	string tcp_pack;
-	L_COND(ASMsg::Serialize(CMD_REQ_BROADCAST, req_tcp_pack, tcp_pack));
+	L_COND_V(ASMsg::Serialize(CMD_REQ_BROADCAST, req_tcp_pack, tcp_pack));
 
 	const std::vector<ADClientCon *> &vec = m_con_mgr.GetAllCon();
 	for (ADClientCon *p : vec)
 	{
-		L_COND(p);
+		L_COND_V(p);
 		if (!p->IsReg())
 		{
 			continue;
@@ -170,7 +170,7 @@ void acc::ADFacadeMgr::DisconAllClient()
 	const std::vector<ADClientCon *> &vec = m_con_mgr.GetAllCon();
 	for (ADClientCon *p : vec)
 	{
-		L_COND(p);
+		L_COND_V(p);
 		if (!p->IsReg())
 		{
 			continue;

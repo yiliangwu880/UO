@@ -38,8 +38,8 @@ void AccMgr::Start(bool &ret)
 
 	std::vector<Addr> vec_addr;
 	Addr addr;
-	addr.ip = gCfgMgr->ComCfg().access.ip;
-	addr.port = gCfgMgr->ComCfg().access.port;
+	addr.ip = gCfgMgr->ComCfg().access.inner_ip;
+	addr.port = gCfgMgr->ComCfg().access.inner_port;
 	vec_addr.push_back(addr);
 	AccMgr::Ins().Init(vec_addr, CENTER_GROUP_ID, true);
 }

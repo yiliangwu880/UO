@@ -21,11 +21,11 @@ acc::ADClientCon::ADClientCon(ADFacadeMgr &facade, ConMgr &con_mgr, uint32 acc_i
 void ADClientCon::OnRecv(const lc::MsgPack &msg)
 {
 	ASMsg as_data;
-	L_COND(as_data.Parse(msg.data, msg.len));
+	L_COND_V(as_data.Parse(msg.data, msg.len));
 
 	if (CMD_RSP_REG != as_data.cmd)
 	{
-		L_COND(m_is_reg, "must reg ok before rev other cmd %d. acc port=%d", as_data.cmd, GetRemotePort());//svr处理非CMD_RSP_REG消息,必须已注册。
+		L_COND_V(m_is_reg, "must reg ok before rev other cmd %d. acc port=%d", as_data.cmd, GetRemotePort());//svr处理非CMD_RSP_REG消息,必须已注册。
 	}
 
 	switch (as_data.cmd)
@@ -50,7 +50,7 @@ void acc::ADClientCon::OnConnected()
 		MsgReqReg req;
 		req.svr_id = m_con_mgr.GetSvrId();
 		req.is_verify = m_con_mgr.IsVerify();
-		L_COND(req.svr_id);
+		L_COND_V(req.svr_id);
 		Send(CMD_REQ_REG, req);
 	}
 
@@ -60,7 +60,7 @@ void acc::ADClientCon::OnConnected()
 			req->hbi.req_cmd, req->hbi.rsp_cmd, req->hbi.interval_sec,
 			req->no_msg_interval_sec, GetRemotePort());
 		string as_msg;
-		L_COND(req->Serialize(as_msg));
+		L_COND_V(req->Serialize(as_msg));
 		Send(CMD_REQ_ACC_SETING, as_msg);
 	}
 }
@@ -117,11 +117,11 @@ bool acc::ADClientCon::Send(acc::Cmd as_cmd, const std::string &as_msg)
 
 void acc::ADClientCon::HandleRspReg(const ASMsg &msg)
 {
-	L_COND(!m_is_reg, "repeated rsp reg");
+	L_COND_V(!m_is_reg, "repeated rsp reg");
 
 	MsgRspReg rsp;
 	bool ret = CtrlMsgProto::Parse(msg, rsp);
-	L_COND(ret, "parse ctrl msg fail");
+	L_COND_V(ret, "parse ctrl msg fail");
 	if (0 == rsp.svr_id)
 	{
 		L_FATAL("reg error, stop all connect to acc");
@@ -129,7 +129,7 @@ void acc::ADClientCon::HandleRspReg(const ASMsg &msg)
 		m_con_mgr.SetFatal();
 		return;
 	}
-	L_COND(rsp.svr_id == m_con_mgr.GetSvrId());//可能请求代码ID出错
+	L_COND_V(rsp.svr_id == m_con_mgr.GetSvrId());//可能请求代码ID出错
 
 	m_is_reg = true;
 	m_con_mgr.SetRegResult(true);
@@ -139,8 +139,8 @@ void acc::ADClientCon::HandleCreateSession(const ASMsg &msg)
 {
 	MsgNtfCreateSession rsp;
 	bool ret = CtrlMsgProto::Parse(msg, rsp);
-	L_COND(ret, "parse ctrl msg fail");
-	L_COND(rsp.cid);
+	L_COND_V(ret, "parse ctrl msg fail");
+	L_COND_V(rsp.cid);
 
 	auto pair = m_id_2_s.insert(make_pair(rsp.cid, Session()));
 	bool r = pair.second;
@@ -164,7 +164,7 @@ void acc::ADClientCon::HandleMsgForward(const ASMsg &msg)
 {
 	MsgForward f_msg;
 	bool ret = f_msg.Parse(msg.msg, msg.msg_len);
-	L_COND(ret, "parse ctrl msg fail");
+	L_COND_V(ret, "parse ctrl msg fail");
 
 	SessionId id;
 	id.cid = f_msg.cid;
@@ -183,7 +183,7 @@ void acc::ADClientCon::HandleVerifyReq(const ASMsg &msg)
 {
 	MsgForward f_msg;
 	bool ret = f_msg.Parse(msg.msg, msg.msg_len);
-	L_COND(ret, "parse ctrl msg fail");
+	L_COND_V(ret, "parse ctrl msg fail");
 
 	SessionId tmp_id; //临时会话id
 	tmp_id.cid = f_msg.cid;
@@ -195,8 +195,8 @@ void acc::ADClientCon::HandleMsgNtfDiscon(const ASMsg &msg)
 {
 	MsgNtfDiscon ntf;
 	bool ret = CtrlMsgProto::Parse(msg, ntf);
-	L_COND(ret, "parse ctrl msg fail");
-	L_COND(ntf.cid);
+	L_COND_V(ret, "parse ctrl msg fail");
+	L_COND_V(ntf.cid);
 
 	SessionId id;
 	id.cid = ntf.cid;
@@ -218,8 +218,8 @@ void acc::ADClientCon::HandleMsgRspSetActiveSvr(const ASMsg &msg)
 {
 	MsgRspSetActiveSvrId rsp;
 	bool ret = CtrlMsgProto::Parse(msg, rsp);
-	L_COND(ret, "parse ctrl msg fail");
-	L_COND(rsp.cid);
+	L_COND_V(ret, "parse ctrl msg fail");
+	L_COND_V(rsp.cid);
 	SessionId id;
 	id.cid = rsp.cid;
 	id.acc_id = m_acc_id;
@@ -236,8 +236,8 @@ void acc::ADClientCon::HandleMsgRspCacheMsg(const ASMsg &msg)
 {
 	MsgRspCacheMsg rsp;
 	bool ret = CtrlMsgProto::Parse(msg, rsp);
-	L_COND(ret, "parse ctrl msg fail");
-	L_COND(rsp.cid);
+	L_COND_V(ret, "parse ctrl msg fail");
+	L_COND_V(rsp.cid);
 	SessionId id;
 	id.cid = rsp.cid;
 	id.acc_id = m_acc_id;
@@ -256,8 +256,8 @@ void acc::ADClientCon::HandleMsgBroadcastUin(const ASMsg &msg)
 //	L_DEBUG("HandleMsgBroadcastUin");
 	MsgBroadcastUin rsp;
 	bool ret = CtrlMsgProto::Parse(msg, rsp);
-	L_COND(ret, "parse ctrl msg fail");
-	L_COND(rsp.cid);
+	L_COND_V(ret, "parse ctrl msg fail");
+	L_COND_V(rsp.cid);
 	SessionId id;
 	id.cid = rsp.cid;
 	id.acc_id = m_acc_id;
@@ -276,7 +276,7 @@ void acc::ADClientCon::HandleMsgBroadcastUin(const ASMsg &msg)
 
 void acc::ADClientCon::OnTryReconTimeOut()
 {
-	L_COND(!IsConnect());
+	L_COND_V(!IsConnect());
 	TryReconnect();
 }
 
@@ -385,7 +385,7 @@ void acc::ConMgr::SetFatal()
 acc::ADClientCon * acc::ConMgr::FindADClientCon(const SessionId &id) const
 {
 	//L_DEBUG("m_vec_con.size()=%d", m_vec_con.size());
-	L_COND_R(id.acc_id < m_vec_con.size(), nullptr, "acc_id overload %d", id.acc_id);
+	L_COND(id.acc_id < m_vec_con.size(), nullptr, "acc_id overload %d", id.acc_id);
 
 	return m_vec_con[id.acc_id];
 }
@@ -422,7 +422,7 @@ void acc::ConMgr::SetRegResult(bool is_success)
 
 	if (!m_is_reg)
 	{
-		L_COND(m_svr_id);
+		L_COND_V(m_svr_id);
 		m_is_reg = true;
 		m_facade.OnRegResult(m_svr_id);
 	}
@@ -441,7 +441,7 @@ void acc::ConMgr::SetAccSeting(const MsgAccSeting &seting)
 		}
 		//L_DEBUG("send heartbeat info to port =%d", p->GetRemotePort());
 		string as_msg;
-		L_COND(m_seting->Serialize(as_msg));
+		L_COND_V(m_seting->Serialize(as_msg));
 		p->Send(CMD_REQ_ACC_SETING, as_msg);
 	}
 }

@@ -34,31 +34,4 @@ uint32 Server::GetExConSize() const
 	return m_client_listener.GetConstConnMgr().GetConSize();
 }
 
-CfgMgr::CfgMgr()
-	:m_inner_port(0)
-	, m_ex_port(0)
-{
 
-}
-
-bool CfgMgr::Init()
-{
-	L_DEBUG("init cfg");
-	su::Config cfg;
-	L_COND_F(cfg.init("cfg.txt"));
-
-	m_inner_ip = cfg.GetStr("inner_ip");
-	L_DEBUG("inner_ip=%s", m_inner_ip.c_str());
-	m_inner_port = (uint16)cfg.GetInt("inner_port");
-	L_DEBUG("inner_port=%d", m_inner_port);
-
-	m_ex_ip = cfg.GetStr("ex_ip");
-	L_DEBUG("ex_ip=%s", m_ex_ip.c_str());
-	m_ex_port = (uint16)cfg.GetInt("ex_port");
-	L_DEBUG("ex_port=%d", m_ex_port);
-
-	max_send_buf_size = (bool)cfg.GetInt("max_send_buf_size");
-	L_DEBUG("max_send_buf_size=%d", max_send_buf_size);
-
-	return true;
-}
