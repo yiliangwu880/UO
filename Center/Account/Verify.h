@@ -22,9 +22,9 @@ public:
 	}
 	CStr &GetWaitVerifyPsw() const { return m_waitVerifyPsw; }
 	void ReqVerify(const acc::SessionId &id, CStr &psw);
-	void DoReqVerify();
+	void OnLoadDbOk();
 	void GameLogin(const acc::SessionId &sid, CStr &psw);
-	void GameLoginOk(const acc::SessionId &sid);
+	void OnClientConFor2nd(const acc::SessionId &sid);
 private:
 	void OnVerifyTimeOut();
 

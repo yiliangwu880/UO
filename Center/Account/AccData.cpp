@@ -31,6 +31,7 @@ STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(AccData::OnDbLoad));
 void AccData::CreateAccount(CStr &psw)
 {
 	m_data.psw = psw;
+	Dbproxy::Ins().Insert(m_data);
 }
 
 void AccData::OnDbLoad(bool ret, const DbAccount &data, any para)
@@ -51,7 +52,7 @@ void AccData::OnDbLoad(bool ret, const DbAccount &data, any para)
 		account->m_AccData.m_data = data;
 	}
 
-	account->m_Verify.DoReqVerify();
+	account->m_Verify.OnLoadDbOk();
 }
 
 

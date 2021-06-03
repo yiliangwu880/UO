@@ -94,7 +94,7 @@ void AccMgr::OnClientConnect(const acc::Session &sn)
 	L_COND_V(p);
 	p->m_pAccount = acc->GetWeakPtr();
 
-	acc->m_Verify.GameLoginOk(sn.id);
+	acc->m_Verify.OnClientConFor2nd(sn.id);
 }
 
 void AccMgr::OnRevBroadcastUinToSession(const acc::Session &sn)

@@ -43,7 +43,7 @@ void Verify::ReqVerify(const SessionId &id, CStr &psw)
 	}
 }
 
-void Verify::DoReqVerify()
+void Verify::OnLoadDbOk()
 {
 	L_COND_V(WaitAccVerify == m_state || WaitReplace == m_state);
 	if (m_waitVerifyPsw != m_owner.m_AccData.Psw())
@@ -87,7 +87,7 @@ void Verify::GameLogin(const acc::SessionId &sid, CStr &psw)
 	AccMgr::Ins().ReqVerifyRet(sid, d);
 }
 
-void Verify::GameLoginOk(const acc::SessionId &sid)
+void Verify::OnClientConFor2nd(const acc::SessionId &sid)
 {
 	L_DEBUG("game login ok");
 	L_COND_V(VerifyOk == m_state);

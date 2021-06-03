@@ -30,3 +30,8 @@ dbproxy={
 		db_name ="testGame"
 	}
 }
+
+testCfg={
+	noPsw = true,
+
+}
