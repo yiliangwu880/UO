@@ -6,10 +6,11 @@ using namespace lc;
 using namespace std;
 using namespace db;
 
-bool DbConMgr::Init(const Cfg &cfg)
+bool DbConMgr::Init(const comCfg::S_dbproxy &cfg)
 {
+	
 	//mysql_db Лђеп mongodb_db
-	if (cfg.select_db == "mysql_db")
+	if (1)//(cfg.select_db == "mysql_db")
 	{
 		m_con = &MysqlCon::Ins();
 	}

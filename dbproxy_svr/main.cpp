@@ -23,13 +23,12 @@ public:
 			return false;
 		}
 
-		const Cfg &cfg = CfgMgr::Ins().GetCfg();
 		if (!DbConMgr::Ins().Init(cfg))
 		{
 			return false;
 		}
-		L_INFO("dbproxy_svr svr addr:%s %d", cfg.ip.c_str(), cfg.port);
-		return DbServer::Ins().Init(cfg.port, cfg.ip.c_str());
+		L_INFO("dbproxy_svr svr addr:%s %d", CfgMgr::ComCfg().dbproxy.c_str(), CfgMgr::ComCfg().dbproxy.port);
+		return DbServer::Ins().Init(CfgMgr::ComCfg().dbproxy.port, CfgMgr::ComCfg().dbproxy.c_str());
 
 		return true;
 	}

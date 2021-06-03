@@ -27,6 +27,7 @@ void CenterMgr::Init()
 	{
 		m_zoneId2Ok[svrId] = false;
 	}
+	//Dbproxy::Ins().Init(gCfgMgr->ComCfg())
 	{//init server info
 		const char* connect_ip = CfgMgr::Ins().ComCfg().access.ex_ip.c_str();
 		unsigned short connect_port = CfgMgr::Ins().ComCfg().access.ex_port;

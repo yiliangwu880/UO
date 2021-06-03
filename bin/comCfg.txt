@@ -14,3 +14,19 @@ center={
 zone={
 	allSvrId = [1], //[1,2]
 }
+
+
+dbproxy={
+	//dbproxy_svr侦听地址
+	ip="127.0.0.1"
+	port=55121
+
+	//mysql db info
+	mysql_db={
+		db_ip 	="192.168.1.23"
+		db_port =3306
+		db_user	="root"
+		db_psw	="123456"
+		db_name ="testGame"
+	}
+}

@@ -14,6 +14,7 @@ INCLUDE_DIRECTORIES(after  ./cpp_cfg/com/)
 # 并将名称保存到 DIR_SRCS 变量
 file(GLOB_RECURSE SRCS  ${PROJECT_SOURCE_DIR} "../dbProto/*.cpp"
 "../com/BaseAppMgr.cpp"
+"../external/cpp_cfg/com/*.cpp"
 )
 file(GLOB_RECURSE SRCS2  ${PROJECT_SOURCE_DIR} "*.cpp")
 #file(GLOB_RECURSE SRCS3  ${PROJECT_SOURCE_DIR} "./cpp_cfg/com/*.cpp")

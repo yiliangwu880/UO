@@ -20,6 +20,20 @@ struct comCfg
 		std::string ip;
 		uint16_t port;
 	};
+	struct S_dbproxy
+	{
+		struct S_mysql_db
+		{
+			std::string db_ip;
+			std::string db_name;
+			uint16_t db_port;
+			std::string db_psw;
+			std::string db_user;
+		};
+		std::string ip;
+		S_mysql_db mysql_db;
+		uint16_t port;
+	};
 	struct S_zone
 	{
 		std::vector<uint16_t> allSvrId;
@@ -29,6 +43,7 @@ struct comCfg
 	////////////////////////define member list////////////////////////
 	S_access access;
 	S_center center;
+	S_dbproxy dbproxy;
 	S_zone zone;
 
 	////////////////////////method list////////////////////////
@@ -66,6 +81,13 @@ private:
 			access.inner_port = js["access"]["inner_port"];
 			center.ip = js["center"]["ip"];
 			center.port = js["center"]["port"];
+			dbproxy.ip = js["dbproxy"]["ip"];
+			dbproxy.mysql_db.db_ip = js["dbproxy"]["mysql_db"]["db_ip"];
+			dbproxy.mysql_db.db_name = js["dbproxy"]["mysql_db"]["db_name"];
+			dbproxy.mysql_db.db_port = js["dbproxy"]["mysql_db"]["db_port"];
+			dbproxy.mysql_db.db_psw = js["dbproxy"]["mysql_db"]["db_psw"];
+			dbproxy.mysql_db.db_user = js["dbproxy"]["mysql_db"]["db_user"];
+			dbproxy.port = js["dbproxy"]["port"];
 			for (size_t i = 0; i < js["zone"]["allSvrId"].size(); ++i)
 			{
 				zone.allSvrId.push_back(js["zone"]["allSvrId"][i]);
