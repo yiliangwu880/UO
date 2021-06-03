@@ -33,12 +33,7 @@ namespace
 		int clientMin = pvSrc.ReadInt32();
 		int clientRev = pvSrc.ReadInt32();
 		int clientPat = pvSrc.ReadInt32();
-		{
-			//无条件认证通过
-			VerifyRetStruct d;
-			d.is_success = true;
-			AccMgr::Ins().ReqVerifyRet(state.m_sn.id, d);
-		}
+
 	}
 
 	static void AccountLogin(NetState &state, PacketReader &pvSrc)
@@ -49,6 +44,7 @@ namespace
 
 		Account &acc = AccountMgr::Ins().DoGetAcc(username);
 		acc.m_Verify.ReqVerify(state.m_sn.id, password);
+
 #if 0
 
 		vector<ServerInfo> info;
@@ -64,27 +60,8 @@ namespace
 	//选服请求 
 	static void PlayServer(NetState &state, PacketReader &pvSrc)
 	{
+		//无条件通过，发送唯一服务器地址给客户端
 		int index = pvSrc.ReadInt16();
-
-		//判断账号，选服合法
-		//var info = state.ServerInfo;
-		//IAccount a = state.Account;
-
-		//if (info == null || a == null || index < 0 || index >= info.Length)
-		//{
-		//	Utility.PushColor(ConsoleColor.Red);
-		//	Console.WriteLine("Client: {0}: Invalid Server ({1})", state, index);
-		//	Utility.PopColor();
-
-		//	state.Dispose();
-		//}
-		//else
-		//{
-		//	state.AuthID = GenerateAuthID(state);
-
-		//	state.SentFirstPacket = false;
-		//	state.Send(new PlayServerAck(info[index], state.AuthID));
-		//}
 		PlayServerAck p(CenterMgr::Ins().GetServerInfo(), 1);
 		state.CompressionEnabled = false;
 		state.Send(p);
@@ -94,14 +71,13 @@ namespace
 	static void GameLogin(NetState &state, PacketReader &pvSrc)
 	{
 		L_DEBUG("GameLogin")
-		{
-			//无条件认证通过
-			VerifyRetStruct d;
-			d.is_success = true;
-			L_DEBUG("req verify ret ok");
-			AccMgr::Ins().ReqVerifyRet(state.m_sn.id, d);
-		}
-		//state.SentFirstPacket = true;
+		//{
+		//	//无条件认证通过
+		//	VerifyRetStruct d;
+		//	d.is_success = true;
+		//	L_DEBUG("req verify ret ok");
+		//	AccMgr::Ins().ReqVerifyRet(state.m_sn.id, d);
+		//}
 
 		uint32 authID = pvSrc.ReadUInt32();
 #if 0
@@ -145,6 +121,10 @@ namespace
 		string username = pvSrc.ReadString(30);
 		string password = pvSrc.ReadString(30);
 
+		Account *acc = AccountMgr::Ins().GetAcc(username);
+		L_COND_V(acc);
+		acc->m_Verify.GameLogin(state.m_sn.id, password);
+#if 0
 
 		// 接受登录
 		//state.CityInfo = e.CityInfo;
@@ -160,7 +140,8 @@ namespace
 		//{
 		//	state.Send(new CharacterListOld(state.Account, state.CityInfo));
 		//}
-	
+
+#endif
 	}
 
 

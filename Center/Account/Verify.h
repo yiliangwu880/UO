@@ -17,11 +17,15 @@ class Verify : public AccountSubCom
 	lc::Timer m_vtm; //verify time out, will del account;
 
 public: 
-	Verify(Account &owner);
+	Verify(Account &owner)
+		:AccountSubCom(owner)
+	{
+	}
 	void ReqVerify(const acc::SessionId &id, CStr &psw);
 	void OnDbLoad();
 	void SetVerifyOk(const acc::SessionId &sid);
-
+	void GameLogin(const acc::SessionId &sid, CStr &psw);
+	void GameLoginOk(const acc::SessionId &sid);
 private:
 	void OnVerifyTimeOut();
 

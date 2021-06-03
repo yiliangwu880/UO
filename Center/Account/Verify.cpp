@@ -1,10 +1,8 @@
 #include "AccountMgr.h"
 #include "db_driver.h"
+#include "CenterMgr.h"
 
-Verify::Verify(Account &owner)
-	:AccountSubCom(owner)
-{ 
-}
+
 
 
 void Verify::ReqVerify(const SessionId &id, CStr &psw)
@@ -64,6 +62,55 @@ void Verify::SetVerifyOk(const acc::SessionId &sid)
 	m_vtm.StopTimer();
 	m_state = VerifyOk;
 	m_owner.m_AccData.SetSid(sid);
+	VerifyRetStruct d;
+	d.is_success = true;
+	AccMgr::Ins().ReqVerifyRet(m_waitVerifySid, d);
+	m_owner.m_FirstSn.SetSessionId(sid);
+	m_owner.m_FirstSn.SetCompressionEnabled(false);
+
+	{//send svr list 
+		vector<ServerInfo> info;
+		ServerInfo i;
+		info.push_back(CenterMgr::Ins().GetServerInfo());
+		AccountLoginAck rsp(info);
+		m_owner.m_FirstSn.Send(rsp);
+	}
+}
+
+void Verify::GameLogin(const acc::SessionId &sid, CStr &psw)
+{
+	L_COND_V(VerifyOk == m_state);
+	if (psw != m_owner.m_AccData.Psw())
+	{
+		L_ERROR("err psw");
+		return;
+	}
+	VerifyRetStruct d;
+	d.is_success = true;
+	d.accName = m_owner.Name();
+	AccMgr::Ins().ReqVerifyRet(sid, d);
+}
+
+void Verify::GameLoginOk(const acc::SessionId &sid)
+{
+	L_DEBUG("game login ok");
+	L_COND_V(VerifyOk == m_state);
+	m_owner.m_AccSn.SetSessionId(sid);
+
+	// 接受登录
+	//state.CityInfo = e.CityInfo;
+	SupportedFeatures sf;
+	m_owner.Send(sf);
+
+	//if (state.NewCharacterList)
+	//{
+	CharacterList cl;
+	m_owner.Send(cl);
+	//}
+	//else
+	//{
+	//	m_owner.Send(new CharacterListOld(state.Account, state.CityInfo));
+	//}
 }
 
 void Verify::OnVerifyTimeOut()

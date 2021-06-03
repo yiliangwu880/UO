@@ -3,7 +3,7 @@
 #include "acc_driver.h"
 
 class Packet;
-//适配C# 写法
+//适配C# 写法, 临时用，等删掉
 struct NetState
 {
 	const acc::Session &m_sn;

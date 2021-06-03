@@ -56,8 +56,9 @@ namespace acc {
 		std::string remote_ip;
 		uint16 remote_port=0;
 
+		//创建会话时，ex 需要根据下面信息绑定 svr对象
 		uint64 uin=0; //登录后角色id， 需要使用，可以支持svr发组播给uin列表
-		std::string accName; //accName应该不用了，待分析。
+		std::string accName; //accName
 
 		void Clear();
 

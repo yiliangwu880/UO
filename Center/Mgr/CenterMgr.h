@@ -24,7 +24,7 @@ class CenterMgr : public Singleton<CenterMgr>
 	ServerInfo m_ServerInfo;
 public:
 	void Init();
-	bool Allok() const { return m_allok; }
+	bool Allok() const { return m_allok; } //true 表示所有服务器链接准备好，可以登录游戏
 	void SetCenterOk();
 	void SetZoneOk(uint16 svrId);
 	const ServerInfo &GetServerInfo() { return m_ServerInfo; }
