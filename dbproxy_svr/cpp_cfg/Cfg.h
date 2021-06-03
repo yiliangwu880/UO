@@ -12,7 +12,7 @@ struct Cfg
 	{
 		std::string db_ip;
 		std::string db_name;
-		uint16 db_port;
+		uint16_t db_port;
 		std::string db_psw;
 		std::string db_user;
 	};
@@ -20,7 +20,7 @@ struct Cfg
 	{
 		std::string db_ip;
 		std::string db_name;
-		uint16 db_port;
+		uint16_t db_port;
 		std::string db_psw;
 		std::string db_user;
 	};
@@ -28,10 +28,10 @@ struct Cfg
 
 	////////////////////////define member list////////////////////////
 	std::string ip;
-	uint16 is_daemon;
+	uint16_t is_daemon;
 	S_mongodb_db mongodb_db;
 	S_mysql_db mysql_db;
-	uint16 port;
+	uint16_t port;
 	std::string select_db;
 
 	////////////////////////method list////////////////////////
@@ -41,7 +41,7 @@ struct Cfg
 		//default load original cfg file name
 		if (nullptr == file_name)
 		{
-			file_name = "../../bin/dbproxy_svr/Cfg.txt";
+			file_name = "Cfg.txt";
 		}
 		SimpleCfg js;
 		if (!js.ParseFile(file_name))

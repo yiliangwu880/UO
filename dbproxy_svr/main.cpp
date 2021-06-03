@@ -5,6 +5,7 @@
 #include <signal.h>
 #include "DbServer.h"
 #include "db_con.h"
+#include "BaseAppMgr.h"
 
 using namespace su;
 using namespace lc;
@@ -89,6 +90,27 @@ class MyApp: public BaseApp
 public:
 	virtual bool OnStart() override
 	{
+		return false;
+	}
+
+private:
+};
+
+using namespace std;
+using namespace su;
+using namespace lc;
+
+class AppMgr : public BaseAppMgr, public Singleton<AppMgr>
+{
+public:
+	virtual bool OnStart() override
+	{
+		if (!CfgMgr::Ins().Init())
+		{
+			printf("read cfg fail!");
+			return false;
+		}
+
 		const Cfg &cfg = CfgMgr::Ins().GetCfg();
 		if (!DbConMgr::Ins().Init(cfg))
 		{
@@ -96,14 +118,20 @@ public:
 		}
 		L_INFO("dbproxy_svr svr addr:%s %d", cfg.ip.c_str(), cfg.port);
 		return DbServer::Ins().Init(cfg.port, cfg.ip.c_str());
-	}
 
-private:
+		return true;
+	}
+	virtual void OnExit() override
+	{
+
+	}
 };
 
 
 int main(int argc, char* argv[])
 {
+#if 0
+
 	if (!CfgMgr::Ins().Init())
 	{
 		printf("read cfg fail!");
@@ -113,6 +141,9 @@ int main(int argc, char* argv[])
 
 	MyApp app;
 	app.Start(argc, argv, "dbproxy_svr", cfg.is_daemon);
+#endif
+
+	AppMgr::Ins().Start(argc, argv, "dbproxy_svr");
 	return 0;
 }
 

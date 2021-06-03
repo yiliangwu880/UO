@@ -4,7 +4,7 @@
 
 #pragma once
 #include "base_include.h"
-#include "cpp_cfg/CC_cfg.h"
+#include "cpp_cfg/Cfg.h"
 
 class CfgMgr : public Singleton<CfgMgr>
 {

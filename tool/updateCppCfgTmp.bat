@@ -8,6 +8,7 @@ set win_path=F:\codelib\UO
 
 xcopy /y/i/e/s   %linux_path%\Center\Cfg\* %win_path%\Center\Cfg\
 xcopy /y/i/e/s   %linux_path%\Zone\Cfg\* %win_path%\Zone\Cfg\
+xcopy /y/i/e/s   %linux_path%\dbproxy_svr\cpp_cfg\* %win_path%\dbproxy_svr\cpp_cfg\
 
 
 

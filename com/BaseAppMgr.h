@@ -1,6 +1,6 @@
 /*
-µäĞÍ svr_util libevent_cpp »ù´¡µÄapp¹ÜÀí Ğ´·¨
-ÏîÄ¿ https://github.com/yiliangwu880/UO.git Ò²ÓĞ£¬ÒÔUOÏîÄ¿Îª×¼¡£ÕâÀïÊÇ¾É²Î¿¼
+å…¸å‹ svr_util libevent_cpp åŸºç¡€çš„appç®¡ç† å†™æ³•
+é¡¹ç›® https://github.com/yiliangwu880/UO.git ä¹Ÿæœ‰ï¼Œä»¥UOé¡¹ç›®ä¸ºå‡†ã€‚è¿™é‡Œæ˜¯æ—§å‚è€ƒ
 
 */
 #pragma once
@@ -11,20 +11,20 @@
 class BaseAppMgr 
 {
 	using PostFun = std::function<void(void)>;
-	vector<PostFun> m_postCb;
+	std::vector<PostFun> m_postCb;
 public:
-	//shellÆô¶¯ÃüÁîÀı×Ó£º 
-	//./excute   #Æô¶¯½ø³Ì
-	//./excute d #ºóÌ¨Æô¶¯½ø³Ì
-	//./excute stop  #Í£Ö¹½ø³Ì
+	//shellå¯åŠ¨å‘½ä»¤ä¾‹å­ï¼š 
+	//./excute   #å¯åŠ¨è¿›ç¨‹
+	//./excute d #åå°å¯åŠ¨è¿›ç¨‹
+	//./excute stop  #åœæ­¢è¿›ç¨‹
 	//@argc
-	//@argv main º¯Êı²ÎÊı¡£
+	//@argv main å‡½æ•°å‚æ•°ã€‚
 	void Start(int argc, char* argv[], const std::string &app_name);
 
 public:
 	virtual bool OnStart() = 0;
 	virtual void OnExit() {};
-	//ÑÓÊ±µ÷ÓÃ£¬×î½üÒ»¸ötimer´¥·¢
+	//å»¶æ—¶è°ƒç”¨ï¼Œæœ€è¿‘ä¸€ä¸ªtimerè§¦å‘
 	void AddPost(PostFun cb);
 
 private:

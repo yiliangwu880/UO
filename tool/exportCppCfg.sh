@@ -10,6 +10,11 @@ cd ../bin/Zone1
 mv -f zoneCfg.h ../../Zone/Cfg/
 cd - # tool 
 
+cd ../bin/dbproxy_svr
+../../external/cpp_cfg/bin/export_cpp_cfg Cfg.txt 
+mv -f Cfg.h ../../dbproxy_svr/cpp_cfg/
+cd - # tool 
+
 
 cd ../bin/Center
 ../../external/cpp_cfg/bin/export_cpp_cfg ../comCfg.txt
