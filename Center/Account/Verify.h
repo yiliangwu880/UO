@@ -5,8 +5,7 @@ class Verify : public AccountSubCom
 	enum State
 	{
 		None,          //初始化状态，刚创建
-		WaitDbQuery,   //等查库授权,
-		WaitAccVerify, //检验成功
+		WaitAccVerify, //等检验中
 		VerifyOk,      //授权成功，可以收发消息。 有新链接验证通过，--》WaitReplace
 		WaitReplace,   //顶号检验成功， 等acc通知授权成功。
 	};
@@ -21,9 +20,9 @@ public:
 		:AccountSubCom(owner)
 	{
 	}
+	CStr &GetWaitVerifyPsw() const { return m_waitVerifyPsw; }
 	void ReqVerify(const acc::SessionId &id, CStr &psw);
-	void OnDbLoad();
-	void SetVerifyOk(const acc::SessionId &sid);
+	void DoReqVerify();
 	void GameLogin(const acc::SessionId &sid, CStr &psw);
 	void GameLoginOk(const acc::SessionId &sid);
 private:

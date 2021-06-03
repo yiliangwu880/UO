@@ -6,7 +6,6 @@ class AccData : public AccountSubCom
 {
 	static const int MAX_ACTOR = 4;
 
-	acc::SessionId m_sid;
 	DbAccount m_data;
 public:
 	AccData(Account &owner, CStr &name);
@@ -14,8 +13,7 @@ public:
 	void LoadDb(const DbAccount &data);
 	CStr &Name() const;
 	CStr &Psw() const;
-	const acc::SessionId &GetSid() const { return m_sid; }
-	void SetSid(const acc::SessionId &id) { m_sid = id; }
+	void CreateAccount(CStr &psw);
 
 
 	static void OnDbLoad(bool ret, const DbAccount &data, any para);

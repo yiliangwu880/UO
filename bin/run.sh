@@ -5,22 +5,43 @@
 
 start() {
 	echo "start all svr"
+
+	cd dbproxy_svr
+	./dbproxy_svr d
+	cd -
+
+	cd Acc
+	./acc_svr d
+	cd -
+
 	cd Center
-	./center  # 后台启动 ./center d 
-	cd ../Acc
-	./acc_svr
-	cd ../Zone1
-	./zone
+	./center d  # 后台启动 ./center d 
+	cd -
+
+	cd Zone1
+	./zone d
+	cd -
+
 }
 
 stop() {
 	echo "stop all svr"
+	cd dbproxy_svr
+	./dbproxy_svr stop
+	cd -
+
 	cd Center
 	./center stop
-	cd ../Acc
+	cd -
+
+	cd Acc
 	./acc_svr stop
-	cd ../Zone1
+	cd -
+
+	cd Zone1
 	./zone stop
+	cd -
+
 }
 
 ## 帮助函数

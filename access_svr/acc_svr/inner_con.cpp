@@ -98,6 +98,8 @@ namespace
 
 		if (!req.is_success)
 		{
+			L_DEBUG("session verify fail");
+			pClient->DisConnect();
 			return;
 		}
 		if (pClient->IsVerify())
@@ -291,18 +293,6 @@ namespace
 }
 
 
-void SvrCtrlMsgDispatch::Init()
-{
-	m_cmd_2_handle[CMD_REQ_REG]                = Parse_CMD_REQ_REG;
-	m_cmd_2_handle[CMD_REQ_VERIFY_RET]         = Parse_CMD_REQ_VERIFY_RET;
-	m_cmd_2_handle[CMD_REQ_BROADCAST]          = Parse_CMD_REQ_BROADCAST;
-	m_cmd_2_handle[CMD_REQ_SET_ACTIVE_SVR]	   = Parse_CMD_REQ_SET_ACTIVE_SVR;
-	m_cmd_2_handle[CMD_REQ_DISCON]             = Parse_CMD_REQ_DISCON;
-	m_cmd_2_handle[CMD_REQ_DISCON_ALL]         = Parse_CMD_REQ_DISCON_ALL;
-	m_cmd_2_handle[CMD_REQ_ACC_SETING]		   = Parse_CMD_REQ_ACC_SETING;
-	m_cmd_2_handle[CMD_REQ_BROADCAST_UIN] = Parse_CMD_REQ_BROADCAST_UIN;
-	m_cmd_2_handle[CMD_REQ_CACHE_MSG]	= Parse_CMD_REQ_CACHE_MSG;
-}
 
 void SvrCtrlMsgDispatch::DispatchMsg(InnerSvrCon &con, const acc::ASMsg &msg)
 {
@@ -518,4 +508,17 @@ InnerSvrCon * VerifySvrMgr::GetBLVerifySvr()
 		idx++;
 	}
 	L_COND(false, nullptr);
+}
+
+void SvrCtrlMsgDispatch::Init()
+{
+	m_cmd_2_handle[CMD_REQ_REG] = Parse_CMD_REQ_REG;
+	m_cmd_2_handle[CMD_REQ_VERIFY_RET] = Parse_CMD_REQ_VERIFY_RET;
+	m_cmd_2_handle[CMD_REQ_BROADCAST] = Parse_CMD_REQ_BROADCAST;
+	m_cmd_2_handle[CMD_REQ_SET_ACTIVE_SVR] = Parse_CMD_REQ_SET_ACTIVE_SVR;
+	m_cmd_2_handle[CMD_REQ_DISCON] = Parse_CMD_REQ_DISCON;
+	m_cmd_2_handle[CMD_REQ_DISCON_ALL] = Parse_CMD_REQ_DISCON_ALL;
+	m_cmd_2_handle[CMD_REQ_ACC_SETING] = Parse_CMD_REQ_ACC_SETING;
+	m_cmd_2_handle[CMD_REQ_BROADCAST_UIN] = Parse_CMD_REQ_BROADCAST_UIN;
+	m_cmd_2_handle[CMD_REQ_CACHE_MSG] = Parse_CMD_REQ_CACHE_MSG;
 }

@@ -29,7 +29,7 @@ ExternalSvrCon::~ExternalSvrCon()
 		ntf.cid = GetId();
 		L_ASSERT(ntf.cid);
 		const Id2Svr &id_2_svr = RegSvrMgr::Ins().GetRegSvr();
-		for (auto &v: id_2_svr)
+		for (auto &v : id_2_svr)
 		{
 			InnerSvrCon *p = v.second;
 			if (nullptr == p)
@@ -83,7 +83,7 @@ void ExternalSvrCon::SetActiveSvrId(uint16 grpId, uint16 svr_id)
 	L_COND_V(0 != grpId);
 	L_COND_V(0 != svr_id);
 	L_COND_V(grpId < 100); // groupId用来当数组下标，设计不能过大
-	if (m_grpId2SvrId.size() < (size_t)grpId+1)
+	if (m_grpId2SvrId.size() < (size_t)grpId + 1)
 	{
 		m_grpId2SvrId.resize(grpId + 1);
 	}
@@ -158,110 +158,111 @@ bool ExternalSvrCon::CheckEncrypted(uint8_t packetID)
 }
 namespace {
 
-int GetPacketLength(const char *pMsg, int len)
-{
-	if (len >= 3)
+	int GetPacketLength(const char *pMsg, int len)
 	{
-		return (pMsg[1] << 8) | pMsg[2];
+		if (len >= 3)
+		{
+			return (pMsg[1] << 8) | pMsg[2];
+		}
+
+		return 0;
 	}
 
-	return 0;
-}
 
-
-unsigned char GetPacketID(const char *m_Buffer, int m_Size)
-{
-	if (m_Size >= 1)
+	unsigned char GetPacketID(const char *m_Buffer, int m_Size)
 	{
-		return (unsigned char)m_Buffer[0];
-	}
+		if (m_Size >= 1)
+		{
+			return (unsigned char)m_Buffer[0];
+		}
 
-	return (unsigned char)0xFF;
-}
+		return (unsigned char)0xFF;
+	}
 
 }
 //@param pMsg, len  网络缓存字节
 //return 返回已经读取的字节数， 0表示包未接收完整。
 int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 {
-//##接收包格式
-//	前4字节  --seed 作用？
-//		[0] --packetId ，如果包长度固定，通过id 查找 包长度
-//		[1, 2] --如果可变长度包，这里存放包长度。
-//		后面接其他消息内容。 索引从 1或者3（可变长度包）开始
-//抄UO  HandleReceive 函数
+	//##接收包格式
+	//	前4字节  --seed 作用？
+	//		[0] --packetId ，如果包长度固定，通过id 查找 包长度
+	//		[1, 2] --如果可变长度包，这里存放包长度。
+	//		后面接其他消息内容。 索引从 1或者3（可变长度包）开始
+	//抄UO  HandleReceive 函数
 
-	//ByteQueue buffer = ns.Buffer;
+		//ByteQueue buffer = ns.Buffer;
 
 	if (pMsg == nullptr || len <= 0)
 	{
-		L_ERROR("unknow");
+		L_ERROR("unknow。 pMsg, len= %p %d", pMsg, len);
 		return 0;
 	}
 
-	
+
 	int readSeedLen = 0;
-		if (!Seeded) 
+	if (!Seeded)
+	{
+		int oldLen = len;
+		if (!HandleSeed(pMsg, len))
 		{
-			if (!HandleSeed(pMsg, len))
-			{
-				L_ERROR("read seed fail");
-				return 0;
-			}
-			readSeedLen = 4;
+			L_ERROR("read seed fail");
+			return 0;
+		}
+		readSeedLen = oldLen - len;
+	}
+
+	int length = len; //int length = buffer.Length;
+
+	while (length > 0)
+	{
+		uint8_t packetID = (uint8_t)GetPacketID(pMsg, len);
+
+		if (CheckEncrypted(packetID))
+		{
+			return readSeedLen;//Encrypted Client Unsupported
+		}
+		if (0 == packetID)
+		{
+			L_ERROR("packetID ==0");
+			return readSeedLen;
+		}
+		PacketHandler *handler = PacketHandlers::Ins().GetHandler(packetID);
+		if (handler == nullptr)
+		{
+			L_ERROR("find Handler Fail. %x", packetID);
+			return readSeedLen;
 		}
 
-		int length = len; //int length = buffer.Length;
-		
-		while (length > 0 )
+		int packetLength = handler->m_Length;
+		if (packetLength <= 0)
 		{
-			uint8_t packetID = (uint8_t)GetPacketID(pMsg, len);
+			if (length >= 3)
+			{
+				packetLength = GetPacketLength(pMsg, len);
 
-			if (CheckEncrypted(packetID))
-			{
-				return readSeedLen;//Encrypted Client Unsupported
-			}
-			if (0 == packetID)
-			{
-				L_ERROR("packetID ==0");
-				return readSeedLen;
-			}
-			PacketHandler *handler = PacketHandlers::Ins().GetHandler(packetID);
-			if (handler == nullptr)
-			{
-				L_ERROR("find Handler Fail. %x", packetID);
-				return readSeedLen;
-			}
-
-			int packetLength = handler->m_Length;
-			if (packetLength <= 0)
-			{
-				if (length >= 3)
+				if (packetLength < 3)
 				{
-					packetLength = GetPacketLength(pMsg,len);
-
-					if (packetLength < 3)
-					{
-						L_ERROR("packetLength < 3");
-						DisConnect();
-						return readSeedLen;
-					}
-				}
-				else
-				{
+					L_ERROR("packetLength < 3");
+					DisConnect();
 					return readSeedLen;
 				}
 			}
-
-			if (length < packetLength)
+			else
 			{
 				return readSeedLen;
 			}
-			L_DEBUG("rev packetID,len=0x%x %d", packetID, packetLength);
-			return packetLength+ readSeedLen;
-
 		}
-	
+
+		if (length < packetLength)
+		{
+			return readSeedLen;
+		}
+		L_DEBUG("rev packetID,len=0x%x %d", packetID, packetLength);
+		return packetLength + readSeedLen;
+
+	}
+
 
 	return readSeedLen;
 }
@@ -281,6 +282,7 @@ int ExternalSvrCon::OnRawRecv(const char *pMsg, int len)
 		{
 			return totalGetLen;
 		}
+		L_COND(packetLen <= len, len);
 		RevPacket(pMsg, packetLen);
 		totalGetLen += packetLen;
 		pMsg += packetLen;
@@ -300,7 +302,7 @@ void ExternalSvrCon::RevPacket(const char *pMsg, int len)
 		break;
 	case ExternalSvrCon::State::WAIT_VERIFY:
 		Forward2VerifySvr(pMsg, len);
-//		L_WARN("client repeated req verify, ignore");
+		//		L_WARN("client repeated req verify, ignore");
 		break;
 	case ExternalSvrCon::State::VERIFYED:
 		if (m_isCache)
@@ -344,7 +346,7 @@ void ExternalSvrCon::OnConnected()
 //client 接收的tcp pack 转 MsgForward
 bool ExternalSvrCon::ClientTcpPack2MsgForward(const lc::MsgPack &msg, MsgForward &f_msg) const
 {
-	L_COND_F(msg.len>=sizeof(f_msg.cmd));
+	L_COND_F(msg.len >= sizeof(f_msg.cmd));
 	f_msg.cid = GetId();
 	const char *cur = msg.data;
 	f_msg.cmd = *(decltype(f_msg.cmd)*)(cur);
@@ -361,13 +363,13 @@ bool ExternalSvrCon::ClientTcpPack2MsgForward(const char *pMsg, int len, acc::Ms
 	f_msg.cid = GetId();
 	f_msg.cmd = *(uint8_t*)(pMsg);
 	f_msg.msg = pMsg;
-	f_msg.msg_len = len ;
+	f_msg.msg_len = len;
 	return true;
 }
 
 void ExternalSvrCon::Forward2VerifySvr(const char *pMsg, int len)
 {
-//	L_COND_V(State::INIT == m_state); //UO临时不验证
+	//	L_COND_V(State::INIT == m_state); //UO临时不验证
 
 	m_wfm_tm.StopTimer();
 	string tcp_pack;
@@ -395,7 +397,7 @@ void ExternalSvrCon::Forward2VerifySvr(const char *pMsg, int len)
 
 	m_verify_tm.StopTimer();
 	auto f = std::bind(&ExternalSvrCon::OnVerfiyTimeOut, this);
-	m_verify_tm.StartTimer(VERIFY_TIME_OUT_SEC*1000, f);
+	m_verify_tm.StartTimer(VERIFY_TIME_OUT_SEC * 1000, f);
 	m_state = State::WAIT_VERIFY;
 }
 
@@ -428,7 +430,7 @@ void ExternalSvrCon::Forward2Svr(const char *pMsg, int len)
 		L_ASSERT(0 != hbi.interval_sec);
 		auto f = std::bind(&ExternalSvrCon::OnHeartbeatTimeOut, this);
 		L_DEBUG("rev beat, start time sec=%d", hbi.interval_sec);
-		m_heartbeat_tm.StartTimer(hbi.interval_sec*1000, f);
+		m_heartbeat_tm.StartTimer(hbi.interval_sec * 1000, f);
 		SendMsg("a", 0);//unfinished
 		return;
 	}

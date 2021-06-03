@@ -14,7 +14,7 @@ void Verify::ReqVerify(const SessionId &id, CStr &psw)
 		break;
 	case Verify::None:
 		{
-			m_state = WaitDbQuery;
+			m_state = WaitAccVerify;
 			m_waitVerifySid = id;
 			m_waitVerifyPsw = psw;
 			DbAccount acc;
@@ -23,50 +23,43 @@ void Verify::ReqVerify(const SessionId &id, CStr &psw)
 			m_vtm.StartTimerSec(60, std::bind(&Verify::OnVerifyTimeOut, this));
 		}
 		break;
-	case Verify::WaitDbQuery:
 	case Verify::WaitAccVerify:
 		L_INFO("refuse verify when waiting verify");
 		break;
 	case Verify::VerifyOk:
-		{
-			if (psw != m_owner.m_AccData.Psw())
-			{
-				return;
-			}
-			m_state = WaitReplace;
-			AccMgr::Ins().DisconClient(m_owner.m_AccData.GetSid());
-			VerifyRetStruct d;
-			AccMgr::Ins().ReqVerifyRet(id, d);
+		{//顶号，先不处理
+			//if (psw != m_owner.m_AccData.Psw())
+			//{
+			//	return;
+			//}
+			//m_state = WaitReplace;
+			//m_owner.m_FirstSn.Disconnect();
+			//m_owner.m_AccSn.Disconnect();
+			//VerifyRetStruct d;
+			//d.is_success = true;
+			//AccMgr::Ins().ReqVerifyRet(id, d);
 		}
 		break;
 	}
 }
 
-void Verify::OnDbLoad()
+void Verify::DoReqVerify()
 {
-	L_COND_V(WaitDbQuery == m_state);
+	L_COND_V(WaitAccVerify == m_state || WaitReplace == m_state);
 	if (m_waitVerifyPsw != m_owner.m_AccData.Psw())
 	{
 		L_INFO("account verify fail");
 		AccountMgr::Ins().DelAcc(m_owner.Name());
 		return;
 	}
-	m_state = WaitAccVerify;
-	VerifyRetStruct d;
-	AccMgr::Ins().ReqVerifyRet(m_waitVerifySid, d);
-}
-
-void Verify::SetVerifyOk(const acc::SessionId &sid)
-{
-	L_COND_V(WaitAccVerify == m_state || WaitReplace == m_state);
 	m_vtm.StopTimer();
 	m_state = VerifyOk;
-	m_owner.m_AccData.SetSid(sid);
+	m_owner.m_FirstSn.SetSessionId(m_waitVerifySid);
+	m_owner.m_FirstSn.SetCompressionEnabled(false);
+
 	VerifyRetStruct d;
 	d.is_success = true;
 	AccMgr::Ins().ReqVerifyRet(m_waitVerifySid, d);
-	m_owner.m_FirstSn.SetSessionId(sid);
-	m_owner.m_FirstSn.SetCompressionEnabled(false);
 
 	{//send svr list 
 		vector<ServerInfo> info;
@@ -75,16 +68,19 @@ void Verify::SetVerifyOk(const acc::SessionId &sid)
 		AccountLoginAck rsp(info);
 		m_owner.m_FirstSn.Send(rsp);
 	}
+
 }
+
 
 void Verify::GameLogin(const acc::SessionId &sid, CStr &psw)
 {
 	L_COND_V(VerifyOk == m_state);
-	if (psw != m_owner.m_AccData.Psw())
-	{
-		L_ERROR("err psw");
-		return;
-	}
+	//临时跳过，不查密码
+	//if (psw != m_owner.m_AccData.Psw())
+	//{
+	//	L_ERROR("err psw");
+	//	return;
+	//}
 	VerifyRetStruct d;
 	d.is_success = true;
 	d.accName = m_owner.Name();

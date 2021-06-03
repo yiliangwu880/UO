@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 
 	//start or stop proccess
 	SingleProgress::Ins().Check(argc, argv, "acc_svr");
-
+	su::LogMgr::Ins().DefaultFileName(std::string("log_") + "acc_svr" + ".txt");
 	lc::LogMgr::Ins().SetLogPrinter(MyLcLog::Ins());
 
 	if (!InitSvr())

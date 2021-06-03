@@ -27,6 +27,12 @@ su::CStr & AccData::Psw() const
 }
 
 STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(AccData::OnDbLoad));
+
+void AccData::CreateAccount(CStr &psw)
+{
+	m_data.psw = psw;
+}
+
 void AccData::OnDbLoad(bool ret, const DbAccount &data, any para)
 {
 	L_COND_V(!data.name.empty());
@@ -36,14 +42,16 @@ void AccData::OnDbLoad(bool ret, const DbAccount &data, any para)
 
 	if (!ret)
 	{
-		L_INFO("load account db fail");
-		//return fail to client
-		AccountMgr::Ins().DelAcc(account->Name());
-		return;
+		L_INFO("load account db fail, create account %s", account->Name().c_str());
+		account->m_AccData.CreateAccount(account->m_Verify.GetWaitVerifyPsw());
+	}
+	else
+	{
+		L_DEBUG("OnDbLoad ok");
+		account->m_AccData.m_data = data;
 	}
 
-	account->m_AccData.m_data = data;
-	account->m_Verify.OnDbLoad();
+	account->m_Verify.DoReqVerify();
 }
 
 

@@ -82,6 +82,11 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 
 void AccMgr::OnClientConnect(const acc::Session &sn)
 {
+	L_DEBUG("on client connect。 accName = %s", sn.accName.c_str());
+	if (sn.accName.empty())
+	{//第一个服务器列表链接通过，不处理
+		return;
+	}
 	Account *acc = AccountMgr::Ins().GetAcc(sn.accName);
 	L_COND_V(acc);
 
@@ -94,12 +99,12 @@ void AccMgr::OnClientConnect(const acc::Session &sn)
 
 void AccMgr::OnRevBroadcastUinToSession(const acc::Session &sn)
 {
-	Account *account = AccountMgr::Ins().GetAcc(sn.accName);
-	L_COND_V(account);
+	//Account *account = AccountMgr::Ins().GetAcc(sn.accName);
+	//L_COND_V(account);
 
-	CenterSnEx *p = sn.GetEx<CenterSnEx>();
-	L_COND_V(p);
-	p->m_pAccount = account->GetWeakPtr();
+	//CenterSnEx *p = sn.GetEx<CenterSnEx>();
+	//L_COND_V(p);
+	//p->m_pAccount = account->GetWeakPtr();
 
-	account->m_Verify.SetVerifyOk(sn.id);
+	//account->m_Verify.SetVerifyOk(sn.id);
 }

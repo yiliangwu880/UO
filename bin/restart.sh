@@ -1,2 +1,4 @@
-cp ./Zone1/zone ./Zone2/
 
+sh run.sh stop
+sleep 1
+sh run.sh start
