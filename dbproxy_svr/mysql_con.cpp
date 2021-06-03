@@ -271,7 +271,7 @@ MysqlCon::~MysqlCon()
 	}
 }
 
-bool MysqlCon::ConnectDb(const Cfg &cfg)
+bool MysqlCon::ConnectDb(const comCfg::S_dbproxy &cfg)
 {
 	L_COND_F(nullptr == m_con);
 	try {
@@ -283,6 +283,7 @@ bool MysqlCon::ConnectDb(const Cfg &cfg)
 		connection_properties["password"]      = mysql_db.db_psw;
 		connection_properties["OPT_RECONNECT"] = true;
 
+		L_DEBUG("ip port = %s, %d, db_name=%s", mysql_db.db_ip.c_str(), mysql_db.db_port, mysql_db.db_name.c_str());
 		L_DEBUG("try connect mysql db[%s].\n %s %d this may need a few minute!", mysql_db.db_user.c_str()
 			, mysql_db.db_ip.c_str(), mysql_db.db_port);
 		sql::Driver* driver = sql::mysql::get_driver_instance();

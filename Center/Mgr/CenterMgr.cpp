@@ -4,6 +4,7 @@
 #include "version.h"
 #include "ZoneSvrCon.h"
 #include "libevent_cpp/include/include_all.h"
+#include "db_driver.h"
 
 using namespace std;
 using namespace su;
@@ -27,7 +28,14 @@ void CenterMgr::Init()
 	{
 		m_zoneId2Ok[svrId] = false;
 	}
-	//Dbproxy::Ins().Init(gCfgMgr->ComCfg())
+	auto f = [this]()
+	{
+		L_INFO("on db connect cb");
+		m_isDbOk = true;
+		checkAllOk();
+	};
+	Dbproxy::Ins().Init(gCfgMgr->ComCfg().dbproxy.ip, gCfgMgr->ComCfg().dbproxy.port, f);
+
 	{//init server info
 		const char* connect_ip = CfgMgr::Ins().ComCfg().access.ex_ip.c_str();
 		unsigned short connect_port = CfgMgr::Ins().ComCfg().access.ex_port;
@@ -72,6 +80,7 @@ void CenterMgr::checkAllOk()
 	{
 		COND_V(v.second);
 	}
+	COND_V(m_isDbOk);
 	m_allok = true;
 	L_INFO("all svr is ready");
 }

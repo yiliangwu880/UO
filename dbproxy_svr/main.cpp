@@ -6,6 +6,7 @@
 #include "DbServer.h"
 #include "db_con.h"
 #include "BaseAppMgr.h"
+#include "Cfg/comCfg.h"
 
 using namespace su;
 using namespace lc;
@@ -23,12 +24,13 @@ public:
 			return false;
 		}
 
+		 auto &cfg=CfgMgr::Ins().m_comCfg.dbproxy;
 		if (!DbConMgr::Ins().Init(cfg))
 		{
 			return false;
 		}
-		L_INFO("dbproxy_svr svr addr:%s %d", CfgMgr::ComCfg().dbproxy.c_str(), CfgMgr::ComCfg().dbproxy.port);
-		return DbServer::Ins().Init(CfgMgr::ComCfg().dbproxy.port, CfgMgr::ComCfg().dbproxy.c_str());
+		L_INFO("dbproxy_svr svr addr:%s %d", cfg.ip.c_str(), cfg.port);
+		return DbServer::Ins().Init(cfg.port, cfg.ip.c_str());
 
 		return true;
 	}
