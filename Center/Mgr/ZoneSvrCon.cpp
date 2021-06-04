@@ -11,7 +11,7 @@ namespace
 {
 	void Start(bool &ret)
 	{
-		if (!gListener.Init(gCfgMgr->ComCfg().center.port))
+		if (!gListener.Init(gCfgMgr.ComCfg().center.port))
 		{
 			ret = false;
 		}

@@ -13,7 +13,7 @@ local comInclude={
 	"../external",
 	"../external/svr_util/include",
 	"../external/libevent_cpp/include",
-	"../external/libevent_cpp/External/libevent-2.1.8-stable/out/include/",
+	--"../external/libevent_cpp/External/libevent-2.1.8-stable/out/include/",
 	"../com/",
 	"../db_driver/include/",
 	"../external/cpp_cfg/com/",

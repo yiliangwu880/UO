@@ -1,9 +1,10 @@
 
 #pragma once
 #include "dbTableDef.h"
-#include "AccMgr.h"
+#include "CAccMgr.h"
 #include "MsgDispatch.h"
 #include "Account.h"
+#include "CfgMgr.h"
 
 
 class AccountMgr : public Singleton<AccountMgr>

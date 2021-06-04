@@ -1,6 +1,6 @@
 #pragma once
 #include "ZoneSvr.h"
-#include "AccMgr.h"
+#include "CAccMgr.h"
 #include "SceneTran.h"
 #include "LoginPlayer.h"
 

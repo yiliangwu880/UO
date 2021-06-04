@@ -32,6 +32,6 @@ dbproxy={
 }
 
 testCfg={
-	noPsw = true,
+	needPsw = false,
 
 }

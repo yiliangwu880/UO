@@ -46,7 +46,8 @@ void Verify::ReqVerify(const SessionId &id, CStr &psw)
 void Verify::OnLoadDbOk()
 {
 	L_COND_V(WaitAccVerify == m_state || WaitReplace == m_state);
-	if (m_waitVerifyPsw != m_owner.m_AccData.Psw())
+
+	if (gTestCfg.needPsw && m_waitVerifyPsw != m_owner.m_AccData.Psw())
 	{
 		L_INFO("account verify fail");
 		AccountMgr::Ins().DelAcc(m_owner.Name());
@@ -68,19 +69,17 @@ void Verify::OnLoadDbOk()
 		AccountLoginAck rsp(info);
 		m_owner.m_FirstSn.Send(rsp);
 	}
-
 }
 
 
 void Verify::GameLogin(const acc::SessionId &sid, CStr &psw)
 {
 	L_COND_V(VerifyOk == m_state);
-	//临时跳过，不查密码
-	//if (psw != m_owner.m_AccData.Psw())
-	//{
-	//	L_ERROR("err psw");
-	//	return;
-	//}
+	if (gTestCfg.needPsw && psw != m_owner.m_AccData.Psw())
+	{
+		L_ERROR("err psw");
+		return;
+	}
 	VerifyRetStruct d;
 	d.is_success = true;
 	d.accName = m_owner.Name();

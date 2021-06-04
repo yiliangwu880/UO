@@ -1,7 +1,7 @@
 
 #include "UoProto.h"
 #include "CenterClientMsgMgr.h"
-#include "Packets.h"
+#include "CPackets.h"
 #include "CfgMgr.h"
 #include <stddef.h>
 #include <stdlib.h>

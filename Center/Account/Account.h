@@ -1,11 +1,11 @@
 
 #pragma once
-#include "AccMgr.h"
+#include "CAccMgr.h"
 #include "MsgDispatch.h"
 #include "Verify.h"
 #include "AccData.h"
 #include "AccSn.h"
-#include "Packets.h"
+#include "CPackets.h"
 
 
 

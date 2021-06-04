@@ -7,6 +7,6 @@ using namespace su;
 CfgMgr *gCfgMgr = &CfgMgr::Ins();
 bool CfgMgr::Init()
 {
-	L_COND(gCfgMgr->m_comCfg.LoadFile(), false);
+	L_COND(gCfgMgr.m_comCfg.LoadFile(), false);
 	return true;
 }

@@ -11,5 +11,5 @@ public:
 	const comCfg &ComCfg() const { return m_comCfg; }
 };
 
-extern CfgMgr *gCfgMgr;
+extern const CfgMgr &gCfgMgr;
 

@@ -21,5 +21,5 @@ STATIC_RUN(RegEvent<EV_SVR_START>(&ZoneMgr::Start))
 void ZoneMgr::Start(bool &ret)
 {
 	L_INFO("%s", APP_VERSTR);
-	Dbproxy::Ins().Init(gCfgMgr->ComCfg().dbproxy.ip, gCfgMgr->ComCfg().dbproxy.port);
+	Dbproxy::Ins().Init(gCfgMgr.ComCfg().dbproxy.ip, gCfgMgr.ComCfg().dbproxy.port);
 }

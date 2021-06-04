@@ -34,6 +34,10 @@ struct comCfg
 		S_mysql_db mysql_db;
 		uint16_t port;
 	};
+	struct S_testCfg
+	{
+		bool needPsw;
+	};
 	struct S_zone
 	{
 		std::vector<uint16_t> allSvrId;
@@ -44,6 +48,7 @@ struct comCfg
 	S_access access;
 	S_center center;
 	S_dbproxy dbproxy;
+	S_testCfg testCfg;
 	S_zone zone;
 
 	////////////////////////method list////////////////////////
@@ -88,6 +93,7 @@ private:
 			dbproxy.mysql_db.db_psw = js["dbproxy"]["mysql_db"]["db_psw"];
 			dbproxy.mysql_db.db_user = js["dbproxy"]["mysql_db"]["db_user"];
 			dbproxy.port = js["dbproxy"]["port"];
+			testCfg.needPsw = js["testCfg"]["needPsw"];
 			for (size_t i = 0; i < js["zone"]["allSvrId"].size(); ++i)
 			{
 				zone.allSvrId.push_back(js["zone"]["allSvrId"][i]);

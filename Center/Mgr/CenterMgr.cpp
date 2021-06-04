@@ -24,7 +24,7 @@ namespace
 void CenterMgr::Init()
 {
 	L_INFO("build time %s ", APP_VERSTR);
-	for (auto &svrId : gCfgMgr->ComCfg().zone.allSvrId)
+	for (auto &svrId : gCfgMgr.ComCfg().zone.allSvrId)
 	{
 		m_zoneId2Ok[svrId] = false;
 	}
@@ -34,7 +34,7 @@ void CenterMgr::Init()
 		m_isDbOk = true;
 		checkAllOk();
 	};
-	Dbproxy::Ins().Init(gCfgMgr->ComCfg().dbproxy.ip, gCfgMgr->ComCfg().dbproxy.port, f);
+	Dbproxy::Ins().Init(gCfgMgr.ComCfg().dbproxy.ip, gCfgMgr.ComCfg().dbproxy.port, f);
 
 	{//init server info
 		const char* connect_ip = CfgMgr::Ins().ComCfg().access.ex_ip.c_str();

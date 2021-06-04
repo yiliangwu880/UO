@@ -4,12 +4,12 @@
 using namespace std;
 using namespace su;
 
-CfgMgr *gCfgMgr = &CfgMgr::Ins();
+const CfgMgr &gCfgMgr = CfgMgr::Ins();
 namespace
 {
 	void InitCfg(bool &ret)
 	{
-		if (!gCfgMgr->Init())
+		if (!CfgMgr::Ins().Init())
 		{
 			ret = false;
 		}
@@ -19,7 +19,7 @@ namespace
 
 bool CfgMgr::Init()
 {
-	L_COND(gCfgMgr->m_zoneCfg.LoadFile(), false);
-	L_COND(gCfgMgr->m_comCfg.LoadFile(), false);
+	L_COND(CfgMgr::Ins().m_zoneCfg.LoadFile(), false);
+	L_COND(CfgMgr::Ins().m_comCfg.LoadFile(), false);
 	return true;
 }
