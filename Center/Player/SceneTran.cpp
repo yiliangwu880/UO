@@ -1,6 +1,8 @@
 #include "CPlayerMgr.h"
 #include "svr_util/include/static_reg.h"
 
+
+
 void SceneTran::SetState(State val)
 {
 	if (Playing == m_State)

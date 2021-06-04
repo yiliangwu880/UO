@@ -13,6 +13,8 @@
 #include "Account/AccountMgr.h"
 
 using namespace lc;
+//c#适配
+#define byte uint8_t
 
 namespace
 {
@@ -257,11 +259,13 @@ namespace
 		shared_ptr<Account> pAcc = state.GetAccount();
 		L_COND_V(pAcc);
 		L_DEBUG("rev create char, acc=%s", pAcc->Name().c_str());
+		DbPlayer player;
+		DbPlayerBase &playerBase = player.base;
 
 		int unk1 = pvSrc.ReadInt32();
 		int unk2 = pvSrc.ReadInt32();
 		int unk3 = pvSrc.ReadByte();
-		string name = pvSrc.ReadString(30);
+		player.name = pvSrc.ReadString(30);
 
 		pvSrc.Seek(2, SeekOrigin::Current);
 		int flags = pvSrc.ReadInt32();
@@ -271,9 +275,9 @@ namespace
 
 		int genderRace = pvSrc.ReadByte();
 
-		int str = pvSrc.ReadByte();
-		int dex = pvSrc.ReadByte();
-		int intl = pvSrc.ReadByte();
+		playerBase.str = pvSrc.ReadByte();
+		playerBase.dex = pvSrc.ReadByte();
+		playerBase.intl = pvSrc.ReadByte();
 		int is1 = pvSrc.ReadByte();
 		int vs1 = pvSrc.ReadByte();
 		int is2 = pvSrc.ReadByte();
@@ -283,11 +287,11 @@ namespace
 		int is4 = pvSrc.ReadByte();
 		int vs4 = pvSrc.ReadByte();
 
-		int hue = pvSrc.ReadUInt16();
-		int hairVal = pvSrc.ReadInt16();
-		int hairHue = pvSrc.ReadInt16();
-		int hairValf = pvSrc.ReadInt16();
-		int hairHuef = pvSrc.ReadInt16();
+		playerBase.hue      = pvSrc.ReadUInt16();
+		playerBase.hairVal  = pvSrc.ReadInt16();
+		playerBase.hairHue  = pvSrc.ReadInt16();
+		playerBase.hairValf = pvSrc.ReadInt16();
+		playerBase.hairHuef = pvSrc.ReadInt16();
 		pvSrc.ReadByte();
 		int cityIndex = pvSrc.ReadByte();
 		int charSlot = pvSrc.ReadInt32();
@@ -303,10 +307,11 @@ namespace
 		*/
 
 		bool female = ((genderRace % 2) != 0);
-
+		playerBase.female = female;
 		//Race race = null;
 
 		byte raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
+		playerBase.race = raceID;
 		//race = Race.Races[raceID];
 
 		//if (race == null)
@@ -398,7 +403,12 @@ namespace
 			}
 
 #endif
-			DoLogin(state); //tmp code
+
+			static su::IdCreater idCreater;
+			player.uin = idCreater.CreateId();
+			pAcc->m_AccData.CreatePlayer(player);
+
+			//DoLogin(state); //tmp code
 		}
 	}
 

@@ -16,13 +16,19 @@ namespace db
 		uint64_t uin;
 		std::string name;
 	};
-	struct DbActorBase
+	struct DbPlayerBase
 	{
 		int str;
 		int dex;
 		int intl;
-		int gender;
-		int	race;
+		int female;
+		uint8_t race;
+		
+		uint16_t hue;
+		int16_t hairVal;
+		int16_t hairHue;
+		int16_t hairValf;
+		int16_t hairHuef;
 	};
 
 //先定义宏参数信息，以后再具体实现
@@ -31,6 +37,19 @@ namespace db
 	DB_CLASS_NAME(ActorBrief)\
 	DB_FIELD(uin)\
 	DB_FIELD(name)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(DbPlayerBase)\
+	DB_FIELD(str)\
+	DB_FIELD(dex)\
+	DB_FIELD(intl)\
+	DB_FIELD(female)\
+	DB_FIELD(race)\
+	DB_FIELD(hue)\
+	DB_FIELD(hairVal)\
+	DB_FIELD(hairHue)\
+	DB_FIELD(hairValf)\
+	DB_FIELD(hairHuef)\
 	DB_CLASS_END\
 \
 

@@ -1,8 +1,8 @@
 #pragma once
 #include "ZoneSvr.h"
-#include "SubComCenter.h"
+#include "CPlayerSubCom.h"
 
-class SceneTran : public SubComCenter
+class SceneTran : public CPlayerSubCom
 {
 	enum State
 	{
@@ -11,6 +11,10 @@ class SceneTran : public SubComCenter
 	};
 	State m_State = Playing;
 public:
+	SceneTran(CPlayer &owner)
+		:CPlayerSubCom(owner)
+	{
+	}
 	State GetState() const { return m_State; }
 	void SetState(State state);
 

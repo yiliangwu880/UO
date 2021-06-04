@@ -38,9 +38,10 @@ public:
 	{
 	}
 
-	void SetSessionId(const acc::SessionId &id) { sid = id; };
+	void SetSessionId(const acc::SessionId &id) { sid=id; }
 	void Send(Packet &packet);
 	void Dispose(); //save as Disconnect
 	void Disconnect(); //
 	void SetCompressionEnabled(bool val) { compressionEnabled = val; }
+	const acc::SessionId &GetSid() const { return sid; }
 };

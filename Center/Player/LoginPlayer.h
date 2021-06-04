@@ -1,9 +1,9 @@
 #pragma once
 #include "ZoneSvr.h"
-#include "SubComCenter.h"
+#include "CPlayerSubCom.h"
 #include "dbTableDef.h"
 
-class LoginPlayer : public SubComCenter
+class LoginPlayer : public CPlayerSubCom
 {
 	enum State
 	{
@@ -15,6 +15,10 @@ class LoginPlayer : public SubComCenter
 	State m_State = None;
 
 public:
+	LoginPlayer(CPlayer &owner)
+		:CPlayerSubCom(owner)
+	{
+	}
 	State GetState() const { return m_State; }
 	void SetState(State state);
 

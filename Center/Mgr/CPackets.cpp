@@ -22,8 +22,8 @@ CharacterList::CharacterList(Account &acc)
 		info.push_back(city);
 	}
 
-	int a_Length = MAX_CHARACTER_NUM; // IAccount：：Length ？
-	int a_Limit = MAX_CHARACTER_NUM;
+	int a_Length = MAX_CHAR_NUM_IN_ACC; // IAccount：：Length ？
+	int a_Limit = MAX_CHAR_NUM_IN_ACC;
 	bool IsEnhancedClient = false;
 	EnsureCapacity(11 + (a_Length * 60) + (info.size() * 89));
 

@@ -2,22 +2,24 @@
 #pragma once
 #include "CPlayer.h"
 #include "MulMap.h"
+#include "CPlayer.h"
 
+using PCPlayer = CPlayer *;
 template<>
-struct MulMapTraits<CPlayer>
+struct MulMapTraits<PCPlayer>
 {
 	friend struct CPlayer;
-	static string GetSubKey(const CPlayer &player)
+	static string GetSubKey(const PCPlayer &player)
 	{
-		return player.m_BaseData.name;
+		return player->m_BaseData.name;
 	}
-	static void SetKey(CPlayer &player, uint64 mainKey, string subKey)
+	static void SetKey(PCPlayer &player, uint64 mainKey, string subKey)
 	{
-		player.m_BaseData.m_uin = mainKey;
-		player.m_BaseData.name = subKey;
+		player->m_BaseData.m_uin = mainKey;
+		player->m_BaseData.name = subKey;
 	}
 };
-using MulMapPlayer = MulMap<uint64, string, CPlayer>;
+using MulMapPlayer = MulMap<uint64, string, PCPlayer>;
 
 struct PlayerCacheMsg
 {

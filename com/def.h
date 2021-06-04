@@ -11,7 +11,7 @@ namespace
 	const uint16 MAX_ZONE_GROUP_ID = 9;
 
 	const uint32 SAVE_INTERVAL_SEC = 60 * 1;//save db interval 
-	const uint32 MAX_CHARACTER_NUM = 2; //CHAR NUM IN ACC
+	const uint32 MAX_CHAR_NUM_IN_ACC = 2; //CHAR NUM IN ACC
 	const uint32 MAX_CHAR_NAME = 30;
 
 

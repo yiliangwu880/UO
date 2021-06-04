@@ -3,6 +3,7 @@
 #include "Player/CPlayerMgr.h"
 #include "AppMgr.h"
 #include <type_traits>
+#include "svr_util/include/misc.h"
 
 
 AccData::AccData(Account &owner, CStr &name)
@@ -39,6 +40,8 @@ const std::vector<db::ActorBrief> & AccData::GetActorList()
 	return m_data.vecActor;
 }
 
+
+
 void AccData::OnDbLoad(bool ret, const DbAccount &data, any para)
 {
 	L_COND_V(!data.name.empty());
@@ -61,41 +64,58 @@ void AccData::OnDbLoad(bool ret, const DbAccount &data, any para)
 }
 
 
-void AccData::CreateActor(const acc::Session &sn)
-{
-	//CenterSnEx *p = sn.GetEx<CenterSnEx>();
-	//L_COND_V(p);
-	//shared_ptr<Account> account = p->m_pAccount.lock();
-	//L_COND_V(account);
+//void AccData::CreateActor(const acc::Session &sn)
+//{
+//	//CenterSnEx *p = sn.GetEx<CenterSnEx>();
+//	//L_COND_V(p);
+//	//shared_ptr<Account> account = p->m_pAccount.lock();
+//	//L_COND_V(account);
+//
+//	//if (account->m_data.vecActor.size()>= MAX_ACTOR)
+//	//{
+//	//	return;
+//	//}
+//	//DbPlayer player;
+//	//player.uin = 1;
+//	//any para = sn.id;
+//	//db::Dbproxy::Ins().Insert(player, para);
+//}
 
-	//if (account->m_data.vecActor.size()>= MAX_ACTOR)
-	//{
-	//	return;
-	//}
-	//DbPlayer player;
-	//player.uin = 1;
-	//any para = sn.id;
-	//db::Dbproxy::Ins().Insert(player, para);
+void AccData::CreatePlayer(const DbPlayer &player)
+{
+	if (m_data.vecActor.size() >= MAX_CHAR_NUM_IN_ACC)
+	{
+		//rsp fail
+		return;
+	}
+	std::any para = m_data.name;
+	Dbproxy::Ins().Insert(player, para);
 }
 
-STATIC_RUN(db::Dbproxy::Ins().RegInsertCb(&AccData::OnInsert));
+STATIC_RUN(Dbproxy::Ins().RegInsertCb(&AccData::OnInsert));
 void AccData::OnInsert(bool ret, const DbPlayer &data, any para)
 {
-	SessionId *sid = std::any_cast<SessionId>(&para);
-	L_COND_V(sid);
-	L_COND_V(ret);
+	L_DEBUG("OnInsert player");
+	string *name = std::any_cast<string>(&para);
+	L_COND_V(name);
+	Account *acc = AccountMgr::Ins().GetAcc(*name);
+	L_COND_V(acc->IsVerify());
+	if (!ret)
+	{
+		L_DEBUG("insert player fail. repeated name= %s", data.name);
+		//rsp fail
+		return;
+	}
+
 	CPlayer *player = CPlayerMgr::Ins().CreatePlayer(data.uin, data.name);
 	L_COND_V(player);
 
-	const Session *sn = AccMgr::Ins().FindSession(*sid);
-
+	const Session *sn = AccMgr::Ins().FindSession(acc->m_AccSn.GetSid());
+	L_COND_V(sn);
 	CenterSnEx *p = sn->GetEx<CenterSnEx>();
 	L_COND_V(p);
-	p->m_pAccount.reset();
 	p->m_pPlayer = player->GetWeakPtr();
-
 	player->SetSid(sn->id);
-
 	player->m_LoginPlayer.LoginZone(data);
 }
 

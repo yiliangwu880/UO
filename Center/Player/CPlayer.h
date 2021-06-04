@@ -3,15 +3,8 @@
 #include "CAccMgr.h"
 #include "SceneTran.h"
 #include "LoginPlayer.h"
+#include "CBaseData.h"
 
-
-struct BaseData 
-{
-	uint64 m_uin = 0;
-	uint16 m_zoneId = 0;
-	uint32 m_sceneId = 0;
-	string name;
-};
 
 class CPlayer : public WeakPtr<CPlayer>
 {
@@ -23,7 +16,7 @@ public:
 	LoginPlayer m_LoginPlayer;
 
 public:
-
+	CPlayer();
 	void Init(uint64 uin) {};
 
 	template<class Msg>

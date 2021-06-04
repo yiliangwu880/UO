@@ -25,6 +25,7 @@ public:
 	void OnLoadDbOk();
 	void GameLogin(const acc::SessionId &sid, CStr &psw);
 	void OnClientConFor2nd(const acc::SessionId &sid);
+	bool IsVerify() { return VerifyOk == m_state; }
 private:
 	void OnVerifyTimeOut();
 

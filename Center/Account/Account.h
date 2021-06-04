@@ -22,7 +22,7 @@ public:
 	Account(const string &name);
 	const string &Name() const;
 	void Send(Packet &packet);
-
+	bool IsVerify() { return m_Verify.IsVerify(); }
 private:
 
 };
