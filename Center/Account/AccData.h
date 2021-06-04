@@ -14,7 +14,7 @@ public:
 	CStr &Name() const;
 	CStr &Psw() const;
 	void CreateAccount(CStr &psw);
-
+	const std::vector<ActorBrief> &GetActorList();
 
 	static void OnDbLoad(bool ret, const DbAccount &data, any para);
 	static void OnInsert(bool ret, const DbPlayer &data, any para);

@@ -333,11 +333,13 @@ public:
 	}
 
 
+	//fill empty bytes, total size == m_Capacity
+	//ref SetCapacity
 	void Fill()
 	{
 		Fill((int)(m_Capacity - m_Stream.length()));
 	}
-
+	//fill empty bytes
 	void Fill(int length)
 	{
 		if (length > 0)
@@ -378,7 +380,7 @@ public:
 	int PacketID() { return m_PacketID; }
 
 	int State() { return m_State; }
-
+	int Length() { return m_Length; }
 protected:
 	Packet(int packetID)
 	{

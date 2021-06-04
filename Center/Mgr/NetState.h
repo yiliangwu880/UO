@@ -3,7 +3,9 @@
 #include "acc_driver.h"
 
 class Packet;
-//适配C# 写法, 临时用，等删掉
+class Account;
+class CPlayer;
+//适配C# 写法
 struct NetState
 {
 	const acc::Session &m_sn;
@@ -16,6 +18,9 @@ struct NetState
 
 	void Dispose();
 	void Send(Packet &packet);
+	shared_ptr<Account> GetAccount();
+	shared_ptr<CPlayer> GetPlayer();
+
 };
 
 

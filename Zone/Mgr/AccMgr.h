@@ -6,6 +6,13 @@
 class Player;
 using WeakPlayer = weak_ptr<Player>;
 
+class Player;
+struct ZoneSnEx
+{
+	weak_ptr<Player> m_pPlayer;
+
+};
+
 class AccMgr : public acc::ADFacadeMgr, public Singleton<AccMgr>
 {
 public:

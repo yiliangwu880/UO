@@ -254,6 +254,10 @@ namespace
 	//接收 创建角色
 	static void CreateCharacter70160(NetState &state, PacketReader &pvSrc)
 	{
+		shared_ptr<Account> pAcc = state.GetAccount();
+		L_COND_V(pAcc);
+		L_DEBUG("rev create char, acc=%s", pAcc->Name().c_str());
+
 		int unk1 = pvSrc.ReadInt32();
 		int unk2 = pvSrc.ReadInt32();
 		int unk3 = pvSrc.ReadByte();

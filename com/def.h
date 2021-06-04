@@ -10,6 +10,9 @@ namespace
 	const uint16 ZONE_GROUP_ID = 1;  //zone svr id = [ZONE_GROUP_ID,MAX_ZONE_GROUP_ID] 
 	const uint16 MAX_ZONE_GROUP_ID = 9;
 
-	const uint32 SAVE_INTERVAL_SEC = 60*1;//save db interval 
+	const uint32 SAVE_INTERVAL_SEC = 60 * 1;//save db interval 
+	const uint32 MAX_CHARACTER_NUM = 2; //CHAR NUM IN ACC
+	const uint32 MAX_CHAR_NAME = 30;
+
 
 }

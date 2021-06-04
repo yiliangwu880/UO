@@ -99,7 +99,7 @@ void Verify::OnClientConFor2nd(const acc::SessionId &sid)
 
 	//if (state.NewCharacterList)
 	//{
-	CharacterList cl;
+	CharacterList cl(m_owner);
 	m_owner.Send(cl);
 	//}
 	//else

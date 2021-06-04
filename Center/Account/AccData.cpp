@@ -34,6 +34,11 @@ void AccData::CreateAccount(CStr &psw)
 	Dbproxy::Ins().Insert(m_data);
 }
 
+const std::vector<db::ActorBrief> & AccData::GetActorList()
+{
+	return m_data.vecActor;
+}
+
 void AccData::OnDbLoad(bool ret, const DbAccount &data, any para)
 {
 	L_COND_V(!data.name.empty());
