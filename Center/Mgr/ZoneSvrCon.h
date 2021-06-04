@@ -3,7 +3,7 @@
 #include "libevent_cpp/include/include_all.h"
 #include "MsgDispatch.h"
 
-class ZoneSvrCon : public lc::SvrCon
+class ZoneSvrCon : public lc::SvrCon, public WeakPtr<ZoneSvrCon>
 {
 public:
 
@@ -22,10 +22,3 @@ private:
 	virtual void OnConnected() override;
 };
 
-class Svr : public Singleton<Svr>
-{
-public:
-	lc::Listener<ZoneSvrCon> m_Listener;
-
-public:
-};

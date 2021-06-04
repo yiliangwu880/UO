@@ -1,7 +1,7 @@
 #pragma once
-#include "SubCom.h"
+#include "BaseData.h"
 
-class LoginPlayer : public SubCom
+class LoginPlayer : public PlayerSubCom
 {
 	enum State
 	{
@@ -11,8 +11,12 @@ class LoginPlayer : public SubCom
 	State m_State = LoginOk;
 
 public:
+	LoginPlayer(Player &owner)
+		:PlayerSubCom(owner)
+	{}
 	State State() const { return m_State; }
 
+	void SendLogin();
 	void ClientDisCon();
 
 public:

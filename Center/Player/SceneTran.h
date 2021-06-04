@@ -1,6 +1,5 @@
 #pragma once
-#include "ZoneSvr.h"
-#include "CPlayerSubCom.h"
+#include "CBaseData.h"
 
 class SceneTran : public CPlayerSubCom
 {

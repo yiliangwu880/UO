@@ -9,6 +9,10 @@ template<>
 struct MulMapTraits<PCPlayer>
 {
 	friend struct CPlayer;
+	static uint64 GetKey(const PCPlayer &player)
+	{
+		return player->m_BaseData.m_uin;
+	}
 	static string GetSubKey(const PCPlayer &player)
 	{
 		return player->m_BaseData.name;
@@ -33,7 +37,7 @@ class CPlayerMgr : public Singleton<CPlayerMgr>
 	vector<PlayerCacheMsg> m_PlayerCacheMsg; //player Moving状态，缓存的消息。因为uin数量极少。用vector比map效率高。
 
 public:
-	CPlayer *CreatePlayer(uint64 uin, const string &name);
+	CPlayer *CreatePlayer(const DbPlayer &data);
 	CPlayer *FindPlayer(uint64 uin);
 	CPlayer *FindPlayer(const string &name);
 	void DelPlayer(uint64 uin);

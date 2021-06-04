@@ -1,18 +1,20 @@
 #pragma once
-#include "ZoneSvr.h"
-#include "CAccMgr.h"
-#include "SceneTran.h"
-#include "LoginPlayer.h"
+#include "ComMisc.h"
 
-
+using CPlayerSubCom = SubCom<CPlayer>;
 struct BaseData : public CPlayerSubCom
 {
 	uint64 m_uin = 0;
-	uint16 m_zoneId = 0;
+	uint16 m_zoneId = ZONE_GROUP_ID;
 	uint32 m_sceneId = 0;
 	string name;
 
-	BaseData(CPlayer &owner);
+	BaseData(CPlayer &owner)
+		:CPlayerSubCom(owner)
+	{
+
+	}
+
 };
 
 

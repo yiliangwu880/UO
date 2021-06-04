@@ -415,7 +415,7 @@ namespace
 }
 
 
-RegGlobalEvent(EV_SVR_CFG_INI, PacketHandlers::CfgInit);
+GRegEvent(EV_SVR_CFG_INI, PacketHandlers::CfgInit);
 void PacketHandlers::CfgInit(bool &ret)
 {
 	PacketHandlers::Ins().Init();
@@ -454,6 +454,6 @@ void PacketHandlers::Init()
 	Register(0xEF, 21, false, LoginServerSeed);
 	Register(0x80, 62, false, AccountLogin);
 	Register(0xA0, 3, false, PlayServer);
-	Register(0x91, 65, false, GameLogin);
+	Register(0x91, 65, false, GameLogin);////第二个链接
 	Register(0xF8, 106, false, CreateCharacter70160);
 }

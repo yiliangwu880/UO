@@ -62,7 +62,7 @@ private:
 private:
 	//@param pMsg, len  网络缓存字节
 	//return 返回已经读取的字节数， 0表示包未接收完整。
-	int ParsePacket(const char *pMsg, int len);
+	int ParsePacket(const char *pMsg, int len, bool &isSeed);
 	void RevPacket(const char *pMsg, int len);
 	bool ClientTcpPack2MsgForward(const lc::MsgPack &msg, acc::MsgForward &f_msg) const;
 	bool ClientTcpPack2MsgForward(const char *pMsg, int len, acc::MsgForward &f_msg) const;

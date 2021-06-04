@@ -26,8 +26,24 @@ void ZoneSvrMgr::ReqZoneOk_cs(ZoneSvrCon &con, const proto::ReqZoneOk_cs &msg)
 		return;
 	}
 	ZoneSvr &svr = gZoneSvrMgr.m_svrId2Zone[msg.svrId];
-	svr.m_cid = con.GetId();
+	svr.m_con = con;
 	svr.m_svrId = msg.svrId;
 	CenterMgr::Ins().SetZoneOk(msg.svrId);
 }
 
+namespace
+{
+	void Start(bool &ret)
+	{
+
+	}
+}
+
+GRegEvent(EV_SVR_START, Svr::Start);
+void Svr::Start(bool &ret)
+{
+	if (!Svr::Ins().m_Listener.Init(gCfgMgr.ComCfg().center.port))
+	{
+		ret = false;
+	}
+}

@@ -177,7 +177,7 @@ PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
 {
 	if (packetID >= (int)m_Handlers.size())
 	{
-		L_ERROR("packetId overload %d", packetID);
+		L_ERROR("unknow packetId %d", packetID);
 		return nullptr;
 	}
 	PacketHandler *p = &m_Handlers[packetID];

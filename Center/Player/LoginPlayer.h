@@ -1,8 +1,9 @@
 #pragma once
 #include "ZoneSvr.h"
-#include "CPlayerSubCom.h"
+#include "CBaseData.h"
 #include "dbTableDef.h"
 
+//ctrl login flow
 class LoginPlayer : public CPlayerSubCom
 {
 	enum State

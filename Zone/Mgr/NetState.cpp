@@ -22,11 +22,11 @@ void NetState::Send(Packet &packet)
 		if (CompressionEnabled)
 		{
 			string str = packet.m_Stream.UnderlyingStream();
-			L_DEBUG("before compile . len=%d, %s", str.length(), StrUtil::BinaryToHex(str).c_str());
+		//	L_DEBUG("before compile . len=%d, %s", str.length(), StrUtil::BinaryToHex(str).c_str());
 		}
 	}
 	CStr &buffer = packet.Compile(CompressionEnabled);
-	L_DEBUG("Send client len=%d, %s", buffer.length(), StrUtil::BinaryToHex(buffer).c_str());
+//	L_DEBUG("Send client len=%d, %s", buffer.length(), StrUtil::BinaryToHex(buffer).c_str());
 	m_accMgr.SendToClient(m_sn.id, 0, buffer.c_str(), buffer.length());
 }
 

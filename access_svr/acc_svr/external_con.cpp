@@ -72,7 +72,8 @@ bool ExternalSvrCon::SendMsg(const char *msg, uint16 msg_len)
 	string s;
 	s.append(msg, msg_len);
 	{
-		L_DEBUG("Send client len=%d, %s", msg_len, StrUtil::BinaryToHex(s).c_str());
+		//L_DEBUG("Send client len=%d, %s", msg_len, StrUtil::BinaryToHex(s).c_str());
+		L_DEBUG("Send client len=%d, %x", msg_len, (uint8)msg[0]);
 	}
 	return SendData(s.c_str(), s.length());
 }
@@ -182,7 +183,7 @@ namespace {
 }
 //@param pMsg, len  网络缓存字节
 //return 返回已经读取的字节数， 0表示包未接收完整。
-int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
+int ExternalSvrCon::ParsePacket(const char *pMsg, int len, bool &isSeed)
 {
 	//##接收包格式
 	//	前4字节  --seed 作用？
@@ -200,7 +201,6 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 	}
 
 
-	int readSeedLen = 0;
 	if (!Seeded)
 	{
 		int oldLen = len;
@@ -209,7 +209,12 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 			L_ERROR("read seed fail");
 			return 0;
 		}
-		readSeedLen = oldLen - len;
+		int readSeedLen = oldLen - len;
+		if (readSeedLen>0)//第二个链接，先读取4字节 seed
+		{
+			isSeed = true;
+			return readSeedLen;
+		}
 	}
 
 	int length = len; //int length = buffer.Length;
@@ -220,18 +225,18 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 
 		if (CheckEncrypted(packetID))
 		{
-			return readSeedLen;//Encrypted Client Unsupported
+			return 0;//Encrypted Client Unsupported
 		}
 		if (0 == packetID)
 		{
 			L_ERROR("packetID ==0");
-			return readSeedLen;
+			return 0;
 		}
 		PacketHandler *handler = PacketHandlers::Ins().GetHandler(packetID);
 		if (handler == nullptr)
 		{
 			L_ERROR("find Handler Fail. %x", packetID);
-			return readSeedLen;
+			return 0;
 		}
 
 		int packetLength = handler->m_Length;
@@ -245,27 +250,28 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len)
 				{
 					L_ERROR("packetLength < 3");
 					DisConnect();
-					return readSeedLen;
+					return 0;
 				}
 			}
 			else
 			{
-				return readSeedLen;
+				return 0;
 			}
 		}
 
 		if (length < packetLength)
 		{
-			return readSeedLen;
+			return 0;
 		}
 		L_DEBUG("rev packetID,len=0x%x %d", packetID, packetLength);
-		return packetLength + readSeedLen;
+		return packetLength ;
 
 	}
 
 
-	return readSeedLen;
+	return 0;
 }
+
 int ExternalSvrCon::OnRawRecv(const char *pMsg, int len)
 {
 	L_DEBUG("OnRawRecv msg len = %d", len);
@@ -277,13 +283,17 @@ int ExternalSvrCon::OnRawRecv(const char *pMsg, int len)
 			return totalGetLen;
 		}
 		//分割每个包，交给后续RevPacket处理
-		int packetLen = ParsePacket(pMsg, len);
+		bool isSeed = false;
+		int packetLen = ParsePacket(pMsg, len, isSeed);
 		if (packetLen == 0)//未接收完整
 		{
 			return totalGetLen;
 		}
 		L_COND(packetLen <= len, len);
-		RevPacket(pMsg, packetLen);
+		if (!isSeed)
+		{
+			RevPacket(pMsg, packetLen);
+		}
 		totalGetLen += packetLen;
 		pMsg += packetLen;
 		len -= packetLen;

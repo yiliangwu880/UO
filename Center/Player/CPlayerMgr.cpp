@@ -1,18 +1,21 @@
 #include "CPlayerMgr.h"
 #include "AppMgr.h"
 
-CPlayer * CPlayerMgr::CreatePlayer(uint64 uin, const string &name)
+CPlayer * CPlayerMgr::CreatePlayer(const DbPlayer &data)
 {
-	CPlayer *p = new CPlayer();
-	PCPlayer *pp = m_players.emplace(uin, name, p);
-	L_COND(pp, nullptr);
-	return *pp;
+	CPlayer *p = new CPlayer(data);
+	if (!m_players.Insert(p))
+	{
+		delete p;
+		return nullptr;
+	}
+	return p;
 }
 
 CPlayer * CPlayerMgr::FindPlayer(uint64 uin)
 {
 	PCPlayer *pp = m_players.Find(uin);
-	L_COND(pp, nullptr);
+	L_COND(pp, nullptr, "uin=%ld", uin);
 	return *pp;
 }
 

@@ -11,7 +11,7 @@ bool SceneTran::TranZone(uint16 zoneId, uint32 sceneId)
 	req.dstZoneId = zoneId;
 	req.sceneId = sceneId;
 	CenterCon::Ins().Send(req);
-	AccMgr::Ins().SetCache(m_owner.Sid(), true);
+	AccMgr::Ins().SetCache(m_owner.m_PlayerSn.GetSid(), true);
 	m_isReserveOk = false;
 	m_isAccCacheOk = false;
 	m_State =WaitReserve;
@@ -24,7 +24,7 @@ void SceneTran::CheckReserve()
 	{
 		proto::ReqTranZone req;
 		req.uin = m_owner.Uin();
-		TableCfg::Ins().Pack(m_owner.GetDb(), req.playerData);
+		TableCfg::Ins().Pack(m_owner.m_PlayerDb.GetData(), req.playerData);
 		CenterCon::Ins().Send(req);
 		PlayerMgr::Ins().DelPlayer(m_owner.Uin());
 		State(WaitDel);
@@ -70,7 +70,7 @@ void SceneTran::ReqTranZone(CenterCon &con, const proto::ReqTranZone &msg)
 	L_COND_V(player);
 	L_COND_V(WaitTranIn == player->m_SceneTran.m_State);
 
-	AccMgr::Ins().SetCache(player->Sid(), false);
+	AccMgr::Ins().SetCache(player->m_PlayerSn.GetSid(), false);
 
 	player->m_SceneTran.m_State= Playing;
 }
@@ -91,7 +91,7 @@ void SceneTran::RspZoneReserve(CenterCon &con, const proto::RspZoneReserve &msg)
 	else
 	{
 		L_INFO("reserve fail");
-		AccMgr::Ins().SetCache(player->Sid(), false);
+		AccMgr::Ins().SetCache(player->m_PlayerSn.GetSid(), false);
 		player->m_SceneTran.m_State = Playing;
 	}
 }

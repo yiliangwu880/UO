@@ -1,15 +1,25 @@
 #pragma once
 #include "ZoneSvrCon.h"
 
+
+class Svr : public Singleton<Svr>
+{
+public:
+	lc::Listener<ZoneSvrCon> m_Listener;
+
+public:
+	static void Start(bool &ret);
+};
+
 struct ZoneSvr
 {
-	uint16 m_svrId;
-	uint64 m_cid;
+	uint16 m_svrId = 0;
+	weak_ptr<ZoneSvrCon> m_con;
 	template<class Msg>
 	void Send(const Msg &msg)
 	{
-		ZoneSvrCon *con = (ZoneSvrCon *)Svr::Ins().m_Listener.GetConnMgr().FindConn(m_cid);
-		L_COND_V(con);
+		shared_ptr<ZoneSvrCon> con = m_con.lock();
+		L_COND_V(con, "find ZoneSvrCon fail, maybe disconnect");
 		con->Send(msg);
 	}
 };

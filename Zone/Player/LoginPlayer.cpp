@@ -3,6 +3,11 @@
 using namespace proto;
 using namespace acc;
 
+void LoginPlayer::SendLogin()
+{
+
+}
+
 void LoginPlayer::ClientDisCon()
 {
 	L_COND_V(LoginOk == m_State);
@@ -12,18 +17,24 @@ void LoginPlayer::ClientDisCon()
 RegCenterMsg(LoginPlayer::ReqLoginZone_sc);
 void LoginPlayer::ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &msg)
 {
-	L_INFO("ReqLoginZone_sc");
 	std::unique_ptr<BaseTable> baseTable = TableCfg::Ins().Unpack(msg.playerData);
 	DbPlayer * playerData = dynamic_cast<DbPlayer *>(baseTable.get());
 	L_COND_V(playerData);
+	L_INFO("player %s login zone.", playerData->name.c_str());
 
 	Player *player = PlayerMgr::Ins().CreatePlayer(playerData->uin, playerData->name);
 	L_COND_V(player);
 
-	//do create player, enter
-	Player *p;
+	acc::SessionId sid;
+	sid.cid = msg.cid;
+	player->m_PlayerSn.SetSid(sid);
+
 	RspLoginZone_cs rsp;
+	rsp.uin = playerData->uin;
+	rsp.ret = true;
 	con.Send(rsp);
+
+	player->LoginInit(*playerData);
 }
 
 RegCenterMsg(LoginPlayer::ReqReLoginZone_sc);
@@ -37,7 +48,7 @@ void LoginPlayer::ReqReLoginZone_sc(CenterCon &con, const proto::ReqReLoginZone_
 	const Session *sn = AccMgr::Ins().FindSessionByCid(msg.cid);
 	WeakPlayer *weakPlayer = sn->GetEx<WeakPlayer>();
 	L_COND_V(weakPlayer);
-	*weakPlayer = player->GetWeakPtr();
+	*weakPlayer = *player;
 	player->m_LoginPlayer.m_State = LoginOk;
 
 	RspReLoginZone_cs rsp;

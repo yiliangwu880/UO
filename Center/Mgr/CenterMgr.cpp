@@ -82,6 +82,6 @@ void CenterMgr::checkAllOk()
 	}
 	COND_V(m_isDbOk);
 	m_allok = true;
-	L_INFO("all svr is ready");
+	L_INFO("===========all svr is ready==========");
 }
 

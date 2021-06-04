@@ -4,21 +4,22 @@
 #include "MulMap.h"
 
 
+using PPlayer = Player *;
 template<>
-struct MulMapTraits<Player>
+struct MulMapTraits<PPlayer>
 {
 	friend struct Player;
-	static string GetSubKey(const Player &player)
+	static uint64 GetKey(const PPlayer &player)
 	{
-		return player.m_BaseData.name;
+		return player->m_BaseData.m_uin;
 	}
-	static void SetKey(Player &player, uint64 mainKey, string subKey)
+	static string GetSubKey(const PPlayer &player)
 	{
-		player.m_BaseData.m_uin = mainKey;
-		player.m_BaseData.name = subKey;
+		return player->m_BaseData.name;
 	}
+
 };
-using MulMapPlayer = MulMap<uint64, string, Player>;
+using MulMapPlayer = MulMap<uint64, string, PPlayer>;
 
 
 class PlayerMgr : public Singleton<PlayerMgr>

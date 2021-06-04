@@ -33,7 +33,8 @@ Project "other"
 	"../tool/**",
 	"../tempCode/**",
 	"../doc/**",
-	"../external/**",
+	"../external/svr_util/include/**",
+	"../external/libevent_cpp/include/**",
 	"../*.txt",
 	"../*.md",
 	}

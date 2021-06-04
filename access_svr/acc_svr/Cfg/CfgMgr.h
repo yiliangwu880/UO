@@ -17,5 +17,5 @@ public:
 	const char *GetExIp() const { return m_comCfg.access.ex_ip.c_str(); }
 };
 
-extern CfgMgr *gCfgMgr;
+extern CfgMgr &gCfgMgr;
 

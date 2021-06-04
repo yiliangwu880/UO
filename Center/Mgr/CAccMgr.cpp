@@ -58,9 +58,9 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 	Session tmpSn;
 	tmpSn.id = id;
 	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
-	L_COND_V(handler, "find msg handler fail. packetId=%d", (uint8_t)msg[0]);
+	L_COND_V(handler, "find msg handler fail. packetId=%d msg_len=%d", (uint8_t)msg[0], msg_len);
 
-	L_DEBUG("OnRevVerifyReq rev packetId %x", (uint8_t)msg[0]);
+	L_DEBUG("rev packetId %x %d, OnRevVerifyReq", (uint8_t)msg[0], msg_len);
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
 	NetState ns(tmpSn, *this);
 	handler->m_OnReceive(ns, r);
@@ -74,7 +74,7 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
 	L_COND_V(handler, "find msg handler fail. packetId=%d", (uint8_t)msg[0]);
 
-	L_DEBUG("rev packetId %x", (uint8_t)msg[0]);
+	L_DEBUG("rev packetId %x %d", (uint8_t)msg[0], msg_len);
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
 	NetState ns(sn, *this);
 	handler->m_OnReceive(ns, r);
@@ -92,7 +92,7 @@ void AccMgr::OnClientConnect(const acc::Session &sn)
 
 	CenterSnEx *p = sn.GetEx<CenterSnEx>();
 	L_COND_V(p);
-	p->m_pAccount = acc->GetWeakPtr();
+	p->m_pAccount = *acc;
 
 	acc->m_Verify.OnClientConFor2nd(sn.id);
 }
@@ -104,7 +104,7 @@ void AccMgr::OnRevBroadcastUinToSession(const acc::Session &sn)
 
 	//CenterSnEx *p = sn.GetEx<CenterSnEx>();
 	//L_COND_V(p);
-	//p->m_pAccount = account->GetWeakPtr();
+	//p->m_pAccount = *account;
 
 	//account->m_Verify.SetVerifyOk(sn.id);
 }

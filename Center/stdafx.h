@@ -44,4 +44,4 @@ using namespace db;
 #define RegZoneMsg(fun) STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&fun));
 #define RegAccMsg(fun) STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&fun));
 //注册全局事件
-#define RegGlobalEvent(ev, fun) STATIC_RUN(RegEvent<ev>(&(fun)))
+#define GRegEvent(ev, fun) STATIC_RUN(RegEvent<ev>(&(fun)))

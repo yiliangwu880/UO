@@ -40,7 +40,7 @@ namespace db
 \
 	DB_CLASS_NAME(DbPlayer)\
 	DB_MAIN_KEY(uin)\
-	DB_FIELD(name)\
+	DB_INDEX_KEY(name)\
 	DB_FIELD(base)\
 	DB_FIELD(myblob)\
 	DB_CLASS_END\

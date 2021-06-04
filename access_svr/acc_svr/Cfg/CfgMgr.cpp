@@ -4,7 +4,7 @@
 using namespace std;
 using namespace su;
 
-CfgMgr *gCfgMgr = &CfgMgr::Ins();
+CfgMgr &gCfgMgr = CfgMgr::Ins();
 bool CfgMgr::Init()
 {
 	L_COND(gCfgMgr.m_comCfg.LoadFile(), false);

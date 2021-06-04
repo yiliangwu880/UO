@@ -24,7 +24,7 @@ file(GLOB_RECURSE SRCS  ${PROJECT_SOURCE_DIR} "*.cpp"
 ADD_EXECUTABLE(${project_name} ${SRCS})
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/Center/)
 #设置依赖
-ADD_DEPENDENCIES(db_driver acc_proto svr_util libevent_cpp)
+ADD_DEPENDENCIES(${project_name} db_driver acc_proto svr_util libevent_cpp)
 
 # 设置链接库,顺序有要求。高层的引用方前面。最底层的方后面
 target_link_libraries(${project_name} acc_driver acc_proto )

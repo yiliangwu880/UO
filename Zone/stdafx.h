@@ -22,6 +22,7 @@
 #include "svr_util/include/stl_boost.h"
 #include "svr_util/include/static_reg.h"
 #include "svr_util/include/misc.h"
+#include "def.h"
 
 #include "EventMgr.h"
 #include "Mgr/CenterCon.h"
@@ -45,3 +46,5 @@ using namespace db;
 
 #define RegCenterMsg(fun) STATIC_RUN(MsgDispatch<CenterCon>::Ins().RegMsgHandler(&fun))
 #define RegAccMsg(fun) STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&fun));
+//注册全局事件
+#define GRegEvent(ev, fun) STATIC_RUN(RegEvent<ev>(&(fun)))

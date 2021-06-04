@@ -55,7 +55,7 @@ namespace
 			{
 			case FieldType::t_bytes:
 			case FieldType::t_string:
-				str += field.name + " = " + *(std::string *)pField; //todo :blob内容，还没解决方案。
+				str += field.name + " = \"" + *(std::string *)pField+"\""; //todo :blob内容，还没解决方案。
 				break;
 #define EASY_CODE(fieldType)\
 			case FieldType::t_##fieldType:\

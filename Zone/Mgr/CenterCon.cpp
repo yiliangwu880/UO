@@ -42,6 +42,7 @@ void CenterCon::OnConnected()
 
 void CenterCon::OnDisconnected()
 {
+	L_INFO("OnDisconnected");
 }
 
 //for tmp test

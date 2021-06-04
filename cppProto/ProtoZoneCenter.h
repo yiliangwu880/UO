@@ -23,7 +23,6 @@ namespace proto {
 \
 	DB_CLASS_NAME(ReqLoginZone_sc)\
 	DB_FIELD(id)\
-	DB_FIELD(uin)\
 	DB_FIELD(cid)\
 	DB_FIELD(playerData)\
 	DB_CLASS_END\
@@ -38,7 +37,6 @@ namespace proto {
 	DB_FIELD(id)\
 	DB_FIELD(uin)\
 	DB_FIELD(cid)\
-	DB_FIELD(playerData)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(RspReLoginZone_cs)\
@@ -84,7 +82,6 @@ namespace proto {
 	struct ReqLoginZone_sc
 	{
 		const uint16_t id = 52;
-		uint64 uin;
 		uint64 cid;
 		std::string playerData; //DbPlayer pack data
 	};
@@ -100,7 +97,6 @@ namespace proto {
 		const uint16_t id = 54;
 		uint64 uin;
 		uint64 cid;
-		std::string playerData; //DbPlayer pack data
 	};
 	struct RspReLoginZone_cs
 	{

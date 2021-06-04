@@ -1,7 +1,7 @@
 #pragma once
-#include "SubCom.h"
+#include "BaseData.h"
 
-class SceneTran : public SubCom
+class SceneTran : public PlayerSubCom
 {
 	enum State
 	{
@@ -16,6 +16,9 @@ class SceneTran : public SubCom
 	bool m_isAccCacheOk = false;
 	bool m_isReserveOk = false;
 public:
+	SceneTran(Player &owner)
+		:PlayerSubCom(owner)
+	{}
 	bool TranZone(uint16 zoneId, uint32 sceneId);
 	void CheckReserve();
 	void OnMsgRspCacheMsg(bool isCache);

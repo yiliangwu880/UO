@@ -4,33 +4,26 @@
 #include "MsgDispatch.h"
 #include "LoginPlayer.h"
 #include "SceneTran.h"
-#include "SubCom.h"
-
-struct BaseData 
-{
-	uint64 m_uin = 0;
-	string name;
-	acc::SessionId sid;
-};
-
+#include "PlayerSn.h"
+#include "PlayerDb.h"
 
 
 class Player : public WeakPtr<Player>
 {
-	DbPlayer m_db;
 
 public:
-	BaseData m_BaseData;
-	SceneTran m_SceneTran;
+	BaseData    m_BaseData;
+	PlayerDb	m_PlayerDb;
+	PlayerSn    m_PlayerSn;
+	SceneTran   m_SceneTran;
 	LoginPlayer m_LoginPlayer;
 
 public:
-	void Init(uint64 uin) {};
-	bool Load(DbPlayer &data);
-	const DbPlayer &GetDb() {
-		return m_db;
-	};
+	Player(uint64 uin, CStr &name);
+	void LoginInit(const DbPlayer &data);
 
+
+	//send to client, wait modify or del
 	template<class ProtoMsg>
 	void Send(const ProtoMsg &msg)
 	{
@@ -40,13 +33,12 @@ public:
 		L_ASSERT(proto::Pack(msg, p, len));
 		msgPack.len = sizeof(msgPack.data) - len;
 		//todo cmd 合并一起
-		AccMgr::Ins().SendToClient(m_BaseData.sid, 0, msgPack.data, msgPack.len);
+		AccMgr::Ins().SendToClient(m_PlayerSn.GetSid(), 0, msgPack.data, msgPack.len);
 	}
 
 	uint64 Uin() { return m_BaseData.m_uin; }
 	string &Name() { return m_BaseData.name; }
-	uint64 Cid() { return m_BaseData.sid.cid; }
-	const SessionId &Sid() { return m_BaseData.sid; }
+
 private:
 
 };

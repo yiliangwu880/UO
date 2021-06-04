@@ -28,24 +28,24 @@ class MulMap
 	unordered_map<MainKey, mapped_type> main;
 	unordered_map<SubKey, mapped_type*> sub;
 public:
-	template<class... _Valty>
-	mapped_type *emplace(MainKey mainKey, SubKey subKey, _Valty&&... _Val)
+	bool Insert(mapped_type m)
 	{
+		MainKey mainKey = MulMapTraits<mapped_type>::GetKey(m);
+		SubKey subKey = MulMapTraits<mapped_type>::GetSubKey(m);
 		auto it = main.find(mainKey);
 		if (it != main.end())
 		{
-			return nullptr;
+			return false;
 		}
 		auto subIt = sub.find(subKey);
 		if (subIt != sub.end())
 		{
-			return nullptr;
+			return false;
 		}
-		it = main.emplace(make_pair(mainKey, forward<_Valty>(_Val)...)).first;
+		it = main.emplace(make_pair(mainKey, m)).first;
 		mapped_type *p = &(it->second);
 		sub.emplace(make_pair(subKey, p));
-		MulMapTraits<mapped_type>::SetKey(*p, mainKey, subKey);
-		return p;
+		return true;
 	}
 
 	size_t size()
