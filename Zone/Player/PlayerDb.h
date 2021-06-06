@@ -3,7 +3,7 @@
 
 
 
-class PlayerDb : public PlayerSubCom
+class PlayerDb : public PlayerSubCom<PlayerDb>
 {
 	lc::Timer m_tm;
 	DbPlayer m_data;

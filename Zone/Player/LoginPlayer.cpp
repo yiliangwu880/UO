@@ -3,6 +3,12 @@
 using namespace proto;
 using namespace acc;
 
+void LoginPlayer::Login()
+{
+	m_owner.FireEvent<EV_BEFORE_LOGIN>();
+	SendLogin();
+}
+
 void LoginPlayer::SendLogin()
 {
 
@@ -35,7 +41,7 @@ void LoginPlayer::ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &
 	con.Send(rsp);
 
 	player->m_PlayerDb.OnLoad(*playerData);
-	player->m_LoginPlayer.SendLogin();
+	player->m_LoginPlayer.Login();
 }
 
 RegCenterMsg(LoginPlayer::ReqReLoginZone_sc);

@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseData.h"
 
-class PlayerSn : public PlayerSubCom
+class PlayerSn : public PlayerSubCom<PlayerSn>
 {
 	acc::SessionId m_sid;
 

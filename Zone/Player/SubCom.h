@@ -11,14 +11,15 @@
 
 
 class Player;
-class PlayerSubCom 
+template<class SubComClass>
+class PlayerSubCom : public EventCom<SubComClass>
 {
 public:
 	Player &m_owner;
 public:
 	PlayerSubCom(Player &owner)
-		:m_owner(owner)
+		:EventCom<SubComClass>(owner)
+		, m_owner(owner)
 	{
-
 	}
 };

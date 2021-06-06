@@ -16,7 +16,7 @@ namespace db
 		uint64_t uin;
 		std::string name;
 	};
-	struct DbPlayerBase
+	struct DbActor //monster ,npc, playeractor com use
 	{
 		int str;
 		int dex;
@@ -31,6 +31,7 @@ namespace db
 		int16_t hairHuef;
 	};
 
+
 //先定义宏参数信息，以后再具体实现
 //域的顺序 和 遗漏，都会初始化的时候检查出来
 #define DB_ALL_STRUCT_INFO \
@@ -39,7 +40,7 @@ namespace db
 	DB_FIELD(name)\
 	DB_CLASS_END\
 \
-	DB_CLASS_NAME(DbPlayerBase)\
+	DB_CLASS_NAME(DbActor)\
 	DB_FIELD(str)\
 	DB_FIELD(dex)\
 	DB_FIELD(intl)\

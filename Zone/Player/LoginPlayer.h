@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseData.h"
 
-class LoginPlayer : public PlayerSubCom
+class LoginPlayer : public PlayerSubCom<LoginPlayer>
 {
 	enum State
 	{
@@ -16,6 +16,7 @@ public:
 	{}
 	State State() const { return m_State; }
 
+	void Login();
 	void SendLogin();
 	void ClientDisCon();
 

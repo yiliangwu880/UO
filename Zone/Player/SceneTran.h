@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseData.h"
 
-class SceneTran : public PlayerSubCom
+class SceneTran : public PlayerSubCom<SceneTran>
 {
 	enum State
 	{

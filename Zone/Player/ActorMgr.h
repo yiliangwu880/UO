@@ -1,8 +1,8 @@
 #pragma once
-#include "BaseData.h"
+#include "SubCom.h"
 
 
-class ActorMgr : public PlayerSubCom, public EventCom<ActorMgr>
+class ActorMgr : public PlayerSubCom<ActorMgr>
 {
 public:
 	ActorMgr(Player &owner);

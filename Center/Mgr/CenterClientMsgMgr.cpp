@@ -260,7 +260,7 @@ namespace
 		L_COND_V(pAcc);
 		L_DEBUG("rev create char, acc=%s", pAcc->Name().c_str());
 		DbPlayer player;
-		DbPlayerBase &playerBase = player.base;
+		DbActor &playerBase = player.base;
 
 		int unk1 = pvSrc.ReadInt32();
 		int unk2 = pvSrc.ReadInt32();

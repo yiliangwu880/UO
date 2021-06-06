@@ -25,7 +25,7 @@ namespace db
 		DbPlayer() : BaseTable(2) {}
 		uint64_t uin;
 		std::string name;
-		DbPlayerBase base;
+		DbActor base;
 		std::string myblob;
 	};
 

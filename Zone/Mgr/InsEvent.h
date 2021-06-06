@@ -8,6 +8,7 @@ enum InsEvent
 	EV_NONE = 0,
 	EV_LOAD_DB = 1,
 	EV_SAVE_DB = 2,
+	EV_BEFORE_LOGIN = 3, //player别的模块已经加载DB完成。
 };
 
 namespace db

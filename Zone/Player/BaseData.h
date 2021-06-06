@@ -3,7 +3,7 @@
 #include "SubCom.h"
 
 
-class BaseData : public PlayerSubCom, public EventCom<BaseData>
+class BaseData : public PlayerSubCom<BaseData>
 {
 public:
 	uint64 m_uin = 0;
