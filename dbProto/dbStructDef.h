@@ -16,6 +16,10 @@ namespace db
 		uint64_t uin;
 		std::string name;
 	};
+	struct DbEquips 
+	{
+		int i;
+	};
 	struct DbActor //monster ,npc, playeractor com use
 	{
 		int str;
@@ -29,6 +33,7 @@ namespace db
 		int16_t hairHue;
 		int16_t hairValf;
 		int16_t hairHuef;
+		DbEquips equips;
 	};
 
 
@@ -51,6 +56,7 @@ namespace db
 	DB_FIELD(hairHue)\
 	DB_FIELD(hairValf)\
 	DB_FIELD(hairHuef)\
+	DB_FIELD(equips)\
 	DB_CLASS_END\
 \
 

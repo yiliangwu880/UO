@@ -9,5 +9,5 @@ ActorMgr::ActorMgr(Player &owner)
 
 void ActorMgr::OnLoad(DbPlayer &data)
 {
-
+	m_actor.Init(data.actor);
 }
