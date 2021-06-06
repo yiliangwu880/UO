@@ -7,9 +7,10 @@
 #include "PlayerSn.h"
 #include "PlayerDb.h"
 #include "ActorMgr.h"
+#include "Actor/Actor.h"
 
 
-class Player : public WeakPtr<Player>, public EventMgr
+class Player : public WeakPtr<Player>, public ActorOwner
 {
 
 public:
@@ -18,7 +19,8 @@ public:
 	PlayerSn    m_PlayerSn;
 	SceneTran   m_SceneTran;
 	LoginPlayer m_LoginPlayer;
-	ActorMgr m_ActorMgr;
+	ActorMgr	m_ActorMgr;
+	Actor		m_Actor;
 
 public:
 	Player(uint64 uin, CStr &name);

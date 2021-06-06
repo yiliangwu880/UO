@@ -4,7 +4,7 @@
 
 class ActorMgr : public PlayerSubCom<ActorMgr>
 {
-	Actor m_actor;
+	//Actor m_actor;
 
 public:
 	ActorMgr(Player &owner);
