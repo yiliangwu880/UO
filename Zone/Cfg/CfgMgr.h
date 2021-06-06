@@ -5,6 +5,7 @@ class CfgMgr : public Singleton<CfgMgr>
 {
 	zoneCfg m_zoneCfg;
 	comCfg m_comCfg;
+
 public:
 	bool Init();
 	const zoneCfg &ZoneCfg() const { return m_zoneCfg; }

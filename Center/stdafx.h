@@ -23,7 +23,7 @@
 #include "svr_util/include/static_reg.h"
 #include "svr_util/include/misc.h"
 #include "GlobalEvent.h"
-#include "def.h"
+#include "Def.h"
 
 //不区分命名空间
 namespace acc

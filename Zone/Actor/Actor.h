@@ -14,7 +14,7 @@ enum class ActorType
 
 
 //场景实体,包括人，怪，NPC
-class Actor : public Noncopyable
+class Actor : public Noncopyable, public EventCom<Actor>
 {
 public:
 	ActorOwner &m_owner;
@@ -23,6 +23,7 @@ public:
 
 public:
 	Actor(ActorOwner &owner, ActorType t= ActorType::Monster);
-	void Init(const DbActor &dbActor);
+	void OnLoad(DbPlayer &dbActor);
+	void EnterScene();
 	void PostDel();//del this
 };

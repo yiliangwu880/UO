@@ -5,7 +5,8 @@ using namespace acc;
 
 void LoginPlayer::Login()
 {
-	m_owner.FireEvent<EV_BEFORE_LOGIN>();
+	m_owner.m_Actor.EnterScene();
+	m_owner.FireEvent<EV_BEFORE_LOGIN>(); 
 	SendLogin();
 }
 

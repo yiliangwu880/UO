@@ -6,7 +6,6 @@
 #include "SceneTran.h"
 #include "PlayerSn.h"
 #include "PlayerDb.h"
-#include "ActorMgr.h"
 #include "Actor/Actor.h"
 
 
@@ -19,7 +18,6 @@ public:
 	PlayerSn    m_PlayerSn;
 	SceneTran   m_SceneTran;
 	LoginPlayer m_LoginPlayer;
-	ActorMgr	m_ActorMgr;
 	Actor		m_Actor;
 
 public:

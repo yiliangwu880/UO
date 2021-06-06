@@ -22,7 +22,7 @@
 #include "svr_util/include/stl_boost.h"
 #include "svr_util/include/static_reg.h"
 #include "svr_util/include/misc.h"
-#include "def.h"
+#include "Def.h"
 
 #include "GlobalEvent.h"
 #include "Mgr/CenterCon.h"

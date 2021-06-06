@@ -17,6 +17,7 @@ namespace
 	{
 		MsgMgr::Check();
 		CenterMgr::Ins().Init();
+		TableCfg::Ins(); //触发检查
 	}
 	STATIC_RUN(RegEvent<EV_SVR_START>(Init));
 }

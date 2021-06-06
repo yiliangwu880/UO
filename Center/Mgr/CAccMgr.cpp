@@ -1,6 +1,5 @@
 #include "CAccMgr.h"
 #include "CfgMgr.h"
-#include "def.h"
 #include "GlobalEvent.h"
 #include "CenterMgr.h"
 #include "./Account/AccountMgr.h"
