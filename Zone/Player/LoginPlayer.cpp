@@ -34,7 +34,8 @@ void LoginPlayer::ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &
 	rsp.ret = true;
 	con.Send(rsp);
 
-	player->LoginInit(*playerData);
+	player->m_PlayerDb.OnLoad(*playerData);
+	player->m_LoginPlayer.SendLogin();
 }
 
 RegCenterMsg(LoginPlayer::ReqReLoginZone_sc);

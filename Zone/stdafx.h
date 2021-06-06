@@ -24,7 +24,7 @@
 #include "svr_util/include/misc.h"
 #include "def.h"
 
-#include "EventMgr.h"
+#include "GlobalEvent.h"
 #include "Mgr/CenterCon.h"
 
 //不区分命名空间

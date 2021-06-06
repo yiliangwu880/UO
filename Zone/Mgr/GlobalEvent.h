@@ -1,3 +1,4 @@
+//全局事件定义
 #pragma once
 
 #include "game_util/publish_subscribe.h"

@@ -1,6 +1,6 @@
 #include "CenterCon.h"
 #include "CfgMgr.h"
-#include "EventMgr.h"
+#include "GlobalEvent.h"
 #include "MsgDispatch.h"
 
 using namespace lc;

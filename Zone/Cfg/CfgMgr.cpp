@@ -1,6 +1,6 @@
 
 #include "CfgMgr.h"
-#include "EventMgr.h"
+#include "GlobalEvent.h"
 using namespace std;
 using namespace su;
 

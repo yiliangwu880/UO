@@ -1,6 +1,6 @@
 #include "ZoneSvrCon.h"
 #include "CfgMgr.h"
-#include "EventMgr.h"
+#include "GlobalEvent.h"
 
 using namespace lc;
 using namespace su;

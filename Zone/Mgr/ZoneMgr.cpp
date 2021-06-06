@@ -1,5 +1,5 @@
 #include "ZoneMgr.h"
-#include "EventMgr.h"
+#include "GlobalEvent.h"
 #include "CfgMgr.h"
 #include "version.h"
 #include "db_driver.h"

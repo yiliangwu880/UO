@@ -6,9 +6,10 @@
 #include "SceneTran.h"
 #include "PlayerSn.h"
 #include "PlayerDb.h"
+#include "ActorMgr.h"
 
 
-class Player : public WeakPtr<Player>
+class Player : public WeakPtr<Player>, public EventMgr
 {
 
 public:
@@ -17,10 +18,10 @@ public:
 	PlayerSn    m_PlayerSn;
 	SceneTran   m_SceneTran;
 	LoginPlayer m_LoginPlayer;
+	ActorMgr m_ActorMgr;
 
 public:
 	Player(uint64 uin, CStr &name);
-	void LoginInit(const DbPlayer &data);
 
 
 	//send to client, wait modify or del

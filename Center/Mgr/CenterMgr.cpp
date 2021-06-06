@@ -1,5 +1,5 @@
 #include "CenterMgr.h"
-#include "EventMgr.h"
+#include "GlobalEvent.h"
 #include "CfgMgr.h"
 #include "version.h"
 #include "ZoneSvrCon.h"

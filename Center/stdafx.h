@@ -22,7 +22,7 @@
 #include "svr_util/include/stl_boost.h"
 #include "svr_util/include/static_reg.h"
 #include "svr_util/include/misc.h"
-#include "EventMgr.h"
+#include "GlobalEvent.h"
 #include "def.h"
 
 //不区分命名空间

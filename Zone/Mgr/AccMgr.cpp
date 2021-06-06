@@ -1,7 +1,7 @@
 #include "AccMgr.h"
 #include "CfgMgr.h"
 #include "def.h"
-#include "EventMgr.h"
+#include "GlobalEvent.h"
 #include "ZoneMgr.h"
 #include "Player/Player.h"
 #include "UoProto.h"
