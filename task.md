@@ -18,6 +18,9 @@ zone跨服协调。细节完善
 
 #其他
 
+##场景区域激活：
+	参考AOI，player进入, 激活9格子
+	player离开，检查周围8格子，都无PLAYER，就Deactivate
 
 怪物创建
 

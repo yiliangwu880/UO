@@ -25,6 +25,16 @@ enum class ResistanceType
 	Max
 };
 
+enum class EntityType
+{
+	None, 
+	Item,//物品等，actor以外的东西
+	Player,
+	Npc,
+	Monster,
+	Max,
+};
+
 enum class SkillName
 {
 	Alchemy = 0,

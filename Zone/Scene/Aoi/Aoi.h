@@ -38,6 +38,7 @@ namespace Aoi
 {
 	class Scene;
 	class Entity;
+	typedef std::vector<uint16_t> VecGridIdx;
 
 	class Entity
 	{
@@ -48,8 +49,9 @@ namespace Aoi
 		std::set<Entity *> m_observers; //看见我的entity 集合
 		uint16_t m_gridIdx = 0;			//当前所在格子索引
 		bool m_isFreeze = false;		//true 表示禁止m_observers变化。 防止野entity或者遍历过程修改容器
-
+		EntityType m_EntityType = EntityType::None;
 	public:
+		Entity(EntityType type);
 		~Entity();
 		bool Enter(Scene &scene, uint16_t x, uint16_t y);
 		bool Leave();
@@ -59,6 +61,8 @@ namespace Aoi
 	private:
 		virtual void OnAddObserver(Entity &other) = 0; //other 看见我
 		virtual void OnDelObserver(Entity &other) = 0; //other 看不见我
+		virtual void OnActivate() {}; //被玩家激活。 （又任意玩家在附近）
+		virtual void OnDeactivate() {};
 
 	private:
 		void SetScene(Scene *scene) { m_scene = scene; }
@@ -68,14 +72,23 @@ namespace Aoi
 		Scene *GetScene() const { return m_scene; }
 	};
 
+	using VecEntity = std::vector<Entity *>;
+	using Entitys = std::array<std::vector<Entity *>, (size_t)EntityType::Max>;
+	struct Grid
+	{
+		bool isActivate = false;
+		Entitys entitys;
+	};
+
 	class Scene
 	{
 		friend class Entity;
 		friend class AoiTest;
-		using VecEntity = std::vector<Entity *>;
+	
 
 		//map 类型，不用设置地图大小，自动调整需要的内存。 如果数组类型，需要设置地图大小，效率更高
-		std::map<uint16_t, VecEntity> m_idx2VecEntity;//gridIdx 2 entity. 表示一个grid的所有entity
+		std::map<uint16_t, Grid> m_idx2grid;//gridIdx 2 entity. 表示一个grid的所有entity
+
 		bool m_isFreeze = false; //true 表示禁止entity gridIdx变化。 防止野entity或者遍历过程修改容器
 
 	public:
@@ -89,6 +102,10 @@ namespace Aoi
 		
 		bool Freeze() const { return m_isFreeze; }
 		void Freeze(bool val) { m_isFreeze = val; }
+
+		void AddObserver(Entity &entity, const VecGridIdx &vecGridIdx);
+		void DelObserver(Entity &entity, const VecGridIdx &vecGridIdx); //entity 和 vecGridIdx 格子所有other entity 互相消失
+		bool FindAnyPlayer(const Aoi::VecGridIdx &vecGridIdx);//return true indicate have any Player
 	};
 
 	//测试项目用

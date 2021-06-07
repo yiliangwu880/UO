@@ -2,12 +2,12 @@
 #include "Player/PlayerMgr.h"
 #include "SceneMgr.h"
 
-Actor::Actor(ActorOwner &owner, ActorType t)
+Actor::Actor(ActorOwner &owner, EntityType t)
 	:EventCom<Actor>(m_owner)
 	, m_owner(owner)
 	, m_ActorBase(*this)
 	, m_ActorEquip(*this)
-	, m_Observer(*this)
+	, m_Observer(*this, t)
 {
 	Reg<EV_LOAD_DB>(&Actor::OnLoad);
 }

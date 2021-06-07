@@ -6,12 +6,7 @@
 #include "ActorEquip.h"
 #include "Observer.h"
 
-enum class ActorType
-{
-	Player,
-	Npc,
-	Monster
-};
+
 
 
 //场景实体,包括人，怪，NPC
@@ -24,7 +19,7 @@ public:
 	Observer m_Observer;
 
 public:
-	Actor(ActorOwner &owner, ActorType t= ActorType::Monster);
+	Actor(ActorOwner &owner, EntityType t= EntityType::Monster);
 	void OnLoad(DbPlayer &dbActor);//player 初始化
 	void InitMonster();
 	void InitNpc(); 

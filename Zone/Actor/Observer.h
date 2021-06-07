@@ -12,5 +12,5 @@ private:
 	virtual void OnDelObserver(Entity &other); //other 看不见我
 
 public:
-	Observer(Actor &owner);
+	Observer(Actor &owner, EntityType t);
 };
