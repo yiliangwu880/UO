@@ -39,21 +39,35 @@ namespace db
 		//主副手武器
 		dbEquip primary;
 		dbEquip second;
-		std::vector<dbEquip> vecDress;
+		std::vector<dbEquip> vecDress;//武器外穿戴物
 	};
+
+	struct DbActorBase 
+	{
+		int str = 0;
+		int dex = 0;
+		int intl = 0;
+
+		int x = 0, y = 0, z = 0;
+
+		int female = 0;
+		uint8_t race = 0;
+
+	};
+
+	struct DbPlayerBase
+	{
+		uint16_t hue = 0;
+		int16_t hairVal = 0;
+		int16_t hairHue = 0;
+		int16_t hairValf = 0;
+		int16_t hairHuef = 0;
+	};
+
 	struct DbActor //monster ,npc, playeractor com use
 	{
-		int str;
-		int dex;
-		int intl;
-		int female;
-		uint8_t race;
-		
-		uint16_t hue;
-		int16_t hairVal;
-		int16_t hairHue;
-		int16_t hairValf;
-		int16_t hairHuef;
+		DbActorBase actorBase;
+		DbPlayerBase playerBase;
 		DbEquips equips;
 	};
 
@@ -84,17 +98,28 @@ namespace db
 	DB_FIELD(vecDress)\
 	DB_CLASS_END\
 \
-	DB_CLASS_NAME(DbActor)\
+	DB_CLASS_NAME(DbActorBase)\
 	DB_FIELD(str)\
 	DB_FIELD(dex)\
 	DB_FIELD(intl)\
+	DB_FIELD(x)\
+	DB_FIELD(y)\
+	DB_FIELD(z)\
 	DB_FIELD(female)\
 	DB_FIELD(race)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(DbPlayerBase)\
 	DB_FIELD(hue)\
 	DB_FIELD(hairVal)\
 	DB_FIELD(hairHue)\
 	DB_FIELD(hairValf)\
 	DB_FIELD(hairHuef)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(DbActor)\
+	DB_FIELD(actorBase)\
+	DB_FIELD(playerBase)\
 	DB_FIELD(equips)\
 	DB_CLASS_END\
 \

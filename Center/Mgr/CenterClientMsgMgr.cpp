@@ -275,9 +275,9 @@ namespace
 
 		int genderRace = pvSrc.ReadByte();
 
-		playerBase.str = pvSrc.ReadByte();
-		playerBase.dex = pvSrc.ReadByte();
-		playerBase.intl = pvSrc.ReadByte();
+		playerBase.actorBase.str = pvSrc.ReadByte();
+		playerBase.actorBase.dex = pvSrc.ReadByte();
+		playerBase.actorBase.intl = pvSrc.ReadByte();
 		int is1 = pvSrc.ReadByte();
 		int vs1 = pvSrc.ReadByte();
 		int is2 = pvSrc.ReadByte();
@@ -287,11 +287,11 @@ namespace
 		int is4 = pvSrc.ReadByte();
 		int vs4 = pvSrc.ReadByte();
 
-		playerBase.hue      = pvSrc.ReadUInt16();
-		playerBase.hairVal  = pvSrc.ReadInt16();
-		playerBase.hairHue  = pvSrc.ReadInt16();
-		playerBase.hairValf = pvSrc.ReadInt16();
-		playerBase.hairHuef = pvSrc.ReadInt16();
+		playerBase.playerBase.hue      = pvSrc.ReadUInt16();
+		playerBase.playerBase.hairVal  = pvSrc.ReadInt16();
+		playerBase.playerBase.hairHue  = pvSrc.ReadInt16();
+		playerBase.playerBase.hairValf = pvSrc.ReadInt16();
+		playerBase.playerBase.hairHuef = pvSrc.ReadInt16();
 		pvSrc.ReadByte();
 		int cityIndex = pvSrc.ReadByte();
 		int charSlot = pvSrc.ReadInt32();
@@ -307,11 +307,11 @@ namespace
 		*/
 
 		bool female = ((genderRace % 2) != 0);
-		playerBase.female = female;
+		playerBase.actorBase.female = female;
 		//Race race = null;
 
 		byte raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
-		playerBase.race = raceID;
+		playerBase.actorBase.race = raceID;
 		//race = Race.Races[raceID];
 
 		//if (race == null)

@@ -23,7 +23,10 @@ public:
 
 public:
 	Actor(ActorOwner &owner, ActorType t= ActorType::Monster);
-	void OnLoad(DbPlayer &dbActor);
+	void OnLoad(DbPlayer &dbActor);//player 初始化
+	void InitMonster();
+	void InitNpc(); 
+
 	void EnterScene();
 	void PostDel();//del this
 };

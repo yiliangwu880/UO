@@ -13,8 +13,8 @@ class Player : public WeakPtr<Player>, public ActorOwner
 {
 
 public:
+	PlayerDb	m_PlayerDb; //必须放前面，下面组件才能正确引用
 	BaseData    m_BaseData;
-	PlayerDb	m_PlayerDb;
 	PlayerSn    m_PlayerSn;
 	SceneTran   m_SceneTran;
 	LoginPlayer m_LoginPlayer;
