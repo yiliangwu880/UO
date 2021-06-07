@@ -37,9 +37,6 @@ struct Point3D
 		: Point3D(p.X, p.Y, z)
 	{ }
 
-
-
-
 };
 
 

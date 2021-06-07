@@ -18,7 +18,7 @@
 	单位 grid  : (gridIdx)场景视野划分得grid索引
 
 使用例子：
-	class ObserverEntity : public aoi::Entity
+	class ObserverEntity : public Aoi::Entity
 	class Player
 	{
 		ObserverEntity observer;
@@ -26,15 +26,15 @@
 	};
 	class Scene
 	{
-		aoi::Scene aoiScene;
+		Aoi::Scene aoiScene;
 		...
 	};
 */
 #pragma once
 #include <set>
 
-
-namespace aoi
+class Actor;
+namespace Aoi
 {
 	class Scene;
 	class Entity;

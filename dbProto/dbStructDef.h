@@ -62,6 +62,7 @@ namespace db
 		int16_t hairHue = 0;
 		int16_t hairValf = 0;
 		int16_t hairHuef = 0;
+		uint32_t sceneId = 0;
 	};
 
 	struct DbActor //monster ,npc, playeractor com use
@@ -115,6 +116,7 @@ namespace db
 	DB_FIELD(hairHue)\
 	DB_FIELD(hairValf)\
 	DB_FIELD(hairHuef)\
+	DB_FIELD(sceneId)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(DbActor)\

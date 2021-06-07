@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 
-namespace aoi
+namespace Aoi
 {
 	static const uint16_t SCREEN_GRID_WIDTH = 22;		///< grid宽,单位 point
 	static const uint16_t SCREEN_GRID_HEIGHT = 14;		///< grid高,单位 point

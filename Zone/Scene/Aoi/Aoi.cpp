@@ -2,18 +2,18 @@
 #include "Aoi.h"
 #include "GridIdxMgr.h"
 using namespace std;
-using namespace aoi;
+using namespace Aoi;
 
-aoi::Entity::~Entity()
+Aoi::Entity::~Entity()
 {
 	if (nullptr != m_scene)
 	{
 		L_ERROR("can't del entity when not leave scene"); //还没离开 场景，不允许删除对象。 
-		//m_scene->EntityLeave(*this);//不能调用看离开场景。 因为析构函数不能调用 虚函数 OnDelObserver，所以需要用户先离开场景
+		//Leave();//不能调用看离开场景。 因为里面触发虚函数OnDelObserver 。 析构函数不能调用 虚函数 ，所以需要用户先离开场景
 	}
 }
 
-bool aoi::Entity::Enter(Scene &scene, uint16_t x, uint16_t y)
+bool Aoi::Entity::Enter(Scene &scene, uint16_t x, uint16_t y)
 {
 	if (x >= MAP_MAX_POS_X || y >= MAP_MAX_POS_Y)
 	{
@@ -30,7 +30,7 @@ bool aoi::Entity::Enter(Scene &scene, uint16_t x, uint16_t y)
 	return scene.EntityEnter(*this);
 }
 
-bool aoi::Entity::Leave()
+bool Aoi::Entity::Leave()
 {
 	if (!m_scene)
 	{
@@ -39,14 +39,14 @@ bool aoi::Entity::Leave()
 	return m_scene->EntityLeave(*this);
 }
 
-void aoi::Entity::AddObserver(Entity &other)
+void Aoi::Entity::AddObserver(Entity &other)
 {
 	L_ASSERT(!m_isFreeze);
 	m_observers.insert(&other);
 	OnAddObserver(other);
 }
 
-void aoi::Entity::DelObserver(Entity &other)
+void Aoi::Entity::DelObserver(Entity &other)
 {
 	L_ASSERT(!m_isFreeze);
 	m_observers.erase(&other);
@@ -54,7 +54,7 @@ void aoi::Entity::DelObserver(Entity &other)
 }
 
 
-void aoi::Entity::UpdatePos(uint16_t x, uint16_t y)
+void Aoi::Entity::UpdatePos(uint16_t x, uint16_t y)
 {
 	if (x >= MAP_MAX_POS_X || y >= MAP_MAX_POS_Y)
 	{
@@ -75,7 +75,7 @@ void aoi::Entity::UpdatePos(uint16_t x, uint16_t y)
 	}
 }
 
-void aoi::Entity::ForEachObservers(std::function<void(Entity&)> f)
+void Aoi::Entity::ForEachObservers(std::function<void(Entity&)> f)
 {
 	if (!m_scene)
 	{
@@ -91,7 +91,7 @@ void aoi::Entity::ForEachObservers(std::function<void(Entity&)> f)
 	m_scene->Freeze(false);
 }
 
-aoi::Scene::~Scene()
+Aoi::Scene::~Scene()
 {
 	VecEntity vec;
 	for (auto &v : m_idx2VecEntity)
@@ -104,7 +104,7 @@ aoi::Scene::~Scene()
 	}
 }
 
-size_t aoi::Scene::GetEntityNum()
+size_t Aoi::Scene::GetEntityNum()
 {
 	size_t num = 0;
 	for (auto &v : m_idx2VecEntity)
@@ -114,7 +114,7 @@ size_t aoi::Scene::GetEntityNum()
 	return num;
 }
 
-bool aoi::Scene::EntityEnter(Entity &entity)
+bool Aoi::Scene::EntityEnter(Entity &entity)
 {
 	L_COND(!m_isFreeze, false);
 	m_isFreeze = true;
@@ -136,7 +136,7 @@ bool aoi::Scene::EntityEnter(Entity &entity)
 	return true;
 }
 
-bool aoi::Scene::EntityLeave(Entity &entity)
+bool Aoi::Scene::EntityLeave(Entity &entity)
 {
 	L_COND(!m_isFreeze, false);
 	if (!entity.GetScene())
@@ -166,7 +166,7 @@ bool aoi::Scene::EntityLeave(Entity &entity)
 	return true;
 }
 
-bool aoi::Scene::UpdateEntity(Entity &entity, uint16_t oldGridIdx, uint16_t newGridIdx)
+bool Aoi::Scene::UpdateEntity(Entity &entity, uint16_t oldGridIdx, uint16_t newGridIdx)
 {
 	L_ASSERT(oldGridIdx != newGridIdx);
 	L_COND(!m_isFreeze, false);

@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include "log_def.h"
 
-using namespace aoi;
+using namespace Aoi;
 
 
 GridIdxMgr::GridIdxMgr()
@@ -183,7 +183,7 @@ void GridIdxMgr::printAllDirectScreen(const uint16_t &posi)
 	}
 }
 
-void aoi::GridIdxMgr::printAllReverseDirectScreen(const uint16_t &posi)
+void Aoi::GridIdxMgr::printAllReverseDirectScreen(const uint16_t &posi)
 {
 	L_DEBUG("前向屏 [%u]", posi);
 	for (uint32_t i = 0; i < DirType_Wrong; ++i)

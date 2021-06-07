@@ -2,8 +2,9 @@
 #pragma once
 #include "dbTableDef.h"
 #include "ActorOwer.h"
-#include "BaseAttr.h"
+#include "ActorBase.h"
 #include "ActorEquip.h"
+#include "Observer.h"
 
 enum class ActorType
 {
@@ -18,8 +19,9 @@ class Actor : public Noncopyable, public EventCom<Actor>
 {
 public:
 	ActorOwner &m_owner;
-	BaseAttr m_BaseAttr;
+	ActorBase m_ActorBase;
 	ActorEquip m_ActorEquip;
+	Observer m_Observer;
 
 public:
 	Actor(ActorOwner &owner, ActorType t= ActorType::Monster);
@@ -27,6 +29,6 @@ public:
 	void InitMonster();
 	void InitNpc(); 
 
-	void EnterScene();
+	void EnterScene(uint32 id);
 	void PostDel();//del this
 };
