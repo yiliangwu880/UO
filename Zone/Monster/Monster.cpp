@@ -7,6 +7,7 @@ void Monster::PostDel()
 
 Monster::Monster()
 	:m_actor(*this)
+	, m_ai(*this, m_actor)
 {
 	
 }

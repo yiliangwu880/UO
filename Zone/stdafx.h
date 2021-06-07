@@ -22,6 +22,7 @@
 #include "svr_util/include/stl_boost.h"
 #include "svr_util/include/static_reg.h"
 #include "svr_util/include/misc.h"
+#include "libevent_cpp/include/timer_mgr.h"
 #include "Def.h"
 
 #include "GlobalEvent.h"

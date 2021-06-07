@@ -2,6 +2,7 @@
 */
 #pragma once
 #include "Actor/Actor.h"
+#include "Ai/Ai.h"
 
 //护送
 class Escort //: public EventReg
@@ -24,10 +25,11 @@ public:
 class Npc : public WeakPtr<Npc>, public ActorOwner
 {
 public:
+	Actor m_actor;//战斗生物基本功能, 必须放第一，这样 m_ai 才能正确引用
+	Ai m_ai;
 	//int show; 外观
 	//Task m_task;提供任务；
 	Escort m_Escort;
-	Actor m_actor;//战斗生物基本功能
 public:
 	virtual void PostDel() override;
 

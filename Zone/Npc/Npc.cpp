@@ -7,6 +7,7 @@ void Npc::PostDel()
 
 Npc::Npc()
 	:m_actor(*this)
+	,m_ai(*this, m_actor)
 {
 
 }
