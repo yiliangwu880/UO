@@ -24,6 +24,7 @@ public:
 //scene 管理actor, actor PostDel来释放
 class Npc : public WeakPtr<Npc>, public ActorOwner
 {
+	uint32 m_id;
 public:
 	Actor m_actor;//战斗生物基本功能, 必须放第一，这样 m_ai 才能正确引用
 	Ai m_ai;
@@ -34,7 +35,7 @@ public:
 	virtual void PostDel() override;
 
 public:
-	Npc();
+	Npc(uint32 id);
 
 private:
 };

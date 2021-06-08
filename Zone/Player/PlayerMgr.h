@@ -24,7 +24,7 @@ using MulMapPlayer = MulMap<uint64, string, PPlayer>;
 
 class PlayerMgr : public Singleton<PlayerMgr>
 {
-	MulMapPlayer m_players;
+	MulMapPlayer m_all;
 
 public:
 	Player *CreatePlayer(uint64 uin, const string &name);

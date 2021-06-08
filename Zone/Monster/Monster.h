@@ -4,20 +4,23 @@
 #pragma once
 #include "Actor/Actor.h"
 #include "Ai/Ai.h"
+#include "MonsterBase.h"
 
 //scene 管理actor, actor PostDel来释放
 class Monster : public WeakPtr<Monster>, public ActorOwner
 {
+	uint32 m_uin;
 public:
 	Actor m_actor;//战斗生物基本功能, 必须放第一，这样 m_ai 才能正确引用
 	Ai m_ai; 
+	MonsterBase m_MonsterBase;
 	//int show; 外观
 	//Drop dropCfg;
 
 public:
 	virtual void PostDel() override;
 public:
-	Monster();
+	Monster(uint32 uin);
 
 	//某个函数，从位置触发，动作影响别的生物类型
 	//void  PosAction()

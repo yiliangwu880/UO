@@ -110,7 +110,7 @@ Aoi::Scene::~Scene()
 	}
 	for (Entity *entity : vec)
 	{
-		EntityLeave(*entity);//里面调用 m_idx2Entitys 删除元素，所以需要复制到vec
+		EntityLeave(*entity);//里面会调用 m_idx2Entitys 删除元素，所以需要复制到vec
 	}
 }
 

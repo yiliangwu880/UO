@@ -1,0 +1,15 @@
+#pragma once
+#include "Monster.h"
+
+class MonsterMgr : public Singleton<MonsterMgr>
+{
+	unordered_map<uint32, Monster *> m_all;
+public:
+	Monster *Create();
+	Monster *Find(uint32 uin);
+	void Del(uint32 uin);
+public:
+
+
+private:
+};
