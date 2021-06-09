@@ -1,4 +1,4 @@
-`	#pragma once
+#pragma once
 
 #include <vector>
 #include <map>
@@ -14,20 +14,20 @@ struct BaseAttr
 	int def, at;
 };
 
-//ÄÜÕ½¶·»¥¶¯µÄµ¥Î» ¹ÜÀí
+//èƒ½æˆ˜æ–—äº’åŠ¨çš„å•ä½ ç®¡ç†
 class Actor : public BaseWeak<Actor>
 {
 public:
 	EventMgr m_owner;
-	SceneEntity m_SceneTran; //ÊµÌå³¡¾°ÊÓÒ°¹ÜÀí
+	SceneEntity m_SceneTran; //å®ä½“åœºæ™¯è§†é‡ç®¡ç†
 	BaseAttr attr;
 	StateMgr m_StateMgr;
 	BuffMgr m_BuffMgr;
 	SkillMgr m_SkillMgr;
 	Ai m_Ai;
-	EquipMgr m_EquipMgr;//´©´÷
-	Aspect m_Aspect;//Íâ¹Û
-	CorpseCreator m_CorpseCreator; //ÊµÌå¹¹ÔìÆ÷£¬¿´ÀàĞÍ¶à²»¶à£¬ÀàĞÍ²»¶à¾Í²»ÓÃÕâ¸ö£¬ÓÃ±äÁ¿+º¯Êı
+	EquipMgr m_EquipMgr;//ç©¿æˆ´
+	Aspect m_Aspect;//å¤–è§‚
+	CorpseCreator m_CorpseCreator; //å®ä½“æ„é€ å™¨ï¼Œçœ‹ç±»å‹å¤šä¸å¤šï¼Œç±»å‹ä¸å¤šå°±ä¸ç”¨è¿™ä¸ªï¼Œç”¨å˜é‡+å‡½æ•°
 public:
 	~Actor()
 	{
@@ -37,7 +37,7 @@ public:
 		m_owner.GetEventMgr();
 	}
 
-	//ÏµÍ³ÊÂ¼ş£¬³ö·¢ÊÍ·Å¼¼ÄÜ
+	//ç³»ç»Ÿäº‹ä»¶ï¼Œå‡ºå‘é‡Šæ”¾æŠ€èƒ½
 	void HandleCastSkill(int skillId, Actor *target)
 	{	
 		//...

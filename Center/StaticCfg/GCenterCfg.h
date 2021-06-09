@@ -1,7 +1,5 @@
 //static cfg
 #pragma once
-#include "ItemCfg.h"
-#include "MonsterCfg.h"
 
 //game cfg
 class GCfg : public Singleton<GCfg>

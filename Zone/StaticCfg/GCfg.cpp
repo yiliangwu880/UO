@@ -23,3 +23,14 @@ const MonsterCfg * GCfg::GetMonsterCfg(uint32 id)const
 {
 	return MapFind(m_MonsterCfgMgr.m_MonsterCfg, id);
 }
+
+const SkillCfg * GCfg::GetSkillCfgMgr(uint32 id) const
+{
+	return MapFind(m_SkillCfgMgr.m_SkillCfg, id);
+}
+
+const ActCfg * GCfg::GetActCfgMgr(uint32 id) const
+{
+	return MapFind(m_ActCfgMgr.m_ActCfg, id);
+
+}
