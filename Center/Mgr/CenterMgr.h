@@ -19,7 +19,7 @@ struct ServerInfo
 class CenterMgr : public Singleton<CenterMgr>
 {
 	bool m_allok = false; //true 表示所有服务器链接准备好，可以登录游戏
-	bool m_isCenterOk = false;
+	bool m_isAccOk = false;
 	std::unordered_map<uint16, bool> m_zoneId2Ok;
 	bool m_isDbOk = false;
 
@@ -27,7 +27,7 @@ class CenterMgr : public Singleton<CenterMgr>
 public:
 	void Init();
 	bool Allok() const { return m_allok; } //true 表示所有服务器链接准备好，可以登录游戏
-	void SetCenterOk();
+	void SetAccOk();
 	void SetZoneOk(uint16 svrId);
 	const ServerInfo &GetServerInfo() { return m_ServerInfo; }
 private:

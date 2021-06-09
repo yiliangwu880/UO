@@ -56,9 +56,9 @@ void CenterMgr::Init()
 	L_INFO("CenterMgr::Init");
 }
 
-void CenterMgr::SetCenterOk()
+void CenterMgr::SetAccOk()
 {
-	m_isCenterOk = true;
+	m_isAccOk = true;
 	checkAllOk();
 }
 
@@ -76,7 +76,7 @@ void CenterMgr::SetZoneOk(uint16 svrId)
 
 void CenterMgr::checkAllOk()
 {
-	COND_V(m_isCenterOk);
+	COND_V(m_isAccOk);
 	for (auto &v: m_zoneId2Ok)
 	{
 		COND_V(v.second);

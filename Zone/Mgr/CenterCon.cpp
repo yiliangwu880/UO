@@ -35,6 +35,7 @@ void CenterCon::OnRecv(const MsgPack &msg)
 
 void CenterCon::OnConnected()
 {
+	L_DEBUG("send ReqZoneOk_cs to center");
 	ReqZoneOk_cs req;
 	req.svrId = gCfgMgr.ZoneCfg().svrId;
 	Send(req);

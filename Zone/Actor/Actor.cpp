@@ -3,7 +3,7 @@
 #include "SceneMgr.h"
 
 Actor::Actor(ActorOwner &owner, EntityType t)
-	:EventCom<Actor>(m_owner)
+	:EventCom<Actor>(owner)
 	, m_owner(owner)
 	, m_ActorBase(*this)
 	, m_ActorEquip(*this)

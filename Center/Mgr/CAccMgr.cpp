@@ -47,8 +47,8 @@ void AccMgr::OnRegResult(uint16 svr_id)
 {
 	//向acc注册成功
 	L_COND_V(svr_id != 0, "reg acc fail");
-	L_INFO("center reg ok");
-	CenterMgr::Ins().SetCenterOk();
+	L_INFO("acc reg ok");
+	CenterMgr::Ins().SetAccOk();
 }
 
 void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, uint16 msg_len)
