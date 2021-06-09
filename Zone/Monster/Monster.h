@@ -25,7 +25,7 @@ public:
 
 
 	//某个函数，从位置触发，动作影响别的生物类型
-	//void  PosAction()
+	//void  PosAct()
 	//{
 	//	int x, y;
 	//	get all SceneEntity;

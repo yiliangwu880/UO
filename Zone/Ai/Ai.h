@@ -1,13 +1,13 @@
 #pragma once
 #include "Actor/Actor.h"
-#include "ActionStateMgr.h"
+#include "ActStateMgr.h"
 
 class Ai : public EventCom<Ai>
 {
 	ActorOwner &m_owner;
 	Actor &m_Actor;
 
-	ActionStateMgr m_ActionStateMgr;
+	ActStateMgr m_ActStateMgr;
 	//其他AI组件，比如逃跑血量获取，不同怪物不一样
 public:
 	Ai(ActorOwner &owner, Actor &actor);
@@ -15,7 +15,7 @@ public:
 
 #if 0 //参考
 
-public enum ActionType
+public enum ActType
 {
 	Wander,
 	Combat,
@@ -29,7 +29,7 @@ class BaseSpeedAi
 {
 
 };
-class BaseActionAi
+class BaseActAi
 {
 
 };
@@ -45,14 +45,14 @@ class Ai
 {
 	Actor &m_Actor;
 	BaseSkillAi m_SkillAi;
-	BaseActionAi m_ActionAi; //战斗状态：进攻，逃跑。。。
+	BaseActAi m_ActAi; //战斗状态：进攻，逃跑。。。
 	BaseSpeedAi m_SpeedAi;
 public:
 
 	//自我驱动
 	void OnTimer()
 	{
-		case state, do Action;
+		case state, do Act;
 			Think();
 	}
 	//外部驱动

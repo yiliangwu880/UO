@@ -130,7 +130,7 @@ void PacketHandlers::Init()
 	Register(0x93, 99, true, new OnPacketReceive(OldHeaderChange));
 	Register(0xF1, 0, false, new OnPacketReceive(OnReceive));
 	Register(0xB5, 0x40, true, OpenChatWindowRequest);
-	Register(0xB3, 0, true, ChatAction);
+	Register(0xB3, 0, true, ChatAct);
 	Register(0xD9, 0x10C, false, OnReceive);
 	Register(0xF0, 0, false, new OnPacketReceive(DecodeBundledPacket));
 	Register(0x71, 0, true, new OnPacketReceive(BBClientRequest));

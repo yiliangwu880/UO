@@ -8,12 +8,6 @@ Actor::Actor(ActorOwner &owner, EntityType t)
 	, m_ActorEquip(*this)
 	, m_Observer(*this, t)
 {
-	Reg<EV_LOAD_DB>(&Actor::OnLoad);
-}
-
-void Actor::OnLoad(DbPlayer &data)
-{
-	m_ActorBase.InitPlayer(data.actor.actorBase);
 }
 
 void Actor::InitMonster(const MonsterInit &data)

@@ -2,10 +2,11 @@
 #pragma once
 #include "dbTableDef.h"
 #include "ZoneMisc.h"
-#include "ActorBase.h"
-#include "ActorEquip.h"
-#include "Observer.h"
 #include "SceneMgr.h"
+#include "./Sub/ActorBase.h"
+#include "./Sub/ActorEquip.h"
+#include "./Sub/Observer.h"
+#include "./Sub/ActorSkill.h"
 
 
 
@@ -21,7 +22,6 @@ public:
 
 public:
 	Actor(ActorOwner &owner, EntityType t= EntityType::Monster);
-	void OnLoad(DbPlayer &dbActor);//player 初始化
 	void InitMonster(const MonsterInit &data);
 	void InitNpc(); 
 

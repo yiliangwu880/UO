@@ -1,7 +1,7 @@
 #pragma once
 #include "Actor/Actor.h"
 
-class ActionBaseState
+class ActBaseState
 {
 public:
 	virtual void Enter() {};
@@ -9,28 +9,28 @@ public:
 	virtual void OnThink()=0;
 };
 
-class CombatState : public ActionBaseState
+class CombatState : public ActBaseState
 {
 public:
 	virtual void OnThink() override;
 };
 
-class WanderState : public ActionBaseState
+class WanderState : public ActBaseState
 {
 public:
 	virtual void OnThink() override {};
 };
 
-class ActionStateMgr : public EventCom<ActionStateMgr>
+class ActStateMgr : public EventCom<ActStateMgr>
 {
 	ActorOwner &m_owner;
 	Actor &m_Actor;
 	lc::Timer m_tm;
-	ActionBaseState *m_state=nullptr;//状态机
+	ActBaseState *m_state=nullptr;//状态机
 	CombatState m_CombatState;
 	WanderState m_WanderState;
 public:
-	ActionStateMgr(ActorOwner &owner, Actor &actor);
+	ActStateMgr(ActorOwner &owner, Actor &actor);
 	void Start();
 	void OnThink();
 };
