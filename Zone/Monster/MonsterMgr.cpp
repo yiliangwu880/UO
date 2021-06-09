@@ -15,7 +15,7 @@ void MonsterMgr::OnFinishWorld()
 		MonsterInit d;
 		d.cfg = pCfg;
 		d.scene = &SceneMgr::Felucca;
-		d.pos = gCfg.GetMiscCfg().bornPos;
+		d.pos = gComCfg.GetMiscCfg().bornPos;
 		m->Init(d);
 	}
 }

@@ -27,6 +27,7 @@
 
 #include "GlobalEvent.h"
 #include "Mgr/CenterCon.h"
+#include "GComCfg.h"
 
 //不区分命名空间
 namespace acc

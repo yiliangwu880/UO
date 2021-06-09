@@ -1,5 +1,5 @@
 /*
-¼¼ÄÜ¿ÉÒÔ²úÉú¶¯×÷¡£¼¼ÄÜÓĞµÈ¼¶ÊôĞÔ£¬µÈ¼¶¸ß²úÉú¶¯×÷Ğ§¹û¸ü¸ß
+æŠ€èƒ½å¯ä»¥äº§ç”ŸåŠ¨ä½œã€‚æŠ€èƒ½æœ‰ç­‰çº§å±æ€§ï¼Œç­‰çº§é«˜äº§ç”ŸåŠ¨ä½œæ•ˆæœæ›´é«˜
 */
 #pragma once
 
@@ -14,7 +14,7 @@ class SkillMgr
 	Actor m_owner;
 	std::map<int, BattleActSkill> m_id2Skill;
 public:
-	//µØÕğ,¹şË¹¿¨debuff,ÆÕÍ¨¹¥»÷¼¼ÄÜ £¬ ¡£¡£¡£
+	//åœ°éœ‡,å“ˆæ–¯å¡debuff,æ™®é€šæ”»å‡»æŠ€èƒ½ ï¼Œ ã€‚ã€‚ã€‚
 	void UseSkill(int skillId, Actor *target)
 	{
 		m_id2Skill[skillId].Use(target);
@@ -28,7 +28,7 @@ public:
 
 
 
-//Õ½¶·Ö÷¶¯¼¼ÄÜ£¬¿ÉÒÔÊÍ·Å
+//æˆ˜æ–—ä¸»åŠ¨æŠ€èƒ½ï¼Œå¯ä»¥é‡Šæ”¾
 class BattleActSkill
 {
 	Actor m_owner;
@@ -44,14 +44,14 @@ public:
 			ActActorFun *pActActorFun = ae.actions[0]._Cast<ActActorFun>();
 			if (ActActorFun)
 			{
-				ActActorChgFun *pActActorChgFun = ae.actions[1]._Cast<ActActorChgFun>();
-				auto anys = (*pActActorChgFun)(ae.anys, lv, m_owner, target);
+				ChgActActorParaFun *pChgActActorParaFun = ae.actions[1]._Cast<ChgActActorParaFun>();
+				auto anys = (*pChgActActorParaFun)(ae.anys, lv, m_owner, target);
 				(*pActActorFun)(ae.anys, m_owner, target);
 			}
 			else if (ActFun *pActFun = ae.actions[0]._Cast<ActFun>())
 			{
-				ActChgFun *pActChgFun = ae.actions[1]._Cast<ActChgFun>();
-				auto anys = (*pActChgFun)(ae.anys, lv, m_owner, target);
+				ChgActParaFun *pChgActParaFun = ae.actions[1]._Cast<ChgActParaFun>();
+				auto anys = (*pChgActParaFun)(ae.anys, lv, m_owner, target);
 				UnionTarget d{target , 0 , 0};
 				(*pActFun)(ae.anys, m_owner, d);
 			}
@@ -60,7 +60,7 @@ public:
 				error
 			}
 		}
-		//ÓĞ»ú»áÉı¼¶ lv++;
+		//æœ‰æœºä¼šå‡çº§ lv++;
 		if (m_owner.type == Player)
 		{
 			lv++;
@@ -78,8 +78,8 @@ public:
 			}
 			else if (ActFun *pActFun = ae.actions[0]._Cast<ActFun>())
 			{
-				ActChgFun *pActChgFun = ae.actions[1]._Cast<ActChgFun>();
-				auto anys = (*pActChgFun)(ae.anys, lv, m_owner, target);
+				ChgActParaFun *pChgActParaFun = ae.actions[1]._Cast<ChgActParaFun>();
+				auto anys = (*pChgActParaFun)(ae.anys, lv, m_owner, target);
 				UnionTarget d{ nullptr, x , y };
 				(*pActFun)(ae.anys, m_owner, d);
 			}
@@ -88,7 +88,7 @@ public:
 				error
 			}
 		}
-		//ÓĞ»ú»áÉı¼¶ lv++;
+		//æœ‰æœºä¼šå‡çº§ lv++;
 		if (m_owner.type == Player)
 		{
 			lv++;

@@ -10,10 +10,10 @@ struct ActEffect
 {
 	//actions[0],actions[1]参数必须为 ：
 	//ActFun action;
-	//ActChgFun chgFun; 
+	//ChgActParaFun chgFun; 
 	//或者
 	//ActActorFun action;
-	//ActActorChgFun chgFun;
+	//ChgActActorParaFun chgFun;
 	vector<any> actions;
 
 	//其他配置

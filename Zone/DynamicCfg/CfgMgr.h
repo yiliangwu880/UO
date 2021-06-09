@@ -1,3 +1,4 @@
+//类json动态配置
 #include "zoneCfg.h"
 #include "comCfg.h"
 

@@ -15,15 +15,16 @@ struct UnionTarget
 
 //目标只能是Actor或者nullptr
 using ActActorFun = void(*)(vector<any>, Actor &trigger, Actor *target) > ;
-//@ActLv 比如技能等级，buff等级，用来调整配置的系数
-using ActActorChgFun = vector<any>(*)(vector<any> > , int ActLv, Actor  &actor, Actor *target);
+//调整 ActActorFun 的输入参数
+//@ActLv 比如技能等级，buff等级，对方属性，用来调整配置的系数
+using ChgActActorParaFun = vector<any>(*)(vector<any> > , int ActLv, Actor  &actor, Actor *target);
 
 using ActFun = void(*)(vector<any>, Actor &trigger, UnionTarget &target) > ;
 //@ActLv 比如技能等级，buff等级，用来调整配置的系数
-using ActChgFun = vector<any> (*)(vector<any> > , int ActLv, Actor  &actor, UnionTarget &target) ;
+using ChgActParaFun = vector<any> (*)(vector<any> > , int ActLv, Actor  &actor, UnionTarget &target) ;
 
-
-//被动技能更新
+//不要，改用 ActActorFun ChgActActorParaFun
+//被动技能更新，
 using UpdatePassiveFun = void(*)(vector<any>, Actor &target) > ;
 //@ActLv 比如技能等级，buff等级，用来调整配置的系数
 using UpdatePassiveChgFun = vector<any>(*)(vector<any> > , int ActLv);
