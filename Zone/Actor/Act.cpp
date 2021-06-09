@@ -1,4 +1,5 @@
 #include "Act.h"
+#include "ActCfg.h"
 
 namespace ChgAct
 {
@@ -28,6 +29,14 @@ namespace ChgAct
 namespace Act
 {
 
+	//服务器初始化会检查配置，全部合法才能启动，运行期代码就不用检查了
+	bool CheckEarthQuake(const vector<any> &cfg)
+	{ 
+		L_COND(cfg.size() >= 1, false);
+		L_COND(any_cast<int>(&cfg[0]), false);
+		return true;
+	}
+	MAP_REG_DEFINE(Act2Check, EarthQuake, CheckEarthQuake);
 	//地震
 	void EarthQuake(const vector<any> &cfg, Actor &trigger, UnionTarget &target)
 	{

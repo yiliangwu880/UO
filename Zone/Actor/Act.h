@@ -21,7 +21,8 @@ struct UnionTarget
 using ActFun = void (*)(const vector<any> &, Actor &trigger, UnionTarget &target);
 //调整 ActFun 的输入参数.
 //@ActLv 通常表示技能等级，buff等级等
-using ChgActParaFun = vector<any> (*)(const vector<any> &, uint32 ActLv, Actor  &actor, UnionTarget &target);
+using ChgActParaFun = vector<any>(*)(const vector<any> &, uint32 ActLv, Actor  &actor, UnionTarget &target);
+using CheckActFun = bool (*)(const vector<any> &);
 
 namespace ChgAct
 {

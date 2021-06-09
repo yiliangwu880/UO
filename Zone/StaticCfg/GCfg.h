@@ -8,6 +8,8 @@
 //game cfg
 class GCfg : public Singleton<GCfg>
 {
+	friend class ActCfgMgr;
+
 	ItemCfgMgr m_ItemCfgMgr;
 	MonsterCfgMgr m_MonsterCfgMgr;
 	SkillCfgMgr m_SkillCfgMgr;
