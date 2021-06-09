@@ -33,6 +33,7 @@ void PlayerMgr::Del(uint64 uin)
 	{
 		PPlayer *pp = m_all.Find(uin);
 		L_COND_V(pp, "del fail");
+		(*pp)->m_Actor.m_Observer.Leave();
 		delete *pp;
 		if (!m_all.erase(uin))
 		{

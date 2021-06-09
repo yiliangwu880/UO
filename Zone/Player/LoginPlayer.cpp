@@ -5,7 +5,7 @@ using namespace acc;
 
 void LoginPlayer::Login()
 {
-	m_owner.m_Actor.EnterScene(0);
+	m_owner.m_Actor.EnterScene(SceneMgr::Felucca);
 	m_owner.FireEvent<EV_BEFORE_LOGIN>(); 
 	SendLogin();
 }

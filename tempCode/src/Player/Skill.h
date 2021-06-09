@@ -20,7 +20,7 @@ public:
 		if (isBattleActSkill)
 		{
 			int skillId = get from cfg;
-			m_owner.m_actor.m_SkillMgr.Update(id);
+			m_owner.m_Actor.m_SkillMgr.Update(id);
 		}
 		else if (PassiveSkillCfg)
 		{
@@ -36,7 +36,7 @@ public:
 			UpdatePassiveFun *pFun = ae.actions[0]._Cast<UpdatePassiveFun>();
 			UpdatePassiveChgFun *pChgFun = ae.actions[1]._Cast<UpdatePassiveChgFun>();
 			auto anys = (*pChgFun)(ae.anys, lv);
-			(*pFun)(ae.anys, m_owner.m_actor);
+			(*pFun)(ae.anys, m_owner.m_Actor);
 		}
 	}
 };

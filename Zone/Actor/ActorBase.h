@@ -1,16 +1,24 @@
 #pragma once
-#include "InsEvent.h"
-#include "Geometry.h"
+#include "ActorSubCom.h"
 
-class Actor;
-class ActorBase : public EventCom<ActorBase>
+
+
+class ActorBase : public ActorSubCom<ActorBase>
 {
-	Actor &m_owner;
-	DbActorBase m_base;
-	Point3D m_pos; //内存用整个，存库再复制到m_base
+	uint16 m_str = 0;
+	uint16 m_dex = 0;
+	uint16 m_intl = 0;
+	uint16 m_x = 0, m_y = 0, m_z = 0;
+	bool m_female = false;
+	uint8_t m_race = 0;
+	Point3D m_pos; 
+	uint32 m_hp = 0;
+
 public:
-	ActorBase(Actor &owner);
-	void Init(const DbActorBase &base);
+	ActorBase(Actor &actor);
+	void InitPlayer(const DbActorBase &dbBase);
+	void InitMonster(const MonsterInit &data);
 	void OnSave(DbPlayer &data);
 	const Point3D &GetPos() { return m_pos; };
+	void SetPos(const Point3D &pos) { m_pos = pos;};
 };

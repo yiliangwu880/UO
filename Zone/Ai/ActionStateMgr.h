@@ -24,7 +24,7 @@ public:
 class ActionStateMgr : public EventCom<ActionStateMgr>
 {
 	ActorOwner &m_owner;
-	Actor &m_actor;
+	Actor &m_Actor;
 	lc::Timer m_tm;
 	ActionBaseState *m_state=nullptr;//状态机
 	CombatState m_CombatState;

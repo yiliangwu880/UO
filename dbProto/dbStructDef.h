@@ -44,13 +44,13 @@ namespace db
 
 	struct DbActorBase 
 	{
-		int str = 0;
-		int dex = 0;
-		int intl = 0;
+		uint16_t str = 0;
+		uint16_t dex = 0;
+		uint16_t intl = 0;
 
-		int x = 0, y = 0, z = 0;
+		uint16_t x = 0, y = 0, z = 0;
 
-		int female = 0;
+		bool female = false;
 		uint8_t race = 0;
 
 	};

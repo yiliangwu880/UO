@@ -1,12 +1,10 @@
 #pragma once
-#include "InsEvent.h"
+#include "ActorSubCom.h"
 
-class Actor;
-class ActorEquip : public EventCom<ActorEquip>
+class ActorEquip : public ActorSubCom<ActorEquip>
 {
-	Actor &m_owner;
 	DbEquips *m_equips = nullptr;
 public:
-	ActorEquip(Actor &owner);
+	ActorEquip(Actor &actor);
 	void OnLoad(DbPlayer &dbActor);
 };

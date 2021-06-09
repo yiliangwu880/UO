@@ -4,7 +4,7 @@
 ActionStateMgr::ActionStateMgr(ActorOwner &owner, Actor &actor)
 	:EventCom<ActionStateMgr>(owner)
 	,m_owner(owner)
-	,m_actor(actor)
+	,m_Actor(actor)
 {
 }
 

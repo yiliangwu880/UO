@@ -12,7 +12,7 @@ class BaseState: public EventReg
 {
 	Actor m_owner;
 public:
-	BaseState(Actor &owner)
+	BaseState(Actor &actor)
 		:EventReg(owner.m_owner)//owner.m_owner最高层管理者，比如player, monster, npc
 	{}
 
@@ -35,7 +35,7 @@ public:
 	const static ID = StateId::State1;
 
 public:
-	State1(Actor &owner, std::vector<any> cfg)
+	State1(Actor &actor, std::vector<any> cfg)
 		:BaseState(owner)
 	{
 		Reg<InsEventId::ChangeHp>(ChangeHp);
@@ -65,7 +65,7 @@ class StateHSKDeBuff : public BaseState
 {
 	su::Timer mt;
 public:
-	StateHSKDeBuff(Actor &owner)
+	StateHSKDeBuff(Actor &actor)
 		:BaseState(owner)
 	{
 		mt.StartTimer(OnTImer);
@@ -87,7 +87,7 @@ class StateHSKDeBuffCombine : public BaseState
 public:
 	const static ID = StateId::StateHSKDeBuffCombine;
 public:
-	StateHSKDeBuffCombine(Actor &owner, std::vector<any> cfg)
+	StateHSKDeBuffCombine(Actor &actor, std::vector<any> cfg)
 		:BaseState(owner)
 	{
 	}
@@ -111,7 +111,7 @@ public:
 	const static ID = StateId::StateTriggerXixue;
 	std::weak_ptr<Actor> m_target; //弱引用，不怕野。 .lock()获取的share_ptr别传递出去，只能栈变量使用。
 public:
-	StateTriggerXixue(Actor &owner, std::vector<any> cfg)
+	StateTriggerXixue(Actor &actor, std::vector<any> cfg)
 		:BaseState(owner)
 	{
 		Reg<InsEventId::InterUp>(InterUP);
@@ -144,7 +144,7 @@ class StateTargetXixue : public BaseState
 public:
 	const static ID = StateId::StateTriggerXixue;
 public:
-	StateTargetXixue(Actor &owner, std::vector<any> cfg)
+	StateTargetXixue(Actor &actor, std::vector<any> cfg)
 		:BaseState(owner)
 	{
 	}

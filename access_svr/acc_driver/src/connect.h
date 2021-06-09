@@ -84,7 +84,7 @@ namespace acc {
 		bool Init(const std::vector<Addr> &vec_addr, uint16 svr_id, bool is_verify_svr);
 		bool AddAcc(const Addr &addr, bool is_verify_svr = false);
 		const std::vector<ADClientCon *> &GetAllCon() const { return m_vec_con; };
-		//致命错误，设置整个svr无效
+		//致命错误，设置这个svr无效
 		//请求任意一个acc注册失效，触发。通常配置错误引起，等重启修复吧。
 		void SetFatal();
 		uint16 GetSvrId() const { return m_svr_id; }

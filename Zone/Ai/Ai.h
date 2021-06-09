@@ -5,7 +5,7 @@
 class Ai : public EventCom<Ai>
 {
 	ActorOwner &m_owner;
-	Actor &m_actor;
+	Actor &m_Actor;
 
 	ActionStateMgr m_ActionStateMgr;
 	//其他AI组件，比如逃跑血量获取，不同怪物不一样
@@ -43,7 +43,7 @@ class BaseSkillAi
 //避免可以组合的状态合并都有状态机。例如 ：1战斗状态：进攻，逃跑。。。 2技能状态：释放，等待。。。  不要合并
 class Ai
 {
-	Actor &m_actor;
+	Actor &m_Actor;
 	BaseSkillAi m_SkillAi;
 	BaseActionAi m_ActionAi; //战斗状态：进攻，逃跑。。。
 	BaseSpeedAi m_SpeedAi;

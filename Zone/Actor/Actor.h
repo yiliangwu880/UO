@@ -1,10 +1,11 @@
 
 #pragma once
 #include "dbTableDef.h"
-#include "ActorOwer.h"
+#include "ZoneMisc.h"
 #include "ActorBase.h"
 #include "ActorEquip.h"
 #include "Observer.h"
+#include "SceneMgr.h"
 
 
 
@@ -21,9 +22,9 @@ public:
 public:
 	Actor(ActorOwner &owner, EntityType t= EntityType::Monster);
 	void OnLoad(DbPlayer &dbActor);//player 初始化
-	void InitMonster();
+	void InitMonster(const MonsterInit &data);
 	void InitNpc(); 
 
 	void EnterScene(uint32 id);
-	void PostDel();//del this
+	bool EnterScene(Scene &scene, uint16 x, uint16 y);
 };

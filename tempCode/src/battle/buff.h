@@ -44,7 +44,7 @@ class Buff
 	int m_buffId;//map cfg,  map StateId m_StateId;
 	
 public:
-	Buff(Actor &owner)
+	Buff(Actor &actor)
 		:m_owner(owner)
 	{}
 	~Buff()

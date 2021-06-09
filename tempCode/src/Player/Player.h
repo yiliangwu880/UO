@@ -51,22 +51,22 @@ public:
 	//PlayerSkill skill; 升级技能；
 	//friend dd;
 	//money;
-	Actor m_actor;//Actor内部出发，需要和player的其他组件之间的互动，只能用event了。不能直接 引用其他组件。因为Actor设计通用Monster,Npc等生物
+	Actor m_Actor;//Actor内部出发，需要和player的其他组件之间的互动，只能用event了。不能直接 引用其他组件。因为Actor设计通用Monster,Npc等生物
 	
 
 public:
 	Player()
-		:m_actor(*this)
+		:m_Actor(*this)
 	{}
 	void OnLoad(const PlayerDb &db)
 	{
-		m_actor.OnLoad(db);
+		m_Actor.OnLoad(db);
 		//其他子系统，otherSys.OnLoad(db);
 	}
 	void OnSave()
 	{
 		PlayerDb db;
-		m_actor.Get(db);//获取 x,y,hp等到 m_PlayerDb；
+		m_Actor.Get(db);//获取 x,y,hp等到 m_PlayerDb；
 		//其他子系统，otherSys(m_PlayerDb);
 		sendtoDb(db);
 	}

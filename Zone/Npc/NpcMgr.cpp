@@ -30,6 +30,7 @@ void NpcMgr::Del(uint32 uin)
 	{
 		PMonster *pp = MapFind(m_all, uin);
 		L_COND_V(pp, "del fail");
+		(*pp)->m_Actor.m_Observer.Leave();
 		delete *pp;
 		if (!m_all.erase(uin))
 		{

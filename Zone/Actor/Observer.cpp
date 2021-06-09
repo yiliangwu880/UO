@@ -10,10 +10,9 @@ void Observer::OnDelObserver(Entity &other)
 
 }
 
-Observer::Observer(Actor &owner, EntityType type)
-	:EventCom<Observer>(owner.m_owner)
+Observer::Observer(Actor &actor, EntityType type)
+	:ActorSubCom<Observer>(actor.m_owner, actor)
 	, Aoi::Entity(type)
-	, m_owner(owner)
 {
 
 }

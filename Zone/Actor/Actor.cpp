@@ -1,6 +1,5 @@
 #include "Actor.h"
 #include "Player/PlayerMgr.h"
-#include "SceneMgr.h"
 
 Actor::Actor(ActorOwner &owner, EntityType t)
 	:EventCom<Actor>(owner)
@@ -14,7 +13,12 @@ Actor::Actor(ActorOwner &owner, EntityType t)
 
 void Actor::OnLoad(DbPlayer &data)
 {
-	m_ActorBase.Init(data.actor.actorBase);
+	m_ActorBase.InitPlayer(data.actor.actorBase);
+}
+
+void Actor::InitMonster(const MonsterInit &data)
+{
+	m_ActorBase.InitMonster(data);
 }
 
 void Actor::EnterScene(uint32 id)
@@ -26,8 +30,10 @@ void Actor::EnterScene(uint32 id)
 	m_Observer.Enter(p->m_aoi, pos.X, pos.Y);
 }
 
-void Actor::PostDel()
+bool Actor::EnterScene(Scene &scene, uint16 x, uint16 y)
 {
-	m_Observer.Leave(); //先离开场景，不能留着析构过程离开，不然导致析构调用虚函数就出问题了。
-	m_owner.PostDel();
+	m_ActorBase.SetPos(Point3D(x, y, 0));
+	return m_Observer.Enter(scene.m_aoi, x, y);
 }
+
+

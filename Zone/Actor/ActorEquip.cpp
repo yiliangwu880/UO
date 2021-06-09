@@ -1,8 +1,7 @@
 #include "Actor.h"
 
-ActorEquip::ActorEquip(Actor &owner)
-	:EventCom<ActorEquip>(owner.m_owner)
-	,m_owner(owner)
+ActorEquip::ActorEquip(Actor &actor)
+	:ActorSubCom<ActorEquip>(actor.m_owner, actor)
 {
 	Reg<EV_LOAD_DB>(&ActorEquip::OnLoad);
 }

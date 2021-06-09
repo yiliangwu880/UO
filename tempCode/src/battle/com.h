@@ -29,7 +29,7 @@ class ActorSubSys
 {
 	Actor m_owner;
 public:
-	ActorSubSys(Actor &owner);
+	ActorSubSys(Actor &actor);
 	template<int ID>
 	void Reg<ID>(T cb)
 	{
