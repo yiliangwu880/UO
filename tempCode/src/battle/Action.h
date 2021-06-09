@@ -6,47 +6,47 @@
 #include <memory>
 #include <any>
 
-//ÁªºÏÄ¿±ê£¬¶àÑ¡Ò»
+//è”åˆç›®æ ‡ï¼Œå¤šé€‰ä¸€
 struct UnionTarget
 {
 	Actor *target = nullptr;
-	int x, y;//×ø±ê
+	int x, y;//åæ ‡
 };
 
-//Ä¿±êÖ»ÄÜÊÇActor»òÕßnullptr
-using ActionActorFun = void(*)(vector<any>, Actor &trigger, Actor *target) > ;
-//@ActionLv ±ÈÈç¼¼ÄÜµÈ¼¶£¬buffµÈ¼¶£¬ÓÃÀ´µ÷ÕûÅäÖÃµÄÏµÊı
-using ActionActorChgFun = vector<any>(*)(vector<any> > , int ActionLv, Actor  &actor, Actor *target);
+//ç›®æ ‡åªèƒ½æ˜¯Actoræˆ–è€…nullptr
+using ActActorFun = void(*)(vector<any>, Actor &trigger, Actor *target) > ;
+//@ActLv æ¯”å¦‚æŠ€èƒ½ç­‰çº§ï¼Œbuffç­‰çº§ï¼Œç”¨æ¥è°ƒæ•´é…ç½®çš„ç³»æ•°
+using ActActorChgFun = vector<any>(*)(vector<any> > , int ActLv, Actor  &actor, Actor *target);
 
-using ActionFun = void(*)(vector<any>, Actor &trigger, UnionTarget &target) > ;
-//@ActionLv ±ÈÈç¼¼ÄÜµÈ¼¶£¬buffµÈ¼¶£¬ÓÃÀ´µ÷ÕûÅäÖÃµÄÏµÊı
-using ActionChgFun = vector<any> (*)(vector<any> > , int ActionLv, Actor  &actor, UnionTarget &target) ;
+using ActFun = void(*)(vector<any>, Actor &trigger, UnionTarget &target) > ;
+//@ActLv æ¯”å¦‚æŠ€èƒ½ç­‰çº§ï¼Œbuffç­‰çº§ï¼Œç”¨æ¥è°ƒæ•´é…ç½®çš„ç³»æ•°
+using ActChgFun = vector<any> (*)(vector<any> > , int ActLv, Actor  &actor, UnionTarget &target) ;
 
 
-//±»¶¯¼¼ÄÜ¸üĞÂ
+//è¢«åŠ¨æŠ€èƒ½æ›´æ–°
 using UpdatePassiveFun = void(*)(vector<any>, Actor &target) > ;
-//@ActionLv ±ÈÈç¼¼ÄÜµÈ¼¶£¬buffµÈ¼¶£¬ÓÃÀ´µ÷ÕûÅäÖÃµÄÏµÊı
-using UpdatePassiveChgFun = vector<any>(*)(vector<any> > , int ActionLv);
+//@ActLv æ¯”å¦‚æŠ€èƒ½ç­‰çº§ï¼Œbuffç­‰çº§ï¼Œç”¨æ¥è°ƒæ•´é…ç½®çš„ç³»æ•°
+using UpdatePassiveChgFun = vector<any>(*)(vector<any> > , int ActLv);
 
 
-namespace ActionChg
+namespace ActChg
 {
-	vector<any> EarthQuakeLv(vector<any> cfg, int ActionLv, Actor *trigger, UnionTarget &target)
+	vector<any> EarthQuakeLv(vector<any> cfg, int ActLv, Actor *trigger, UnionTarget &target)
 	{
-		//¿ÉÒÔ¸ü¸´ÔÓ£¬±ÈÈç¸ù¾İÊÍ·ÅÕß£¬Ä¿±êµÈ¼¶²î¡£¸Ä±ä¼¼ÄÜµÈ¼¶Ğ§¹û
+		//å¯ä»¥æ›´å¤æ‚ï¼Œæ¯”å¦‚æ ¹æ®é‡Šæ”¾è€…ï¼Œç›®æ ‡ç­‰çº§å·®ã€‚æ”¹å˜æŠ€èƒ½ç­‰çº§æ•ˆæœ
 		vector<any> changeCfg = cfg;
-		changeCfg[0] = changeCfg[0] * ActionLv;
+		changeCfg[0] = changeCfg[0] * ActLv;
 		return changeCfg
 	}
-	//Í¨ÓÃ changeCfg[0] * skill.lv
-	vector<any> Lv0(vector<any> cfg, int ActionLv, Actor *trigger, Actor *target)
+	//é€šç”¨ changeCfg[0] * skill.lv
+	vector<any> Lv0(vector<any> cfg, int ActLv, Actor *trigger, Actor *target)
 	{
-		//¿ÉÒÔ¸ü¸´ÔÓ£¬±ÈÈç¸ù¾İÊÍ·ÅÕß£¬Ä¿±êµÈ¼¶²î¡£¸Ä±ä¼¼ÄÜµÈ¼¶Ğ§¹û
+		//å¯ä»¥æ›´å¤æ‚ï¼Œæ¯”å¦‚æ ¹æ®é‡Šæ”¾è€…ï¼Œç›®æ ‡ç­‰çº§å·®ã€‚æ”¹å˜æŠ€èƒ½ç­‰çº§æ•ˆæœ
 		vector<any> changeCfg = cfg;
-		changeCfg[0] = changeCfg[0] * ActionLv;
+		changeCfg[0] = changeCfg[0] * ActLv;
 		return changeCfg
 	}
-	vector<any> Lv1(vector<any> cfg, int ActionLv, Actor *trigger, Actor *target)
+	vector<any> Lv1(vector<any> cfg, int ActLv, Actor *trigger, Actor *target)
 	{
 	}
 }
@@ -55,34 +55,34 @@ namespace ActionChg
 namespace PassiveChg
 {
 
-	//Í¨ÓÃ changeCfg[0] * skill.lv
-	vector<any> Lv0(vector<any> cfg, int ActionLv)
+	//é€šç”¨ changeCfg[0] * skill.lv
+	vector<any> Lv0(vector<any> cfg, int ActLv)
 	{
-		//¿ÉÒÔ¸ü¸´ÔÓ£¬±ÈÈç¸ù¾İÊÍ·ÅÕß£¬Ä¿±êµÈ¼¶²î¡£¸Ä±ä¼¼ÄÜµÈ¼¶Ğ§¹û
+		//å¯ä»¥æ›´å¤æ‚ï¼Œæ¯”å¦‚æ ¹æ®é‡Šæ”¾è€…ï¼Œç›®æ ‡ç­‰çº§å·®ã€‚æ”¹å˜æŠ€èƒ½ç­‰çº§æ•ˆæœ
 		vector<any> changeCfg = cfg;
-		changeCfg[0] = changeCfg[0] * ActionLv;
+		changeCfg[0] = changeCfg[0] * ActLv;
 		return changeCfg
 	
-	vector<any> Lv1(vector<any> cfg, int ActionLv, Actor *trigger, Actor *target)
+	vector<any> Lv1(vector<any> cfg, int ActLv, Actor *trigger, Actor *target)
 	{
 	}
 }
 
-namespace Action
+namespace Act
 {
-	//µØÕğ
+	//åœ°éœ‡
 	void EarthQuake(vector<any> cfg, Actor &trigger, Actor *target)
 	{
 		//aoe ,dec hp
 	}
-	//¹şË¹¿¨debuff
+	//å“ˆæ–¯å¡debuff
 	void HaSiKaDebuff(vector<any> &cfg, Actor &trigger, Actor *target)
 	{
 		//dec hp
 		StateHSKDeBuffCombine *p = target->m_StateMgr.TryCreateState<StateHSKDeBuffCombine>(cfg);
 		p->Add(cfg);
 	}
-	//ÀàËÆ½á¹¹£¬Ö»´´½¨State
+	//ç±»ä¼¼ç»“æ„ï¼Œåªåˆ›å»ºState
 	template<class State>
 	void CreateState(vector<any> cfg, Actor &trigger, Actor *target)
 	{
@@ -98,14 +98,14 @@ namespace Action
 	{
 		target.m_StateMgr.UpdateState<State>(cfg);
 	}
-	//Í¨ÓÃadd buff
+	//é€šç”¨add buff
 	void AddBuf(vector<any> cfg, Actor &trigger, Actor *target)
 	{
 		int buffid = cfg[0];
 		int buffLv = cfg[1];
 		target.m_BuffMgr.TryAddBuff(buffid, buffLv, trigger, target);
 	}
-	//¹Å·¨ÎüÑª£¬µ±buffĞ§¹û´¦Àí¡£ÊÍ·Å×Å±»´ò¶Ï£¬buffÏûÊ§
+	//å¤æ³•å¸è¡€ï¼Œå½“buffæ•ˆæœå¤„ç†ã€‚é‡Šæ”¾ç€è¢«æ‰“æ–­ï¼Œbuffæ¶ˆå¤±
 	void GuFaBig(vector<any> cfg, Actor &trigger, Actor *target)
 	{
 		int buffLv = cfg[0];

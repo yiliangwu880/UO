@@ -9,7 +9,7 @@
 #include "cfg.h"
 
 
-//±ÈÈç UoĞŞÁ¶µÄ£¬¶à²Å¶àÒÕµÄ¼¼ÄÜ
+//æ¯”å¦‚ Uoä¿®ç‚¼çš„ï¼Œå¤šæ‰å¤šè‰ºçš„æŠ€èƒ½
 class Skill
 {
 	Player m_owner;
@@ -27,11 +27,11 @@ public:
 			UpdatePassiveSkill();
 		}
 	}
-	//¸üĞÂ±»¶¯¼¼ÄÜ
+	//æ›´æ–°è¢«åŠ¨æŠ€èƒ½
 	void UpdatePassiveSkill()
 	{
 		PassiveSkillCfg cfg = get by id;
-		for (ActionEffect ae : cfg.vecAe)
+		for (ActEffect ae : cfg.vecAe)
 		{
 			UpdatePassiveFun *pFun = ae.actions[0]._Cast<UpdatePassiveFun>();
 			UpdatePassiveChgFun *pChgFun = ae.actions[1]._Cast<UpdatePassiveChgFun>();

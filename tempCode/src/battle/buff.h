@@ -58,7 +58,7 @@ public:
 	{
 		m_buffId = buffId;
 		BuffCfg cfg = GetBuffCfg();
-		ActionEffect ae = cfg.ae;
+		ActEffect ae = cfg.ae;
 		auto anys = ae.chgFun(ae.anys, buffLv, trigger, m_owner);
 		(*ae.action)(ae.anys, trigger, m_owner);
 	}

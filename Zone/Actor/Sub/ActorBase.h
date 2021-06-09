@@ -16,9 +16,11 @@ class ActorBase : public ActorSubCom<ActorBase>
 
 public:
 	ActorBase(Actor &actor);
-	void InitPlayer(const DbActorBase &dbBase);
 	void InitMonster(const MonsterInit &data);
-	void OnSave(DbPlayer &data);
 	const Point3D &GetPos() { return m_pos; };
 	void SetPos(const Point3D &pos) { m_pos = pos;};
+
+private:
+	void OnLoad(DbPlayer &data);
+	void OnSave(DbPlayer &data);
 };

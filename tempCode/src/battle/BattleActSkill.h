@@ -39,21 +39,21 @@ public:
 	void Use(Actor *target)
 	{
 		BattleActSkillCfg cfg = skill.GetSkillCfg();
-		for (ActionEffect ae : cfg.vecAe)
+		for (ActEffect ae : cfg.vecAe)
 		{
-			ActionActorFun *pActionActorFun = ae.actions[0]._Cast<ActionActorFun>();
-			if (ActionActorFun)
+			ActActorFun *pActActorFun = ae.actions[0]._Cast<ActActorFun>();
+			if (ActActorFun)
 			{
-				ActionActorChgFun *pActionActorChgFun = ae.actions[1]._Cast<ActionActorChgFun>();
-				auto anys = (*pActionActorChgFun)(ae.anys, lv, m_owner, target);
-				(*pActionActorFun)(ae.anys, m_owner, target);
+				ActActorChgFun *pActActorChgFun = ae.actions[1]._Cast<ActActorChgFun>();
+				auto anys = (*pActActorChgFun)(ae.anys, lv, m_owner, target);
+				(*pActActorFun)(ae.anys, m_owner, target);
 			}
-			else if (ActionFun *pActionFun = ae.actions[0]._Cast<ActionFun>())
+			else if (ActFun *pActFun = ae.actions[0]._Cast<ActFun>())
 			{
-				ActionChgFun *pActionChgFun = ae.actions[1]._Cast<ActionChgFun>();
-				auto anys = (*pActionChgFun)(ae.anys, lv, m_owner, target);
+				ActChgFun *pActChgFun = ae.actions[1]._Cast<ActChgFun>();
+				auto anys = (*pActChgFun)(ae.anys, lv, m_owner, target);
 				UnionTarget d{target , 0 , 0};
-				(*pActionFun)(ae.anys, m_owner, d);
+				(*pActFun)(ae.anys, m_owner, d);
 			}
 			else
 			{
@@ -69,19 +69,19 @@ public:
 	void Use(int  xy)
 	{
 		BattleActSkillCfg cfg = skill.GetSkillCfg();
-		for (ActionEffect ae : cfg.vecAe)
+		for (ActEffect ae : cfg.vecAe)
 		{
-			ActionActorFun *pActionActorFun = ae.actions[0]._Cast<ActionActorFun>();
-			if (ActionActorFun)
+			ActActorFun *pActActorFun = ae.actions[0]._Cast<ActActorFun>();
+			if (ActActorFun)
 			{
 				error
 			}
-			else if (ActionFun *pActionFun = ae.actions[0]._Cast<ActionFun>())
+			else if (ActFun *pActFun = ae.actions[0]._Cast<ActFun>())
 			{
-				ActionChgFun *pActionChgFun = ae.actions[1]._Cast<ActionChgFun>();
-				auto anys = (*pActionChgFun)(ae.anys, lv, m_owner, target);
+				ActChgFun *pActChgFun = ae.actions[1]._Cast<ActChgFun>();
+				auto anys = (*pActChgFun)(ae.anys, lv, m_owner, target);
 				UnionTarget d{ nullptr, x , y };
-				(*pActionFun)(ae.anys, m_owner, d);
+				(*pActFun)(ae.anys, m_owner, d);
 			}
 			else
 			{

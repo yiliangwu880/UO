@@ -3,11 +3,13 @@
 ActorBase::ActorBase(Actor &actor)
 	:ActorSubCom<ActorBase>(actor.m_owner, actor)
 {
+	Reg<EV_LOAD_DB>(&ActorBase::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorBase::OnSave);
-}
 
-void ActorBase::InitPlayer(const DbActorBase &dbBase)
+}
+void ActorBase::OnLoad(DbPlayer &data)
 {
+	const DbActorBase &dbBase = data.actor.actorBase;
 	m_str     = dbBase.str;
 	m_dex     = dbBase.dex;
 	m_intl    = dbBase.intl;

@@ -6,14 +6,14 @@
 #include "com.h"
 
 using namespace std;
-struct ActionEffect
+struct ActEffect
 {
 	//actions[0],actions[1]参数必须为 ：
-	//ActionFun action;
-	//ActionChgFun chgFun; 
+	//ActFun action;
+	//ActChgFun chgFun; 
 	//或者
-	//ActionActorFun action;
-	//ActionActorChgFun chgFun;
+	//ActActorFun action;
+	//ActActorChgFun chgFun;
 	vector<any> actions;
 
 	//其他配置
@@ -24,23 +24,23 @@ struct ActionEffect
 struct BattleActSkillCfg 
 {
 	int id;
-	vector<ActionEffect> vecAe;
+	vector<ActEffect> vecAe;
 };
 
 vector < BattleActSkillCfg > allBattleActSkillCfg= {
 {1, 
-	{//ActionEffect
-		{Action::EarthQuake,ActionChg::EarthQuakeLv}, { 3000,"提示" }}
-		/*ActionEffect2*/,
-		/*ActionEffect3*/
+	{//ActEffect
+		{Act::EarthQuake,ActChg::EarthQuakeLv}, { 3000,"提示" }}
+		/*ActEffect2*/,
+		/*ActEffect3*/
 	}
-},//也可以多个行动效果 {1, {ActionSkill::EarthQuake,.。}，  {ActionSkill::EarthQuake2, 。。}}
+},//也可以多个行动效果 {1, {ActSkill::EarthQuake,.。}，  {ActSkill::EarthQuake2, 。。}}
 
-{ 2, {{Action::HaSiKaDebuff}, { 3000,"提示" }}} },
-{ 3, {{Action::CreateState<State1>,, ActionChg::Lv0} { 3000,"提示" }}} }, //action通用，只创建State,吧配置传过去
-{ 5, {{Action::AddBuf}, { 1/*buffid*/,1/*buffLv*/,}, ActionChg::Lv1}} },//通用加不用buffiD
-{ 6, {{Action::GuFaBig, ActionChg::Lv0}, {1}}},//古法大，吸血，双方加buff
-{ 7, {{Action::CreateMonster, ActionChg::Lv0}, {1}}},//召唤物
+{ 2, {{Act::HaSiKaDebuff}, { 3000,"提示" }}} },
+{ 3, {{Act::CreateState<State1>,, ActChg::Lv0} { 3000,"提示" }}} }, //action通用，只创建State,吧配置传过去
+{ 5, {{Act::AddBuf}, { 1/*buffid*/,1/*buffLv*/,}, ActChg::Lv1}} },//通用加不用buffiD
+{ 6, {{Act::GuFaBig, ActChg::Lv0}, {1}}},//古法大，吸血，双方加buff
+{ 7, {{Act::CreateMonster, ActChg::Lv0}, {1}}},//召唤物
 };
 
 //施加buff时，增加的State
@@ -48,26 +48,26 @@ struct BuffCfg
 {
 	int id;
 	bool isGood; //false indicate debuff
-	vector<ActionEffect> vecAe;
+	vector<ActEffect> vecAe;
 };
 
 vector < BuffCfg > allBuffCfg = {
 	//多个效果例子
-//{1, {{Action::CreateState<State1>, { 3000,"提示" }, ActionChg::Lv0}}, {Action::CreateState<State2>, { 3000,"提示" }, ActionChg::Lv0}}}}
-{BuffId::TriggerXixue, true,{{ Action::CreateState<StateTriggerXixue>, { 3000,"提示" }, ActionChg::Lv0 }}},//古法大，吸血，自己buf
-{BuffId::TargetXixue, false, {{ Action::CreateState<StateTargetXixue>, { 3000,"提示" }, ActionChg::Lv0 }}},//古法大，吸血，目标buf
+//{1, {{Act::CreateState<State1>, { 3000,"提示" }, ActChg::Lv0}}, {Act::CreateState<State2>, { 3000,"提示" }, ActChg::Lv0}}}}
+{BuffId::TriggerXixue, true,{{ Act::CreateState<StateTriggerXixue>, { 3000,"提示" }, ActChg::Lv0 }}},//古法大，吸血，自己buf
+{BuffId::TargetXixue, false, {{ Act::CreateState<StateTargetXixue>, { 3000,"提示" }, ActChg::Lv0 }}},//古法大，吸血，目标buf
 };
 
 //被动技能，加载或者升级技能时，更新State
 struct PassiveSkillCfg
 {
 	int id;
-	vector<ActionEffect> vecAe;
+	vector<ActEffect> vecAe;
 };
 
 vector < PassiveSkillCfg > allPassiveSkillCfg = {
-{1, {{ Action::UpdatePassive<StateTriggerXixue>, { 3000,"提示" }, PassiveChg::Lv0 }}},
-{2, {{ Action::UpdatePassive<StateTargetXixue>, { 3000,"提示" }, PassiveChg::Lv0 }}},
+{1, {{ Act::UpdatePassive<StateTriggerXixue>, { 3000,"提示" }, PassiveChg::Lv0 }}},
+{2, {{ Act::UpdatePassive<StateTargetXixue>, { 3000,"提示" }, PassiveChg::Lv0 }}},
 };
 
 
