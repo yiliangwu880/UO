@@ -1,12 +1,23 @@
 #include "MonsterMgr.h"
 #include "AppMgr.h"
+#include "SceneMgr.h"
 
 using PMonster = Monster * ;
 
 GRegEvent(EV_FINISH_WORLD_SCENE, MonsterMgr::OnFinishWorld)
 void MonsterMgr::OnFinishWorld()
 {
+	Monster *m = MonsterMgr::Ins().Create();
+	{//tmp create a monster
+		const MonsterCfg *pCfg = gCfg.GetMonsterCfg(1);
+		L_COND_V(pCfg);
 
+		MonsterInit d;
+		d.cfg = pCfg;
+		d.scene = &SceneMgr::Felucca;
+		d.pos = gCfg.GetMiscCfg().bornPos;
+		m->Init(d);
+	}
 }
 
 Monster * MonsterMgr::Create()

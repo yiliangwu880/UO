@@ -26,5 +26,6 @@ public:
 	void Init();
 	void Init(uint16 mapId);
 	uint32 GetId() const { return m_SceneId.id; }
+	operator uint32() const { return m_SceneId.id; }
 
 };

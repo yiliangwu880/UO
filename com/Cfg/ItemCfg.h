@@ -33,7 +33,7 @@ struct DressCfg
 	uint16 dressIdx;//穿那个部位，0 start
 };
 
-struct ItemCfgMgr : public Singleton<ItemCfgMgr>
+struct ItemCfgMgr 
 {
 	unordered_map<uint16, ItemCfg> m_ItemCfg;
 	unordered_map<uint16, WeaponCfg> m_WeaponCfg;

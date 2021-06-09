@@ -7,6 +7,7 @@
 #include "PlayerSn.h"
 #include "PlayerDb.h"
 #include "Actor/Actor.h"
+#include "SceneMgr.h"
 
 
 class Player : public WeakPtr<Player>, public ActorOwner

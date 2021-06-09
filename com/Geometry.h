@@ -1,6 +1,7 @@
 #pragma once
 #include "log_def.h"
 
+struct Point3D;
 struct Point2D
 {
 	int X = 0;
@@ -15,6 +16,7 @@ struct Point2D
 		Y = y;
 	}
 
+	Point2D(const Point3D &pos);
 };
 struct Point3D
 {

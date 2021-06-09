@@ -2,9 +2,14 @@
 
 
 
-void Monster::Init(const MonsterCfg &cfg, uint32 sceneId, const Point2D &pos)
+
+
+void Monster::Init(const MonsterInit &data)
 {
-	m_MonsterBase.Init(cfg);
+	L_COND_V(data.cfg);
+	L_COND_V(data.scene);
+	m_MonsterBase.Init(*data.cfg);
+	Enter(*data.scene, (uint16)data.pos.X, (uint16)data.pos.Y);
 }
 
 Monster::Monster(uint32 uin)
@@ -13,4 +18,9 @@ Monster::Monster(uint32 uin)
 	, m_MonsterBase(*this)
 {
 	m_uin = uin;
+}
+
+bool Monster::Enter(Scene &scene, uint16 x, uint16 y)
+{
+	return m_actor.m_Observer.Enter(scene.m_aoi, x, y);
 }

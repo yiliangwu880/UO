@@ -29,7 +29,7 @@ struct MonsterCfg
 
 };
 
-struct MonsterCfgMgr : public Singleton<MonsterCfgMgr>
+struct MonsterCfgMgr 
 {
 	unordered_map<uint16, MonsterCfg> m_MonsterCfg;
 	MonsterCfgMgr();

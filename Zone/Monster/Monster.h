@@ -5,7 +5,14 @@
 #include "Actor/Actor.h"
 #include "Ai/Ai.h"
 #include "MonsterBase.h"
+#include "SceneMgr.h"
 
+struct MonsterInit 
+{
+	const MonsterCfg *cfg = nullptr;
+	Scene *scene = nullptr;
+	Point2D pos;
+};
 //scene 管理actor, actor PostDel来释放
 class Monster : public WeakPtr<Monster>, public ActorOwner
 {
@@ -16,10 +23,12 @@ public:
 	MonsterBase m_MonsterBase;
 
 public:
-	void Init(const MonsterCfg &cfg, uint32 sceneId, const Point2D &pos);
+	void Init(const MonsterInit &data);
 
 public:
 	Monster(uint32 uin);
+
+	bool Enter(Scene &scene, uint16 x, uint16 y);
 
 	//某个函数，从位置触发，动作影响别的生物类型
 	//void  PosAction()

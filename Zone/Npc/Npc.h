@@ -3,6 +3,7 @@
 #pragma once
 #include "Actor/Actor.h"
 #include "Ai/Ai.h"
+#include "SceneMgr.h"
 
 //护送
 class Escort //: public EventReg
@@ -37,5 +38,6 @@ public:
 public:
 	Npc(uint32 id);
 
+	bool Enter(Scene &scene, uint16 x, uint16 y);
 private:
 };
