@@ -19,7 +19,7 @@ void Actor::OnLoad(DbPlayer &data)
 
 void Actor::EnterScene(uint32 id)
 {
-	Scene *p = SceneMgr::Ins().FindScene(id);
+	Scene *p = SceneMgr::Ins().Find(id);
 	L_COND_V(p);
 	
 	auto &pos = m_ActorBase.GetPos();

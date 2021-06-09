@@ -10,6 +10,7 @@ Npc * NpcMgr::Create()
 	bool r = m_all.insert(make_pair(uin, p)).second;
 	if (!r)
 	{
+		L_ERROR("create fail");
 		delete p;
 		return nullptr;
 	}

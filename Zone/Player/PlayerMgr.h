@@ -27,10 +27,10 @@ class PlayerMgr : public Singleton<PlayerMgr>
 	MulMapPlayer m_all;
 
 public:
-	Player *CreatePlayer(uint64 uin, const string &name);
-	Player *FindPlayer(uint64 uin);
-	Player *FindPlayer(const string &name);
-	void DelPlayer(uint64 uin);
+	Player *Create(uint64 uin, const string &name);
+	Player *Find(uint64 uin);
+	Player *Find(const string &name);
+	void Del(uint64 uin);
 public:
 
 private:

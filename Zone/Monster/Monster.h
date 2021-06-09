@@ -14,11 +14,10 @@ public:
 	Actor m_actor;//战斗生物基本功能, 必须放第一，这样 m_ai 才能正确引用
 	Ai m_ai; 
 	MonsterBase m_MonsterBase;
-	//int show; 外观
-	//Drop dropCfg;
 
 public:
-	virtual void PostDel() override;
+	void Init(const MonsterCfg &cfg, uint32 sceneId, const Point2D &pos);
+
 public:
 	Monster(uint32 uin);
 

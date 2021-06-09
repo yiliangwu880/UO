@@ -5,3 +5,8 @@ MonsterBase::MonsterBase(Monster &owner)
 {
 
 }
+
+void MonsterBase::Init(const MonsterCfg &cfg)
+{
+	m_cfg = &cfg;
+}

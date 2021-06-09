@@ -1,3 +1,4 @@
+//全局游戏配置，正式很少改动的，放代码更方便
 #pragma once
 #include "ItemCfg.h"
 #include "MonsterCfg.h"

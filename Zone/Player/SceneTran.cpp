@@ -26,7 +26,7 @@ void SceneTran::CheckReserve()
 		req.uin = m_owner.Uin();
 		TableCfg::Ins().Pack(m_owner.m_PlayerDb.GetData(), req.playerData);
 		CenterCon::Ins().Send(req);
-		PlayerMgr::Ins().DelPlayer(m_owner.Uin());
+		PlayerMgr::Ins().Del(m_owner.Uin());
 		State(WaitDel);
 	}
 }
@@ -49,7 +49,7 @@ RegCenterMsg(SceneTran::ReqZoneReserve);
 void SceneTran::ReqZoneReserve(CenterCon &con, const proto::ReqZoneReserve &msg)
 {
 	proto::RspZoneReserve rsp;
-	Player *player = PlayerMgr::Ins().CreatePlayer(msg.uin, "");
+	Player *player = PlayerMgr::Ins().Create(msg.uin, "");
 	if (nullptr == player)
 	{
 		rsp.ret = false;
@@ -66,7 +66,7 @@ RegCenterMsg(SceneTran::ReqTranZone);
 void SceneTran::ReqTranZone(CenterCon &con, const proto::ReqTranZone &msg)
 {
 	L_INFO("ReqTranZone");
-	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
+	Player *player = PlayerMgr::Ins().Find(msg.uin);
 	L_COND_V(player);
 	L_COND_V(WaitTranIn == player->m_SceneTran.m_State);
 
@@ -79,7 +79,7 @@ RegCenterMsg(SceneTran::RspZoneReserve);
 void SceneTran::RspZoneReserve(CenterCon &con, const proto::RspZoneReserve &msg)
 {
 	L_INFO("RspZoneReserve");
-	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
+	Player *player = PlayerMgr::Ins().Find(msg.uin);
 	L_COND_V(player);
 	L_COND_V(WaitReserve == player->m_SceneTran.m_State);
 	if (msg.ret)

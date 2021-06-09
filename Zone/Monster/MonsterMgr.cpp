@@ -2,6 +2,13 @@
 #include "AppMgr.h"
 
 using PMonster = Monster * ;
+
+GRegEvent(EV_FINISH_WORLD_SCENE, MonsterMgr::OnFinishWorld)
+void MonsterMgr::OnFinishWorld()
+{
+
+}
+
 Monster * MonsterMgr::Create()
 {
 	static uint32 uinSeed = 1;//够用了
@@ -10,6 +17,7 @@ Monster * MonsterMgr::Create()
 	bool r = m_all.insert(make_pair(uin, p)).second;
 	if (!r)
 	{
+		L_ERROR("create fail");
 		delete p;
 		return nullptr;
 	}

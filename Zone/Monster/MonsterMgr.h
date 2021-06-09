@@ -4,6 +4,10 @@
 class MonsterMgr : public Singleton<MonsterMgr>
 {
 	unordered_map<uint32, Monster *> m_all;
+
+public:
+	static void OnFinishWorld();
+
 public:
 	Monster *Create();
 	Monster *Find(uint32 uin);

@@ -1,3 +1,4 @@
+//类json配置，方便修改后不用编译。
 #pragma once
 #include "centerCfg.h"
 #include "comCfg.h"

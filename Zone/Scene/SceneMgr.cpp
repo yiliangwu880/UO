@@ -1,7 +1,61 @@
 #include "SceneMgr.h"
+#include "AppMgr.h"
 
-Scene * SceneMgr::FindScene(uint32 sceneId)
+using PScene = Scene *;
+
+Scene SceneMgr::Felucca;
+
+GRegEvent(EV_SVR_START, SceneMgr::Start);
+void SceneMgr::Start(bool &ret)
 {
-	return &m_tmp;
+	SceneMgr::Felucca.Init();
+
+
+
+	FireEvent<EV_FINISH_WORLD_SCENE>();
+}
+
+
+Scene * SceneMgr::CreateFb(uint16 mapId)
+{
+	static uint16 fbSeed = 0;//基本够用，低概率重复
+	if (fbSeed == 0)
+	{
+		fbSeed++;
+	}
+	SceneId sceneId;
+	sceneId.fbId = fbSeed++;
+	sceneId.mapId = mapId;
+	Scene *p = new Scene(sceneId);
+	bool r = m_all.insert(make_pair(sceneId.id, p)).second;
+	if (!r)
+	{
+		L_ERROR("create fail");
+		delete p;
+		return nullptr;
+	}
+	return p;
+}
+
+Scene * SceneMgr::Find(uint32 sceneId)
+{
+	PScene *pp = MapFind(m_all, sceneId);
+	L_COND(pp, nullptr);
+	return *pp;
+}
+
+void SceneMgr::Del(uint32 sceneId)
+{
+	auto f = [this, sceneId]()
+	{
+		PScene *pp = MapFind(m_all, sceneId);
+		L_COND_V(pp, "del fail");
+		delete *pp;
+		if (!m_all.erase(sceneId))
+		{
+			L_ERROR("del fail");
+		}
+	};
+	AppMgr::Ins().AddPost(f);
 }
 

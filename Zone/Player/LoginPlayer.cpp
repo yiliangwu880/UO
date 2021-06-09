@@ -29,7 +29,7 @@ void LoginPlayer::ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &
 	L_COND_V(playerData);
 	L_INFO("player %s login zone.", playerData->name.c_str());
 
-	Player *player = PlayerMgr::Ins().CreatePlayer(playerData->uin, playerData->name);
+	Player *player = PlayerMgr::Ins().Create(playerData->uin, playerData->name);
 	L_COND_V(player);
 
 	acc::SessionId sid;
@@ -50,7 +50,7 @@ RegCenterMsg(LoginPlayer::ReqReLoginZone_sc);
 void LoginPlayer::ReqReLoginZone_sc(CenterCon &con, const proto::ReqReLoginZone_sc &msg)
 {
 	L_INFO("ReqReLoginZone_sc");
-	Player *player = PlayerMgr::Ins().FindPlayer(msg.uin);
+	Player *player = PlayerMgr::Ins().Find(msg.uin);
 	L_COND_V(player);
 
 	L_COND_V(LoginOk == player->m_LoginPlayer.m_State || OffLine == player->m_LoginPlayer.m_State);

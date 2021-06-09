@@ -1,8 +1,10 @@
 #include "Monster.h"
 
-void Monster::PostDel()
+
+
+void Monster::Init(const MonsterCfg &cfg, uint32 sceneId, const Point2D &pos)
 {
-	delete this;
+	m_MonsterBase.Init(cfg);
 }
 
 Monster::Monster(uint32 uin)
