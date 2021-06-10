@@ -2,7 +2,7 @@
 #include "zoneCfg.h"
 #include "comCfg.h"
 
-class CfgMgr : public Singleton<CfgMgr>
+class DynCfgMgr : public Singleton<DynCfgMgr>
 {
 	zoneCfg m_zoneCfg;
 	comCfg m_comCfg;
@@ -13,5 +13,5 @@ public:
 	const comCfg &ComCfg() const { return m_comCfg; }
 };
 
-extern const CfgMgr &gCfgMgr;
+extern const DynCfgMgr &gDynCfg;
 

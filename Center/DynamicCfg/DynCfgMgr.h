@@ -3,7 +3,7 @@
 #include "centerCfg.h"
 #include "comCfg.h"
 
-class CfgMgr : public Singleton<CfgMgr>
+class DynCfgMgr : public Singleton<DynCfgMgr>
 {
 	centerCfg m_centerCfg;
 	comCfg m_comCfg;
@@ -14,6 +14,6 @@ public:
 	bool Init();
 };
 
-extern const CfgMgr &gCfgMgr;
+extern const DynCfgMgr &gDynCfg;
 extern const comCfg::S_testCfg &gTestCfg;
 

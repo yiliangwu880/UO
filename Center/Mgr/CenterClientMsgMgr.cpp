@@ -2,7 +2,7 @@
 #include "UoProto.h"
 #include "CenterClientMsgMgr.h"
 #include "CPackets.h"
-#include "CfgMgr.h"
+#include "DynCfgMgr.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>

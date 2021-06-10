@@ -7,10 +7,10 @@ using namespace lc;
 
 bool Server::Init()
 {
-	bool r = m_svr_listener.Init(CfgMgr::Ins().GetInnerPort(), CfgMgr::Ins().GetInnerIp());
+	bool r = m_svr_listener.Init(DynamicCfgMgr::Ins().GetInnerPort(), DynamicCfgMgr::Ins().GetInnerIp());
 	L_COND_F(r);
 
-	r = m_client_listener.Init(CfgMgr::Ins().GetExPort(), CfgMgr::Ins().GetExIp());
+	r = m_client_listener.Init(DynamicCfgMgr::Ins().GetExPort(), DynamicCfgMgr::Ins().GetExIp());
 	L_COND_F(r);
 
 	L_DEBUG("Server::Init ok");

@@ -1,5 +1,5 @@
 #include "ZoneSvrCon.h"
-#include "CfgMgr.h"
+#include "DynCfgMgr.h"
 #include "GlobalEvent.h"
 
 using namespace lc;

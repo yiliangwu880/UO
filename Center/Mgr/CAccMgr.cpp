@@ -1,5 +1,5 @@
 #include "CAccMgr.h"
-#include "CfgMgr.h"
+#include "DynCfgMgr.h"
 #include "GlobalEvent.h"
 #include "CenterMgr.h"
 #include "./Account/AccountMgr.h"
@@ -37,8 +37,8 @@ void AccMgr::Start(bool &ret)
 
 	std::vector<Addr> vec_addr;
 	Addr addr;
-	addr.ip = gCfgMgr.ComCfg().access.inner_ip;
-	addr.port = gCfgMgr.ComCfg().access.inner_port; 
+	addr.ip = gDynCfg.ComCfg().access.inner_ip;
+	addr.port = gDynCfg.ComCfg().access.inner_port; 
 	vec_addr.push_back(addr);
 	AccMgr::Ins().Init(vec_addr, CENTER_GROUP_ID, true);
 }

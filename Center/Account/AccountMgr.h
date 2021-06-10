@@ -4,7 +4,7 @@
 #include "CAccMgr.h"
 #include "MsgDispatch.h"
 #include "Account.h"
-#include "CfgMgr.h"
+#include "DynCfgMgr.h"
 
 
 class AccountMgr : public Singleton<AccountMgr>

@@ -1,5 +1,5 @@
 #include "CenterCon.h"
-#include "CfgMgr.h"
+#include "DynCfgMgr.h"
 #include "GlobalEvent.h"
 #include "MsgDispatch.h"
 
@@ -12,7 +12,7 @@ namespace
 {
 	void Start(bool &ret)
 	{
-		bool r = CenterCon::Ins().ConnectInit(gCfgMgr.ComCfg().center.ip.c_str(), gCfgMgr.ComCfg().center.port);
+		bool r = CenterCon::Ins().ConnectInit(gDynCfg.ComCfg().center.ip.c_str(), gDynCfg.ComCfg().center.port);
 		if (!r)
 		{
 			L_ERROR("CenterCon::Ins().ConnectInit fail");
@@ -37,7 +37,7 @@ void CenterCon::OnConnected()
 {
 	L_DEBUG("send ReqZoneOk_cs to center");
 	ReqZoneOk_cs req;
-	req.svrId = gCfgMgr.ZoneCfg().svrId;
+	req.svrId = gDynCfg.ZoneCfg().svrId;
 	Send(req);
 }
 

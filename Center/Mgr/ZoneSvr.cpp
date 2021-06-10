@@ -1,6 +1,6 @@
 #include "CenterMgr.h"
 #include "GlobalEvent.h"
-#include "CfgMgr.h"
+#include "DynCfgMgr.h"
 #include "ZoneSvr.h"
 
 using namespace std;
@@ -42,7 +42,7 @@ namespace
 GRegEvent(EV_SVR_START, Svr::Start);
 void Svr::Start(bool &ret)
 {
-	if (!Svr::Ins().m_Listener.Init(gCfgMgr.ComCfg().center.port))
+	if (!Svr::Ins().m_Listener.Init(gDynCfg.ComCfg().center.port))
 	{
 		ret = false;
 	}

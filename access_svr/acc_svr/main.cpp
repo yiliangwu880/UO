@@ -9,7 +9,7 @@
 #include "external_con.h"
 #include "AccMgr.h"
 #include "UoClientMsgMgr.h"
-#include "Cfg/CfgMgr.h"
+#include "DynamicCfg/DynCfgMgr.h"
 
 using namespace su;
 using namespace std;
@@ -59,7 +59,7 @@ namespace {
 int main(int argc, char* argv[])
 {
 	SuMgr::Ins().Init();
-	L_COND_F(CfgMgr::Ins().Init());
+	L_COND_F(DynamicCfgMgr::Ins().Init());
 
 	bool isDaemon = false;
 	if (argc >= 2 && string("d") == argv[1])

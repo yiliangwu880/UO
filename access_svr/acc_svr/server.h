@@ -7,7 +7,7 @@
 #include "svr_util/include/easy_code.h"
 #include "external_con.h"
 #include "inner_con.h"
-#include "Cfg/CfgMgr.h"
+#include "DynamicCfg/DynCfgMgr.h"
 
 class Server: public Singleton<Server>
 {

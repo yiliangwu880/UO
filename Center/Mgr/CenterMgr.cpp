@@ -1,6 +1,6 @@
 #include "CenterMgr.h"
 #include "GlobalEvent.h"
-#include "CfgMgr.h"
+#include "DynCfgMgr.h"
 #include "version.h"
 #include "ZoneSvrCon.h"
 #include "libevent_cpp/include/include_all.h"
@@ -25,7 +25,7 @@ namespace
 void CenterMgr::Init()
 {
 	L_INFO("build time %s ", APP_VERSTR);
-	for (auto &svrId : gCfgMgr.ComCfg().zone.allSvrId)
+	for (auto &svrId : gDynCfg.ComCfg().zone.allSvrId)
 	{
 		m_zoneId2Ok[svrId] = false;
 	}
@@ -35,11 +35,11 @@ void CenterMgr::Init()
 		m_isDbOk = true;
 		checkAllOk();
 	};
-	Dbproxy::Ins().Init(gCfgMgr.ComCfg().dbproxy.ip, gCfgMgr.ComCfg().dbproxy.port, f);
+	Dbproxy::Ins().Init(gDynCfg.ComCfg().dbproxy.ip, gDynCfg.ComCfg().dbproxy.port, f);
 
 	{//init server info
-		const char* connect_ip = CfgMgr::Ins().ComCfg().access.ex_ip.c_str();
-		unsigned short connect_port = CfgMgr::Ins().ComCfg().access.ex_port;
+		const char* connect_ip = DynCfgMgr::Ins().ComCfg().access.ex_ip.c_str();
+		unsigned short connect_port = DynCfgMgr::Ins().ComCfg().access.ex_port;
 		sockaddr_in m_addr;
 		memset(&m_addr, 0, sizeof(m_addr));
 		m_addr.sin_family = AF_INET;
