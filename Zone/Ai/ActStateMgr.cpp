@@ -20,6 +20,13 @@ void ActStateMgr::OnThink()
 	m_state->OnThink();
 }
 
+void ActStateMgr::ChangeState(ActBaseState &state)
+{
+	m_state->Exit();
+	m_state = &state;
+	m_state->Enter();
+}
+
 void CombatState::OnThink()
 {
 

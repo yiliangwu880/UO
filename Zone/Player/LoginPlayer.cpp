@@ -12,7 +12,7 @@ void LoginPlayer::Login()
 
 void LoginPlayer::SendLogin()
 {
-
+	L_DEBUG("SendLogin");
 }
 
 void LoginPlayer::ClientDisCon()

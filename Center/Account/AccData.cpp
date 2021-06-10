@@ -27,7 +27,6 @@ su::CStr & AccData::Psw() const
 	return m_data.psw;
 }
 
-STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(AccData::OnDbLoad));
 
 void AccData::CreateAccount(CStr &psw)
 {
@@ -42,8 +41,10 @@ const std::vector<db::ActorBrief> & AccData::GetActorList()
 
 
 
-void AccData::OnDbLoad(bool ret, const DbAccount &data, any para)
+STATIC_RUN(db::Dbproxy::Ins().RegQueryCb(AccData::OnQuery));
+void AccData::OnQuery(bool ret, const DbAccount &data, any para)
 {
+	L_DEBUG("AccData::OnQuery");
 	L_COND_V(!data.name.empty());
 	Account *account = AccountMgr::Ins().GetAcc(data.name);
 	L_COND_V(account);

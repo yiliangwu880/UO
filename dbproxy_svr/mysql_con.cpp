@@ -518,15 +518,15 @@ bool MysqlCon::Query(const db::BaseTable &data, uint32_t limit_num, QueryResultR
 					}
 				}
 				cb(*pData);
+				row_num++;
 			}
-			row_num++;
 
 			if (!stmt->getMoreResults())
 			{
 				break;
 			}
 		} while(true);
-		return true;
+		return row_num > 0;
 	}
 	catch (sql::SQLException &e) {
 		L_ERROR("%s, MySQL error code:%d, SQLState:%s", e.what(), e.getErrorCode(), e.getSQLStateCStr());
@@ -570,15 +570,15 @@ bool MysqlCon::Query(uint16_t table_id, std::string &cond, uint32_t limit_num, Q
 					}
 				}
 				cb(*pData);
+				row_num++;
 			}
-			row_num++;
 
 			if (!stmt->getMoreResults())
 			{
 				break;
 			}
 		} while (true);
-		return true;
+		return row_num > 0;
 	}
 	catch (sql::SQLException &e) {
 		L_ERROR("%s, MySQL error code:%d, SQLState:%s", e.what(), e.getErrorCode(), e.getSQLStateCStr());

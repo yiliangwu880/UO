@@ -14,6 +14,8 @@ start() {
 	./acc_svr d
 	cd -
 
+	sleep 1
+
 	cd Center
 	./center d  # 后台启动 ./center d 
 	cd -

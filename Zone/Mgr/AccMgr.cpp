@@ -32,7 +32,7 @@ void AccMgr::OnRegResult(uint16 svr_id)
 {
 	//向acc注册成功
 	L_COND_V(svr_id != 0, "reg acc fail");
-	L_INFO("zone reg ok");
+	L_INFO("acc reg ok");
 }
 
 

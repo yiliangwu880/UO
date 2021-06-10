@@ -33,4 +33,12 @@ public:
 	ActStateMgr(ActorOwner &owner, Actor &actor);
 	void Start();
 	void OnThink();
+
+	void ChangeState(ActBaseState &state);
+	template<class State>
+	bool IsState()
+	{
+		State *p = dynamic_cast<State *>(m_state);
+		return  (NULL != p);
+	}
 };

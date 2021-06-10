@@ -16,7 +16,7 @@ public:
 	const std::vector<ActorBrief> &GetActorList();
 	void CreatePlayer(const DbPlayer &player);
 
-	static void OnDbLoad(bool ret, const DbAccount &data, any para);
+	static void OnQuery(bool ret, const DbAccount &data, any para);
 	static void OnInsert(bool ret, const DbPlayer &data, any para);
 	static void OnSelect(bool ret, const DbPlayer &data, any para);
 private:

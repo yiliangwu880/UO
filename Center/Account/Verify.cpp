@@ -21,6 +21,7 @@ void Verify::ReqVerify(const SessionId &id, CStr &psw)
 			acc.name = m_owner.Name();
 			db::Dbproxy::Ins().Query(acc);
 			m_vtm.StartTimerSec(60, std::bind(&Verify::OnVerifyTimeOut, this));
+			L_DEBUG("query db for acc");
 		}
 		break;
 	case Verify::WaitAccVerify:
