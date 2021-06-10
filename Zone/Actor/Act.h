@@ -18,21 +18,23 @@ struct UnionTarget
 };
 
 
-using ActFun = void (*)(const vector<any> &, Actor &trigger, UnionTarget &target);
+using ActFun = void (*)(const vector<any> &, Actor &trigger, const UnionTarget &target);
 //调整 ActFun 的输入参数.
 //@ActLv 通常表示技能等级，buff等级等
-using ChgActParaFun = vector<any>(*)(const vector<any> &, uint32 ActLv, Actor  &actor, UnionTarget &target);
+using ChgActParaFun = vector<any>(*)(const vector<any> &, uint32 ActLv, Actor  &actor, const UnionTarget &target);
 using CheckActFun = bool (*)(const vector<any> &);
 
 namespace ChgAct
 {
-	vector<any> EarthQuakeLv(const vector<any> &cfg, uint32 ActLv, Actor &trigger, UnionTarget &target);
-	vector<any> Lv0(const vector<any> &cfg, uint32 ActLv, Actor &trigger, UnionTarget &target);
+	vector<any> EarthQuakeLv(const vector<any> &cfg, uint32 ActLv, Actor &trigger, const UnionTarget &target);
+	vector<any> Lv0(const vector<any> &cfg, uint32 ActLv, Actor &trigger, const UnionTarget &target);
 
 }
 namespace Act
 {
-	void EarthQuake(const vector<any> &cfg, Actor &trigger, UnionTarget &target);
-	inline void Act1(const vector<any> &cfg, Actor &trigger, UnionTarget &target) {};
-	inline void Act2(const vector<any> &cfg, Actor &trigger, UnionTarget &target) {};
+	void EarthQuake(const vector<any> &cfg, Actor &trigger, const UnionTarget &target);
+	//包含多个 act
+	void More(const vector<any> &cfg, Actor &trigger, const UnionTarget &target);
+	inline void Act1(const vector<any> &cfg, Actor &trigger, const UnionTarget &target) {};
+	inline void Act2(const vector<any> &cfg, Actor &trigger, const UnionTarget &target) {};
 }

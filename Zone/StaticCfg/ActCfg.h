@@ -7,10 +7,9 @@ REG_MAP_NAME_DECLARE(Act2Check, ActFun, CheckActFun);
 
 struct ActCfg
 {
-	uint16 id;
 	ActFun act;
-	ChgActParaFun chgAct;
 	vector<any> paras;
+	ChgActParaFun chgAct;
 };
 
 struct ActCfgMgr 

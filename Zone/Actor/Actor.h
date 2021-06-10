@@ -3,10 +3,12 @@
 #include "dbTableDef.h"
 #include "ZoneMisc.h"
 #include "SceneMgr.h"
+#include "./State/StateMgr.h"
 #include "./Sub/ActorBase.h"
 #include "./Sub/ActorEquip.h"
 #include "./Sub/Observer.h"
 #include "./Sub/ActorSkill.h"
+#include "./Sub/ActSkill.h"
 
 
 
@@ -19,6 +21,7 @@ public:
 	ActorBase m_ActorBase;
 	ActorEquip m_ActorEquip;
 	Observer m_Observer;
+	StateMgr m_StateMgr;
 
 public:
 	Actor(ActorOwner &owner, EntityType t= EntityType::Monster);
