@@ -31,7 +31,6 @@ Project "other"
 	"../cppProto/**",
 	"../dbProto/**",
 	"../tool/**",
-	"../tempCode/**",
 	"../doc/**",
 	"../external/svr_util/include/**",
 	"../external/libevent_cpp/include/**",

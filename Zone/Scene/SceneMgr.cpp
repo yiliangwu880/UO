@@ -26,31 +26,29 @@ Scene * SceneMgr::CreateFb(uint16 mapId)
 	SceneId sceneId;
 	sceneId.fbId = fbSeed++;
 	sceneId.mapId = mapId;
-	Scene *p = new Scene(sceneId);
+	shared_ptr<Scene> p = make_shared<Scene>(sceneId);
 	bool r = m_all.insert(make_pair(sceneId.id, p)).second;
 	if (!r)
 	{
 		L_ERROR("create fail");
-		delete p;
 		return nullptr;
 	}
-	return p;
+	return p.get();
 }
 
 Scene * SceneMgr::Find(uint32 sceneId)
 {
-	PScene *pp = MapFind(m_all, sceneId);
+	shared_ptr<Scene> *pp = MapFind(m_all, sceneId);
 	L_COND(pp, nullptr);
-	return *pp;
+	return (*pp).get();
 }
 
 void SceneMgr::Del(uint32 sceneId)
 {
 	auto f = [this, sceneId]()
 	{
-		PScene *pp = MapFind(m_all, sceneId);
+		shared_ptr<Scene> *pp = MapFind(m_all, sceneId);
 		L_COND_V(pp, "del fail");
-		delete *pp;
 		if (!m_all.erase(sceneId))
 		{
 			L_ERROR("del fail");

@@ -2,7 +2,6 @@
 
 
 
-
 void State1::Fun()
 {
 

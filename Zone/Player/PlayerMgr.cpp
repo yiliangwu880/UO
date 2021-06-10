@@ -3,38 +3,36 @@
 
 Player * PlayerMgr::Create(uint64 uin, CStr &name)
 {
-	Player *p = new Player(uin, name);
+	shared_ptr<Player> p = make_shared<Player>(uin, name);
 	if (!m_all.Insert(p))
 	{
 		L_ERROR("create fail");
-		delete p;
 		return nullptr;
 	}
-	return p;
+	return p.get();
 }
 
 Player * PlayerMgr::Find(uint64 uin)
 {
-	PPlayer *pp = m_all.Find(uin);
+	shared_ptr<Player> *pp = m_all.Find(uin);
 	L_COND(pp, nullptr);
-	return *pp;
+	return pp->get();
 }
 
 Player * PlayerMgr::Find(const string &name)
 {
-	PPlayer *pp = m_all.SubFind(name);
+	shared_ptr<Player> *pp = m_all.SubFind(name);
 	L_COND(pp, nullptr);
-	return *pp;
+	return pp->get();
 }
 
 void PlayerMgr::Del(uint64 uin)
 {
 	auto f = [this, uin]()
 	{
-		PPlayer *pp = m_all.Find(uin);
+		shared_ptr<Player> *pp = m_all.Find(uin);
 		L_COND_V(pp, "del fail");
 		(*pp)->m_Actor.m_Observer.Leave();
-		delete *pp;
 		if (!m_all.erase(uin))
 		{
 			L_ERROR("del fail");

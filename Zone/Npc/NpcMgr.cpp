@@ -6,32 +6,30 @@ Npc * NpcMgr::Create()
 {
 	static uint32 uinSeed = 1;//够用了
 	uint32 uin = uinSeed++;
-	Npc *p = new Npc(uin);
+	shared_ptr<Npc> p = make_shared<Npc>(uin);
 	bool r = m_all.insert(make_pair(uin, p)).second;
 	if (!r)
 	{
 		L_ERROR("create fail");
-		delete p;
 		return nullptr;
 	}
-	return p;
+	return p.get();
 }
 
 Npc * NpcMgr::Find(uint32 uin)
 {
-	PMonster *pp = MapFind(m_all, uin);
+	shared_ptr<Npc> *pp = MapFind(m_all, uin);
 	L_COND(pp, nullptr);
-	return *pp;
+	return pp->get();
 }
 
 void NpcMgr::Del(uint32 uin)
 {
 	auto f = [this, uin]()
 	{
-		PMonster *pp = MapFind(m_all, uin);
+		shared_ptr<Npc> *pp = MapFind(m_all, uin);
 		L_COND_V(pp, "del fail");
 		(*pp)->m_Actor.m_Observer.Leave();
-		delete *pp;
 		if (!m_all.erase(uin))
 		{
 			L_ERROR("del fail");

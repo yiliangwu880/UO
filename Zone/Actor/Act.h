@@ -38,3 +38,6 @@ namespace Act
 	inline void Act1(const vector<any> &cfg, Actor &trigger, const UnionTarget &target) {};
 	inline void Act2(const vector<any> &cfg, Actor &trigger, const UnionTarget &target) {};
 }
+
+//单例， 记录每个 ActFun 函数的配置参数合法函数。启服时检测。
+REG_MAP_NAME_DECLARE(Act2Check, ActFun, CheckActFun);

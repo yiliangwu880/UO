@@ -2,7 +2,6 @@
 #include "AppMgr.h"
 #include "SceneMgr.h"
 
-using PMonster = Monster * ;
 
 GRegEvent(EV_FINISH_WORLD_SCENE, MonsterMgr::OnFinishWorld)
 void MonsterMgr::OnFinishWorld()
@@ -24,32 +23,30 @@ Monster * MonsterMgr::Create()
 {
 	static uint32 uinSeed = 1;//够用了
 	uint32 uin = uinSeed++;
-	Monster *p = new Monster(uin);
+	shared_ptr<Monster> p = make_shared<Monster>(uin);
 	bool r = m_all.insert(make_pair(uin, p)).second;
 	if (!r)
 	{
 		L_ERROR("create fail");
-		delete p;
 		return nullptr;
 	}
-	return p;
+	return p.get();
 }
 
 Monster * MonsterMgr::Find(uint32 uin)
 {
-	PMonster *pp = MapFind(m_all, uin);
+	shared_ptr<Monster> *pp = MapFind(m_all, uin);
 	L_COND(pp, nullptr);
-	return *pp;
+	return pp->get();
 }
 
 void MonsterMgr::Del(uint32 uin)
 {
 	auto f = [this, uin]()
 	{
-		PMonster *pp = MapFind(m_all, uin);
+		auto *pp = MapFind(m_all, uin);
 		L_COND_V(pp, "del fail");
 		(*pp)->m_Actor.m_Observer.Leave();
-		delete *pp;
 		if (!m_all.erase(uin))
 		{
 			L_ERROR("del fail");

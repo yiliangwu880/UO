@@ -1,10 +1,6 @@
 #pragma once
 #include "BaseState.h"
 
-
-
-
-
 //例如死骑大，
 class State1 : public BaseState, public ActorSubCom<State1>
 {
@@ -13,13 +9,13 @@ public:
 
 public:
 	State1(Actor &actor);
-	void Init(const vector<any> &cfg);
+	virtual void Init(const vector<any> &cfg) override;
 	void Fun();
 	void OnSave(DbPlayer &data);
 private:
 
 };
-DEF_STATE_ID(State1);
+
 
 //多重效果同时独立存在的 state，比如哈斯卡 debuff
 class StateHSKDeBuff : public BaseState, public ActorSubCom<StateHSKDeBuff>
@@ -43,9 +39,9 @@ class StateHSKDeBuffCombine : public BaseState, public ActorSubCom<StateHSKDeBuf
 public:
 	StateHSKDeBuffCombine(Actor &actor);
 
-	void Init(const vector<any> &cfg);
+	virtual void Init(const vector<any> &cfg) override;
 private:
 
 };
-DEF_STATE_ID(StateHSKDeBuffCombine);
+
 

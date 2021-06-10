@@ -4,7 +4,7 @@
 
 class NpcMgr : public Singleton<NpcMgr>
 {
-	unordered_map<uint32, Npc *> m_all;
+	unordered_map<uint32, shared_ptr<Npc>> m_all;
 public:
 	Npc *Create();
 	Npc *Find(uint32 uin);

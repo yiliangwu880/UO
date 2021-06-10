@@ -122,42 +122,42 @@ void PacketHandlers::Init()
 	////////////from scripte file//////////
 
 	Register(0xFA, 1, true, UOStoreRequest);
-	Register(0x66, 0, true, new OnPacketReceive(XmlTextEntryBook.ContentChange));
-	Register(0x06, 5, true, new OnPacketReceive(XmlAttach.UseReq));
-	Register(0xDA, 0, true, new OnPacketReceive(OnPacket));
-	Register(0xD4, 0, true, new OnPacketReceive(HeaderChange));
-	Register(0x66, 0, true, new OnPacketReceive(ContentChange));
-	Register(0x93, 99, true, new OnPacketReceive(OldHeaderChange));
-	Register(0xF1, 0, false, new OnPacketReceive(OnReceive));
+	Register(0x66, 0, true,  OnPacketReceive(XmlTextEntryBook.ContentChange));
+	Register(0x06, 5, true,  OnPacketReceive(XmlAttach.UseReq));
+	Register(0xDA, 0, true,  OnPacketReceive(OnPacket));
+	Register(0xD4, 0, true,  OnPacketReceive(HeaderChange));
+	Register(0x66, 0, true,  OnPacketReceive(ContentChange));
+	Register(0x93, 99, true,  OnPacketReceive(OldHeaderChange));
+	Register(0xF1, 0, false,  OnPacketReceive(OnReceive));
 	Register(0xB5, 0x40, true, OpenChatWindowRequest);
 	Register(0xB3, 0, true, ChatAct);
 	Register(0xD9, 0x10C, false, OnReceive);
-	Register(0xF0, 0, false, new OnPacketReceive(DecodeBundledPacket));
-	Register(0x71, 0, true, new OnPacketReceive(BBClientRequest));
-	Register(0x56, 11, true, new OnPacketReceive(OnMapCommand));
+	Register(0xF0, 0, false,  OnPacketReceive(DecodeBundledPacket));
+	Register(0x71, 0, true,  OnPacketReceive(BBClientRequest));
+	Register(0x56, 11, true,  OnPacketReceive(OnMapCommand));
 
-	PacketHandlers.RegisterExtended(0x1E, true, new OnPacketReceive(QueryDesignDetails));
-	PacketHandlers.RegisterExtended(0x2A, true, new OnPacketReceive(HeritageTransform));
-	PacketHandlers.RegisterExtended(0x33, true, new OnPacketReceive(MultiMouseMovementRequest));
+	PacketHandlers.RegisterExtended(0x1E, true,  OnPacketReceive(QueryDesignDetails));
+	PacketHandlers.RegisterExtended(0x2A, true,  OnPacketReceive(HeritageTransform));
+	PacketHandlers.RegisterExtended(0x33, true,  OnPacketReceive(MultiMouseMovementRequest));
 
-	PacketHandlers.RegisterEncoded(0x32, true, new OnEncodedPacketReceive(QuestButton));
-	PacketHandlers.RegisterEncoded(0x1E, true, new OnEncodedPacketReceive(EquipLastWeaponRequest));
-	PacketHandlers.RegisterEncoded(0x32, true, new OnEncodedPacketReceive(XmlQuest.QuestButton));
-	PacketHandlers.RegisterEncoded(0x02, true, new OnEncodedPacketReceive(Designer_Backup));
-	PacketHandlers.RegisterEncoded(0x03, true, new OnEncodedPacketReceive(Designer_Restore));
-	PacketHandlers.RegisterEncoded(0x04, true, new OnEncodedPacketReceive(Designer_Commit));
-	PacketHandlers.RegisterEncoded(0x05, true, new OnEncodedPacketReceive(Designer_Delete));
-	PacketHandlers.RegisterEncoded(0x06, true, new OnEncodedPacketReceive(Designer_Build));
-	PacketHandlers.RegisterEncoded(0x0C, true, new OnEncodedPacketReceive(Designer_Close));
-	PacketHandlers.RegisterEncoded(0x0D, true, new OnEncodedPacketReceive(Designer_Stairs));
-	PacketHandlers.RegisterEncoded(0x0E, true, new OnEncodedPacketReceive(Designer_Sync));
-	PacketHandlers.RegisterEncoded(0x10, true, new OnEncodedPacketReceive(Designer_Clear));
-	PacketHandlers.RegisterEncoded(0x12, true, new OnEncodedPacketReceive(Designer_Level));
+	PacketHandlers.RegisterEncoded(0x32, true,  OnEncodedPacketReceive(QuestButton));
+	PacketHandlers.RegisterEncoded(0x1E, true,  OnEncodedPacketReceive(EquipLastWeaponRequest));
+	PacketHandlers.RegisterEncoded(0x32, true,  OnEncodedPacketReceive(XmlQuest.QuestButton));
+	PacketHandlers.RegisterEncoded(0x02, true,  OnEncodedPacketReceive(Designer_Backup));
+	PacketHandlers.RegisterEncoded(0x03, true,  OnEncodedPacketReceive(Designer_Restore));
+	PacketHandlers.RegisterEncoded(0x04, true,  OnEncodedPacketReceive(Designer_Commit));
+	PacketHandlers.RegisterEncoded(0x05, true,  OnEncodedPacketReceive(Designer_Delete));
+	PacketHandlers.RegisterEncoded(0x06, true,  OnEncodedPacketReceive(Designer_Build));
+	PacketHandlers.RegisterEncoded(0x0C, true,  OnEncodedPacketReceive(Designer_Close));
+	PacketHandlers.RegisterEncoded(0x0D, true,  OnEncodedPacketReceive(Designer_Stairs));
+	PacketHandlers.RegisterEncoded(0x0E, true,  OnEncodedPacketReceive(Designer_Sync));
+	PacketHandlers.RegisterEncoded(0x10, true,  OnEncodedPacketReceive(Designer_Clear));
+	PacketHandlers.RegisterEncoded(0x12, true,  OnEncodedPacketReceive(Designer_Level));
 
-	PacketHandlers.RegisterEncoded(0x13, true, new OnEncodedPacketReceive(Designer_Roof)); // Samurai Empire roof
-	PacketHandlers.RegisterEncoded(0x14, true, new OnEncodedPacketReceive(Designer_RoofDelete)); // Samurai Empire roof
+	PacketHandlers.RegisterEncoded(0x13, true,  OnEncodedPacketReceive(Designer_Roof)); // Samurai Empire roof
+	PacketHandlers.RegisterEncoded(0x14, true,  OnEncodedPacketReceive(Designer_RoofDelete)); // Samurai Empire roof
 
-	PacketHandlers.RegisterEncoded(0x1A, true, new OnEncodedPacketReceive(Designer_Revert));
+	PacketHandlers.RegisterEncoded(0x1A, true,  OnEncodedPacketReceive(Designer_Revert));
 
 
 #endif

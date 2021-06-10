@@ -34,3 +34,8 @@ const ActCfg * GCfg::GetActCfgMgr(uint32 id) const
 	return MapFind(m_ActCfgMgr.m_ActCfg, id);
 
 }
+
+const BuffCfg * GCfg::GetBuffCfgMgr(BuffId id) const
+{
+	return MapFind(m_BuffCfgMgr.m_BuffCfg, (uint16)id);
+}

@@ -1,15 +1,25 @@
 //管理 actor身上所有动态状态
 #pragma once
 #include "State.h"
+#include "StateDef.h"
+
+using StateCreateFun = shared_ptr<BaseState> (*)(Actor &actor);
+
+struct StateCreate : public Singleton<StateCreate>
+{
+	std::array<StateCreateFun, (uint32)StateId::MAX> m_all;
+	static void Init(bool &ret);
+};
 
 class StateMgr : public ActorSubCom<StateMgr>
 {
-	std::array<BaseState *, (uint32)StateId::MAX> m_all; //id 2 State
+	std::array<shared_ptr<BaseState>, (uint32)StateId::MAX> m_all; //id 2 State . //优先安全，不考虑效率，不用new
 	VecUint32 m_waitDelId;
 	lc::Timer m_delTm;
 public:
 	StateMgr(Actor &actor);
-	~StateMgr();
+
+	BaseState *AddStateById(StateId id, const vector<any> &cfg);
 
 	template<class State>
 	State *GetState()
@@ -18,50 +28,40 @@ public:
 		{
 			return nullptr;
 		}
-		State *p = dynamic_cast<State *>(m_all[StateTrait<State>::ID]);
+		State *p = dynamic_cast<State *>(m_all[StateTrait<State>::ID].get());
 		L_COND(p, nullptr, "dif state type use same id?");
 		return p;
 	}
 
-	//注意： 直接删除后， 别引用野指针
-	template<class State>
-	bool Del(State *p)
-	{
-		if (m_all[StateTrait<State>::ID] != nullptr)
-		{
-			delete m_all[StateTrait<State>::ID];
-			m_all[StateTrait<State>::ID] = nullptr;
-			return true;
-		}
-		return false;
-	}
 
-	template<class State>
-	void PostDel(State *p)
-	{
-		m_waitDelId.push_back(StateTrait<State>::ID);
-		m_delTm.StartTimer(1, std::bind(&StateMgr::OnDelTimer, this));
-	}
 
-	//加状态，返回新的或者旧的
-	template<class State>
-	State *AddState(const vector<any> &cfg)
-	{
-		if (nullptr == m_all[StateTrait<State>::ID])
-		{
-			State *p = new State(m_Actor);
-			m_all[StateTrait<State>::ID] = p;
-			p->Init(cfg);
-			return p;
-		}
+	void PostDel(StateId id);
 
-		State *old = dynamic_cast<State *>(m_all[StateTrait<State>::ID]);
-		L_COND(old, nullptr, "dif state type use same id?");
-		old->RetAdd(cfg);
-		return old;
-	}
+
 
 private:
 	void OnDelTimer();
 
 };
+
+
+#define DEF_STATE_ID(State)\
+template<>\
+struct StateTrait<State>\
+{\
+	const static uint32 ID = (uint32)StateId::State;\
+};\
+\
+template<>\
+struct StateIdTrait<StateId::State>\
+{\
+	static shared_ptr<BaseState> Create(Actor &actor)\
+	{\
+		return make_shared<State>(actor);\
+	}\
+};\
+\
+
+	ALL_STATE_ID
+
+#undef DEF_STATE_ID

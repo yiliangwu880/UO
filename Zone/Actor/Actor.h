@@ -9,6 +9,7 @@
 #include "./Sub/Observer.h"
 #include "./Sub/ActorSkill.h"
 #include "./Sub/ActSkill.h"
+#include "./Sub/BuffMgr.h"
 
 
 
@@ -22,6 +23,7 @@ public:
 	ActorEquip m_ActorEquip;
 	Observer m_Observer;
 	StateMgr m_StateMgr;
+	BuffMgr m_BuffMgr;
 
 public:
 	Actor(ActorOwner &owner, EntityType t= EntityType::Monster);

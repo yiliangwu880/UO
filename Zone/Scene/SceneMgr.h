@@ -4,7 +4,7 @@
 class SceneMgr : public Singleton<SceneMgr>
 {
 private:
-	unordered_map<uint32, Scene *> m_all;
+	unordered_map<uint32, shared_ptr<Scene>> m_all;
 
 public:
 	static Scene Felucca;

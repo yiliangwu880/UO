@@ -3,7 +3,7 @@
 
 class MonsterMgr : public Singleton<MonsterMgr>
 {
-	unordered_map<uint32, Monster *> m_all;
+	unordered_map<uint32, shared_ptr<Monster>> m_all;
 
 public:
 	static void OnFinishWorld();
