@@ -137,7 +137,7 @@ public:
 };
 
 //tmp Mobile
-struct Mobile
+struct MobileTmp
 {
 	int Serial=92;
 	int Body = 400;
@@ -151,7 +151,7 @@ struct Mobile
 class LoginConfirm : public Packet
 {
 public:
-	 LoginConfirm(Mobile m)
+	 LoginConfirm(MobileTmp m)
 		: base(0x1B, 37)
 	{
 		m_Stream.Write(m.Serial);
@@ -183,7 +183,7 @@ public:
 class MapChange : public Packet
 {
 public:
-	 MapChange(Mobile m)
+	 MapChange(MobileTmp m)
 		: base(0xBF)
 	{
 		EnsureCapacity(6);

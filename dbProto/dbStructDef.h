@@ -57,6 +57,7 @@ namespace db
 		uint8_t race = 0;
 		uint32 hp;
 		uint32 sceneId;
+		uint32 hue;
 	};
 
 	struct DbPlayerBase
@@ -116,6 +117,7 @@ namespace db
 	DB_FIELD(race)\
 	DB_FIELD(hp)\
 	DB_FIELD(sceneId)\
+	DB_FIELD(hue)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(DbPlayerBase)\

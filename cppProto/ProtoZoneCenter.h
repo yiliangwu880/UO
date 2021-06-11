@@ -24,6 +24,7 @@ namespace proto {
 	DB_CLASS_NAME(ReqLoginZone_sc)\
 	DB_FIELD(id)\
 	DB_FIELD(cid)\
+	DB_FIELD(isCreate)\
 	DB_FIELD(playerData)\
 	DB_CLASS_END\
 \
@@ -83,6 +84,7 @@ namespace proto {
 	{
 		const uint16_t id = 52;
 		uint64 cid = 0;
+		bool isCreate = false; //true indicate create player , and first login
 		std::string playerData; //DbPlayer pack data
 	};
 	struct RspLoginZone_cs

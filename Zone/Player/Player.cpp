@@ -12,3 +12,10 @@ Player::Player(uint64 uin, CStr &name)
 	m_BaseData.name = name;
 }
 
+void Player::SendHexStr(bool isFixed, const char *p)
+{
+	LogPacket t(isFixed);
+	t.SetHexLog(p);
+	Send(t);
+}
+

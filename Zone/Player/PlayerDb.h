@@ -13,6 +13,7 @@ public:
 		:PlayerSubCom(owner)
 	{
 	}
+	void OnCreate(const DbPlayer &data);
 	void OnLoad(const DbPlayer &data);
 	void OnSave();
 	const DbPlayer &GetData() { return m_data; }

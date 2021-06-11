@@ -27,6 +27,7 @@ public:
 
 
 	void Send(Packet &msg){m_PlayerSn.Send(msg);}
+	void SendHexStr(bool isFixed, const char *p);
 
 	uint64 Uin() { return m_BaseData.m_uin; }
 	string &Name() { return m_BaseData.name; }

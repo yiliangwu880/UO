@@ -9,10 +9,11 @@ void LoginPlayer::SetState(State state)
 }
 
 
-void LoginPlayer::LoginZone(const DbPlayer &data)
+void LoginPlayer::LoginZone(const DbPlayer &data, bool isCreate)
 {
 	L_COND_V(None == m_State);
 	proto::ReqLoginZone_sc req;
+	req.isCreate = isCreate;
 	req.cid = m_owner.m_CPlayerSn.GetSid().cid;
 	db::TableCfg::Ins().Pack(data, req.playerData);
 	m_owner.SendToZone(req);

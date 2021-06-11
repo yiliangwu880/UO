@@ -32,4 +32,8 @@ bool Actor::EnterScene(Scene &scene, uint16 x, uint16 y)
 	return m_Observer.Enter(scene, x, y);
 }
 
+const std::string & Actor::Name() const
+{
+	return m_ActorBase.GetName();
+}
 

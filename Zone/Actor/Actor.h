@@ -32,4 +32,7 @@ public:
 
 	void EnterScene(uint32 id);
 	bool EnterScene(Scene &scene, uint16 x, uint16 y);
+	uint32 GetId() const { return m_ActorBase.GetId(); };
+	uint32 Serial() const { return m_ActorBase.GetId(); };
+	const string &Name() const;
 };

@@ -15,18 +15,47 @@ namespace
 	const uint32 MAX_CHAR_NAME = 30;
 }
 
-enum class MapId
+enum class Notoriety
 {
-	None=0,
-	Felucca=1,
-	Trammel	  ,//Trammel新世界,安全，资源少
-	Ilshenar  ,
-	Malas	  ,
-	Tokuno	  ,
-	TerMur	  ,
-	Internal  ,
+	Innocent = 1,
+	Ally = 2,
+	CanBeAttacked = 3,
+	Criminal = 4,
+	Enemy = 5,
+	Murderer = 6,
+	Invulnerable = 7,
 };
 
+enum class MapId
+{
+	Felucca=0,													
+	Trammel	  ,//Trammel新世界,安全，资源少	
+	Ilshenar  ,								
+	Malas	  ,								
+	Tokuno	  ,								
+	TerMur	  ,								
+	Internal  = 0x7F,
+};
+
+//((int)Direction & 0x1) == 0x1;//true indicate diagonals. right,left,down,up
+//(((int) Direction - 1) & 0x7)  逆时针 偏移一个方向
+//(((int) Direction + 1) & 0x7) 表示顺时针 偏移一个方向
+//[CustomEnum(new[] {"North", "Right", "East", "Down", "South", "Left", "West", "Up"})]
+enum class Direction : uint8_t
+{
+	North = 0x0,
+	Right = 0x1,
+	East = 0x2,
+	Down = 0x3,
+	South = 0x4,
+	Left = 0x5,
+	West = 0x6,
+	Up = 0x7,
+
+	Mask = 0x7,
+	Running = 0x80,
+	ValueMask = 0x87
+};
 enum class ResistanceType
 {
 	Physical = 0,

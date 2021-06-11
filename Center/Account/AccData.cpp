@@ -117,7 +117,7 @@ void AccData::OnInsert(bool ret, const DbPlayer &data, any para)
 	L_COND_V(p);
 	p->m_pPlayer = *player;
 	player->m_CPlayerSn.SetSid(sn->id);
-	player->m_LoginPlayer.LoginZone(data);
+	player->m_LoginPlayer.LoginZone(data, true);
 }
 
 void AccData::SelectActor(const acc::Session &sn)

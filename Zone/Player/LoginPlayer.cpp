@@ -18,6 +18,60 @@ void LoginPlayer::SendLogin()
 		LoginConfirm rsp(m_owner.m_Actor);
 		m_owner.Send(rsp);
 	}
+	{
+		MapChange rsp(m_owner.m_Actor);
+		m_owner.Send(rsp);
+		//state.Send(new MapPatches());
+		m_owner.SendHexStr( 0, "BF 0 0 0 18 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0");
+		//state.Send(SupportedFeatures.Instantiate(state));
+		m_owner.SendHexStr(1, "B9 0 FF 92 DB");
+	}
+	{
+		MobileIncoming rsp(m_owner.m_Actor, m_owner.m_Actor);
+		m_owner.Send(rsp);
+	}
+	//m.SendEverything();
+
+	//m.CheckLightLevels(true);
+	{
+		GlobalLightLevel rsp(12);
+		m_owner.Send(rsp);
+	}
+	{
+		PersonalLightLevel rsp(m_owner.m_Actor, 0);
+		m_owner.Send(rsp);
+	}
+	{
+		LoginComplete rsp;
+		m_owner.Send(rsp);
+	}
+	{//为什么重复发一次？待分析
+		MobileIncoming rsp(m_owner.m_Actor, m_owner.m_Actor);
+		m_owner.Send(rsp);
+	} 
+	{
+		MobileStatus rsp(m_owner.m_Actor, m_owner.m_Actor);
+		m_owner.Send(rsp);
+	}
+	{
+		SetWarMode rsp(false);
+		m_owner.Send(rsp);
+	}
+	{
+		SeasonChange rsp;
+		m_owner.Send(rsp);
+	}
+	{
+		CurrentTime rsp;
+		m_owner.Send(rsp);
+	}
+	{
+		MapChange rsp(m_owner.m_Actor);
+		m_owner.Send(rsp);
+	}
+
+	//m.SendEverything();
+	L_DEBUG("Entered World");
 }
 
 void LoginPlayer::ClientDisCon()
@@ -46,8 +100,14 @@ void LoginPlayer::ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &
 	rsp.ret = true;
 	con.Send(rsp);
 
-
-	player->m_PlayerDb.OnLoad(*playerData);
+	if (msg.isCreate)
+	{
+		player->m_PlayerDb.OnCreate(*playerData);
+	}
+	else
+	{
+		player->m_PlayerDb.OnLoad(*playerData);
+	}
 	player->m_LoginPlayer.Login();
 }
 

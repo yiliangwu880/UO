@@ -6,9 +6,10 @@
 enum InsEvent
 {
 	EV_NONE = 0,
-	EV_LOAD_DB = 1,
-	EV_SAVE_DB = 2,
-	EV_BEFORE_LOGIN = 3, //player别的模块已经加载DB完成。
+	EV_CREATE_DB = 1,
+	EV_LOAD_DB = 2,
+	EV_SAVE_DB = 3,
+	EV_BEFORE_LOGIN = 4, //player别的模块已经加载DB完成。
 };
 
 namespace db
@@ -18,6 +19,10 @@ namespace db
 
 namespace su
 {
+	template<>
+	struct EventMgrTrait<EV_CREATE_DB> {
+		using Fun = void(DbPlayer &data);
+	};
 	template<>
 	struct EventMgrTrait<EV_LOAD_DB> {
 		using Fun = void(DbPlayer &data);
