@@ -8,7 +8,37 @@ namespace
 
 	void ExtendedCommand(NetState &state, PacketReader &pvSrc)
 	{
+		int packetID = pvSrc.ReadUInt16();
 
+		PacketHandler ph = GetExtendedHandler(packetID);
+
+		if (ph != null)
+		{
+			if (ph.Ingame && state.Mobile == null)
+			{
+				Utility.PushColor(ConsoleColor.Red);
+				Console.WriteLine("Client: {0}: Packet (0xBF.0x{1:X2}) Requires State Mobile", state, packetID);
+				Utility.PopColor();
+
+				state.Dispose();
+			}
+			else if (null != state.Mobile && ph.Ingame && state.Mobile.Deleted)
+			{
+				Utility.PushColor(ConsoleColor.Red);
+				Console.WriteLine("Client: {0}: Packet (0xBF.0x{1:X2}) Ivalid State Mobile", state, packetID);
+				Utility.PopColor();
+
+				state.Dispose();
+			}
+			else
+			{
+				ph.OnReceive(state, pvSrc);
+			}
+		}
+		else
+		{
+			pvSrc.Trace(state);
+		}
 	}
 	void CreateCharacter(NetState &state, PacketReader &pvSrc)
 	{
