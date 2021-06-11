@@ -389,6 +389,7 @@ protected:
 	}
 
 	Packet(int packetID, int length)
+		:m_Stream(length)
 	{
 		m_PacketID = packetID;
 		m_Length = length;
@@ -580,7 +581,7 @@ public:
 		{
 			int diff = (int)m_Stream.Length() - m_Length;
 
-			L_ERROR("Packet: %x: Bad packet length! (%d %d bytes)", m_PacketID, diff >= 0 ? "+" : "", diff);
+			L_ERROR("Packet: %x: Bad packet length! ( %d != %d bytes)", m_PacketID, m_Stream.Length(), m_Length);
 		}
 
 		//	MemoryStream ms = m_Stream.UnderlyingStream();

@@ -312,104 +312,11 @@ namespace
 
 		byte raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
 		playerBase.actorBase.race = raceID;
-		//race = Race.Races[raceID];
 
-		//if (race == null)
-		//{
-		//	race = Race.DefaultRace;
-		//}
-
-		//var info = state.CityInfo;
-		//IAccount a = state.Account;
-
-		//if (info == null || a == null || cityIndex < 0 || cityIndex >= info.Length)
-		//{
-		//	L_ERROR("");
-		//	state.Dispose();
-		//}
-		//else
-		{
-#if 0
-
-			// Check if anyone is using this account
-			//for (int i = 0; i < a.Length; ++i)
-			//{
-			//	Mobile check = a[i];
-
-			//	if (check != null && check.Map != Map.Internal)
-			//	{
-			//		Utility.PushColor(ConsoleColor.Red);
-			//		Console.WriteLine("Login: {0}: Account in use", state);
-			//		Utility.PopColor();
-			//		state.Send(new PopupMessage(PMMessage.CharInWorld));
-			//		return;
-			//	}
-			//}
-
-			state.Flags = (ClientFlags)flags;
-
-			CharacterCreatedEventArgs args = new CharacterCreatedEventArgs(
-				state,
-				a,
-				name,
-				female,
-				hue,
-				str,
-				dex,
-				intl,
-				info[cityIndex],
-				new SkillNameValue[4]
-				{
-					new SkillNameValue((SkillName)is1, vs1), new SkillNameValue((SkillName)is2, vs2),
-					new SkillNameValue((SkillName)is3, vs3), new SkillNameValue((SkillName)is4, vs4),
-				},
-				shirtHue,
-				pantsHue,
-				hairVal,
-				hairHue,
-				hairValf,
-				hairHuef,
-				prof,
-				race);
-
-			if (state.Version == null)
-			{
-				state.Send(new ClientVersionReq());
-
-				state.BlockAllPackets = true;
-			}
-
-			EventSink.InvokeCharacterCreated(args);
-
-			Mobile m = args.Mobile;
-			if (m != null)
-			{
-				state.Mobile = m;
-				m.NetState = state;
-
-				if (state.Version == null)
-				{
-					new LoginTimer(state).Start();
-				}
-				else
-				{
-					DoLogin(state);
-				}
-			}
-			else
-			{
-				state.BlockAllPackets = false;
-				state.Dispose();
-			}
-
-#endif
-
-			static su::IdCreater idCreater;
-			player.uin = idCreater.CreateId();
-			pAcc->m_AccData.CreatePlayer(player);
-
-			//DoLogin(state); //tmp code
-		}
+		static su::IdCreater idCreater;
+		player.uin = idCreater.CreateId();
+		pAcc->m_AccData.CreatePlayer(player);
+		//DoLogin(state); //tmp code
 	}
 
 }

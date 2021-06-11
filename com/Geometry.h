@@ -4,8 +4,8 @@
 struct Point3D;
 struct Point2D
 {
-	int X = 0;
-	int Y = 0;
+	uint16 X = 0;
+	uint16 Y = 0;
 
 	Point2D()
 	{
@@ -20,9 +20,9 @@ struct Point2D
 };
 struct Point3D
 {
-	int X = 0;
-	int Y = 0;
-	int Z = 0;
+	uint16 X = 0;
+	uint16 Y = 0;
+	uint16 Z = 0;
 
 	Point3D()
 	{

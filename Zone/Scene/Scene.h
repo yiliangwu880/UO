@@ -9,6 +9,12 @@ union SceneId
 		uint16 mapId;//
 		uint16 fbId; //副本id, 0 表示世界地图，不会销毁
 	};
+	SceneId() {}
+	SceneId(uint16 mapId, uint16 fbId)
+	{
+		this->mapId = mapId;
+		this->fbId = fbId;
+	}
 };
 class Scene : public Noncopyable
 {
@@ -21,7 +27,6 @@ public:
 	Aoi::Scene m_aoi;
 
 public:
-	Scene() {};
 	Scene(SceneId sceneId);
 	void Init();
 	void Init(uint16 mapId);

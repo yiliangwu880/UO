@@ -73,7 +73,7 @@ bool ExternalSvrCon::SendMsg(const char *msg, uint16 msg_len)
 	s.append(msg, msg_len);
 	{
 		//L_DEBUG("Send client len=%d, %s", msg_len, StrUtil::BinaryToHex(s).c_str());
-		L_DEBUG("Send client len=%d, %x", msg_len, (uint8)msg[0]);
+		L_DEBUG("Send client 0x%x %d, ", (uint8)msg[0], msg_len);
 	}
 	return SendData(s.c_str(), s.length());
 }
@@ -263,7 +263,7 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len, bool &isSeed)
 		{
 			return 0;
 		}
-		L_DEBUG("rev packetID,len=0x%x %d", packetID, packetLength);
+		L_DEBUG("rev client 0x%x %d", packetID, packetLength);
 		return packetLength ;
 
 	}

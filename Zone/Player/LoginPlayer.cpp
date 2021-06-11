@@ -5,7 +5,8 @@ using namespace acc;
 
 void LoginPlayer::Login()
 {
-	m_owner.m_Actor.EnterScene(SceneMgr::Felucca);
+	Scene &scene = SceneMgr::Ins().GetWorld(MapId::Felucca);
+	m_owner.m_Actor.EnterScene(scene);
 	m_owner.FireEvent<EV_BEFORE_LOGIN>(); 
 	SendLogin();
 }
@@ -13,6 +14,10 @@ void LoginPlayer::Login()
 void LoginPlayer::SendLogin()
 {
 	L_DEBUG("SendLogin");
+	{
+		LoginConfirm rsp(m_owner.m_Actor);
+		m_owner.Send(rsp);
+	}
 }
 
 void LoginPlayer::ClientDisCon()

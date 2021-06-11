@@ -70,64 +70,64 @@ namespace proto {
 	struct ReqZoneOk_cs
 	{
 		const uint16_t id = 50;
-		uint16 svrId;
+		uint16 svrId=0;
 	};
 	//for tmp test, will del
 	struct RspZoneOk_sc
 	{
 		const uint16_t id = 51;
-		uint16 svrId;
+		uint16 svrId=0;
 	};
 
 	struct ReqLoginZone_sc
 	{
 		const uint16_t id = 52;
-		uint64 cid;
+		uint64 cid = 0;
 		std::string playerData; //DbPlayer pack data
 	};
 	struct RspLoginZone_cs
 	{
 		const uint16_t id = 53;
-		uint64 uin;
-		bool ret;
+		uint64 uin=0;
+		bool ret=false;
 	};
 
 	struct ReqReLoginZone_sc
 	{
 		const uint16_t id = 54;
-		uint64 uin;
-		uint64 cid;
+		uint64 uin=0;
+		uint64 cid=0;
 	};
 	struct RspReLoginZone_cs
 	{
 		const uint16_t id = 55;
-		uint64 uin;
-		bool ret;
+		uint64 uin=0;
+		bool ret=false;
 	};
 
 
 	struct ReqZoneReserve
 	{
 		const uint16_t id = 154;
-		uint64 uin;
-		uint16_t srcSvrId;
-		uint16_t dstZoneId;
-		uint32_t sceneId;
+		uint64 uin=0;
+		uint16_t srcSvrId=0;
+		uint16_t dstZoneId=0;
+		uint32_t sceneId=0;
 	};
 	struct RspZoneReserve
 	{
 		const uint16_t id = 155;
-		uint64 uin;
-		uint16_t srcZoneId;
-		bool ret;
+		uint64 uin=0;
+		uint16_t srcZoneId=0;
+		bool ret=false;
 	};
 
 	//zone 请求切换 zone, zone , center 之间都可以互相发送
 	struct ReqTranZone
 	{
 		const uint16_t id = 156;
-		uint16_t zoneId;
-		uint64 uin;
+		uint16_t zoneId=0;
+		uint64 uin=0;
 		std::string playerData; //DbPlayer pack data
 	};
 

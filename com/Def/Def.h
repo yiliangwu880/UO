@@ -15,6 +15,18 @@ namespace
 	const uint32 MAX_CHAR_NAME = 30;
 }
 
+enum class MapId
+{
+	None=0,
+	Felucca=1,
+	Trammel	  ,//Trammel新世界,安全，资源少
+	Ilshenar  ,
+	Malas	  ,
+	Tokuno	  ,
+	TerMur	  ,
+	Internal  ,
+};
+
 enum class ResistanceType
 {
 	Physical = 0,

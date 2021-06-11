@@ -3,6 +3,7 @@
 ActorBase::ActorBase(Actor &actor)
 	:ActorSubCom<ActorBase>(actor.m_owner, actor)
 {
+	m_id = CreaeActorId();
 	Reg<EV_LOAD_DB>(&ActorBase::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorBase::OnSave);
 
@@ -10,32 +11,39 @@ ActorBase::ActorBase(Actor &actor)
 void ActorBase::OnLoad(DbPlayer &data)
 {
 	const DbActorBase &dbBase = data.actor.actorBase;
-	m_str     = dbBase.str;
-	m_dex     = dbBase.dex;
-	m_intl    = dbBase.intl;
-	m_pos.X   = dbBase.x;
-	m_pos.Y   = dbBase.y;
-	m_pos.Z   = dbBase.z;
-	m_female  = m_female;
-	m_race    = m_race;
-}
-
-void ActorBase::InitMonster(const MonsterInit &data)
-{
-	m_str = data.cfg->str;
-	m_dex = data.cfg->dex;
-	m_intl = data.cfg->intl;
-	m_hp = m_str;
+	m_data     = dbBase;
 }
 
 void ActorBase::OnSave(DbPlayer &data)
 {
 	DbActorBase &dbBase = data.actor.actorBase;
-	dbBase.str  = m_str;
-	dbBase.dex  = m_dex;
-	dbBase.intl = m_intl;
-	dbBase.x = m_pos.X;
-	dbBase.y = m_pos.Y;
-	dbBase.z = m_pos.Z;
+	dbBase = m_data;
 }
 
+
+uint32 ActorBase::CreaeActorId()
+{
+// uint32 可以存放, 假设秒一个id
+//4,294,967,295 sec
+//= 49,710 天
+// = 136年
+
+	static uint32 idSeed = 0;
+	idSeed++;
+	return idSeed;
+}
+
+void ActorBase::InitMonster(const MonsterInit &data)
+{
+	m_data.str = data.cfg->str;
+	m_data.dex = data.cfg->dex;
+	m_data.intl = data.cfg->intl;
+	m_data.hp = m_data.str;
+}
+
+void ActorBase::SetPos(const Point3D &pos)
+{
+	m_data.x = pos.X;
+	m_data.y = pos.Y;
+	m_data.z = pos.Z;
+}

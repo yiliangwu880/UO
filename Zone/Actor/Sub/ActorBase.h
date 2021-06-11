@@ -5,22 +5,23 @@
 
 class ActorBase : public ActorSubCom<ActorBase>
 {
-	uint16 m_str = 0;
-	uint16 m_dex = 0;
-	uint16 m_intl = 0;
-	uint16 m_x = 0, m_y = 0, m_z = 0;
-	bool m_female = false;
-	uint8_t m_race = 0;
-	Point3D m_pos; 
-	uint32 m_hp = 0;
+	uint32 m_id = 0; //actorΨһ
+	DbActorBase m_data;
+
 
 public:
 	ActorBase(Actor &actor);
 	void InitMonster(const MonsterInit &data);
-	const Point3D &GetPos() { return m_pos; };
-	void SetPos(const Point3D &pos) { m_pos = pos;};
+	Point3D GetPos() const { return Point3D(m_data.x,m_data.y, m_data.z); };
+	void SetPos(const Point3D &pos);
+	const DbActorBase &GetData() const { return m_data; }
+	uint32 GetId() const { return m_id; };
+	void SetSceneId(uint32 id)  { m_data.sceneId = id; }
+	uint32 GetSceneId() const { return m_data.sceneId; }
 
 private:
 	void OnLoad(DbPlayer &data);
 	void OnSave(DbPlayer &data);
+
+	static uint32 CreaeActorId();
 };

@@ -1,20 +1,41 @@
 #include "SceneMgr.h"
 #include "AppMgr.h"
 
-using PScene = Scene *;
 
-Scene SceneMgr::Felucca;
 
 GRegEvent(EV_SVR_START, SceneMgr::Start);
 void SceneMgr::Start(bool &ret)
 {
-	SceneMgr::Felucca.Init();
-
-
+	SceneMgr::Ins().InitWorld(MapId::Felucca);
+	SceneMgr::Ins().InitWorld(MapId::Trammel);
+	SceneMgr::Ins().InitWorld(MapId::Ilshenar);
+	SceneMgr::Ins().InitWorld(MapId::Malas);
+	SceneMgr::Ins().InitWorld(MapId::Tokuno);
+	SceneMgr::Ins().InitWorld(MapId::TerMur);
+	SceneMgr::Ins().InitWorld(MapId::Internal);
 
 	FireEvent<EV_FINISH_WORLD_SCENE>();
 }
 
+void SceneMgr::InitWorld(MapId mapId)
+{
+	SceneId sceneId;
+	sceneId.fbId = 0;
+	sceneId.mapId = (uint16)MapId::Felucca;
+	shared_ptr<Scene> p = make_shared<Scene>(sceneId);
+	SceneMgr::Ins().m_all.insert(make_pair(sceneId.id, p));
+}
+
+Scene &SceneMgr::GetWorld(MapId mapId)
+{
+	SceneId id((uint16)mapId, 0);
+	Scene *p =  Find(id.id);
+	if (nullptr == p)
+	{
+		L_FATAL("can't find world");
+	}
+	return *p;
+}
 
 Scene * SceneMgr::CreateFb(uint16 mapId)
 {

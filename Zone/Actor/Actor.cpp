@@ -22,14 +22,14 @@ void Actor::EnterScene(uint32 id)
 	Scene *p = SceneMgr::Ins().Find(id);
 	L_COND_V(p);
 	
-	auto &pos = m_ActorBase.GetPos();
-	m_Observer.Enter(p->m_aoi, pos.X, pos.Y);
+	Point3D pos = m_ActorBase.GetPos();
+	m_Observer.Enter(*p, pos.X, pos.Y);
 }
 
 bool Actor::EnterScene(Scene &scene, uint16 x, uint16 y)
 {
 	m_ActorBase.SetPos(Point3D(x, y, 0));
-	return m_Observer.Enter(scene.m_aoi, x, y);
+	return m_Observer.Enter(scene, x, y);
 }
 
 

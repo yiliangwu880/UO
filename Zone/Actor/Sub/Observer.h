@@ -11,4 +11,6 @@ private:
 
 public:
 	Observer(Actor &actor, EntityType t);
+	bool Enter(Scene &scene, uint16_t x, uint16_t y);
+	bool Leave();
 };

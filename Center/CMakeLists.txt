@@ -10,6 +10,7 @@ INCLUDE_DIRECTORIES(after  ./)
 INCLUDE_DIRECTORIES(after  ./Mgr/)
 INCLUDE_DIRECTORIES(after  ./DynamicCfg/)
 INCLUDE_DIRECTORIES(after  ./StaticCfg/)
+INCLUDE_DIRECTORIES(after  ./Client/)
 
 # 查找当前目录下的所有源文件
 # 并将名称保存到 DIR_SRCS 变量
