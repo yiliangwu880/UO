@@ -1,6 +1,6 @@
 #pragma once
 #include "dbTableDef.h"
-#include "AccMgr.h"
+#include "ZoneAccMgr.h"
 #include "MsgDispatch.h"
 #include "LoginPlayer.h"
 #include "SceneTran.h"

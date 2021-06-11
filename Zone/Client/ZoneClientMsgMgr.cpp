@@ -6,15 +6,29 @@
 namespace
 {
 
+	void ExtendedCommand(NetState &state, PacketReader &pvSrc)
+	{
+
+	}
 	void CreateCharacter(NetState &state, PacketReader &pvSrc)
 	{
 
 	}
+	void ScreenSize(NetState &state, PacketReader &pvSrc)
+	{
 
+	}
 }
 void PacketHandlers::Init()
 {
 	m_Handlers.resize(numeric_limits<uint8_t>::max());
+
+
+	Register(0xBF, 0, true, ExtendedCommand); //16位的消息号，
+
+	////////////////
+	RegisterExtended(0x05, false, ScreenSize);
+
 #if 0
 
 	//抄C# ServUO
@@ -173,11 +187,22 @@ void PacketHandlers::Register(uint8_t packetID, int length, bool ingame, OnPacke
 	m_Handlers[packetID] = PacketHandler(packetID, length, ingame, onReceive);
 }
 
+void PacketHandlers::RegisterExtended(uint8_t packetID, bool ingame, OnPacketReceive onReceive)
+{
+	auto it = m_ExtendedHandlers.find(packetID);
+	if (it != m_ExtendedHandlers.end())
+	{
+		L_ERROR("repeated reg packetId %d", packetID);
+		return;
+	}
+	m_ExtendedHandlers[packetID] = PacketHandler(packetID, length, ingame, onReceive);
+}
+
 PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
 {
 	if (packetID >= (int)m_Handlers.size())
 	{
-		L_ERROR("unknow packetId %d", packetID);
+		L_ERROR("unknow packetId 0x%x", packetID);
 		return nullptr;
 	}
 	PacketHandler *p = &m_Handlers[packetID];
@@ -186,4 +211,9 @@ PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
 		return nullptr;
 	}
 	return p;
+}
+
+PacketHandler * PacketHandlers::GetExtendedHandler(uint8_t packetID)
+{
+	return MapFind(m_ExtendedHandlers, packetID);
 }

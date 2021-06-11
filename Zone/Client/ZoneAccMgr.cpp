@@ -1,4 +1,4 @@
-#include "AccMgr.h"
+#include "ZoneAccMgr.h"
 #include "DynCfgMgr.h"
 #include "GlobalEvent.h"
 #include "ZoneMgr.h"
@@ -40,7 +40,7 @@ void AccMgr::OnRegResult(uint16 svr_id)
 //接收client 请求消息
 void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint16 msg_len)
 {
-	L_INFO("OnRevClientMsg. cmd=%x", cmd);
+	L_INFO("rev. cmd=%x", cmd);
 	L_COND_V(msg_len > 0);
 
 	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
