@@ -2,7 +2,7 @@
 
 ItemCfgMgr::ItemCfgMgr()
 	:m_ItemCfg({
-			{1, { 1 }},
+			{0, { 1 }},
 			{1, { 1 }}
 		})
 	, m_WeaponCfg({

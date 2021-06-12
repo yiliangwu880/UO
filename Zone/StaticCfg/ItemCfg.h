@@ -1,6 +1,6 @@
 #pragma once
 
-
+//wait del
 enum class ItemType
 {
 	None,
@@ -18,7 +18,7 @@ enum class WeaponType
 struct ItemCfg
 {
 	uint16 id;
-	ItemType type;
+	uint16 hue;
 };
 
 struct WeaponCfg
