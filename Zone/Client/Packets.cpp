@@ -249,7 +249,9 @@ MobileStatus::MobileStatus(Mobile &beholder, Mobile &beheld)
 {
 	CStr &name = beheld.Name();
 	const DbActorBase &d = beheld.m_ActorBase.GetData();
+	const DbActorAttr &attr = beheld.m_ActorAttr.GetData();
 	ActorBase &actorBase = beheld.m_ActorBase;
+	ActorAttr &actorAttr = beheld.m_ActorAttr;
 
 	int type;
 	bool isEnhancedClient = false; //beholder.NetState != null && beholder.NetState.IsEnhancedClient;
@@ -286,11 +288,11 @@ MobileStatus::MobileStatus(Mobile &beholder, Mobile &beheld)
 
 	if (&beholder == &beheld)
 	{
-		WriteAttr(actorBase.Hits(), actorBase.HitsMax());
+		WriteAttr(actorAttr.Hits(), actorAttr.HitsMax());
 	}
 	else
 	{
-		WriteAttrNorm(actorBase.Hits(), actorBase.HitsMax());
+		WriteAttrNorm(actorAttr.Hits(), actorAttr.HitsMax());
 	}
 
 	m_Stream.Write(false);//beheld.CanBeRenamedBy(beholder)
@@ -301,12 +303,12 @@ MobileStatus::MobileStatus(Mobile &beholder, Mobile &beheld)
 	{
 		m_Stream.Write(d.female);
 
-		m_Stream.Write((short)d.str);
-		m_Stream.Write((short)d.dex);
-		m_Stream.Write((short)d.intl);
+		m_Stream.Write((short)attr.str);
+		m_Stream.Write((short)attr.dex);
+		m_Stream.Write((short)attr.intl);
 
-		WriteAttr(beheld.m_ActorBase.Stam(), beheld.m_ActorBase.StamMax());
-		WriteAttr(beheld.m_ActorBase.Mana(), beheld.m_ActorBase.ManaMax());
+		WriteAttr(beheld.m_ActorAttr.Stam(), beheld.m_ActorAttr.StamMax());
+		WriteAttr(beheld.m_ActorAttr.Mana(), beheld.m_ActorAttr.ManaMax());
 
 		m_Stream.Write(3000);//beheld.TotalGold
 		m_Stream.Write((short)10);//Core.AOS ? beheld.PhysicalResistance : (int)(beheld.ArmorRating + 0.5)

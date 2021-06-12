@@ -21,12 +21,7 @@ public:
 	uint32 GetSceneId() const { return m_data.sceneId; }
 	uint16 GetMapId() const;
 	CStr &GetName() const;
-	uint32 Hits();
-	uint32 HitsMax();
-	uint16 Mana();
-	uint16 Stam();
-	uint16 ManaMax();
-	uint16 StamMax();
+
 
 private:
 	void OnCreate(DbPlayer &data);

@@ -275,9 +275,9 @@ namespace
 
 		int genderRace = pvSrc.ReadByte();
 
-		playerBase.actorBase.str = pvSrc.ReadByte();
-		playerBase.actorBase.dex = pvSrc.ReadByte();
-		playerBase.actorBase.intl = pvSrc.ReadByte();
+		playerBase.actorAttr.str = pvSrc.ReadByte();
+		playerBase.actorAttr.dex = pvSrc.ReadByte();
+		playerBase.actorAttr.intl = pvSrc.ReadByte();
 		int is1 = pvSrc.ReadByte();
 		int vs1 = pvSrc.ReadByte();
 		int is2 = pvSrc.ReadByte();
@@ -287,7 +287,7 @@ namespace
 		int is4 = pvSrc.ReadByte();
 		int vs4 = pvSrc.ReadByte();
 
-		playerBase.playerBase.hue      = pvSrc.ReadUInt16();
+		playerBase.actorBase.hue      = pvSrc.ReadUInt16();
 		playerBase.playerBase.hairVal  = pvSrc.ReadInt16();
 		playerBase.playerBase.hairHue  = pvSrc.ReadInt16();
 		playerBase.playerBase.hairValf = pvSrc.ReadInt16();

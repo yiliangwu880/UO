@@ -10,6 +10,7 @@
 #include "./Sub/ActorSkill.h"
 #include "./Sub/ActSkill.h"
 #include "./Sub/BuffMgr.h"
+#include "./Sub/ActorAttr.h"
 
 
 
@@ -20,6 +21,7 @@ class Actor : public Noncopyable, public EventCom<Actor>
 public:
 	ActorOwner &m_owner;
 	ActorBase m_ActorBase;
+	ActorAttr m_ActorAttr;
 	ActorEquip m_ActorEquip;
 	Observer m_Observer;
 	StateMgr m_StateMgr;

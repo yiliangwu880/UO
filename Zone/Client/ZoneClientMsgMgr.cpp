@@ -6,40 +6,20 @@
 namespace
 {
 
-	void ExtendedCommand(NetState &state, PacketReader &pvSrc)
+	void ExtendedCommand(NetState &ns, PacketReader &pvSrc)
 	{
 		int packetID = pvSrc.ReadUInt16();
 
-		PacketHandler ph = GetExtendedHandler(packetID);
-
-		if (ph != null)
+		PacketHandler *ph = PacketHandlers::Ins().GetExtendedHandler(packetID);
+		if (nullptr == ph)
 		{
-			if (ph.Ingame && state.Mobile == null)
-			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Client: {0}: Packet (0xBF.0x{1:X2}) Requires State Mobile", state, packetID);
-				Utility.PopColor();
-
-				state.Dispose();
-			}
-			else if (null != state.Mobile && ph.Ingame && state.Mobile.Deleted)
-			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Client: {0}: Packet (0xBF.0x{1:X2}) Ivalid State Mobile", state, packetID);
-				Utility.PopColor();
-
-				state.Dispose();
-			}
-			else
-			{
-				ph.OnReceive(state, pvSrc);
-			}
+			L_ERROR("rev unknow extended packetId: 0x%x", packetID);
+			return;
 		}
-		else
-		{
-			pvSrc.Trace(state);
-		}
+
+		ph->m_OnReceive(ns, pvSrc);
 	}
+
 	void CreateCharacter(NetState &state, PacketReader &pvSrc)
 	{
 
@@ -49,6 +29,7 @@ namespace
 
 	}
 }
+
 void PacketHandlers::Init()
 {
 	m_Handlers.resize(numeric_limits<uint8_t>::max());
@@ -225,7 +206,7 @@ void PacketHandlers::RegisterExtended(uint8_t packetID, bool ingame, OnPacketRec
 		L_ERROR("repeated reg packetId %d", packetID);
 		return;
 	}
-	m_ExtendedHandlers[packetID] = PacketHandler(packetID, length, ingame, onReceive);
+	m_ExtendedHandlers[packetID] = PacketHandler(packetID, 0, ingame, onReceive);
 }
 
 PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
@@ -243,7 +224,7 @@ PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
 	return p;
 }
 
-PacketHandler * PacketHandlers::GetExtendedHandler(uint8_t packetID)
+PacketHandler * PacketHandlers::GetExtendedHandler(uint16_t packetID)
 {
 	return MapFind(m_ExtendedHandlers, packetID);
 }

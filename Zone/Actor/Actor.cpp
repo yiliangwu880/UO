@@ -5,6 +5,7 @@ Actor::Actor(ActorOwner &owner, EntityType t)
 	:EventCom<Actor>(owner)
 	, m_owner(owner)
 	, m_ActorBase(*this)
+	, m_ActorAttr(*this)
 	, m_ActorEquip(*this)
 	, m_Observer(*this, t)
 	, m_StateMgr(*this)
@@ -14,7 +15,8 @@ Actor::Actor(ActorOwner &owner, EntityType t)
 
 void Actor::InitMonster(const MonsterInit &data)
 {
-	m_ActorBase.InitMonster(data);
+	//fire event init monster
+	//m_ActorBase.InitMonster(data);
 }
 
 void Actor::EnterScene(uint32 id)

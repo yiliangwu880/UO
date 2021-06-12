@@ -18,7 +18,6 @@ void ActorBase::OnCreate(DbPlayer &data)
 	dbBase.z = 14;
 	dbBase.body = 400;
 	dbBase.hue = 0x000083ea;
-	dbBase.hp = 3;
 }
 
 void ActorBase::OnLoad(DbPlayer &data)
@@ -49,10 +48,7 @@ uint32 ActorBase::CreaeActorId()
 
 void ActorBase::InitMonster(const MonsterInit &data)
 {
-	m_data.str = data.cfg->str;
-	m_data.dex = data.cfg->dex;
-	m_data.intl = data.cfg->intl;
-	m_data.hp = m_data.str;
+
 }
 
 void ActorBase::SetPos(const Point3D &pos)
@@ -74,32 +70,3 @@ su::CStr & ActorBase::GetName() const
 	return m_name;
 }
 
-uint32 ActorBase::Hits()
-{
-	return m_data.hp;
-}
-
-uint32 ActorBase::HitsMax()
-{
-	return 50 + (m_data.str / 2);
-}
-
-uint16 ActorBase::Mana()
-{
-	return 50;
-}
-
-uint16 ActorBase::Stam()
-{
-	return 50;
-}
-
-uint16 ActorBase::ManaMax()
-{
-	return 50;
-}
-
-uint16 ActorBase::StamMax()
-{
-	return 50;
-}

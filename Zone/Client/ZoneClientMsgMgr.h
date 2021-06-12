@@ -25,14 +25,14 @@ struct PacketHandler
 class PacketHandlers : public Singleton<PacketHandlers>
 {
 	std::vector<PacketHandler> m_Handlers;
-	unordered_map<uint8_t, PacketHandler> m_ExtendedHandlers;
+	unordered_map<uint16_t, PacketHandler> m_ExtendedHandlers;
 public:
 	void Init();
 	//@length 包固定长度。 0表示包是可变长度
 	void Register(uint8_t packetID, int length, bool ingame, OnPacketReceive onReceive);
 	void RegisterExtended(uint8_t packetID, bool ingame, OnPacketReceive onReceive);
 	PacketHandler *GetHandler(uint8_t packetID);
-	PacketHandler *GetExtendedHandler(uint8_t packetID);
+	PacketHandler *GetExtendedHandler(uint16_t packetID);
 
 private:
 

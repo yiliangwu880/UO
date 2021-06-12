@@ -44,35 +44,39 @@ namespace db
 		std::vector<dbEquip> vecDress;//武器外穿戴物
 	};
 
-	struct DbActorBase 
+	struct DbActorAttr
 	{
 		uint16_t str = 0;
 		uint16_t dex = 0;
 		uint16_t intl = 0;
+		uint16_t hits = 0;;
+		uint16_t stam = 0;
+		uint16_t mana = 0;
+	};
 
+	struct DbActorBase 
+	{
 		uint16_t x = 0, y = 0, z = 0;
 		uint8 dir;
 		int body;
 		bool female = false;
 		uint8_t race = 0;
-		uint32 hp;
 		uint32 sceneId;
 		uint32 hue;
 	};
 
 	struct DbPlayerBase
 	{
-		uint16_t hue = 0;
 		int16_t hairVal = 0;
 		int16_t hairHue = 0;
 		int16_t hairValf = 0;
 		int16_t hairHuef = 0;
-		uint32_t sceneId = 0;
 	};
 
 	struct DbActor //monster ,npc, playeractor com use
 	{
 		DbActorBase actorBase;
+		DbActorAttr actorAttr;
 		DbPlayerBase playerBase;
 		DbEquips equips;
 	};
@@ -104,10 +108,16 @@ namespace db
 	DB_FIELD(vecDress)\
 	DB_CLASS_END\
 \
-	DB_CLASS_NAME(DbActorBase)\
+	DB_CLASS_NAME(DbActorAttr)\
 	DB_FIELD(str)\
 	DB_FIELD(dex)\
 	DB_FIELD(intl)\
+	DB_FIELD(hits)\
+	DB_FIELD(stam)\
+	DB_FIELD(mana)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(DbActorBase)\
 	DB_FIELD(x)\
 	DB_FIELD(y)\
 	DB_FIELD(z)\
@@ -115,22 +125,20 @@ namespace db
 	DB_FIELD(body)\
 	DB_FIELD(female)\
 	DB_FIELD(race)\
-	DB_FIELD(hp)\
 	DB_FIELD(sceneId)\
 	DB_FIELD(hue)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(DbPlayerBase)\
-	DB_FIELD(hue)\
 	DB_FIELD(hairVal)\
 	DB_FIELD(hairHue)\
 	DB_FIELD(hairValf)\
 	DB_FIELD(hairHuef)\
-	DB_FIELD(sceneId)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(DbActor)\
 	DB_FIELD(actorBase)\
+	DB_FIELD(actorAttr)\
 	DB_FIELD(playerBase)\
 	DB_FIELD(equips)\
 	DB_CLASS_END\
