@@ -9,5 +9,7 @@ enum class Attr
 	Str,
 	Dec,
 	Intl,
+	MinDam,
+	MaxDam,
 
 };

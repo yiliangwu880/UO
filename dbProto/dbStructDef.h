@@ -20,17 +20,35 @@ namespace db
 		uint64_t uin;
 		std::string name;
 	};
-
 	struct DbAttr 
 	{
 		Attr type;
 		int32_t v;
 	};
 
-	//武器，装备，穿戴物
-	struct dbEquip 
+	struct DbItemBase
 	{
-		uint16_t id;
+		uint16_t cfgId;
+		uint16_t x = 0, y = 0, z = 0;
+		uint32 num = 1;
+	};
+
+	struct DbItem
+	{
+		DbItemBase dbItemBase;
+		std::string data;//不同种类物品不同结构
+	};
+
+	struct DbContainer //为 DbItem::data内容
+	{
+		uint8 maxItemNum = 5; //最大物品数
+		uint8 maxNestNum = 3; //最大嵌套容器数
+		std::vector<DbItem> vecItem;
+	};
+
+	//装备，武器等穿戴物
+	struct DbEquipItem //为 DbItem::data内容
+	{
 		std::string name;//独特名
 		//其他可变属性
 		std::vector<DbAttr> attrs;
@@ -38,11 +56,10 @@ namespace db
 
 	struct DbEquips 
 	{
-		//主副手武器
-		dbEquip primary;
-		dbEquip second;
-		std::vector<dbEquip> vecDress;//武器外穿戴物
+		std::vector<DbItem> vecItem;//穿戴物, idx is Layer type
 	};
+
+
 
 	struct DbActorAttr
 	{
@@ -79,6 +96,7 @@ namespace db
 		DbActorAttr actorAttr;
 		DbPlayerBase playerBase;
 		DbEquips equips;
+		DbItem bag;
 	};
 
 
@@ -96,16 +114,13 @@ namespace db
 	DB_FIELD(v)\
 	DB_CLASS_END\
 \
-	DB_CLASS_NAME(dbEquip)\
-	DB_FIELD(id)\
+	DB_CLASS_NAME(DbEquipItem)\
 	DB_FIELD(name)\
 	DB_FIELD(attrs)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(DbEquips)\
-	DB_FIELD(primary)\
-	DB_FIELD(second)\
-	DB_FIELD(vecDress)\
+	DB_FIELD(vecItem)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(DbActorAttr)\
@@ -141,6 +156,25 @@ namespace db
 	DB_FIELD(actorAttr)\
 	DB_FIELD(playerBase)\
 	DB_FIELD(equips)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(DbItemBase)\
+	DB_FIELD(cfgId)\
+	DB_FIELD(x)\
+	DB_FIELD(y)\
+	DB_FIELD(z)\
+	DB_FIELD(num)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(DbItem)\
+	DB_FIELD(dbItemBase)\
+	DB_FIELD(data)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(DbContainer)\
+	DB_FIELD(maxItemNum)\
+	DB_FIELD(maxNestNum)\
+	DB_FIELD(vecItem)\
 	DB_CLASS_END\
 \
 

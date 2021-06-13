@@ -76,6 +76,21 @@ enum class EntityType
 	Max,
 };
 
+//一种对应一个ItemBase 派生类
+enum class ItemType
+{
+	Base,
+	Equip,
+	Tool,
+};
+
+enum class ItemQuality
+{
+	Low,
+	Normal,
+	Exceptional,
+};
+
 enum class SkillName
 {
 	Alchemy = 0,
@@ -314,4 +329,5 @@ enum class Layer : uint8
 	///     Secure Trade Layer
 	/// </summary>
 	SecureTrade = 0x1F,
+	Max,
 };

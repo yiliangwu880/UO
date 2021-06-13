@@ -1,32 +1,42 @@
 #pragma once
+#include "dbStructDef.h"
 
-//wait del
-enum class ItemType
-{
-	None,
-	Dress, //装备,衣服，可穿戴。
-	Weapon, 
-};
-
-enum class WeaponType
-{
-	Primary,
-	BothHand, //双手
-	Second, //副手
-};
 
 struct ItemCfg
 {
 	uint16 id;
+	uint32 weight; //400 == 4.00 石
+	ItemType type;
 	uint16 hue;
+
+};
+
+struct EquipCfg
+{
+	uint16 itemId; //ItemCfg id
+	Layer layer;
+	vector<DbAttr> attrs;
+
+
 };
 
 struct WeaponCfg
 {
-	uint16 id;
-	WeaponType type;
+	uint16 itemId; //ItemCfg id
+	Layer layer;
+	vector<DbAttr> attrs;
+
+	ItemQuality quality = ItemQuality::Normal;
+	int32 strReq = -1;
+	int32 dexReq = -1;
+	int32 intReq = -1;
+	int32 hitSound = -1;
+	int32 missSound = -1;
+	int32 speed = -1;
+	int32 maxRange = -1;
 };
 
+//暂时没用。衣服也用Equip
 struct DressCfg
 {
 	uint16 id;
@@ -36,7 +46,7 @@ struct DressCfg
 struct ItemCfgMgr 
 {
 	unordered_map<uint16, ItemCfg> m_ItemCfg;
+	unordered_map<uint16, EquipCfg> m_EquipCfg;
 	unordered_map<uint16, WeaponCfg> m_WeaponCfg;
-	unordered_map<uint16, DressCfg> m_DressCfg;
 	ItemCfgMgr();
 };

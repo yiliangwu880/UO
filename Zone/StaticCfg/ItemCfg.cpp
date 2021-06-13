@@ -2,16 +2,22 @@
 
 ItemCfgMgr::ItemCfgMgr()
 	:m_ItemCfg({
-			{0, { 1 }},
+	//axe
+			{0xF49, { 0xF49, 400, ItemType::Equip, }},
+			//bag
 			{1, { 1 }}
 		})
-	, m_WeaponCfg({
-			{ 1, { 1, WeaponType::BothHand } }
+	, m_EquipCfg({
+	//axe
+			{ 0xF49, { 0xF49, Layer::TwoHanded,
+		{{Attr::MinDam, 1}, {Attr::MaxDam, 1}} }
+		},
 		})
-	, m_DressCfg({
-
-			{ 1, { 1,  /*dressIdx */0 } },
-			{ 1, { 1344, 0 } },
+	, m_WeaponCfg({
+	//axe
+			{ 0xF49, { 0xF49, Layer::TwoHanded,
+		{{Attr::MinDam, 1}, {Attr::MaxDam, 1}} }
+		},
 		})
 {}
 

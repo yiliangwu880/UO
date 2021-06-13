@@ -10,6 +10,7 @@ Actor::Actor(ActorOwner &owner, EntityType t)
 	, m_Observer(*this, t)
 	, m_StateMgr(*this)
 	, m_BuffMgr(*this)
+	, m_ActorBag(*this)
 {
 }
 
