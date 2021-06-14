@@ -17,7 +17,7 @@ void ActorEquip::OnLoad(DbPlayer &dbActor)
 	DbEquips &equips = dbActor.actor.equips;
 	for (DbItem &v: equips.vecItem)
 	{
-		shared_ptr<Item> p = ItemMgr::Ins().CreateItem(v);
+		SItem p = ItemMgr::Ins().CreateItem(v);
 		if (nullptr == p)
 		{
 			L_ERROR("create item  fail");
@@ -42,10 +42,46 @@ void ActorEquip::OnLoad(DbPlayer &dbActor)
 void ActorEquip::OnSave(DbPlayer &dbActor)
 {
 	DbEquips &equips = dbActor.actor.equips;
-	for (const shared_ptr<Item> &item : m_items)
+	equips.vecItem.clear();
+	for (const SItem &item : m_items)
 	{
+		if (nullptr == item)
+		{
+			continue;
+		}
 		DbItem d;
 		item->OnSave(d);
 		equips.vecItem.push_back(d);
 	}
+}
+
+void ActorEquip::Undress(uint32 idx)
+{
+	L_COND_V(idx < m_items.size());
+	L_COND_V(m_items[idx] != nullptr);
+	m_Actor.m_ActorBag.m_Container.Add(m_items[idx]);
+	m_items[idx] = nullptr;
+}
+
+void ActorEquip::Undress(SItem item)
+{
+	L_COND_V(item != nullptr);
+	for (SItem &v : m_items)
+	{
+		if (item == v)
+		{
+			m_Actor.m_ActorBag.m_Container.Add(v);
+			v = nullptr;
+		}
+	}
+}
+
+void ActorEquip::Dress(SItem item)
+{
+	Layer layer = item->GetLayer();
+	uint32 idx = (uint32)layer;
+	L_COND_V(idx < m_items.size());
+	L_COND_V(m_items[idx] == nullptr);
+	m_items[idx] = item;
+	item->OnAdd(nullptr);
 }

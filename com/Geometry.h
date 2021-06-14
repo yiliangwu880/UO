@@ -10,7 +10,7 @@ struct Point2D
 	Point2D()
 	{
 	}
-	Point2D(int x, int y)
+	Point2D(uint16 x, uint16 y)
 	{
 		X = x;
 		Y = y;
@@ -28,14 +28,14 @@ struct Point3D
 	{
 	}
 
-	Point3D(int x, int y, int z)
+	Point3D(uint16 x, uint16 y, uint16 z)
 	{
 		X = x;
 		Y = y;
 		Z = z;
 	}
 
-	Point3D(Point2D p, int z)
+	Point3D(Point2D p, uint16 z)
 		: Point3D(p.X, p.Y, z)
 	{ }
 

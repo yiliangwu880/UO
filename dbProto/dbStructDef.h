@@ -36,7 +36,7 @@ namespace db
 	struct DbItem
 	{
 		DbItemBase dbItemBase;
-		std::string data;//不同种类物品不同结构
+		std::string data;//不同类物品的抽象数据。 比如：DbContainer， DbEquipItem
 	};
 
 	struct DbContainer //为 DbItem::data内容
@@ -151,13 +151,6 @@ namespace db
 	DB_FIELD(hairHuef)\
 	DB_CLASS_END\
 \
-	DB_CLASS_NAME(DbActor)\
-	DB_FIELD(actorBase)\
-	DB_FIELD(actorAttr)\
-	DB_FIELD(playerBase)\
-	DB_FIELD(equips)\
-	DB_CLASS_END\
-\
 	DB_CLASS_NAME(DbItemBase)\
 	DB_FIELD(cfgId)\
 	DB_FIELD(x)\
@@ -175,6 +168,14 @@ namespace db
 	DB_FIELD(maxItemNum)\
 	DB_FIELD(maxNestNum)\
 	DB_FIELD(vecItem)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(DbActor)\
+	DB_FIELD(actorBase)\
+	DB_FIELD(actorAttr)\
+	DB_FIELD(playerBase)\
+	DB_FIELD(equips)\
+	DB_FIELD(bag)\
 	DB_CLASS_END\
 \
 

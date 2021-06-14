@@ -4,11 +4,14 @@
 
 class ActorEquip : public ActorSubCom<ActorEquip>
 {
-	std::array<shared_ptr<Item>, (uint32)Layer::Max> m_items;
+	std::array<SItem, (uint32)Layer::Max> m_items;
 
 public:
 	ActorEquip(Actor &actor);
 	void OnCreate(DbPlayer &dbActor);
 	void OnLoad(DbPlayer &dbActor);
 	void OnSave(DbPlayer &dbActor);
+	void Undress(uint32 idx);
+	void Undress(SItem item);
+	void Dress(SItem item);
 };

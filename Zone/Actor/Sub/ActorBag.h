@@ -4,6 +4,7 @@
 
 class ActorBag : public ActorSubCom<ActorBag>
 {
+public:
 	Container m_Container;
 
 public:

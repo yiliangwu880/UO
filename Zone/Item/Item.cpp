@@ -17,16 +17,50 @@ void Item::OnLoad(const DbItem &dbItem)
 		p = gCfg.GetItemCfg(0);
 	}
 	m_cfg = p;
+	m_pos = Point3D(dbItem.dbItemBase.x, dbItem.dbItemBase.y, 0);
+	m_num = dbItem.dbItemBase.num;
 }
 
 void Item::OnSave(DbItem &dbItem)
 {
+	dbItem.dbItemBase.cfgId = m_cfg->id;
+	dbItem.dbItemBase.num = m_num;
+	dbItem.dbItemBase.x = m_pos.X;
+	dbItem.dbItemBase.y = m_pos.Y;
+}
 
+void Item::OnAdd(Container *parent)
+{
+	if (auto p = m_parent.lock())
+	{
+		p->Remove(this);
+	}
+
+	m_parent.reset();
+	if (nullptr != parent)
+	{
+		m_parent = parent->shared_from_this();
+	}
 }
 
 void Item::SetPos(uint16 x, uint16 y, uint16 z /*= 0*/)
 {
 	m_pos = Point3D(x, y, z);
+}
+
+ItemType Item::GetType() const
+{
+	return m_cfg->type;
+}
+
+Container *Item::GetParent()
+{
+	auto p = m_parent.lock();
+	if (nullptr == p)
+	{
+		return nullptr;
+	}
+	return p.get();
 }
 
 ItemObserver::ItemObserver(Item &item)
@@ -53,6 +87,8 @@ bool ItemObserver::Enter(Scene &scene, uint16_t x, uint16_t y)
 	{
 		m_Item.SetPos(x, y);
 	}
+
+	m_Item.OnAdd(nullptr);
 	return r;
 }
 

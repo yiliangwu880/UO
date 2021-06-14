@@ -76,10 +76,12 @@ enum class EntityType
 	Max,
 };
 
-//一种对应一个ItemBase 派生类
+//一种对应一个ItemBase 派生类.
+//注意：新物品往后加，不然需要清库
 enum class ItemType
 {
-	Base,
+	Base, //普通物，没什么特别属性
+	Container,
 	Equip,
 	Tool,
 };
