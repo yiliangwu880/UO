@@ -82,6 +82,7 @@ enum class ItemType
 {
 	Base, //普通物，没什么特别属性
 	Container,
+	Weapon,
 	Equip,
 	Tool,
 };

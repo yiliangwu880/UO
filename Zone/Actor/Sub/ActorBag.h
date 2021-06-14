@@ -11,8 +11,9 @@ public:
 	ActorBag(Actor &actor);
 
 private:
-	void OnCreate(DbPlayer &data);
-	void OnLoad(DbPlayer &data);
-	void OnSave(DbPlayer &data);
+	void OnCreate(DbActor &data);
+	void OnLoad(DbActor &data);
+	void OnSave(DbActor &data);
 
+	void OnCreatePlayer(DbPlayer &data);
 };

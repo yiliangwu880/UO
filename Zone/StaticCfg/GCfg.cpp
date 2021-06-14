@@ -11,12 +11,12 @@ const ItemCfg * GCfg::GetItemCfg(uint16 id)const
 
 const EquipCfg * GCfg::GetEquipCfg(uint16 id)const
 {
-	return MapFind(m_ItemCfgMgr.m_EquipCfg, id);
+	return MapFind(m_EquipCfgMgr.m_EquipCfg, id);
 }
 
 const WeaponCfg * GCfg::GetWeaponCfg(uint16 id)const
 {
-	return MapFind(m_ItemCfgMgr.m_WeaponCfg, id);
+	return MapFind(m_WeaponCfgMgr.m_WeaponCfg, id);
 }
 
 const MonsterCfg * GCfg::GetMonsterCfg(uint32 id)const

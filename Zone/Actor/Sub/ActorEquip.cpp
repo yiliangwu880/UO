@@ -8,13 +8,13 @@ ActorEquip::ActorEquip(Actor &actor)
 	Reg<EV_SAVE_DB>(&ActorEquip::OnSave);
 }
 
-void ActorEquip::OnCreate(DbPlayer &dbActor)
+void ActorEquip::OnCreate(DbActor &dbActor)
 {
 }
 
-void ActorEquip::OnLoad(DbPlayer &dbActor)
+void ActorEquip::OnLoad(DbActor &dbActor)
 {
-	DbEquips &equips = dbActor.actor.equips;
+	DbEquips &equips = dbActor.equips;
 	for (DbItem &v: equips.vecItem)
 	{
 		SItem p = ItemMgr::Ins().CreateItem(v);
@@ -39,9 +39,9 @@ void ActorEquip::OnLoad(DbPlayer &dbActor)
 	}
 }
 
-void ActorEquip::OnSave(DbPlayer &dbActor)
+void ActorEquip::OnSave(DbActor &dbActor)
 {
-	DbEquips &equips = dbActor.actor.equips;
+	DbEquips &equips = dbActor.equips;
 	equips.vecItem.clear();
 	for (const SItem &item : m_items)
 	{

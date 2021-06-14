@@ -73,6 +73,7 @@ namespace db
 
 	struct DbActorBase 
 	{
+		std::string name;
 		uint16_t x = 0, y = 0, z = 0;
 		uint8 dir;
 		int body;
@@ -133,6 +134,7 @@ namespace db
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(DbActorBase)\
+	DB_FIELD(name)\
 	DB_FIELD(x)\
 	DB_FIELD(y)\
 	DB_FIELD(z)\

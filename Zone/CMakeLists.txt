@@ -17,6 +17,7 @@ INCLUDE_DIRECTORIES(after  ./Actor/)
 INCLUDE_DIRECTORIES(after  ./Monster/)
 INCLUDE_DIRECTORIES(after  ./Player/)
 INCLUDE_DIRECTORIES(after  ./Client/)
+INCLUDE_DIRECTORIES(after  ./Def/)
 
 # 查找当前目录下的所有源文件
 # 并将名称保存到 DIR_SRCS 变量

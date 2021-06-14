@@ -9,23 +9,23 @@ ActorAttr::ActorAttr(Actor &actor)
 
 }
 
-void ActorAttr::OnCreate(DbPlayer &data)
+void ActorAttr::OnCreate(DbActor &data)
 {
-	DbActorAttr &d = data.actor.actorAttr;
+	DbActorAttr &d = data.actorAttr;
 	d.hits = 50;
 	d.stam = 50;
 	d.mana = 50;
 }
 
-void ActorAttr::OnLoad(DbPlayer &data)
+void ActorAttr::OnLoad(DbActor &data)
 {
-	const DbActorAttr &d = data.actor.actorAttr;
+	const DbActorAttr &d = data.actorAttr;
 	m_data     = d;
 }
 
-void ActorAttr::OnSave(DbPlayer &data)
+void ActorAttr::OnSave(DbActor &data)
 {
-	data.actor.actorAttr = m_data;
+	data.actorAttr = m_data;
 }
 
 

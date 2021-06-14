@@ -14,7 +14,8 @@ public:
 	virtual void OnSave(DbItem &dbItem) override;
 
 public:
-
+	Equip() {};
+	Equip(uint16 cfgId);
 };
 
 

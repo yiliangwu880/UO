@@ -10,9 +10,9 @@ ActorBase::ActorBase(Actor &actor)
 
 }
 
-void ActorBase::OnCreate(DbPlayer &data)
+void ActorBase::OnCreate(DbActor &data)
 {
-	DbActorBase &dbBase = data.actor.actorBase;
+	DbActorBase &dbBase = data.actorBase;
 	dbBase.x = 3503;
 	dbBase.y = 2578;
 	dbBase.z = 14;
@@ -20,16 +20,16 @@ void ActorBase::OnCreate(DbPlayer &data)
 	dbBase.hue = 0x000083ea;
 }
 
-void ActorBase::OnLoad(DbPlayer &data)
+void ActorBase::OnLoad(DbActor &data)
 {
-	const DbActorBase &dbBase = data.actor.actorBase;
+	const DbActorBase &dbBase = data.actorBase;
 	m_data     = dbBase;
-	m_name = data.name;
+	m_name = data.actorBase.name;
 }
 
-void ActorBase::OnSave(DbPlayer &data)
+void ActorBase::OnSave(DbActor &data)
 {
-	DbActorBase &dbBase = data.actor.actorBase;
+	DbActorBase &dbBase = data.actorBase;
 	dbBase = m_data;
 }
 

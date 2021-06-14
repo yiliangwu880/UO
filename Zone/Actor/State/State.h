@@ -11,7 +11,7 @@ public:
 	State1(Actor &actor);
 	virtual void Init(const vector<any> &cfg) override;
 	void Fun();
-	void OnSave(DbPlayer &data);
+	void OnSave(DbActor &data);
 private:
 
 };

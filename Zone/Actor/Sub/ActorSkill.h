@@ -15,7 +15,7 @@ public:
 	ActorSkill(Actor &actor);
 
 private:
-	void OnLoad(DbPlayer &data);
-	void OnSave(DbPlayer &data);
+	void OnLoad(DbActor &data);
+	void OnSave(DbActor &data);
 
 };

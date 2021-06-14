@@ -24,9 +24,9 @@ public:
 
 
 private:
-	void OnCreate(DbPlayer &data);
-	void OnLoad(DbPlayer &data);
-	void OnSave(DbPlayer &data);
+	void OnCreate(DbActor &data);
+	void OnLoad(DbActor &data);
+	void OnSave(DbActor &data);
 
 	static uint32 CreaeActorId();
 };

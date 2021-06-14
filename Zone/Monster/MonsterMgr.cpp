@@ -17,6 +17,16 @@ void MonsterMgr::OnFinishWorld()
 		d.pos = gComCfg.GetMiscCfg().bornPos;
 		m->Init(d);
 	}
+#if 0
+	{
+		//load from db.for player's pet;
+		//	DbActor data;
+
+		//Monster *m = MonsterMgr::Ins().Create();
+		//event load db;
+		//m.init();
+	}
+#endif
 }
 
 Monster * MonsterMgr::Create()

@@ -7,12 +7,12 @@ ActorSkill::ActorSkill(Actor &actor)
 	Reg<EV_SAVE_DB>(&ActorSkill::OnSave);
 }
 
-void ActorSkill::OnLoad(DbPlayer &data)
+void ActorSkill::OnLoad(DbActor &data)
 {
 
 }
 
-void ActorSkill::OnSave(DbPlayer &data)
+void ActorSkill::OnSave(DbActor &data)
 {
 
 }

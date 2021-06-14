@@ -266,7 +266,8 @@ namespace
 		int unk2 = pvSrc.ReadInt32();
 		int unk3 = pvSrc.ReadByte();
 		player.name = pvSrc.ReadString(30);
-
+		player.actor.actorBase.name = player.name;
+			
 		pvSrc.Seek(2, SeekOrigin::Current);
 		int flags = pvSrc.ReadInt32();
 		pvSrc.Seek(8, SeekOrigin::Current);

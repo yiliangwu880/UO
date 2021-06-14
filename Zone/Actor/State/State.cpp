@@ -19,7 +19,7 @@ void State1::Init(const vector<any> &cfg)
 	m_Actor.m_StateMgr.GetState<State1>();
 }
 
-void State1::OnSave(DbPlayer &data)
+void State1::OnSave(DbActor &data)
 {
 
 }

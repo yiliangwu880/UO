@@ -8,9 +8,9 @@ class ActorEquip : public ActorSubCom<ActorEquip>
 
 public:
 	ActorEquip(Actor &actor);
-	void OnCreate(DbPlayer &dbActor);
-	void OnLoad(DbPlayer &dbActor);
-	void OnSave(DbPlayer &dbActor);
+	void OnCreate(DbActor &dbActor);
+	void OnLoad(DbActor &dbActor);
+	void OnSave(DbActor &dbActor);
 	void Undress(uint32 idx);
 	void Undress(SItem item);
 	void Dress(SItem item);

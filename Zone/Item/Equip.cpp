@@ -15,3 +15,13 @@ void Equip::OnSave(DbItem &dbItem)
 	L_COND_V(db::PackStr(m_dbEquipItem, dbItem.data));
 
 }
+
+Equip::Equip(uint16 cfgId)
+{
+	m_cfg = gCfg.GetEquipCfg(cfgId);
+	if (m_cfg == nullptr)
+	{
+		L_ERROR("find cfg fail %d", cfgId);
+		return;
+	}
+}

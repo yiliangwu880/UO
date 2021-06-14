@@ -1,6 +1,9 @@
 //zone static cfg
 #pragma once
 #include "ItemCfg.h"
+#include "WeaponCfg.h"
+#include "EquipCfg.h"
+
 #include "MonsterCfg.h"
 #include "SkillCfg.h"
 #include "ActCfg.h"
@@ -12,6 +15,8 @@ class GCfg : public Singleton<GCfg>
 	friend class ActCfgMgr;
 
 	ItemCfgMgr    m_ItemCfgMgr;
+	WeaponCfgMgr    m_WeaponCfgMgr;
+	EquipCfgMgr    m_EquipCfgMgr;
 	MonsterCfgMgr m_MonsterCfgMgr;
 	SkillCfgMgr   m_SkillCfgMgr;
 	ActCfgMgr     m_ActCfgMgr;

@@ -6,21 +6,29 @@ ActorBag::ActorBag(Actor &actor)
 	Reg<EV_LOAD_DB>(&ActorBag::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorBag::OnSave);
 	Reg<EV_CREATE_DB>(&ActorBag::OnCreate);
+	Reg<EV_CREATE_PLAYER_DB>(&ActorBag::OnCreatePlayer);
 }
 
-void ActorBag::OnCreate(DbPlayer &data)
+void ActorBag::OnCreate(DbActor &data)
 {
-	SItem item= make_shared<Weapon>(0xF49);
-	m_Container.Add(item);
 }
 
-void ActorBag::OnLoad(DbPlayer &data)
+void ActorBag::OnLoad(DbActor &data)
 {
-	m_Container.OnLoad(data.actor.bag);
+	m_Container.OnLoad(data.bag);
 }
 
-void ActorBag::OnSave(DbPlayer &data)
+void ActorBag::OnSave(DbActor &data)
 {
-	m_Container.OnSave(data.actor.bag);
+	m_Container.OnSave(data.bag);
+}
+
+void ActorBag::OnCreatePlayer(DbPlayer &data)
+{
+	{
+		SItem item = make_shared<Weapon>(0xF49);
+		m_Container.Add(item);
+	}
+	SItem item = make_shared<Equip>(1);
 }
 

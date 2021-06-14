@@ -11,7 +11,8 @@ Item::Item()
 
 void Item::OnLoad(const DbItem &dbItem)
 {
-	const ItemCfg *p = gCfg.GetItemCfg(dbItem.dbItemBase.cfgId);
+	m_cfgId = dbItem.dbItemBase.cfgId;
+	const ItemCfg *p = gCfg.GetItemCfg(m_cfgId);
 	if (nullptr == p)
 	{
 		p = gCfg.GetItemCfg(0);
@@ -23,7 +24,7 @@ void Item::OnLoad(const DbItem &dbItem)
 
 void Item::OnSave(DbItem &dbItem)
 {
-	dbItem.dbItemBase.cfgId = m_cfg->id;
+	dbItem.dbItemBase.cfgId = m_cfgId;
 	dbItem.dbItemBase.num = m_num;
 	dbItem.dbItemBase.x = m_pos.X;
 	dbItem.dbItemBase.y = m_pos.Y;

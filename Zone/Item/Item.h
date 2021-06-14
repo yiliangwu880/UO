@@ -28,12 +28,14 @@ protected:
 	Point3D m_pos;
 	uint32 m_num = 1;
 	const ItemCfg *m_cfg = nullptr;
+	uint16 m_cfgId = 0;
 
 	//below no save db
 	/////////////////////
 	uint32 m_id = 0;//memory id
 	ItemObserver m_observer;
 	weak_ptr<Container> m_parent;
+	uint32 m_hue;
 
 public:
 	virtual ~Item() {};
@@ -46,7 +48,7 @@ public:
 public:
 	Item();
 	uint32 Serial() const { return m_id; }
-	uint16 GetHue() const { return m_cfg->hue; }
+	uint32 GetHue() const { return m_hue; }
 	void SetPos(uint16 x, uint16 y, uint16 z = 0);
 	ItemType GetType() const;
 	Container *GetParent();
