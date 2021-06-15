@@ -5,7 +5,7 @@
 class ActorBag : public ActorSubCom<ActorBag>
 {
 public:
-	Container m_Container;
+	shared_ptr<Container> m_Container;
 
 public:
 	ActorBag(Actor &actor);
@@ -15,5 +15,4 @@ private:
 	void OnLoad(DbActor &data);
 	void OnSave(DbActor &data);
 
-	void OnCreatePlayer(DbPlayer &data);
 };

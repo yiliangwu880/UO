@@ -6,7 +6,7 @@
 #include "DbServer.h"
 #include "db_con.h"
 #include "BaseAppMgr.h"
-#include "Cfg/comCfg.h"
+#include "DynamicCfg/comCfg.h"
 
 using namespace su;
 using namespace lc;

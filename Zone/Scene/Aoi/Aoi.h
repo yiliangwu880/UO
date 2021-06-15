@@ -61,7 +61,7 @@ namespace Aoi
 	private:
 		virtual void OnAddObserver(Entity &other) = 0; //other 看见我
 		virtual void OnDelObserver(Entity &other) = 0; //other 看不见我
-		virtual void OnActivate() {}; //被玩家激活。 （又任意玩家在附近）
+		virtual void OnActivate() {}; //被玩家激活。 （有任意玩家在附近）
 		virtual void OnDeactivate() {};
 
 	private:

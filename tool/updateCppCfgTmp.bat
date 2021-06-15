@@ -6,10 +6,10 @@ set win_path=F:\codelib\UO
 
 
 
-xcopy /y/i/e/s   %linux_path%\Center\Cfg\* %win_path%\Center\Cfg\
-xcopy /y/i/e/s   %linux_path%\Zone\Cfg\* %win_path%\Zone\Cfg\
+xcopy /y/i/e/s   %linux_path%\Center\DynamicCfg\* %win_path%\Center\DynamicCfg\
+xcopy /y/i/e/s   %linux_path%\Zone\DynamicCfg\* %win_path%\Zone\DynamicCfg\
 xcopy /y/i/e/s   %linux_path%\dbproxy_svr\cpp_cfg\* %win_path%\dbproxy_svr\cpp_cfg\
-xcopy /y/i/e/s   %linux_path%\access_svr\acc_svr\Cfg\* %win_path%\access_svr\acc_svr\Cfg\
+xcopy /y/i/e/s   %linux_path%\access_svr\acc_svr\DynamicCfg\* %win_path%\access_svr\acc_svr\DynamicCfg\
 
 
 

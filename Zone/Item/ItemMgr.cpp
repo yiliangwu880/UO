@@ -13,7 +13,7 @@ void ItemMgr::Start(bool &ret)
 #undef EASY_CODE
 }
 
-std::shared_ptr<Item> ItemMgr::CreateItem(uint32 type)
+std::shared_ptr<Item> ItemMgr::CreateItem(uint32 type, uint16 cfgId)
 {
 	auto it = m_type2Creator.find(type);
 	if (it == m_type2Creator.end())
@@ -22,16 +22,17 @@ std::shared_ptr<Item> ItemMgr::CreateItem(uint32 type)
 		return nullptr;
 	}
 	ItemCreator f = it->second;
-	return f();
+	return f(cfgId);
 }
 
 std::shared_ptr<Item> ItemMgr::CreateItem(const DbItem &item)
 {
-	const ItemCfg *cfg = gCfg.GetItemCfg(item.dbItemBase.cfgId);
+	uint16 cfgId = item.dbItemBase.cfgId;
+	const ItemCfg *cfg = gCfg.GetItemCfg(cfgId);
 	if (nullptr == cfg)
 	{
-		L_ERROR("find item cfg fail. id=%d", item.dbItemBase.cfgId);
+		L_ERROR("find item cfg fail. id=%d", cfgId);
 		return nullptr;
 	}
-	return ItemMgr::Ins().CreateItem((uint32)cfg->type);
+	return ItemMgr::Ins().CreateItem((uint32)cfg->type, cfgId);
 }

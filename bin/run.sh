@@ -19,6 +19,7 @@ start() {
 	cd Center
 	./center d  # 后台启动 ./center d 
 	cd -
+	
 
 	cd Zone1
 	./zone d

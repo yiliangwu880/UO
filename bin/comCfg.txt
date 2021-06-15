@@ -33,5 +33,6 @@ dbproxy={
 
 testCfg={
 	needPsw = false,
+	allMap = false, //false只用一个地图，加快启动速度
 
 }

@@ -2,33 +2,39 @@
 
 ActorBag::ActorBag(Actor &actor)
 	:ActorSubCom<ActorBag>(actor.m_owner, actor)
+	, m_Container(make_shared<Container>(0xE75) )
 {
 	Reg<EV_LOAD_DB>(&ActorBag::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorBag::OnSave);
 	Reg<EV_CREATE_DB>(&ActorBag::OnCreate);
-	Reg<EV_CREATE_PLAYER_DB>(&ActorBag::OnCreatePlayer);
 }
 
 void ActorBag::OnCreate(DbActor &data)
 {
+	{
+		SItem item = make_shared<Weapon>(0xF49);
+		m_Container->Add(item);
+	}
+	if (m_Actor.m_ActorBase.GetType() == EntityType::Player)
+	{
+		{
+			SItem item = make_shared<Equip>(0x1517);
+			m_Container->Add(item);
+		}
+	}
+	//init db
+	m_Container->OnSave(data.bag);
+
 }
 
 void ActorBag::OnLoad(DbActor &data)
 {
-	m_Container.OnLoad(data.bag);
+	m_Container->OnLoad(data.bag);
 }
 
 void ActorBag::OnSave(DbActor &data)
 {
-	m_Container.OnSave(data.bag);
+	m_Container->OnSave(data.bag);
 }
 
-void ActorBag::OnCreatePlayer(DbPlayer &data)
-{
-	{
-		SItem item = make_shared<Weapon>(0xF49);
-		m_Container.Add(item);
-	}
-	SItem item = make_shared<Equip>(1);
-}
 

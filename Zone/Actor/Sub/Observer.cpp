@@ -10,6 +10,16 @@ void Observer::OnDelObserver(Entity &other)
 
 }
 
+void Observer::OnActivate()
+{
+
+}
+
+void Observer::OnDeactivate()
+{
+
+}
+
 Observer::Observer(Actor &actor, EntityType type)
 	:ActorSubCom<Observer>(actor.m_owner, actor)
 	, Aoi::Entity(type)

@@ -46,10 +46,10 @@ void CenterMgr::Init()
 		m_addr.sin_addr.s_addr = inet_addr(connect_ip);
 		m_addr.sin_port = auto_hton(connect_port);
 
-		//L_DEBUG("sin_addr = %x ", *(unsigned long *)&m_addr.sin_addr);
-		//L_DEBUG("sin_port = %x ", m_addr.sin_port);
+		//L_DEBUG("sin_addr = 0x%x ", *(unsigned long *)&m_addr.sin_addr);
+		//L_DEBUG("sin_port = 0x%x ", m_addr.sin_port);
 		m_ServerInfo.Address.Address = *(int32 *)&m_addr.sin_addr;
-		//L_DEBUG("m_ServerInfo.Address = %x", i.Address);
+		//L_DEBUG("m_ServerInfo.Address = 0x%x", i.Address);
 		m_ServerInfo.Address.Port = connect_port;
 	}
 	

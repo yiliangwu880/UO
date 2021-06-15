@@ -59,7 +59,7 @@ void ActorEquip::Undress(uint32 idx)
 {
 	L_COND_V(idx < m_items.size());
 	L_COND_V(m_items[idx] != nullptr);
-	m_Actor.m_ActorBag.m_Container.Add(m_items[idx]);
+	m_Actor.m_ActorBag.m_Container->Add(m_items[idx]);
 	m_items[idx] = nullptr;
 }
 
@@ -70,7 +70,7 @@ void ActorEquip::Undress(SItem item)
 	{
 		if (item == v)
 		{
-			m_Actor.m_ActorBag.m_Container.Add(v);
+			m_Actor.m_ActorBag.m_Container->Add(v);
 			v = nullptr;
 		}
 	}

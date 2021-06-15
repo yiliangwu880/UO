@@ -9,5 +9,8 @@ class ToolItem : public Item
 public:
 	virtual void OnLoad(const DbItem &dbItem) override;
 	virtual void OnSave(DbItem &dbItem) override;
+
+public:
+	ToolItem(uint16 cfgId);
 };
 

@@ -5,7 +5,7 @@
 #include "ToolItem.h"
 #include "Weapon.h"
 
-using ItemCreator = shared_ptr<Item> (*)();
+using ItemCreator = shared_ptr<Item> (*)(uint16 cfgId);
 
 class ItemMgr : public Singleton<ItemMgr>
 {
@@ -14,13 +14,13 @@ class ItemMgr : public Singleton<ItemMgr>
 public:
 	static void Start(bool &ret);
 	template<class T>
-	inline static shared_ptr<Item> Creator()
+	inline static shared_ptr<Item> Creator(uint16 cfgId)
 	{
-		return make_shared<T>();
+		return make_shared<T>(cfgId);
 	}
 
 public:
 	shared_ptr<Item> CreateItem(const DbItem &item);
-	shared_ptr<Item> CreateItem(uint32 type);
+	shared_ptr<Item> CreateItem(uint32 type, uint16 cfgId);
 
 };

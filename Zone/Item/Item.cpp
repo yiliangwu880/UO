@@ -1,23 +1,25 @@
 #include "ItemMgr.h"
 #include "SceneMgr.h"
 
-Item::Item()
+Item::Item(uint16 cfgId)
 	:m_observer(*this)
 {
 	static uint32 seedId = 0;
 	seedId++;
 	m_id = seedId;
+	m_cfgId = cfgId;
+	const ItemCfg *p = gCfg.GetItemCfg(cfgId);
+	if (nullptr == p)
+	{
+		L_ERROR("find item cfg error. id=%d", cfgId);
+		p = gCfg.GetItemCfg(0xE21);
+		m_cfgId = 0xE21;
+	}
+	m_cfg = p;
 }
 
 void Item::OnLoad(const DbItem &dbItem)
 {
-	m_cfgId = dbItem.dbItemBase.cfgId;
-	const ItemCfg *p = gCfg.GetItemCfg(m_cfgId);
-	if (nullptr == p)
-	{
-		p = gCfg.GetItemCfg(0);
-	}
-	m_cfg = p;
 	m_pos = Point3D(dbItem.dbItemBase.x, dbItem.dbItemBase.y, 0);
 	m_num = dbItem.dbItemBase.num;
 }

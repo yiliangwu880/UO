@@ -1,18 +1,28 @@
 #include "SceneMgr.h"
 #include "AppMgr.h"
+#include "DynCfgMgr.h"
 
 
 
 GRegEvent(EV_SVR_START, SceneMgr::Start);
 void SceneMgr::Start(bool &ret)
 {
-	SceneMgr::Ins().InitWorld(MapId::Felucca);
-	SceneMgr::Ins().InitWorld(MapId::Trammel);
-	SceneMgr::Ins().InitWorld(MapId::Ilshenar);
-	SceneMgr::Ins().InitWorld(MapId::Malas);
-	SceneMgr::Ins().InitWorld(MapId::Tokuno);
-	SceneMgr::Ins().InitWorld(MapId::TerMur);
-	SceneMgr::Ins().InitWorld(MapId::Internal);
+	//很耗效率，调试用一个地图
+	if (gDynCfg.ComCfg().testCfg.allMap)
+	{
+		SceneMgr::Ins().InitWorld(MapId::Felucca);
+		SceneMgr::Ins().InitWorld(MapId::Trammel);
+		SceneMgr::Ins().InitWorld(MapId::Ilshenar);
+		SceneMgr::Ins().InitWorld(MapId::Malas);
+		SceneMgr::Ins().InitWorld(MapId::Tokuno);
+		SceneMgr::Ins().InitWorld(MapId::TerMur);
+		SceneMgr::Ins().InitWorld(MapId::Internal);
+	}
+	else
+	{
+		L_DEBUG("init just one map Felucca");
+		SceneMgr::Ins().InitWorld(MapId::Felucca);
+	}
 
 	FireEvent<EV_FINISH_WORLD_SCENE>();
 }

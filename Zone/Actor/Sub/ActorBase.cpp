@@ -1,9 +1,10 @@
 #include "Actor.h"
 
-ActorBase::ActorBase(Actor &actor)
+ActorBase::ActorBase(Actor &actor, EntityType type)
 	:ActorSubCom<ActorBase>(actor.m_owner, actor)
 {
 	m_id = CreaeActorId();
+	m_type = type;
 	Reg<EV_LOAD_DB>(&ActorBase::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorBase::OnSave);
 	Reg<EV_CREATE_DB>(&ActorBase::OnCreate);

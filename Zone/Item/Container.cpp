@@ -43,6 +43,12 @@ void Container::OnSave(DbItem &dbItem)
 	L_COND_V(db::PackStr(dbContainer, dbItem.data));
 }
 
+Container::Container(uint16 cfgId)
+	:Item(cfgId)
+{
+
+}
+
 void Container::Add(SItem item)
 {
 	L_COND_V(EnableAdd(item));

@@ -7,11 +7,12 @@ class ActorBase : public ActorSubCom<ActorBase>
 {
 	uint32 m_id = 0; //actor
 	string m_name;
+	EntityType m_type;
 	DbActorBase m_data;
 
 
 public:
-	ActorBase(Actor &actor);
+	ActorBase(Actor &actor, EntityType type);
 	void InitMonster(const MonsterInit &data);
 	Point3D GetPos() const { return Point3D(m_data.x,m_data.y, m_data.z); };
 	void SetPos(const Point3D &pos);
@@ -21,6 +22,7 @@ public:
 	uint32 GetSceneId() const { return m_data.sceneId; }
 	uint16 GetMapId() const;
 	CStr &GetName() const;
+	EntityType GetType() const { return m_type; };
 
 
 private:

@@ -4,7 +4,7 @@
 
 #pragma once
 #include "base_include.h"
-#include "Cfg/comCfg.h"
+#include "DynamicCfg/comCfg.h"
 
 class CfgMgr : public Singleton<CfgMgr>
 {

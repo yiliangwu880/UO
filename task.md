@@ -6,14 +6,12 @@
 zone跨服协调。细节完善
 地图配置读取
 ##完善游戏内容
-	actor sub mode: 属性管理。 生命，攻防。。。. 战斗属性 和基础属性分开
 	
 
 
 #game com
 
 #acc
-	转发client消息 从 cmd, msg. 改为 msg
 	继续完善创建角色流程
 
 #db

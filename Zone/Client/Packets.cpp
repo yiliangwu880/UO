@@ -403,3 +403,15 @@ CurrentTime::CurrentTime()
 	m_Stream.Write((byte)d.tm_min);
 	m_Stream.Write((byte)d.tm_sec);
 }
+
+PingAck::PingAck(byte ping)
+	: base(0x73, 2)
+{
+	m_Stream.Write(ping);
+}
+
+GlobalLightLevel::GlobalLightLevel(int level)
+	: base(0x4F, 2)
+{
+	m_Stream.Write((byte)level);
+}

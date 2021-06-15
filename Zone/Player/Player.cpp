@@ -6,7 +6,7 @@ Player::Player(uint64 uin, CStr &name)
 	, m_PlayerSn(*this)
 	, m_SceneTran(*this)
 	, m_LoginPlayer(*this)
-	, m_Actor(*this)
+	, m_Actor(*this, EntityType::Player)
 {
 	m_BaseData.m_uin = uin;
 	m_BaseData.name = name;

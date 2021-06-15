@@ -17,6 +17,7 @@ public:
 	virtual uint16 GetItemNum() const override { return m_itemNum; }
 
 public:
+	Container(uint16 cfgId);
 	void Add(SItem item);//里面会自动调用 Remove，把item从旧容器移除
 	bool EnableAdd(SItem item) const;
 	void Remove(Item *item);

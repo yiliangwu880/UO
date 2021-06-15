@@ -5,8 +5,6 @@
 
 class ActorAttr : public ActorSubCom<ActorAttr>
 {
-	uint32 m_id = 0; //actor
-	string m_name;
 	DbActorAttr m_data;
 
 

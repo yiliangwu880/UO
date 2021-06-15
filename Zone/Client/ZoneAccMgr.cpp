@@ -40,13 +40,19 @@ void AccMgr::OnRegResult(uint16 svr_id)
 //接收client 请求消息
 void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint16 msg_len)
 {
-	L_INFO("rev. cmd=%x", cmd);
 	L_COND_V(msg_len > 0);
 
 	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
-	L_COND_V(handler, "find msg handler fail. packetId=%x", (uint8)msg[0]);
+	if (nullptr == handler)
+	{
+		L_DEBUG("find msg handler fail. packetId=0x%x", (uint8)msg[0]);
+		return;
+	}
 
-	L_DEBUG("rev packetId %x", (uint8_t)msg[0]);
+	if (0x73 != (uint8_t)msg[0])//73日志太多
+	{
+		//L_DEBUG("rev packetId 0x%x", (uint8_t)msg[0]);
+	}
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
 	NetState ns(sn, *this);
 	handler->m_OnReceive(ns, r);

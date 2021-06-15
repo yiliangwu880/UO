@@ -11,9 +11,6 @@ enum InsEvent
 	EV_LOAD_DB = 2,
 	EV_SAVE_DB = 3,
 
-	EV_CREATE_PLAYER_DB = 4,
-	EV_LOAD_PLAYER_DB = 5,
-	EV_SAVE_PLAYER_DB = 6,
 	EV_BEFORE_LOGIN = 7, //player别的模块已经加载DB完成。
 };
 
@@ -25,18 +22,8 @@ namespace db
 
 namespace su
 {
-	template<>
-	struct EventMgrTrait<EV_CREATE_PLAYER_DB> {
-		using Fun = void(DbPlayer &data);
-	};
-	template<>
-	struct EventMgrTrait<EV_LOAD_PLAYER_DB> {
-		using Fun = void(DbPlayer &data);
-	};
-	template<>
-	struct EventMgrTrait<EV_SAVE_PLAYER_DB> {
-		using Fun = void(DbPlayer &data);
-	};
+
+
 	template<>
 	struct EventMgrTrait<EV_CREATE_DB> {
 		using Fun = void(DbActor &data);

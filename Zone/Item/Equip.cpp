@@ -17,6 +17,7 @@ void Equip::OnSave(DbItem &dbItem)
 }
 
 Equip::Equip(uint16 cfgId)
+	:Item(cfgId)
 {
 	m_cfg = gCfg.GetEquipCfg(cfgId);
 	if (m_cfg == nullptr)

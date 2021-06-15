@@ -27,6 +27,9 @@ class PacketHandlers : public Singleton<PacketHandlers>
 	std::vector<PacketHandler> m_Handlers;
 	unordered_map<uint16_t, PacketHandler> m_ExtendedHandlers;
 public:
+	static void CfgInit(bool &ret);
+
+public:
 	void Init();
 	//@length 包固定长度。 0表示包是可变长度
 	void Register(uint8_t packetID, int length, bool ingame, OnPacketReceive onReceive);

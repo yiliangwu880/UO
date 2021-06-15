@@ -46,7 +46,7 @@ public:
 	virtual uint16 GetItemNum() const  { return 1; }//容器内物品数，包括嵌套的 和 容器自己
 
 public:
-	Item();
+	Item(uint16 cfgId);
 	uint32 Serial() const { return m_id; }
 	uint32 GetHue() const { return m_hue; }
 	void SetPos(uint16 x, uint16 y, uint16 z = 0);

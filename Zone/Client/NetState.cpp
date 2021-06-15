@@ -39,3 +39,11 @@ std::shared_ptr<Player> NetState::GetPlayer()
 	shared_ptr<Player> player = p->m_pPlayer.lock();
 	return player;
 }
+
+Actor *NetState::Mobile()
+{
+	ZoneSnEx *p = m_sn.GetEx<ZoneSnEx>();
+	L_COND(p, nullptr);
+	shared_ptr<Player> player = p->m_pPlayer.lock();
+	return &(player->m_Actor);
+}

@@ -17,6 +17,7 @@ void Weapon::OnSave(DbItem &dbItem)
 }
 
 Weapon::Weapon(uint16 cfgId)
+	:Item(cfgId)
 {
 	m_cfg = gCfg.GetWeaponCfg(cfgId);
 	if (m_cfg == nullptr)

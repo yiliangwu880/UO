@@ -4,7 +4,7 @@
 Actor::Actor(ActorOwner &owner, EntityType t)
 	:EventCom<Actor>(owner)
 	, m_owner(owner)
-	, m_ActorBase(*this)
+	, m_ActorBase(*this, t)
 	, m_ActorAttr(*this)
 	, m_ActorEquip(*this)
 	, m_Observer(*this, t)

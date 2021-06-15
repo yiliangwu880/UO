@@ -19,7 +19,7 @@ struct ZoneSvr
 	void Send(const Msg &msg)
 	{
 		shared_ptr<ZoneSvrCon> con = m_con.lock();
-		L_COND_V(con, "find ZoneSvrCon fail, maybe disconnect");
+		L_COND_V(con, "find ZoneSvrCon fail, maybe disconnect。 svrId=%d", m_svrId);
 		con->Send(msg);
 	}
 };

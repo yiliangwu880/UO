@@ -16,3 +16,9 @@ void ToolItem::OnSave(DbItem &dbItem)
 	L_COND_V(db::PackStr(m_num, dbItem.data));
 
 }
+
+ToolItem::ToolItem(uint16 cfgId)
+	:Item(cfgId)
+{
+
+}

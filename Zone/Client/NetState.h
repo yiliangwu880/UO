@@ -4,6 +4,7 @@
 
 class Packet;
 class Player;
+class Actor;
 //适配C# 写法
 struct NetState
 {
@@ -18,6 +19,7 @@ struct NetState
 	void Dispose();
 	void Send(Packet &packet);
 	shared_ptr<Player> GetPlayer();
+	Actor *Mobile();
 
 };
 

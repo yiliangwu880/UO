@@ -28,14 +28,14 @@ struct MobileIncoming : Packet
 	MobileIncoming(Actor &beholder, Actor &beheld);
 };
 
+struct PingAck : Packet
+{
+	PingAck(byte ping);
+};
 
 struct GlobalLightLevel : Packet
 {
-	GlobalLightLevel(int level)
-		: base(0x4F, 2)
-	{
-		m_Stream.Write((byte)level);
-	}
+	GlobalLightLevel(int level);
 };
 
 struct PersonalLightLevel : Packet
