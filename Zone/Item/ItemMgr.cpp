@@ -6,11 +6,11 @@ void ItemMgr::Start(bool &ret)
 {
 	ItemMgr::Ins().m_type2Creator[(uint32)ItemType::Base] = Creator<Item>;
 
-#define EASY_CODE(t) ItemMgr::Ins().m_type2Creator[(uint32)ItemType::t] = Creator<t>
+#define ITEM_TYPE_NAME(t) ItemMgr::Ins().m_type2Creator[(uint32)ItemType::t] = Creator<t>;
 
-	EASY_CODE(Equip);
+	ALL_ITEM_TYPE_NAME
 
-#undef EASY_CODE
+#undef ITEM_TYPE_NAME
 }
 
 std::shared_ptr<Item> ItemMgr::CreateItem(uint32 type, uint16 cfgId)

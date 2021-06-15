@@ -75,12 +75,18 @@ namespace db
 	{
 		std::string name;
 		uint16_t x = 0, y = 0, z = 0;
-		uint8 dir;
-		int body;
+		uint8 dir=0;
+		int body=0;
 		bool female = false;
 		uint8_t race = 0;
-		uint32 sceneId;
-		uint32 hue;
+		uint32 sceneId=0;
+		int hue=0;
+		uint16 faceItemID = 0;
+		int16 faceHue = 0;
+		uint16 hairItemID = 0;
+		int16 hairHue = 0;
+		uint16 facialHairItemID = 0;//Beard
+		int16 facialHairHue = 0;
 	};
 
 	struct DbPlayerBase
@@ -144,6 +150,12 @@ namespace db
 	DB_FIELD(race)\
 	DB_FIELD(sceneId)\
 	DB_FIELD(hue)\
+	DB_FIELD(faceItemID)\
+	DB_FIELD(faceHue)\
+	DB_FIELD(hairItemID)\
+	DB_FIELD(hairHue)\
+	DB_FIELD(facialHairItemID)\
+	DB_FIELD(facialHairHue)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(DbPlayerBase)\

@@ -30,5 +30,19 @@ private:
 	void OnLoad(DbActor &data);
 	void OnSave(DbActor &data);
 
-	static uint32 CreaeActorId();
+};
+
+struct HairInfo 
+{
+	static int FakeSerial(Actor &parent);
+};
+
+struct FacialHairInfo 
+{
+	static int FakeSerial(Actor &parent);
+};
+
+struct FaceInfo 
+{
+	static int FakeSerial(Actor &parent);
 };

@@ -23,7 +23,7 @@ namespace db
 	struct DbPlayer : public BaseTable
 	{
 		DbPlayer() : BaseTable(2) {}
-		uint64_t uin;
+		uint64_t uin = 0;
 		std::string name;
 		DbActor actor;
 		std::string myblob;

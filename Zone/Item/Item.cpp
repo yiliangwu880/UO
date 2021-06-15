@@ -1,12 +1,11 @@
 #include "ItemMgr.h"
 #include "SceneMgr.h"
+#include "ZoneMisc.h"
 
 Item::Item(uint16 cfgId)
 	:m_observer(*this)
 {
-	static uint32 seedId = 0;
-	seedId++;
-	m_id = seedId;
+	m_id = Serial::Ins().NewItem();
 	m_cfgId = cfgId;
 	const ItemCfg *p = gCfg.GetItemCfg(cfgId);
 	if (nullptr == p)

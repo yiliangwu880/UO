@@ -44,6 +44,8 @@ namespace
 
 		Mobile *m = state.Mobile();
 
+		MovementAck rsp(seq, Notoriety::Innocent);
+		state.Send(rsp);
 		//if ((state.Sequence == 0 && seq != 0) || !m.Move(dir))
 		//{
 		//	state.Send(new MovementRej(seq, m));

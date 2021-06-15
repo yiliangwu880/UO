@@ -80,12 +80,18 @@ enum class EntityType
 //注意：新物品往后加，不然需要清库
 enum class ItemType
 {
-	Base, //普通物，没什么特别属性
-	Container,
-	Weapon,
-	Equip,
-	Tool,
+	Base=0, //普通物，没什么特别属性
+	Container=1,
+	Weapon=2,
+	Equip=3,
+	ToolItem =4,
 };
+//所有 ItemType,其他代码会自动定义构造器
+#define ALL_ITEM_TYPE_NAME\
+	ITEM_TYPE_NAME(Container)\
+	ITEM_TYPE_NAME(Weapon)\
+	ITEM_TYPE_NAME(Equip)\
+	ITEM_TYPE_NAME(ToolItem)\
 
 enum class ItemQuality
 {

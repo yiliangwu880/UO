@@ -9,8 +9,8 @@ namespace Aoi
 	static const uint16_t SCREEN_GRID_WIDTH = 22;		///< grid宽,单位 point
 	static const uint16_t SCREEN_GRID_HEIGHT = 14;		///< grid高,单位 point
 	//2048, 2048//最大地图长度,单位 point。 x,y 0开始，索引最大值为 （MAP_MAX_POS_X-1）
-	static const uint16_t MAP_MAX_POS_X = 4000;
-	static const uint16_t MAP_MAX_POS_Y = 3000;
+	static const uint16_t MAP_MAX_POS_X = 500;
+	static const uint16_t MAP_MAX_POS_Y = 1000;
 
 	//索引从0开始
 	//MAP_SCREEN_MAX 表示 grid 索引的最大值 + 1 

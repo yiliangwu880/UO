@@ -55,6 +55,10 @@ struct LoginComplete : Packet
 		: base(0x55, 1)
 	{ }
 };
+struct MovementAck : Packet
+{
+	MovementAck(int seq, Notoriety noto);
+};
 //war or peace
 struct SetWarMode : Packet
 {

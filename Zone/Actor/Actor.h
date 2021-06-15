@@ -39,4 +39,6 @@ public:
 	uint32 GetId() const { return m_ActorBase.GetId(); };
 	uint32 Serial() const { return m_ActorBase.GetId(); };
 	const string &Name() const;
+	bool CanSee(SItem item) { return true; };
+	bool CanSee(Actor &actor) { return true; };
 };

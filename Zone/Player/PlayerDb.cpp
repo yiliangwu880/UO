@@ -5,7 +5,7 @@
 void PlayerDb::OnCreate(const DbPlayer &data)
 {
 	L_DEBUG("OnCreate");
-	L_COND_V(m_data.uin != 0, "repeated load db data");
+	L_COND_V(m_data.uin == 0, "repeated load db data");
 	m_data = data;
 	m_owner.FireEvent<EV_CREATE_DB>(m_data.actor);
 	m_owner.FireEvent<EV_LOAD_DB>(m_data.actor);

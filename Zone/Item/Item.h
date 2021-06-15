@@ -52,6 +52,7 @@ public:
 	void SetPos(uint16 x, uint16 y, uint16 z = 0);
 	ItemType GetType() const;
 	Container *GetParent();
+	uint16 GetItemID() const { return m_cfgId; }
 	
 };
 

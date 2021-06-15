@@ -4,7 +4,8 @@
 
 class ActorEquip : public ActorSubCom<ActorEquip>
 {
-	std::array<SItem, (uint32)Layer::Max> m_items;
+	using SItemArray = std::array<SItem, (uint32)Layer::Max>;
+	SItemArray m_items;
 
 public:
 	ActorEquip(Actor &actor);
@@ -14,4 +15,5 @@ public:
 	void Undress(uint32 idx);
 	void Undress(SItem item);
 	void Dress(SItem item);
+	const SItemArray &GetItems() const;
 };

@@ -50,34 +50,32 @@ MapChange::MapChange(Actor &actor)
 MobileIncoming::MobileIncoming(Actor &beholder, Actor &beheld)
 	: base(0x78)
 {
-
+	const DbActorBase &dbActoBase = beheld.m_ActorBase.GetData();
 	//可能是为了一次发送中，避免重复发送相同layer item内容
 	int m_Version = 0;
 	std::array<int, 256> m_DupedLayers = {};
 
 	++m_Version;
 
-	//var eq = beheld.Items;
-	//int count = eq.Count;
-	int count = 0;
+	auto eq = beheld.m_ActorEquip.GetItems();
+	int count = eq.size();
 
-	//if (beheld.HairItemID > 0)
-	//{
-	//	count++;
-	//}
+	if (dbActoBase.hairItemID > 0)
+	{
+		count++;
+	}
 
-	//if (beheld.FacialHairItemID > 0)
-	//{
-	//	count++;
-	//}
+	if (dbActoBase.facialHairItemID > 0)
+	{
+		count++;
+	}
 
-	//if (beheld.FaceItemID > 0)
-	//{
-	//	count++;
-	//}
+	if (dbActoBase.faceItemID > 0)
+	{
+		count++;
+	}
 
 	EnsureCapacity(23 + (count * 9));
-	const DbActorBase &dbActoBase = beheld.m_ActorBase.GetData();
 	int hue = dbActoBase.hue;
 
 	//if (beheld.SolidHueOverride >= 0)
@@ -93,29 +91,31 @@ MobileIncoming::MobileIncoming(Actor &beholder, Actor &beheld)
 	m_Stream.Write((byte)dbActoBase.dir);
 	m_Stream.Write((short)hue);
 	m_Stream.Write((byte)0x10);//m_Stream.Write((byte)beheld.GetPacketFlags());
-	m_Stream.Write((byte)Notoriety::CanBeAttacked);
-#if 0
+	m_Stream.Write((byte)Notoriety::Innocent);
 
-	for (int i = 0; i < eq.Count; ++i)
+	for (size_t i = 0; i < eq.size(); ++i)
 	{
-		Item item = eq[i];
+		SItem item = eq[i];
+		if (item == nullptr)
+		{
+			continue;
+		}
+		byte layer = (byte)item->GetLayer();
 
-		byte layer = (byte)item.Layer;
-
-		if (!item.Deleted && beholder.CanSee(item) && m_DupedLayers[layer] != m_Version)
+		if (beholder.CanSee(item) && m_DupedLayers[layer] != m_Version)
 		{
 			m_DupedLayers[layer] = m_Version;
+			L_DEBUG("send equip item， cfgid=0x%x", item->GetItemID());
+			hue = item->GetHue();
 
-			hue = item.Hue;
+			//if (beheld.SolidHueOverride >= 0)
+			//{
+			//	hue = beheld.SolidHueOverride;
+			//}
 
-			if (beheld.SolidHueOverride >= 0)
-			{
-				hue = beheld.SolidHueOverride;
-			}
+			int itemID = item->GetItemID() & 0xFFFF;
 
-			int itemID = item.ItemID & 0xFFFF;
-
-			m_Stream.Write(item.Serial);
+			m_Stream.Write(item->Serial());
 			m_Stream.Write((ushort)itemID);
 			m_Stream.Write(layer);
 
@@ -123,74 +123,61 @@ MobileIncoming::MobileIncoming(Actor &beholder, Actor &beheld)
 		}
 	}
 
-
-
-	if (beheld.HairItemID > 0)
+	if (dbActoBase.hairItemID > 0)
 	{
-		if (m_DupedLayers[(int)Layer.Hair] != m_Version)
+		if (m_DupedLayers[(int)Layer::Hair] != m_Version)
 		{
-			m_DupedLayers[(int)Layer.Hair] = m_Version;
-			hue = beheld.HairHue;
+			m_DupedLayers[(int)Layer::Hair] = m_Version;
+			hue = dbActoBase.hairHue;
 
-			if (beheld.SolidHueOverride >= 0)
-			{
-				hue = beheld.SolidHueOverride;
-			}
 
-			int itemID = beheld.HairItemID & 0xFFFF;
 
-			m_Stream.Write(HairInfo.FakeSerial(beheld));
+			int itemID = dbActoBase.hairItemID & 0xFFFF;
+
+			m_Stream.Write(HairInfo::FakeSerial(beheld));
 			m_Stream.Write((ushort)itemID);
-			m_Stream.Write((byte)Layer.Hair);
+			m_Stream.Write((byte)Layer::Hair);
 
 			m_Stream.Write((short)hue);
 		}
 	}
 
-	if (beheld.FacialHairItemID > 0)
+	if (dbActoBase.facialHairItemID > 0)
 	{
-		if (m_DupedLayers[(int)Layer.FacialHair] != m_Version)
+		if (m_DupedLayers[(int)Layer::FacialHair] != m_Version)
 		{
-			m_DupedLayers[(int)Layer.FacialHair] = m_Version;
-			hue = beheld.FacialHairHue;
+			m_DupedLayers[(int)Layer::FacialHair] = m_Version;
+			hue = dbActoBase.facialHairHue;
 
-			if (beheld.SolidHueOverride >= 0)
-			{
-				hue = beheld.SolidHueOverride;
-			}
 
-			int itemID = beheld.FacialHairItemID & 0xFFFF;
 
-			m_Stream.Write(FacialHairInfo.FakeSerial(beheld));
+			int itemID = dbActoBase.facialHairItemID & 0xFFFF;
+
+			m_Stream.Write(FacialHairInfo::FakeSerial(beheld));
 			m_Stream.Write((ushort)itemID);
-			m_Stream.Write((byte)Layer.FacialHair);
+			m_Stream.Write((byte)Layer::FacialHair);
 
 			m_Stream.Write((short)hue);
 		}
 	}
 
-	if (beheld.FaceItemID > 0)
+	if (dbActoBase.faceItemID > 0)
 	{
-		if (m_DupedLayers[(int)Layer.Face] != m_Version)
+		if (m_DupedLayers[(int)Layer::Face] != m_Version)
 		{
-			m_DupedLayers[(int)Layer.Face] = m_Version;
-			hue = beheld.FaceHue;
+			m_DupedLayers[(int)Layer::Face] = m_Version;
+			hue = dbActoBase.faceHue;
 
-			if (beheld.SolidHueOverride >= 0)
-			{
-				hue = beheld.SolidHueOverride;
-			}
+			int itemID = dbActoBase.faceItemID & 0xFFFF;
 
-			int itemID = beheld.FaceItemID & 0xFFFF;
-
-			m_Stream.Write(FaceInfo.FakeSerial(beheld));
+			m_Stream.Write(FaceInfo::FakeSerial(beheld));
 			m_Stream.Write((ushort)itemID);
-			m_Stream.Write((byte)Layer.Face);
+			m_Stream.Write((byte)Layer::Face);
 
 			m_Stream.Write((short)hue);
 		}
 	}
-#endif
+
 	m_Stream.Write(0); // terminate
 }
 
@@ -198,7 +185,7 @@ MobileUpdate::MobileUpdate(Mobile &m)
 	: base(0x20, 19)
 {
 	const auto &data = m.m_ActorBase.GetData();
-	uint32 hue = data.hue;
+	int32 hue = data.hue;
 
 	//if (m.SolidHueOverride >= 0)
 	//{
@@ -414,4 +401,11 @@ GlobalLightLevel::GlobalLightLevel(int level)
 	: base(0x4F, 2)
 {
 	m_Stream.Write((byte)level);
+}
+
+MovementAck::MovementAck(int seq, Notoriety noto)
+	: base(0x22, 3)
+{
+	m_Stream.Write((byte)seq);
+	m_Stream.Write((byte)noto);
 }

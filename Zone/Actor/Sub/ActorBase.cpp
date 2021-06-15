@@ -1,9 +1,10 @@
 #include "Actor.h"
+#include "ZoneMisc.h"
 
 ActorBase::ActorBase(Actor &actor, EntityType type)
 	:ActorSubCom<ActorBase>(actor.m_owner, actor)
 {
-	m_id = CreaeActorId();
+	m_id = Serial::Ins().NewMobile();
 	m_type = type;
 	Reg<EV_LOAD_DB>(&ActorBase::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorBase::OnSave);
@@ -14,11 +15,11 @@ ActorBase::ActorBase(Actor &actor, EntityType type)
 void ActorBase::OnCreate(DbActor &data)
 {
 	DbActorBase &dbBase = data.actorBase;
-	dbBase.x = 3503;
-	dbBase.y = 2578;
-	dbBase.z = 14;
+	dbBase.x = 296;//3503;
+	dbBase.y = 753; //2578;
+	dbBase.z = 14;//14;
 	dbBase.body = 400;
-	dbBase.hue = 0x000083ea;
+	dbBase.hue = 0xffff83ea;
 }
 
 void ActorBase::OnLoad(DbActor &data)
@@ -35,17 +36,7 @@ void ActorBase::OnSave(DbActor &data)
 }
 
 
-uint32 ActorBase::CreaeActorId()
-{
-// uint32 可以存放, 假设秒一个id
-//4,294,967,295 sec
-//= 49,710 天
-// = 136年
 
-	static uint32 idSeed = 0;
-	idSeed++;
-	return idSeed;
-}
 
 void ActorBase::InitMonster(const MonsterInit &data)
 {
@@ -71,3 +62,18 @@ su::CStr & ActorBase::GetName() const
 	return m_name;
 }
 
+
+int FaceInfo::FakeSerial(Actor &parent)
+{
+	return (0x7FFFFFFF - 0x400 - 2 - (parent.Serial() * 4));
+}
+
+int FacialHairInfo::FakeSerial(Actor &parent)
+{
+	return (0x7FFFFFFF - 0x400 - 1 - (parent.Serial() * 4));
+}
+
+int HairInfo::FakeSerial(Actor &parent)
+{
+	return (0x7FFFFFFF - 0x400 - (parent.Serial() * 4));
+}

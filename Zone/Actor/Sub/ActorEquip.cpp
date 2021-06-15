@@ -10,6 +10,16 @@ ActorEquip::ActorEquip(Actor &actor)
 
 void ActorEquip::OnCreate(DbActor &dbActor)
 {
+	DbEquips &equips = dbActor.equips;
+	if (m_Actor.m_ActorBase.GetType() == EntityType::Player)
+	{
+		{
+			SItem item = make_shared<Equip>(0x1517);
+			DbItem dbItem;
+			item->OnSave(dbItem);
+			equips.vecItem.push_back(dbItem);
+		}
+	}
 }
 
 void ActorEquip::OnLoad(DbActor &dbActor)
@@ -84,4 +94,9 @@ void ActorEquip::Dress(SItem item)
 	L_COND_V(m_items[idx] == nullptr);
 	m_items[idx] = item;
 	item->OnAdd(nullptr);
+}
+
+const ActorEquip::SItemArray & ActorEquip::GetItems() const
+{
+	return m_items;
 }
