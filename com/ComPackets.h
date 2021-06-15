@@ -124,6 +124,10 @@ public:
 	{
 		m_Stream.WriteByte(value);
 	}
+	void Write(sbyte value)
+	{
+		m_Stream.WriteByte((byte)value);
+	}
 
 	void Write(char value)
 	{
@@ -581,7 +585,7 @@ public:
 		{
 			int diff = (int)m_Stream.Length() - m_Length;
 
-			L_ERROR("Packet: %x: Bad packet length! ( %d != %d bytes)", m_PacketID, m_Stream.Length(), m_Length);
+			L_ERROR("Packet: %x: Bad packet length! ( (stream len)%d != (fixed len)%d bytes)", m_PacketID, m_Stream.Length(), m_Length);
 		}
 
 		//	MemoryStream ms = m_Stream.UnderlyingStream();

@@ -27,6 +27,7 @@ public:
 
 
 	void Send(Packet &msg){m_PlayerSn.Send(msg);}
+	//@p, 1,2字节放长度的话，只需要赋值0. 调用后会自动根据长度改变内容。
 	void SendHexStr(bool isFixed, const char *p);
 
 	uint64 Uin() { return m_BaseData.m_uin; }

@@ -8,7 +8,7 @@ namespace
 	 void DoLogin(Player &m_owner)
 	{
 		//临时复制C#响应
-		m_owner.SendHexStr( 1, "1B 0 0 0 5D 0 0 0 0 1 90 D AF A E 0 E 0 0 FF FF FF FF 0 0 0 0 1C 0 10 0 0 0 0 0 0 0 ");
+		m_owner.SendHexStr( 1, "1B 0 0 0 5F 0 0 0 0 1 90 D AF A E 0 E 0 0 FF FF FF FF 0 0 0 0 1C 0 10 0 0 0 0 0 0 0 ");
 		//EasyMsg123(s, true, "");
 		m_owner.SendHexStr( 0, "BF 0 0 0 8 1");
 		m_owner.SendHexStr( 0, "BF 0 0 0 18 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0");
@@ -73,6 +73,10 @@ void LoginPlayer::SendLogin()
 		//m_owner.SendHexStr(0, "78 0 0 0 0 0 5F 1 90 D AF A E E 0 83 EA 10 3 40 0 4 43 E 75 15 0 0 40 0 4 48 13 CC D 0 0 40 0 4 4A 1F 3 16 6 BA 40 0 4 4D 13 FF 1 0 0 40 0 4 4F 15 17 5 0 3 40 0 4 50 15 39 4 0 3 40 0 4 51 17 F 3 6 D1 7F FF FA 83 20 3B B 4 4E 7F FF FA 81 3B 49 F 83 EA 0 0 0 0 ");
 
 	}
+	{
+		MobileUpdate rsp(m_owner.m_Actor);
+		m_owner.Send(rsp);
+	}
 	//m.SendEverything();
 
 	//m.CheckLightLevels(true);
@@ -89,8 +93,8 @@ void LoginPlayer::SendLogin()
 		m_owner.Send(rsp);
 	}
 	{//为什么重复发一次？待分析
-	//	MobileIncoming rsp(m_owner.m_Actor, m_owner.m_Actor);
-		//m_owner.Send(rsp);
+		MobileIncoming rsp(m_owner.m_Actor, m_owner.m_Actor);
+		m_owner.Send(rsp);
 		//m_owner.SendHexStr(0, "78 0 0 0 0 0 5F 1 90 D AF A E E 0 83 EA 10 3 40 0 4 43 E 75 15 0 0 40 0 4 48 13 CC D 0 0 40 0 4 4A 1F 3 16 6 BA 40 0 4 4D 13 FF 1 0 0 40 0 4 4F 15 17 5 0 3 40 0 4 50 15 39 4 0 3 40 0 4 51 17 F 3 6 D1 7F FF FA 83 20 3B B 4 4E 7F FF FA 81 3B 49 F 83 EA 0 0 0 0 ");
 
 	} 

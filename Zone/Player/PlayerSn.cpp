@@ -6,11 +6,8 @@ void PlayerSn::Send(Packet &packet)
 	{//tmp log
 
 		L_DEBUG("send 0x%x, %d", (uint32)packet.PacketID(), packet.Length());
-		////if (compressionEnabled)
-		//{
-			//string str = packet.m_Stream.UnderlyingStream();
-//			L_DEBUG("before compile . len=%d, %s", str.length(), StrUtil::BinaryToHex(str).c_str());
-		//}
+		string str = packet.m_Stream.UnderlyingStream();
+		L_DEBUG("before compile . len=%d, %s", str.length(), StrUtil::BinaryToHex(str).c_str());
 	}
 	CStr &buffer = packet.Compile(true);
 	//L_DEBUG("Send client len=%d, %s", buffer.length(), StrUtil::BinaryToHex(buffer).c_str());

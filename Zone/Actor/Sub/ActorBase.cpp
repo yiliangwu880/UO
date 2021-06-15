@@ -50,6 +50,11 @@ void ActorBase::SetPos(const Point3D &pos)
 	m_data.z = pos.Z;
 }
 
+uint32 ActorBase::GetId() const
+{	
+	return m_id; 
+}
+
 uint16 ActorBase::GetMapId() const
 {
 	SceneId id;
