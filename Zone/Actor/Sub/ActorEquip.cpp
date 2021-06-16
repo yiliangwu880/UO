@@ -102,7 +102,7 @@ void ActorEquip::Dress(SItem item)
 	item->OnAdd(nullptr);
 }
 
-const ActorEquip::SItemArray & ActorEquip::GetItems() const
+ EquipSItems & ActorEquip::GetItems() 
 {
 	return m_items;
 }

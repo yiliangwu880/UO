@@ -1,12 +1,12 @@
 #pragma once
 #include "CBaseData.h"
 
-class CPlayerSn : public CPlayerSubCom
+class PlayerSnC : public CPlayerSubCom
 {
 	acc::SessionId m_sid;
 
 public:
-	CPlayerSn(CPlayer &owner)
+	PlayerSnC(PlayerC &owner)
 		:CPlayerSubCom(owner)
 	{
 	}

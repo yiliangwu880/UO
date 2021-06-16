@@ -4,7 +4,7 @@
 
 class Packet;
 class Account;
-class CPlayer;
+class PlayerC;
 //适配C# 写法
 struct NetState
 {
@@ -19,7 +19,7 @@ struct NetState
 	void Dispose();
 	void Send(Packet &packet);
 	shared_ptr<Account> GetAccount();
-	shared_ptr<CPlayer> GetPlayer();
+	shared_ptr<PlayerC> GetPlayer();
 
 };
 

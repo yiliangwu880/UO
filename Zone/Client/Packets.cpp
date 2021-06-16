@@ -565,3 +565,104 @@ StatLockInfo::StatLockInfo(Mobile &m)
 
 	m_Stream.Write((byte)lockBits);
 }
+
+SkillUpdate::SkillUpdate(ActorSkill &skills)
+	: base(0x3A)
+{
+	EnsureCapacity(6 + (skills.Length() * 9));
+
+	m_Stream.Write((byte)0x02); // type: absolute, capped
+
+	for (uint32 i = 0; i < skills.Length(); ++i)
+	{
+		Skill *p = skills.GetSkill(i);
+		if (p == nullptr)
+		{
+			L_ERROR("");
+			return;
+		}
+		Skill &s = *p;
+		double v = 100; //s.NonRacialValue;
+		int uv = (int)(v * 10);
+
+		if (uv < 0)
+		{
+			uv = 0;
+		}
+		else if (uv >= 0x10000)
+		{
+			uv = 0xFFFF;
+		}
+
+		m_Stream.Write((ushort)(s.Info.skillID + 1));
+		m_Stream.Write((ushort)uv);
+		m_Stream.Write((ushort)s.BaseFixedPoint());
+		m_Stream.Write((byte)s.Lock());
+		m_Stream.Write((ushort)s.CapFixedPoint());
+	}
+
+	m_Stream.Write((short)0); // terminate
+}
+
+std::unordered_map<int, std::shared_ptr<MessageLocalized>> MessageLocalized::cache;
+
+MessageLocalized & MessageLocalized::InstantiateGeneric(int number)
+{
+	MessageLocalized *point = nullptr;
+	auto it = cache.find(number);
+	if (it == cache.end())
+	{
+		auto s = make_shared<MessageLocalized>(Serial::MinusOne, -1, MessageType::Regular, 0x3B2, 3, number, "System", "");
+		s->SetStatic();
+		point = s.get();
+		cache.insert(make_pair(number, s));
+	}
+	else
+	{
+		shared_ptr< MessageLocalized> s = it->second;
+		point = s.get();
+	}
+
+	MessageLocalized &p = *point;
+	return p;
+}
+
+MessageLocalized::MessageLocalized(uint32 serial, int graphic, MessageType type, int hue, int font, int number, string name, string args)
+	: base(0xC1)
+{
+	if (hue == 0)
+	{
+		hue = 0x3B2;
+	}
+
+	EnsureCapacity(50 + (args.length() * 2));// 要不要*2？待研究
+
+	m_Stream.Write(serial);
+	m_Stream.Write((short)graphic);
+	m_Stream.Write((byte)type);
+	m_Stream.Write((short)hue);
+	m_Stream.Write((short)font);
+	m_Stream.Write(number);
+	m_Stream.WriteAsciiFixed(name, 30);
+	m_Stream.WriteLittleUniNull(args);
+}
+
+DisplayPaperdoll::DisplayPaperdoll(Mobile &m, string text, bool canLift)
+	: base(0x88, 66)
+{
+	byte flags = 0x00;
+
+	if (m.Warmode())
+	{
+		flags |= 0x01;
+	}
+
+	if (canLift)
+	{
+		flags |= 0x02;
+	}
+
+	m_Stream.Write(m.Serial());
+	m_Stream.WriteAsciiFixed(text, 60);
+	m_Stream.Write(flags);
+}

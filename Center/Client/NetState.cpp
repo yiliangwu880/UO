@@ -40,10 +40,10 @@ std::shared_ptr<Account> NetState::GetAccount()
 	return acc;
 }
 
-std::shared_ptr<CPlayer> NetState::GetPlayer()
+std::shared_ptr<PlayerC> NetState::GetPlayer()
 {
 	CenterSnEx *p = m_sn.GetEx<CenterSnEx>();
 	L_COND(p, nullptr);
-	shared_ptr<CPlayer> player = p->m_pPlayer.lock();
+	shared_ptr<PlayerC> player = p->m_pPlayer.lock();
 	return player;
 }

@@ -10,7 +10,7 @@ class SceneTran : public CPlayerSubCom
 	};
 	State m_State = Playing;
 public:
-	SceneTran(CPlayer &owner)
+	SceneTran(PlayerC &owner)
 		:CPlayerSubCom(owner)
 	{
 	}

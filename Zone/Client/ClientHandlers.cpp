@@ -4,6 +4,7 @@
 #include "NetState.h"
 #include "Packets.h"
 #include "ZoneMisc.h"
+#include "Actor/ActorMgr.h"
 
 
 namespace
@@ -104,11 +105,9 @@ namespace
 		int type = pvSrc.ReadByte();
 
 		uint32 serial = pvSrc.ReadInt32();
-#if 0
-
 		if (Serial::IsMobile(serial))
 		{
-			if (Mobile *m = World.FindMobile(serial))
+			if (Mobile *m = World::FindMobile(serial))
 			{
 				switch (type)
 				{
@@ -119,17 +118,17 @@ namespace
 				}
 				case 0x04: // Stats
 				{
-					m->OnStatsQuery(from);
+					m->OnStatsQuery(*from);
 					break;
 				}
 				case 0x05:
 				{
-					m->OnSkillsQuery(from);
+					m->OnSkillsQuery(*from);
 					break;
 				}
 				default:
 				{
-					pvSrc.Trace(state);
+					L_ERROR("");
 					break;
 				}
 				}
@@ -137,6 +136,9 @@ namespace
 		}
 		else if (Serial::IsItem(serial))
 		{
+			L_ERROR("unfinish");
+#if 0
+
 			IDamageable item = World.FindItem(serial) as IDamageable;
 
 			if (item != null)
@@ -145,10 +147,7 @@ namespace
 				{
 				case 0x00:
 				{
-					if (VerifyGC(state))
-					{
-						Console.WriteLine("God Client: {0}: Query 0x{1:X2} on {2} '{3}'", state, type, serial, item.Name);
-					}
+					L_ERROR("");
 
 					break;
 				}
@@ -163,17 +162,70 @@ namespace
 				}
 				default:
 				{
-					pvSrc.Trace(state);
+					L_ERROR("");
 					break;
 				}
 				}
 			}
+#endif
 		}
 
 
-#endif
 	}
+	void Empty(NetState &state, PacketReader &pvSrc)
+	{ }
 
+	void UseReq(NetState &state, PacketReader &pvSrc)
+	{
+		Mobile *p =  state.Mobile();
+		L_COND_V(p);
+		Mobile &from = *p;
+
+		if (from.IsStaff() || Core::TickCount() - from.NextActionTime() >= 0)
+		{
+			int value = pvSrc.ReadInt32();
+
+			if ((value & ~0x7FFFFFFF) != 0)
+			{
+				from.OnPaperdollRequest();
+			}
+			else
+			{
+
+				L_ERROR("unfinish");
+#if 0
+				Serial s = value;
+
+				if (s.IsMobile())
+				{
+					Mobile *m = World::FindMobile(s);
+
+					if (m != nullptr)
+					{
+						from.Use(m);
+					}
+				}
+				else if (s.IsItem())
+				{
+					L_ERROR("unfinish");
+
+					Item item = World::FindItem(s);
+
+					if (item != null && !item.Deleted)
+					{
+						from.Use(item);
+					}
+				}
+#endif
+			}
+
+			from.NextActionTime() = Core::TickCount() + Mobile::ActionDelay;
+		}
+		else
+		{
+			from.SendActionMessage();
+		}
+	}
 }
 
 void PacketHandlers::Init()
@@ -188,6 +240,8 @@ void PacketHandlers::Init()
 	Register(0xBE, 0, true, AssistVersion);
 	Register(0x09, 5, true, LookReq);
 	Register(0x34, 10, true, MobileQuery);
+	RegisterExtended(0x0F, false, Empty); // What's this?
+	Register(0x06, 5, true, UseReq);
 
 	////////////////
 	RegisterExtended(0x05, false, ScreenSize);

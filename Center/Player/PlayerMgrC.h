@@ -1,14 +1,14 @@
 
 #pragma once
-#include "CPlayer.h"
+#include "PlayerC.h"
 #include "MulMap.h"
-#include "CPlayer.h"
+#include "PlayerC.h"
 
-using PCPlayer = CPlayer *;
+using PCPlayer = PlayerC *;
 template<>
 struct MulMapTraits<PCPlayer>
 {
-	friend struct CPlayer;
+	friend struct PlayerC;
 	static uint64 GetKey(const PCPlayer &player)
 	{
 		return player->m_BaseData.m_uin;
@@ -30,16 +30,16 @@ struct PlayerCacheMsg
 	uint64 uin;
 	VecStr vecMsg;
 };
-class CPlayerMgr : public Singleton<CPlayerMgr>
+class PlayerMgrC : public Singleton<PlayerMgrC>
 {
 	MulMapPlayer m_players;
 
 	vector<PlayerCacheMsg> m_PlayerCacheMsg; //player Moving状态，缓存的消息。因为uin数量极少。用vector比map效率高。
 
 public:
-	CPlayer *CreatePlayer(const DbPlayer &data);
-	CPlayer *FindPlayer(uint64 uin);
-	CPlayer *FindPlayer(const string &name);
+	PlayerC *CreatePlayer(const DbPlayer &data);
+	PlayerC *FindPlayer(uint64 uin);
+	PlayerC *FindPlayer(const string &name);
 	void DelPlayer(uint64 uin);
 	void SetCacheMsg(uint64 uin, bool isCache);
 

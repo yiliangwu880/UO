@@ -4,19 +4,19 @@
 #include "SceneTran.h"
 #include "LoginPlayer.h"
 #include "CBaseData.h"
-#include "CPlayerSn.h"
+#include "PlayerSnC.h"
 
 
-class CPlayer : public WeakPtr<CPlayer>
+class PlayerC : public WeakPtr<PlayerC>
 {
 public:
 	BaseData m_BaseData;
-	CPlayerSn m_CPlayerSn;
+	PlayerSnC m_CPlayerSn;
 	SceneTran m_SceneTran;
 	LoginPlayer m_LoginPlayer;
 
 public:
-	CPlayer(const DbPlayer &data);
+	PlayerC(const DbPlayer &data);
 
 	template<class Msg>
 	void SendToZone(const Msg &msg)

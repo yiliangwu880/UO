@@ -45,7 +45,7 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
 	if (nullptr == handler)
 	{
-		L_DEBUG("find msg handler fail. packetId=0x%x", (uint8)msg[0]);
+		L_ERROR("find msg handler fail. packetId=0x%x", (uint8)msg[0]);
 		return;
 	}
 	if (gDynCfg.ComCfg().testCfg.isRevLog)

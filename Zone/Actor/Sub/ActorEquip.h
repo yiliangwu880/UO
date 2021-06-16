@@ -2,10 +2,10 @@
 #include "ActorSubCom.h"
 #include "Item/ItemMgr.h"
 
+using EquipSItems = std::array<SItem, (uint32)Layer::Max>;
 class ActorEquip : public ActorSubCom<ActorEquip>
 {
-	using SItemArray = std::array<SItem, (uint32)Layer::Max>;
-	SItemArray m_items;
+	EquipSItems m_items;
 
 public:
 	ActorEquip(Actor &actor);
@@ -16,6 +16,6 @@ public:
 	void Undress(uint32 idx);
 	void Undress(SItem item);
 	void Dress(SItem item);
-	const SItemArray &GetItems() const;
+	EquipSItems &GetItems();
 	SItem GetItem(Layer layer);
 };

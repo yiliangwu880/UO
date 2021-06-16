@@ -1,6 +1,6 @@
 #include "AccountMgr.h"
 #include "db_driver.h"
-#include "Player/CPlayerMgr.h"
+#include "Player/PlayerMgrC.h"
 #include "AppMgr.h"
 #include <type_traits>
 #include "svr_util/include/misc.h"
@@ -108,7 +108,7 @@ void AccData::OnInsert(bool ret, const DbPlayer &data, any para)
 		return;
 	}
 
-	CPlayer *player = CPlayerMgr::Ins().CreatePlayer(data);
+	PlayerC *player = PlayerMgrC::Ins().CreatePlayer(data);
 	L_COND_V(player);
 
 	const Session *sn = AccMgr::Ins().FindSession(acc->m_AccSn.GetSid());
@@ -141,7 +141,7 @@ void AccData::OnSelect(bool ret, const DbPlayer &data, any para)
 	SessionId *sid = std::any_cast<SessionId>(&para);
 	L_COND_V(sid);
 	L_COND_V(ret);
-	CPlayer *player = CPlayerMgr::Ins().CreatePlayer(data);
+	PlayerC *player = PlayerMgrC::Ins().CreatePlayer(data);
 	L_COND_V(player);
 
 	const Session *sn = AccMgr::Ins().FindSession(*sid);

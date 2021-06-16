@@ -16,7 +16,15 @@
 
 class NetState;
 class Packet;
-using Mobile = Actor;
+class Player;
+
+//暂时不分模块，杂项数据
+struct ActorMiscData 
+{
+	time_t NextActionTime = 0;
+	time_t m_NextActionMessage = 0;
+	bool m_Warmode = false;
+};
 //场景实体,包括人，怪，NPC
 class Actor : public Noncopyable, public EventCom<Actor>, public WeakPtr<Actor>
 {
@@ -29,9 +37,12 @@ public:
 	StateMgr m_StateMgr;
 	BuffMgr m_BuffMgr;
 	ActorBag m_ActorBag;
+	ActorSkill m_ActorSkill;
+	ActorMiscData m_ActorMiscData;
 
 public:
 	static const int BodyWeight=14; 
+	static const int ActionDelay = 500;
 
 public:
 	Actor(ActorOwner &owner, EntityType t= EntityType::Monster);
@@ -51,8 +62,10 @@ public:
 	void Send(Packet &packet);
 
 	//@from 请求者
-	void OnStatsQuery(Mobile &from);
-	bool CanBeRenamedBy(Mobile &from) { return false; }
+	void OnStatsQuery(Actor &from);
+	void OnSkillsQuery(Actor &from);
+
+	bool CanBeRenamedBy(Actor &from) { return false; }
 	uint32 Hits() { return m_ActorAttr.Hits(); };
 	uint32 HitsMax() { return m_ActorAttr.HitsMax(); };
 	uint32 Mana() { return m_ActorAttr.Mana(); };
@@ -87,6 +100,20 @@ public:
 	StatLockType StrLock();
 	StatLockType DexLock();
 	StatLockType IntLock();
+	Player *GetPlayer();
+	bool IsStaff();
+	time_t &NextActionTime(); //下次可 action ms
+
+	void SendActionMessage();
+	void SendLocalizedMessage(int number);
+	void OnPaperdollRequest();
+	void DisplayPaperdollTo(Actor &from);
+	bool CanPaperdollBeOpenedBy(Actor &from);
+	bool Warmode() { return m_ActorMiscData.m_Warmode; }
+	bool AllowEquipFrom(Actor &from);
+	::AccessLevel AccessLevel();
+	bool ViewOPL() { return true; }
 };
 using WActor = std::weak_ptr<Actor>;
 using SActor = std::shared_ptr<Actor>;
+using Mobile = Actor;

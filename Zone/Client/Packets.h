@@ -11,6 +11,7 @@
 
 class Actor;
 using Mobile = Actor;
+class ActorSkill;
 class LoginConfirm : public Packet
 {
 public:
@@ -26,6 +27,21 @@ struct MobileIncoming : Packet
 	//@beholder 客户端接收消息 actor, 
 	//@beheld 打包成消息内容的 actor
 	MobileIncoming(Actor &beholder, Actor &beheld);
+};
+
+struct MessageLocalized : Packet
+{
+	static unordered_map<int, shared_ptr<MessageLocalized>> cache;
+
+	static MessageLocalized &InstantiateGeneric(int number);
+
+	MessageLocalized(
+		uint32 serial, int graphic, MessageType type, int hue, int font, int number, string name, string args);
+};
+
+struct DisplayPaperdoll : Packet
+{
+	DisplayPaperdoll(Mobile &m, string text, bool canLift);
 };
 
 struct PingAck : Packet
@@ -111,6 +127,11 @@ public:
 struct StatLockInfo : Packet
 {
 	StatLockInfo(Mobile &m);
+};
+
+struct SkillUpdate : Packet
+{
+	SkillUpdate(ActorSkill &skills);
 };
 
 #undef base

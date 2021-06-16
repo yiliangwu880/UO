@@ -30,4 +30,7 @@ struct Core
 	static const bool HS = true;
 	static const bool TOL = true;
 	static const bool EJ = true;
+	//ms millisecond
+	static long TickCount();
 };
+

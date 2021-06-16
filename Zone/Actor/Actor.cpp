@@ -11,6 +11,7 @@ Actor::Actor(ActorOwner &owner, EntityType t)
 	, m_StateMgr(*this)
 	, m_BuffMgr(*this)
 	, m_ActorBag(*this)
+	, m_ActorSkill(*this)
 {
 	ActorMgr::Ins().AddActor(*this);
 }
@@ -71,6 +72,7 @@ void Actor::Send(Packet &packet)
 
 void Actor::OnStatsQuery(Mobile &from)
 {
+	L_DEBUG("OnStatsQuery");
 	//if (from.Map == Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
 	{
 		MobileStatus rsp(from, *this);
@@ -89,6 +91,16 @@ void Actor::OnStatsQuery(Mobile &from)
 	//{
 	//	ip.OnStatsQuery(from, this);
 	//}
+}
+
+void Actor::OnSkillsQuery(Mobile &from)
+{
+	if (&from == this)
+	{
+		L_DEBUG("OnSkillsQuery");
+		SkillUpdate rsp(m_ActorSkill);
+		Send(rsp);
+	}
 }
 
 IWeapon *Actor::Weapon()
@@ -174,3 +186,107 @@ StatLockType Actor::IntLock()
 	return StatLockType::Up;
 }
 
+Player * Actor::GetPlayer()
+{
+	if (m_ActorBase.GetType() != EntityType::Player)
+	{
+		return nullptr;
+	}
+	Player *player = dynamic_cast<Player*>(&m_owner);
+	L_COND(player, nullptr);
+	return player;
+}
+
+bool Actor::IsStaff()
+{
+	Player *p = GetPlayer();
+	if (p == nullptr)
+	{
+		return false;
+	}
+	
+	return (uint32)(p->m_PlayerMiscData.m_AccessLevel) >= (uint32)(AccessLevel::Counselor);
+}
+
+time_t & Actor::NextActionTime()
+{
+	return m_ActorMiscData.NextActionTime;
+}
+
+void Actor::SendActionMessage()
+{
+	if (m_ActorMiscData.m_NextActionMessage - Core::TickCount() >= 0)
+	{
+		return;
+	}
+
+	m_ActorMiscData.m_NextActionMessage = Core::TickCount() + 500;
+
+	SendLocalizedMessage(500119); // You must wait to perform another action.
+
+}
+
+void Actor::OnPaperdollRequest()
+{
+	if (CanPaperdollBeOpenedBy(*this))
+	{
+		DisplayPaperdollTo(*this);
+	}
+}
+
+void Actor::DisplayPaperdollTo(Actor &from)
+{
+	Mobile &beholder = from;
+	Mobile &beheld = *this;
+
+	DisplayPaperdoll msg(beheld, Titles::ComputeTitle(beholder, beheld), beheld.AllowEquipFrom(beholder));
+	beholder.Send(msg);
+
+	if (beholder.ViewOPL())
+	{
+		EquipSItems &items = beheld.m_ActorEquip.GetItems();
+
+		for (uint32 i = 0; i < items.size(); ++i)
+		{
+			SItem &item = items[i];
+			if (item == nullptr)
+			{
+				continue;
+			}
+			//beholder.Send(item.OPLPacket);
+		}
+		// NOTE: OSI sends MobileUpdate when opening your own paperdoll.
+		// It has a very bad rubber-banding affect. What positive affects does it have?
+	}
+}
+
+bool Actor::CanPaperdollBeOpenedBy(Actor &from)
+{
+	//return (Body.IsHuman || Body.IsGhost || IsBodyMod || from == this);
+	return &from == this;
+}
+
+bool Actor::AllowEquipFrom(Mobile &from)
+{
+	return (&from == this || (from.AccessLevel() >= AccessLevel::Decorator && from.AccessLevel() > AccessLevel()));
+}
+
+::AccessLevel Actor::AccessLevel()
+{
+	Player *p = GetPlayer();
+	if (nullptr == p)
+	{
+		L_ERROR("");
+		return AccessLevel::Player;
+	}
+	return p->m_PlayerMiscData.m_AccessLevel;
+}
+
+void Actor::SendLocalizedMessage(int number)
+{
+	if (m_ActorBase.GetType() != EntityType::Player)
+	{
+		return;
+	}
+	Send(MessageLocalized::InstantiateGeneric(number));
+}

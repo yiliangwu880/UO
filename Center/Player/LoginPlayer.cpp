@@ -1,4 +1,4 @@
-#include "CPlayerMgr.h"
+#include "PlayerMgrC.h"
 
 using namespace proto;
 
@@ -33,7 +33,7 @@ RegZoneMsg(LoginPlayer::RspLoginZone_cs);
 void LoginPlayer::RspLoginZone_cs(ZoneSvrCon &con, const proto::RspLoginZone_cs &msg)
 {
 	L_INFO("RspLoginZone_cs");
-	CPlayer *player = CPlayerMgr::Ins().FindPlayer(msg.uin);
+	PlayerC *player = PlayerMgrC::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);
 	L_COND_V(WaitLogin == player->m_LoginPlayer.m_State);
 	player->m_LoginPlayer.m_State = LoginOk;
@@ -43,7 +43,7 @@ RegZoneMsg(LoginPlayer::RspReLoginZone_cs);
 void LoginPlayer::RspReLoginZone_cs(ZoneSvrCon &con, const proto::RspReLoginZone_cs &msg)
 {
 	L_INFO("RspReLoginZone_cs");
-	CPlayer *player = CPlayerMgr::Ins().FindPlayer(msg.uin);
+	PlayerC *player = PlayerMgrC::Ins().FindPlayer(msg.uin);
 	L_COND_V(player);
 	L_COND_V(WaitReLogin == player->m_LoginPlayer.m_State);
 	player->m_LoginPlayer.m_State = LoginOk;

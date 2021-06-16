@@ -23,31 +23,36 @@ public:
 //管理 item mobile等对象 的内存标识
 class Serial : public Singleton<Serial>
 {
-	uint32 m_LastMobile = 0;
-	uint32 m_LastItem = 0x40000000;
+	uint32 m_id;
 
 public:
-	uint32 NewMobile()
-	{
-		//                int 可以存放, 假设秒一个物品
-		//4,294,967,295 sec
-		//= 49,710 天
-		// = 136年
-		m_LastMobile++;
-		return m_LastMobile;
-	}
+	Serial(uint32 id);
+	bool IsMobile() { return IsMobile(m_id); }
+	bool IsItem() { return IsItem(m_id); }
+	operator uint32() { return m_id; }
 
-	uint32 NewItem()
-	{
-		m_LastItem++;
-		return m_LastItem;
-	}
-	bool IsMobile(uint32 m_Serial){ return (m_Serial > 0 && m_Serial < 0x40000000); }
-	bool IsItem(uint32 m_Serial) { return (m_Serial >= 0x40000000 && m_Serial <= 0x7FFFFFFF); }
+public:
+	static uint32 m_LastMobile;
+	static uint32 m_LastItem;
+	static Serial MinusOne;
+	static Serial Zero ;
+
+public:
+	static uint32 NewMobile();
+	static uint32 NewItem();
+	static bool IsMobile(uint32 m_Serial){ return (m_Serial > 0 && m_Serial < 0x40000000); }
+	static bool IsItem(uint32 m_Serial) { return (m_Serial >= 0x40000000 && m_Serial <= 0x7FFFFFFF); }
+
 };
 
 class World
 {
+public:
 	static Actor *FindMobile(uint32 id);
 };
 
+class Titles
+{
+public:
+	static string ComputeTitle(Actor &beholder, Actor &beheld);
+};

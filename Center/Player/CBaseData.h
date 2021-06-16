@@ -1,7 +1,7 @@
 #pragma once
 #include "ComMisc.h"
 
-using CPlayerSubCom = SubCom<CPlayer>;
+using CPlayerSubCom = SubCom<PlayerC>;
 struct BaseData : public CPlayerSubCom
 {
 	uint64 m_uin = 0;
@@ -9,7 +9,7 @@ struct BaseData : public CPlayerSubCom
 	uint32 m_sceneId = 0;
 	string name;
 
-	BaseData(CPlayer &owner)
+	BaseData(PlayerC &owner)
 		:CPlayerSubCom(owner)
 	{
 

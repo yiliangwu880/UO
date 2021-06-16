@@ -16,7 +16,7 @@ class LoginPlayer : public CPlayerSubCom
 	State m_State = None;
 
 public:
-	LoginPlayer(CPlayer &owner)
+	LoginPlayer(PlayerC &owner)
 		:CPlayerSubCom(owner)
 	{
 	}
