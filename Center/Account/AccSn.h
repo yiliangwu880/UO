@@ -1,12 +1,12 @@
 #pragma once
 #include "AccountSubCom.h"
-#include "ComPackets.h"
+#include "PacketsCom.h"
 
 
 //first connect session, for server list
 class FirstSn : public AccountSubCom
 {
-	SessionId sid;
+	SessionId m_sid;
 	bool Seeded = false;
 	uint32 Seed = 0;
 	bool compressionEnabled = true;
@@ -17,7 +17,7 @@ public:
 	{
 	}
 
-	void SetSessionId(const acc::SessionId &id) { sid = id; };
+	void SetSessionId(const acc::SessionId &id) { m_sid = id; };
 	void Send(Packet &packet);
 	void Dispose(); //save as Disconnect
 	void Disconnect(); //
@@ -27,7 +27,7 @@ public:
 //account session
 class AccSn : public AccountSubCom
 {
-	SessionId sid;
+	SessionId m_sid;
 	bool Seeded = false;
 	uint32 Seed = 0;
 	bool compressionEnabled = true;
@@ -38,10 +38,10 @@ public:
 	{
 	}
 
-	void SetSessionId(const acc::SessionId &id) { sid=id; }
+	void SetSessionId(const acc::SessionId &id) { m_sid=id; }
 	void Send(Packet &packet);
 	void Dispose(); //save as Disconnect
 	void Disconnect(); //
 	void SetCompressionEnabled(bool val) { compressionEnabled = val; }
-	const acc::SessionId &GetSid() const { return sid; }
+	const acc::SessionId &GetSid() const { return m_sid; }
 };

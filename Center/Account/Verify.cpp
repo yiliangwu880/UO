@@ -28,23 +28,22 @@ void Verify::ReqVerify(const SessionId &id, CStr &psw)
 		L_INFO("refuse verify when waiting verify");
 		break;
 	case Verify::VerifyOk:
-		{//顶号，先不处理
-			//if (psw != m_owner.m_AccData.Psw())
-			//{
-			//	return;
-			//}
-			//m_state = WaitReplace;
-			//m_owner.m_FirstSn.Disconnect();
-			//m_owner.m_AccSn.Disconnect();
-			//VerifyRetStruct d;
-			//d.is_success = true;
-			//AccMgr::Ins().ReqVerifyRet(id, d);
+		{
+			L_DEBUG("replace login");
+			if (gTestCfg.needPsw && psw != m_owner.m_AccData.Psw())
+			{
+				L_INFO("wrong psw");
+				return;
+			}
+			m_owner.m_FirstSn.Disconnect();
+			m_owner.m_AccSn.Disconnect();
+			SetVerifyOk(id);
 		}
 		break;
 	}
 }
 
-void Verify::OnLoadDbOk()
+void Verify::OnQueryAccFromDb()
 {
 	L_COND_V(WaitAccVerify == m_state || WaitReplace == m_state);
 
@@ -55,21 +54,7 @@ void Verify::OnLoadDbOk()
 		return;
 	}
 	m_vtm.StopTimer();
-	m_state = VerifyOk;
-	m_owner.m_FirstSn.SetSessionId(m_waitVerifySid);
-	m_owner.m_FirstSn.SetCompressionEnabled(false);
-
-	VerifyRetStruct d;
-	d.is_success = true;
-	AccMgr::Ins().ReqVerifyRet(m_waitVerifySid, d);
-
-	{//send svr list 
-		vector<ServerInfo> info;
-		ServerInfo i;
-		info.push_back(CenterMgr::Ins().GetServerInfo());
-		AccountLoginAck rsp(info);
-		m_owner.m_FirstSn.Send(rsp);
-	}
+	SetVerifyOk(m_waitVerifySid);
 }
 
 
@@ -107,6 +92,25 @@ void Verify::OnClientConFor2nd(const acc::SessionId &sid)
 	//{
 	//	m_owner.Send(new CharacterListOld(state.Account, state.CityInfo));
 	//}
+}
+
+void Verify::SetVerifyOk(const acc::SessionId &id)
+{
+	m_state = VerifyOk;
+	m_owner.m_FirstSn.SetSessionId(id);
+	m_owner.m_FirstSn.SetCompressionEnabled(false);
+
+	VerifyRetStruct d;
+	d.is_success = true;
+	AccMgr::Ins().ReqVerifyRet(id, d);
+
+	{//send svr list 
+		vector<ServerInfo> info;
+		ServerInfo i;
+		info.push_back(CenterMgr::Ins().GetServerInfo());
+		AccountLoginAck rsp(info);
+		m_owner.m_FirstSn.Send(rsp);
+	}
 }
 
 void Verify::OnVerifyTimeOut()

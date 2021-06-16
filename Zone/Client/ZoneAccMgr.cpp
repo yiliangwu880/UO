@@ -48,19 +48,21 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 		L_DEBUG("find msg handler fail. packetId=0x%x", (uint8)msg[0]);
 		return;
 	}
-
-	if (0x73 != (uint8_t)msg[0])//73日志太多
+	if (gDynCfg.ComCfg().testCfg.isRevLog)
 	{
-		//L_DEBUG("rev packetId 0x%x", (uint8_t)msg[0]);
+		if (0x73 != (uint8_t)msg[0])//73日志太多
+		{
+			L_DEBUG("rev packetId 0x%x", (uint8_t)msg[0]);
+		}
 	}
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
-	NetState ns(sn, *this);
+	NetState ns(sn);
 	handler->m_OnReceive(ns, r);
 }
 
 Player *AccMgr::GetPlayer(const acc::Session &sn)
 {
-	WeakPlayer *p = sn.GetEx<WeakPlayer>();
+	WPlayer *p = sn.GetEx<WPlayer>();
 	L_COND(p, nullptr);
 	shared_ptr<Player> player = p->lock();
 	return player.get();

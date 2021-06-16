@@ -25,5 +25,7 @@ public:
 	virtual void OnClientConnect(const acc::Session &session) override;
 
 	//当设置uin,accName
-	virtual void OnRevBroadcastUinToSession(const acc::Session &session) override;
+	virtual void OnRevBroadcastUinToSession(const acc::Session &session) override;		
+	//client断线通知
+	virtual void OnClientDisCon(const acc::Session &session) override;
 };

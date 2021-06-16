@@ -16,6 +16,11 @@ void Equip::OnSave(DbItem &dbItem)
 
 }
 
+Layer Equip::GetLayer() const
+{
+	return m_cfg->layer;
+}
+
 Equip::Equip(uint16 cfgId)
 	:Item(cfgId)
 {

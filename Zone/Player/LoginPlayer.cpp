@@ -70,7 +70,6 @@ void LoginPlayer::SendLogin()
 	{
 		MobileIncoming rsp(m_owner.m_Actor, m_owner.m_Actor);
 		m_owner.Send(rsp);
-		//m_owner.SendHexStr(0, "78 0 0 0 0 0 5F 1 90 D AF A E E 0 83 EA 10 3 40 0 4 43 E 75 15 0 0 40 0 4 48 13 CC D 0 0 40 0 4 4A 1F 3 16 6 BA 40 0 4 4D 13 FF 1 0 0 40 0 4 4F 15 17 5 0 3 40 0 4 50 15 39 4 0 3 40 0 4 51 17 F 3 6 D1 7F FF FA 83 20 3B B 4 4E 7F FF FA 81 3B 49 F 83 EA 0 0 0 0 ");
 
 	}
 	{
@@ -95,8 +94,6 @@ void LoginPlayer::SendLogin()
 	{//为什么重复发一次？待分析
 		MobileIncoming rsp(m_owner.m_Actor, m_owner.m_Actor);
 		m_owner.Send(rsp);
-		//m_owner.SendHexStr(0, "78 0 0 0 0 0 5F 1 90 D AF A E E 0 83 EA 10 3 40 0 4 43 E 75 15 0 0 40 0 4 48 13 CC D 0 0 40 0 4 4A 1F 3 16 6 BA 40 0 4 4D 13 FF 1 0 0 40 0 4 4F 15 17 5 0 3 40 0 4 50 15 39 4 0 3 40 0 4 51 17 F 3 6 D1 7F FF FA 83 20 3B B 4 4E 7F FF FA 81 3B 49 F 83 EA 0 0 0 0 ");
-
 	} 
 	{
 		MobileStatus rsp(m_owner.m_Actor, m_owner.m_Actor);
@@ -140,9 +137,17 @@ void LoginPlayer::ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &
 	Player *player = PlayerMgr::Ins().Create(playerData->uin, playerData->name);
 	L_COND_V(player);
 
-	acc::SessionId sid;
-	sid.cid = msg.cid;
-	player->m_PlayerSn.SetSid(sid);
+	{//init session
+		const Session *sn = AccMgr::Ins().FindSessionByCid(msg.cid);
+		ZoneSnEx *pZoneSnEx = sn->GetEx<ZoneSnEx>();
+		L_COND_V(pZoneSnEx);
+		pZoneSnEx->m_pPlayer = *player;
+
+		acc::SessionId sid;
+		sid.cid = msg.cid;
+		player->m_PlayerSn.SetSid(sid);
+		player->m_PlayerSn.m_ns.Init(*sn);
+	}
 
 	RspLoginZone_cs rsp;
 	rsp.uin = playerData->uin;
@@ -169,9 +174,9 @@ void LoginPlayer::ReqReLoginZone_sc(CenterCon &con, const proto::ReqReLoginZone_
 
 	L_COND_V(LoginOk == player->m_LoginPlayer.m_State || OffLine == player->m_LoginPlayer.m_State);
 	const Session *sn = AccMgr::Ins().FindSessionByCid(msg.cid);
-	WeakPlayer *weakPlayer = sn->GetEx<WeakPlayer>();
-	L_COND_V(weakPlayer);
-	*weakPlayer = *player;
+	ZoneSnEx *pZoneSnEx = sn->GetEx<ZoneSnEx>();
+	L_COND_V(pZoneSnEx);
+	pZoneSnEx->m_pPlayer = *player;
 	player->m_LoginPlayer.m_State = LoginOk;
 
 	RspReLoginZone_cs rsp;

@@ -9,6 +9,7 @@ public:
 
 public:
 	ActorBag(Actor &actor);
+	
 
 private:
 	void OnCreate(DbActor &data);

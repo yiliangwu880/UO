@@ -26,7 +26,7 @@ public:
 	void Register(uint8_t packetID, int length, bool ingame);		
 	//猜测和 6017 客户端版本有关，先和Register相同处理
 	void Register6017(int packetID, int length, bool ingame) { Register(packetID, length, ingame); };
-	void RegisterExtended(int packetID, bool ingame);
+	void RegisterExtended(int packetID, bool ingame) {};
 	void RegisterEncoded(int packetID, bool ingame) { };
 	PacketHandler *GetHandler(uint8_t packetID);
 	const std::vector<PacketHandler> &GetHandlers()const  { return m_Handlers; };

@@ -6,6 +6,7 @@ ActorEquip::ActorEquip(Actor &actor)
 	Reg<EV_CREATE_DB>(&ActorEquip::OnCreate);
 	Reg<EV_LOAD_DB>(&ActorEquip::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorEquip::OnSave);
+	Reg<EV_BEFORE_LOGIN>(&ActorEquip::OnBeforeLogin);
 }
 
 void ActorEquip::OnCreate(DbActor &dbActor)
@@ -14,7 +15,7 @@ void ActorEquip::OnCreate(DbActor &dbActor)
 	if (m_Actor.m_ActorBase.GetType() == EntityType::Player)
 	{
 		{
-			SItem item = make_shared<Equip>(0x1517);
+			SItem item = make_shared<Equip>(0x1F7B);
 			DbItem dbItem;
 			item->OnSave(dbItem);
 			equips.vecItem.push_back(dbItem);
@@ -65,6 +66,11 @@ void ActorEquip::OnSave(DbActor &dbActor)
 	}
 }
 
+void ActorEquip::OnBeforeLogin()
+{
+	m_items[(uint32)Layer::Backpack] = m_Actor.m_ActorBag.m_Container;
+}
+
 void ActorEquip::Undress(uint32 idx)
 {
 	L_COND_V(idx < m_items.size());
@@ -99,4 +105,11 @@ void ActorEquip::Dress(SItem item)
 const ActorEquip::SItemArray & ActorEquip::GetItems() const
 {
 	return m_items;
+}
+
+SItem ActorEquip::GetItem(Layer layer)
+{
+	uint32 idx = (uint32)layer;
+	L_COND(idx < m_items.size(), nullptr);
+	return m_items[idx];
 }

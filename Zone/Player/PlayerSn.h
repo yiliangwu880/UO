@@ -1,10 +1,13 @@
 #pragma once
 #include "BaseData.h"
 #include "Packets.h"
+#include "NetState.h"
 
 class PlayerSn : public PlayerSubCom<PlayerSn>
 {
 	acc::SessionId m_sid;
+public:
+	NetState m_ns; //simulate c#
 
 public:
 	PlayerSn(Player &owner)

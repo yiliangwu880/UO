@@ -15,6 +15,7 @@ public:
 	virtual void OnLoad(const DbItem &dbItem) override;
 	virtual void OnSave(DbItem &dbItem) override;
 	virtual uint16 GetItemNum() const override { return m_itemNum; }
+	virtual Layer GetLayer()const override { return Layer::Backpack; }
 
 public:
 	Container(uint16 cfgId);

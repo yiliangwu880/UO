@@ -158,7 +158,7 @@ bool acc::ADFacadeMgr::DisconClient(const SessionId &id)
 	ADClientCon *con = m_con_mgr.FindADClientCon(id);
 	L_COND_F(con);
 	L_COND_F(con->IsReg());
-	L_COND_F(nullptr != con->FindSession(id), "can't find session");
+	L_COND_F(nullptr != con->FindSession(id), "can't find session。 cid=%ld", id.cid);
 
 	MsgReqDiscon req;
 	req.cid = id.cid;

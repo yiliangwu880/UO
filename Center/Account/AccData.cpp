@@ -61,7 +61,7 @@ void AccData::OnQuery(bool ret, const DbAccount &data, any para)
 		account->m_AccData.m_data = data;
 	}
 
-	account->m_Verify.OnLoadDbOk();
+	account->m_Verify.OnQueryAccFromDb();
 }
 
 

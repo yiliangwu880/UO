@@ -63,12 +63,12 @@ namespace db
 
 	struct DbActorAttr
 	{
-		uint16_t str = 0;
-		uint16_t dex = 0;
-		uint16_t intl = 0;
-		uint16_t hits = 0;;
-		uint16_t stam = 0;
-		uint16_t mana = 0;
+		uint32_t str = 0;
+		uint32_t dex = 0;
+		uint32_t intl = 0;
+		uint32_t hits = 0;;
+		uint32_t stam = 0;
+		uint32_t mana = 0;
 	};
 
 	struct DbActorBase 

@@ -5,7 +5,7 @@
 #include "./Account/AccountMgr.h"
 #include "MsgDispatch.h"
 #include "CenterClientMsgMgr.h"
-#include "ComPackets.h"
+#include "PacketsCom.h"
 #include "NetState.h"
 
 using namespace std;
@@ -73,7 +73,10 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 	PacketHandler *handler = PacketHandlers::Ins().GetHandler(msg[0]);
 	L_COND_V(handler, "find msg handler fail. packetId=%d", (uint8_t)msg[0]);
 
-	L_DEBUG("rev packetId %x %d", (uint8_t)msg[0], msg_len);
+	if (gDynCfg.ComCfg().testCfg.isRevLog)
+	{
+		L_DEBUG("rev packetId %x %d", (uint8_t)msg[0], msg_len);
+	}
 	PacketReader r(msg, msg_len, handler->m_Length != 0);
 	NetState ns(sn, *this);
 	handler->m_OnReceive(ns, r);
@@ -106,4 +109,21 @@ void AccMgr::OnRevBroadcastUinToSession(const acc::Session &sn)
 	//p->m_pAccount = *account;
 
 	//account->m_Verify.SetVerifyOk(sn.id);
+}
+
+void AccMgr::OnClientDisCon(const acc::Session &sn)
+{
+	CenterSnEx *p = sn.GetEx<CenterSnEx>();
+	L_COND_V(p);
+	shared_ptr<Account> acc = p->m_pAccount.lock();
+	if (nullptr == acc)
+	{
+		return;
+	}
+	L_DEBUG("OnClientDisCon cid=%d", sn.id.cid);
+	acc::SessionId zero;
+	acc->m_FirstSn.SetSessionId(zero);
+	acc->m_AccSn.SetSessionId(zero);
+
+
 }

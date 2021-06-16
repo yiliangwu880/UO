@@ -1,4 +1,12 @@
 
+testCfg={
+	needPsw = false
+	allMap = false //false只用一个地图，加快启动速度
+	//显示收发日志
+	isRevLog = false
+	isSendLog = false
+}
+
 access={
 	inner_ip="0.0.0.0",  #内部侦听地址
 	inner_port=54831,	
@@ -29,10 +37,4 @@ dbproxy={
 		db_psw	="123456"
 		db_name ="testGame"
 	}
-}
-
-testCfg={
-	needPsw = false,
-	allMap = false, //false只用一个地图，加快启动速度
-
 }

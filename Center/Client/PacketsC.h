@@ -1,9 +1,9 @@
 //发送消息包结构，参考 c#
 #pragma once
-#include "ComPackets.h"
+#include "PacketsCom.h"
 #include "CenterMgr.h"
 #include "ExpansionInfo.h"
-#include "ComPackets.h"
+#include "PacketsCom.h"
 //c#适配
 #define base Packet
 #define uint uint32

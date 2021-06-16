@@ -8,6 +8,8 @@ ItemCfgMgr::ItemCfgMgr()
 {0x13BF, { 700, ItemType::Equip, }},
 //shirt
 {0x1517, {  100, ItemType::Equip, }},
+//Doublet
+{0x1F7B, {  100, ItemType::Equip, }},
 //bandage
 {0xE21, {}},
 //bag

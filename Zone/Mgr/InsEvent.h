@@ -36,8 +36,5 @@ namespace su
 	struct EventMgrTrait<EV_SAVE_DB> {
 		using Fun = void(DbActor &data);
 	};
-	template<>
-	struct EventMgrTrait<EV_BEFORE_LOGIN>{
-		using Fun = void();
-	};
+
 }

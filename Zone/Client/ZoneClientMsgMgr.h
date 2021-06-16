@@ -1,7 +1,7 @@
 //链接center
 #pragma once
 #include "ZoneAccMgr.h"
-#include "ComPackets.h"
+#include "PacketsCom.h"
 
 struct NetState;
 using OnPacketReceive = void (*)(NetState &state, PacketReader &pvSrc);

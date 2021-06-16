@@ -8,13 +8,14 @@ class Actor;
 //适配C# 写法
 struct NetState
 {
-	const acc::Session &m_sn;
+	const acc::Session *m_sn = nullptr;
 	acc::ADFacadeMgr &m_accMgr;
-	bool Seeded = false;
-	uint32 Seed = 0;
 	bool CompressionEnabled = true;
+	bool IsEnhancedClient = false;
 
-	NetState(const acc::Session & sn, acc::ADFacadeMgr &accMgr);
+	NetState(const acc::Session & sn);
+	NetState();
+	void Init(const acc::Session & sn);
 
 	void Dispose();
 	void Send(Packet &packet);

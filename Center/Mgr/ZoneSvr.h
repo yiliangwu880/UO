@@ -30,6 +30,7 @@ class ZoneSvrMgr : public Singleton<ZoneSvrMgr>
 
 public:
 	ZoneSvr *FindZoneSvr(uint16 svrId);
+	void DelZoneSvr(uint16 svrId);
 
 public:
 	static void ReqZoneOk_cs(ZoneSvrCon &con, const proto::ReqZoneOk_cs &msg);

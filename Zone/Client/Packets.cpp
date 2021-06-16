@@ -105,7 +105,7 @@ MobileIncoming::MobileIncoming(Actor &beholder, Actor &beheld)
 		if (beholder.CanSee(item) && m_DupedLayers[layer] != m_Version)
 		{
 			m_DupedLayers[layer] = m_Version;
-			L_DEBUG("send equip item， cfgid=0x%x", item->GetItemID());
+			L_DEBUG("send equip item， cfgid=0x%x layer=0x%x", item->GetItemID(), layer);
 			hue = item->GetHue();
 
 			//if (beheld.SolidHueOverride >= 0)
@@ -220,6 +220,29 @@ SetWarMode::SetWarMode(bool mode)
 	m_Stream.Write((byte)0x00);
 }
 
+LogPacket::LogPacket(bool isFixed)
+	: base(0x1B, isFixed ? 1 : 0)
+{
+	m_isFixed = isFixed;
+}
+//@str 内容为 "1B 0“，，包写入内容2字节，字符串的16进制值 
+void LogPacket::SetHexLog(CStr &src)
+{
+	m_Stream.m_Stream.clear();
+	VecStr out;
+	StrUtil::split(src, " ", out);
+	for (CStr &s : out)
+	{
+		uint8_t b = (uint8_t)std::stoi(s.c_str(), nullptr, 16);
+		m_Stream.m_Stream.WriteByte(b);
+	}
+	if (m_isFixed)
+	{
+		m_Length = (int)out.size();
+	}
+}
+
+
 void MobileStatus::WriteAttr(int current, int maximum)
 {
 	m_Stream.Write((short)current);
@@ -230,44 +253,148 @@ void MobileStatus::WriteAttrNorm(int current, int maximum)
 {
 	AttributeNormalizer::WriteReverse(m_Stream, current, maximum);
 }
+//
+//MobileStatus::MobileStatus(Mobile &beholder, Mobile &beheld)
+//	: base(0x11)
+//{
+//	CStr &name = beheld.Name();
+//	const DbActorBase &d = beheld.m_ActorBase.GetData();
+//	const DbActorAttr &attr = beheld.m_ActorAttr.GetData();
+//	ActorBase &actorBase = beheld.m_ActorBase;
+//	ActorAttr &actorAttr = beheld.m_ActorAttr;
+//
+//	int type;
+//	bool isEnhancedClient = false; //beholder.NetState != null && beholder.NetState.IsEnhancedClient;
+//
+//	if (&beholder != &beheld)
+//	{
+//		type = 0;
+//		EnsureCapacity(43);
+//	}
+//	else
+//	{
+//		type = 6;
+//		EnsureCapacity(isEnhancedClient ? 151 : 121);
+//	}
+//	//else if (Core.ML && ns != null && ns.ExtendedStatus)
+//	//{
+//	//	type = 6;
+//	//	EnsureCapacity(isEnhancedClient ? 151 : 121);
+//	//}
+//	//else if (Core.ML && ns != null && ns.SupportsExpansion(Expansion.ML))
+//	//{
+//	//	type = 5;
+//	//	EnsureCapacity(91);
+//	//}
+//	//else
+//	//{
+//	//	type = Core.AOS ? 4 : 3;
+//	//	EnsureCapacity(88);
+//	//}
+//
+//	m_Stream.Write(beheld.Serial());
+//
+//	m_Stream.WriteAsciiFixed(name, 30);
+//
+//	if (&beholder == &beheld)
+//	{
+//		WriteAttr(actorAttr.Hits(), actorAttr.HitsMax());
+//	}
+//	else
+//	{
+//		WriteAttrNorm(actorAttr.Hits(), actorAttr.HitsMax());
+//	}
+//
+//	m_Stream.Write(false);//beheld.CanBeRenamedBy(beholder)
+//
+//	m_Stream.Write((byte)type);
+//
+//	if (type > 0)
+//	{
+//		m_Stream.Write(d.female);
+//
+//		m_Stream.Write((short)attr.str);
+//		m_Stream.Write((short)attr.dex);
+//		m_Stream.Write((short)attr.intl);
+//
+//		WriteAttr(beheld.m_ActorAttr.Stam(), beheld.m_ActorAttr.StamMax());
+//		WriteAttr(beheld.m_ActorAttr.Mana(), beheld.m_ActorAttr.ManaMax());
+//
+//		m_Stream.Write(3000);//beheld.TotalGold
+//		m_Stream.Write((short)10);//Core.AOS ? beheld.PhysicalResistance : (int)(beheld.ArmorRating + 0.5)
+//		m_Stream.Write((short)30);//(Mobile.BodyWeight + beheld.TotalWeight)
+//
+//		if (type >= 5)
+//		{
+//			m_Stream.Write((short)300);//beheld.MaxWeight
+//			m_Stream.Write((byte)(1)); //1 == human// beheld.Race.RaceID + 1 Would be 0x00 if it's a non-ML enabled account but...
+//		}
+//
+//		m_Stream.Write((short)225); //beheld.StatCap
+//
+//		m_Stream.Write((byte)0);		 //beheld.Followers);
+//		m_Stream.Write((byte)5);	 //beheld.FollowersMax)
+//
+//		if (type >= 4)
+//		{
+//			m_Stream.Write((short)1);//beheld.FireResistance); // Fire
+//			m_Stream.Write((short)1);//beheld.ColdResistance); // Cold
+//			m_Stream.Write((short)1);//beheld.PoisonResistance); // Poison
+//			m_Stream.Write((short)1);//beheld.EnergyResistance); // Energy
+//			m_Stream.Write((short)1);//beheld.Luck); // Luck
+//
+//		//	IWeapon weapon = beheld.Weapon;
+//
+//			int min = 0, max = 0;
+//
+//			//if (weapon != null)
+//			//{
+//			//	weapon.GetStatusDamage(beheld, out min, out max);
+//			//}
+//
+//			m_Stream.Write((short)1); // Damage min
+//			m_Stream.Write((short)7); // Damage max
+//
+//			m_Stream.Write(0);//beheld.TithingPoints
+//		}
+//
+//		if (type >= 6)
+//		{
+//			int count = isEnhancedClient ? 28 : 14;
+//
+//			for (int i = 0; i <= count; ++i)
+//			{
+//				m_Stream.Write((short)0);//beheld.GetAOSStatus(i)
+//			}
+//		}
+//	}
+//}
+//
 
 MobileStatus::MobileStatus(Mobile &beholder, Mobile &beheld)
 	: base(0x11)
 {
+	NetState *ns = beheld.NetState();
 	CStr &name = beheld.Name();
-	const DbActorBase &d = beheld.m_ActorBase.GetData();
-	const DbActorAttr &attr = beheld.m_ActorAttr.GetData();
-	ActorBase &actorBase = beheld.m_ActorBase;
-	ActorAttr &actorAttr = beheld.m_ActorAttr;
 
 	int type;
-	bool isEnhancedClient = false; //beholder.NetState != null && beholder.NetState.IsEnhancedClient;
+	bool isEnhancedClient = false;
 
 	if (&beholder != &beheld)
 	{
 		type = 0;
 		EnsureCapacity(43);
 	}
-	else
+	else if (Core::ML && ns != nullptr)
 	{
 		type = 6;
 		EnsureCapacity(isEnhancedClient ? 151 : 121);
 	}
-	//else if (Core.ML && ns != null && ns.ExtendedStatus)
-	//{
-	//	type = 6;
-	//	EnsureCapacity(isEnhancedClient ? 151 : 121);
-	//}
-	//else if (Core.ML && ns != null && ns.SupportsExpansion(Expansion.ML))
-	//{
-	//	type = 5;
-	//	EnsureCapacity(91);
-	//}
-	//else
-	//{
-	//	type = Core.AOS ? 4 : 3;
-	//	EnsureCapacity(88);
-	//}
+	else
+	{
+		type = Core::AOS ? 4 : 3;
+		EnsureCapacity(88);
+	}
 
 	m_Stream.Write(beheld.Serial());
 
@@ -275,64 +402,64 @@ MobileStatus::MobileStatus(Mobile &beholder, Mobile &beheld)
 
 	if (&beholder == &beheld)
 	{
-		WriteAttr(actorAttr.Hits(), actorAttr.HitsMax());
+		WriteAttr(beheld.Hits(), beheld.HitsMax());
 	}
 	else
 	{
-		WriteAttrNorm(actorAttr.Hits(), actorAttr.HitsMax());
+		WriteAttrNorm(beheld.Hits(), beheld.HitsMax());
 	}
 
-	m_Stream.Write(false);//beheld.CanBeRenamedBy(beholder)
+	m_Stream.Write(beheld.CanBeRenamedBy(beholder));
 
 	m_Stream.Write((byte)type);
 
 	if (type > 0)
 	{
-		m_Stream.Write(d.female);
+		m_Stream.Write(beheld.Female());
 
-		m_Stream.Write((short)attr.str);
-		m_Stream.Write((short)attr.dex);
-		m_Stream.Write((short)attr.intl);
+		m_Stream.Write((short)beheld.Str());
+		m_Stream.Write((short)beheld.Dex());
+		m_Stream.Write((short)beheld.Int());
 
-		WriteAttr(beheld.m_ActorAttr.Stam(), beheld.m_ActorAttr.StamMax());
-		WriteAttr(beheld.m_ActorAttr.Mana(), beheld.m_ActorAttr.ManaMax());
+		WriteAttr(beheld.Stam(), beheld.StamMax());
+		WriteAttr(beheld.Mana(), beheld.ManaMax());
 
-		m_Stream.Write(3000);//beheld.TotalGold
-		m_Stream.Write((short)10);//Core.AOS ? beheld.PhysicalResistance : (int)(beheld.ArmorRating + 0.5)
-		m_Stream.Write((short)30);//(Mobile.BodyWeight + beheld.TotalWeight)
+		m_Stream.Write(beheld.TotalGold());
+		m_Stream.Write((short)(beheld.PhysicalResistance()));
+		m_Stream.Write((short)(Mobile::BodyWeight + beheld.TotalWeight()));
 
 		if (type >= 5)
 		{
-			m_Stream.Write((short)300);//beheld.MaxWeight
-			m_Stream.Write((byte)(1)); //1 == human// beheld.Race.RaceID + 1 Would be 0x00 if it's a non-ML enabled account but...
+			m_Stream.Write((short)beheld.MaxWeight());
+			m_Stream.Write((byte)(beheld.RaceID() + 1)); // Would be 0x00 if it's a non-ML enabled account but...
 		}
 
-		m_Stream.Write((short)225); //beheld.StatCap
+		m_Stream.Write((short)beheld.StatCap());
 
-		m_Stream.Write((byte)0);		 //beheld.Followers);
-		m_Stream.Write((byte)5);	 //beheld.FollowersMax)
+		m_Stream.Write((byte)beheld.Followers());
+		m_Stream.Write((byte)beheld.FollowersMax());
 
 		if (type >= 4)
 		{
-			m_Stream.Write((short)1);//beheld.FireResistance); // Fire
-			m_Stream.Write((short)1);//beheld.ColdResistance); // Cold
-			m_Stream.Write((short)1);//beheld.PoisonResistance); // Poison
-			m_Stream.Write((short)1);//beheld.EnergyResistance); // Energy
-			m_Stream.Write((short)1);//beheld.Luck); // Luck
+			m_Stream.Write((short)beheld.FireResistance()); // Fire
+			m_Stream.Write((short)beheld.ColdResistance()); // Cold
+			m_Stream.Write((short)beheld.PoisonResistance()); // Poison
+			m_Stream.Write((short)beheld.EnergyResistance()); // Energy
+			m_Stream.Write((short)beheld.Luck()); // Luck
 
-		//	IWeapon weapon = beheld.Weapon;
+			IWeapon *weapon = beheld.Weapon();
 
 			int min = 0, max = 0;
 
-			//if (weapon != null)
-			//{
-			//	weapon.GetStatusDamage(beheld, out min, out max);
-			//}
+			if (weapon != nullptr)
+			{
+				weapon->GetStatusDamage(beheld,  min, max);
+			}
 
-			m_Stream.Write((short)1); // Damage min
-			m_Stream.Write((short)7); // Damage max
+			m_Stream.Write((short)min); // Damage min
+			m_Stream.Write((short)max); // Damage max
 
-			m_Stream.Write(0);//beheld.TithingPoints
+			m_Stream.Write(beheld.TithingPoints());
 		}
 
 		if (type >= 6)
@@ -341,11 +468,12 @@ MobileStatus::MobileStatus(Mobile &beholder, Mobile &beheld)
 
 			for (int i = 0; i <= count; ++i)
 			{
-				m_Stream.Write((short)0);//beheld.GetAOSStatus(i)
+				m_Stream.Write((short)beheld.GetAOSStatus(i));
 			}
 		}
 	}
 }
+
 
 void AttributeNormalizer::Write(PacketWriter stream, uint32 cur, uint32 max)
 {
@@ -408,4 +536,32 @@ MovementAck::MovementAck(int seq, Notoriety noto)
 {
 	m_Stream.Write((byte)seq);
 	m_Stream.Write((byte)noto);
+}
+
+StatLockInfo::StatLockInfo(Mobile &m)
+	: base(0xBF)
+{
+	EnsureCapacity(12);
+
+	m_Stream.Write((short)0x19);
+
+	if (false)//(m.NetState().IsEnhancedClient)
+	{
+		m_Stream.Write((byte)5);
+	}
+	else
+	{
+		m_Stream.Write((byte)2);
+	}
+
+	m_Stream.Write(m.Serial());
+	m_Stream.Write((byte)0);
+
+	int lockBits = 0;
+
+	lockBits |= (int)m.StrLock() << 4;
+	lockBits |= (int)m.DexLock() << 2;
+	lockBits |= (int)m.IntLock();
+
+	m_Stream.Write((byte)lockBits);
 }

@@ -5,6 +5,7 @@
 
 class MonsterCfg;
 class Scene;
+class Actor;
 struct MonsterInit
 {
 	const MonsterCfg *cfg = nullptr;
@@ -16,6 +17,7 @@ struct MonsterInit
 class ActorOwner : public EventMgr, public Noncopyable
 {
 public:
+	virtual ~ActorOwner();
 };
 
 //管理 item mobile等对象 的内存标识
@@ -43,3 +45,9 @@ public:
 	bool IsMobile(uint32 m_Serial){ return (m_Serial > 0 && m_Serial < 0x40000000); }
 	bool IsItem(uint32 m_Serial) { return (m_Serial >= 0x40000000 && m_Serial <= 0x7FFFFFFF); }
 };
+
+class World
+{
+	static Actor *FindMobile(uint32 id);
+};
+

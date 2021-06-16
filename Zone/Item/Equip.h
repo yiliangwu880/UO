@@ -12,6 +12,7 @@ class Equip : public Item
 public:
 	virtual void OnLoad(const DbItem &dbItem) override;
 	virtual void OnSave(DbItem &dbItem) override;
+	virtual Layer GetLayer()const override;
 
 public:
 	Equip(uint16 cfgId);

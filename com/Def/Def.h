@@ -1,8 +1,8 @@
 /*
-	代码公共配置
+	公共定义 以及 静态配置 
 */
 #pragma once
-
+using TimeSpan = uint32;
 namespace
 {
 	//svr group id
@@ -24,6 +24,21 @@ enum class Notoriety
 	Enemy = 5,
 	Murderer = 6,
 	Invulnerable = 7,
+};
+
+enum class StatLockType : uint8_t
+{
+	Up,
+	Down,
+	Locked
+};
+
+enum class StatType
+{
+	Str = 1,
+	Dex = 2,
+	Int = 4,
+	All = 7
 };
 
 enum class MapId

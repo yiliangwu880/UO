@@ -1,7 +1,7 @@
 
 #include "UoProto.h"
 #include "CenterClientMsgMgr.h"
-#include "CPackets.h"
+#include "PacketsC.h"
 #include "DynCfgMgr.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -45,18 +45,8 @@ namespace
 		L_INFO("AccountLogin %s %s", username.c_str(), password.c_str());
 
 		Account &acc = AccountMgr::Ins().DoGetAcc(username);
-		acc.m_Verify.ReqVerify(state.m_sn.id, password);
+		acc.m_Verify.ReqVerify(state.m_sn.id, password); //验证成功后，发 AccountLoginAck
 
-#if 0
-
-		vector<ServerInfo> info;
-		ServerInfo i;
-
-		info.push_back(CenterMgr::Ins().GetServerInfo());
-		AccountLoginAck rsp(info);
-		state.CompressionEnabled = false;
-		state.Send(rsp);
-#endif
 	}
 
 	//选服请求 

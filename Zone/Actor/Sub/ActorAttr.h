@@ -14,10 +14,10 @@ public:
 	const DbActorAttr &GetData() const { return m_data; }
 	uint32 Hits();
 	uint32 HitsMax();
-	uint16 Mana();
-	uint16 Stam();
-	uint16 ManaMax();
-	uint16 StamMax();
+	uint32 Mana();
+	uint32 Stam();
+	uint32 ManaMax();
+	uint32 StamMax();
 
 private:
 	void OnCreate(DbActor &data);

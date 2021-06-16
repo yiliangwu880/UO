@@ -12,8 +12,10 @@ public:
 	void OnCreate(DbActor &dbActor);
 	void OnLoad(DbActor &dbActor);
 	void OnSave(DbActor &dbActor);
+	void OnBeforeLogin();
 	void Undress(uint32 idx);
 	void Undress(SItem item);
 	void Dress(SItem item);
 	const SItemArray &GetItems() const;
+	SItem GetItem(Layer layer);
 };

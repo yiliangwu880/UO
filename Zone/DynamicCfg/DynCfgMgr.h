@@ -1,4 +1,5 @@
 //类json动态配置
+#pragma once
 #include "zoneCfg.h"
 #include "comCfg.h"
 

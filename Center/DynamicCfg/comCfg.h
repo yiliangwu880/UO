@@ -37,6 +37,8 @@ struct comCfg
 	struct S_testCfg
 	{
 		bool allMap;
+		bool isRevLog;
+		bool isSendLog;
 		bool needPsw;
 	};
 	struct S_zone
@@ -95,6 +97,8 @@ private:
 			dbproxy.mysql_db.db_user = js["dbproxy"]["mysql_db"]["db_user"];
 			dbproxy.port = js["dbproxy"]["port"];
 			testCfg.allMap = js["testCfg"]["allMap"];
+			testCfg.isRevLog = js["testCfg"]["isRevLog"];
+			testCfg.isSendLog = js["testCfg"]["isSendLog"];
 			testCfg.needPsw = js["testCfg"]["needPsw"];
 			for (size_t i = 0; i < js["zone"]["allSvrId"].size(); ++i)
 			{

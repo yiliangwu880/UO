@@ -1,7 +1,8 @@
 #include "NetState.h"
-#include "ComPackets.h"
+#include "PacketsCom.h"
 #include "svr_util/include/str_util.h"
 #include "Account/AccountMgr.h"
+#include "DynCfgMgr.h"
 
 using namespace acc;
 
@@ -18,11 +19,12 @@ void NetState::Dispose()
 
 void NetState::Send(Packet &packet)
 {
+	if (gDynCfg.ComCfg().testCfg.isSendLog)
 	{//tmp log
 		if (CompressionEnabled)
 		{
 			string str = packet.m_Stream.UnderlyingStream();
-		//	L_DEBUG("before compile . len=%d, %s", str.length(), StrUtil::BinaryToHex(str).c_str());
+			L_DEBUG("before compile . len=%d, %s", str.length(), StrUtil::BinaryToHex(str).c_str());
 		}
 	}
 	CStr &buffer = packet.Compile(CompressionEnabled);

@@ -16,16 +16,23 @@ ZoneSvr * ZoneSvrMgr::FindZoneSvr(uint16 svrId)
 
 
 
+void ZoneSvrMgr::DelZoneSvr(uint16 svrId)
+{
+	MapErase(m_svrId2Zone, svrId);
+	L_DEBUG("del zone svr. %d", svrId);
+}
+
 STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&ZoneSvrMgr::ReqZoneOk_cs));
 void ZoneSvrMgr::ReqZoneOk_cs(ZoneSvrCon &con, const proto::ReqZoneOk_cs &msg)
 {
 	L_INFO("ReqZoneOk_cs, zoneId=%d", msg.svrId);
 	if (nullptr != MapFind(gZoneSvrMgr.m_svrId2Zone, msg.svrId))
 	{
-		L_ERROR("repeated reg zone");
+		L_ERROR("repeated reg zone， replace ");
 		return;
 	}
 	ZoneSvr &svr = gZoneSvrMgr.m_svrId2Zone[msg.svrId];
+	con.Init(msg.svrId);
 	svr.m_con = con;
 	svr.m_svrId = msg.svrId;
 	CenterMgr::Ins().SetZoneOk(msg.svrId);

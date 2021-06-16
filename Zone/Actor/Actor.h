@@ -14,10 +14,11 @@
 #include "./Sub/ActorAttr.h"
 #include "./Sub/ActorBag.h"
 
-
-
+class NetState;
+class Packet;
+using Mobile = Actor;
 //场景实体,包括人，怪，NPC
-class Actor : public Noncopyable, public EventCom<Actor>
+class Actor : public Noncopyable, public EventCom<Actor>, public WeakPtr<Actor>
 {
 public:
 	ActorOwner &m_owner;
@@ -30,7 +31,11 @@ public:
 	ActorBag m_ActorBag;
 
 public:
+	static const int BodyWeight=14; 
+
+public:
 	Actor(ActorOwner &owner, EntityType t= EntityType::Monster);
+	~Actor();
 	void InitMonster(const MonsterInit &data);
 	void InitNpc(); 
 
@@ -41,4 +46,47 @@ public:
 	const string &Name() const;
 	bool CanSee(SItem item) { return true; };
 	bool CanSee(Actor &actor) { return true; };
+
+	::NetState *NetState();
+	void Send(Packet &packet);
+
+	//@from 请求者
+	void OnStatsQuery(Mobile &from);
+	bool CanBeRenamedBy(Mobile &from) { return false; }
+	uint32 Hits() { return m_ActorAttr.Hits(); };
+	uint32 HitsMax() { return m_ActorAttr.HitsMax(); };
+	uint32 Mana() { return m_ActorAttr.Mana(); };
+	uint32 Stam() { return m_ActorAttr.Stam(); };
+	uint32 ManaMax() { return m_ActorAttr.ManaMax(); };
+	uint32 StamMax() { return m_ActorAttr.StamMax(); };
+	uint32 Str() { return m_ActorAttr.GetData().str; };
+	uint32 Dex() {return m_ActorAttr.GetData().dex; };
+	uint32 Int() {return m_ActorAttr.GetData().intl; };
+	uint32 TotalGold() { return 100; }
+	uint32 PhysicalResistance() { return 70; }
+	uint32 FireResistance() { return 70; }
+	uint32 ColdResistance() { return 70; }
+	uint32 PoisonResistance() { return 70; }
+	uint32 EnergyResistance() { return 70; }
+	uint32 Luck() { return 10; }
+
+
+	uint32 TotalWeight() { return 1; }
+	uint32 MaxWeight() { return 1000; }
+	bool Female() { return m_ActorBase.GetData().female; }
+	uint32 RaceID() { return m_ActorBase.GetData().race; }
+	//真实三围总数上限
+	uint32 StatCap() { return 225; }
+	uint32 FollowersMax() { return 5; }
+	uint32 Followers() { return 0; }
+	uint32 TithingPoints() { return 10; }
+	IWeapon *Weapon();
+	int GetAOSStatus(int index);
+	int GetMaxResistance(ResistanceType type);
+
+	StatLockType StrLock();
+	StatLockType DexLock();
+	StatLockType IntLock();
 };
+using WActor = std::weak_ptr<Actor>;
+using SActor = std::shared_ptr<Actor>;

@@ -26,3 +26,10 @@ Weapon::Weapon(uint16 cfgId)
 		return;
 	}
 }
+
+
+void IWeapon::GetStatusDamage(Actor &from, int &min, int &max)
+{
+	min = 1;
+	max = 2;
+}

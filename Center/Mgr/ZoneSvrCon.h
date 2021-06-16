@@ -5,8 +5,10 @@
 
 class ZoneSvrCon : public lc::SvrCon, public WeakPtr<ZoneSvrCon>
 {
-public:
+	uint16 m_svrId = 0;
 
+public:
+	~ZoneSvrCon();
 	template<class ProtoMsg>
 	void Send(const ProtoMsg &msg)
 	{
@@ -17,6 +19,8 @@ public:
 		msgPack.len = sizeof(msgPack.data) - len;
 		SendData(msgPack);
 	}
+	void Init(uint16 svrId) { m_svrId = svrId; };
+	uint16 GetSvrId() { return m_svrId; }
 private:
 	virtual void OnRecv(const lc::MsgPack &msg) override;
 	virtual void OnConnected() override;

@@ -47,22 +47,22 @@ uint32 ActorAttr::HitsMax()
 	return 50 + (m_data.str / 2);
 }
 
-uint16 ActorAttr::Mana()
+uint32 ActorAttr::Mana()
 {
 	return 50;
 }
 
-uint16 ActorAttr::Stam()
+uint32 ActorAttr::Stam()
 {
 	return 50;
 }
 
-uint16 ActorAttr::ManaMax()
+uint32 ActorAttr::ManaMax()
 {
 	return 50;
 }
 
-uint16 ActorAttr::StamMax()
+uint32 ActorAttr::StamMax()
 {
 	return 50;
 }

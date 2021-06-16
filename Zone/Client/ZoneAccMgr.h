@@ -4,12 +4,12 @@
 #include "acc_driver.h"
 
 class Player;
-using WeakPlayer = weak_ptr<Player>;
+using WPlayer = weak_ptr<Player>;
 
 class Player;
 struct ZoneSnEx
 {
-	weak_ptr<Player> m_pPlayer;
+	WPlayer m_pPlayer;
 
 };
 

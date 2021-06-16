@@ -4,12 +4,13 @@
 
 void AccSn::Dispose()
 {
-	AccMgr::Ins().DisconClient(sid);
+	AccMgr::Ins().DisconClient(m_sid);
 }
 
 void AccSn::Disconnect()
 {
-	AccMgr::Ins().DisconClient(sid);
+	if (m_sid.cid == 0)return;
+	AccMgr::Ins().DisconClient(m_sid);
 }
 
 void AccSn::Send(Packet &packet)
@@ -25,18 +26,19 @@ void AccSn::Send(Packet &packet)
 	}
 	CStr &buffer = packet.Compile(compressionEnabled);
 	//L_DEBUG("Send client len=%d, %s", buffer.length(), StrUtil::BinaryToHex(buffer).c_str());
-	AccMgr::Ins().SendToClient(sid, 0, buffer.c_str(), buffer.length());
+	AccMgr::Ins().SendToClient(m_sid, 0, buffer.c_str(), buffer.length());
 }
 
 
 void FirstSn::Dispose()
 {
-	AccMgr::Ins().DisconClient(sid);
+	AccMgr::Ins().DisconClient(m_sid);
 }
 
 void FirstSn::Disconnect()
 {
-	AccMgr::Ins().DisconClient(sid);
+	if (m_sid.cid == 0)return;
+	AccMgr::Ins().DisconClient(m_sid);
 }
 
 void FirstSn::Send(Packet &packet)
@@ -51,5 +53,5 @@ void FirstSn::Send(Packet &packet)
 	}
 	CStr &buffer = packet.Compile(compressionEnabled);
 	//L_DEBUG("Send client len=%d, %s", buffer.length(), StrUtil::BinaryToHex(buffer).c_str());
-	AccMgr::Ins().SendToClient(sid, 0, buffer.c_str(), buffer.length());
+	AccMgr::Ins().SendToClient(m_sid, 0, buffer.c_str(), buffer.length());
 }

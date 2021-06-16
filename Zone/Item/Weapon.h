@@ -2,8 +2,17 @@
 #pragma once
 #include "Item.h"
 
+class Actor;
+struct IWeapon
+{
+	//int MaxRange{ get; }
+	//void OnBeforeSwing(Mobile attacker, IDamageable damageable);
+	//TimeSpan OnSwing(Mobile attacker, IDamageable damageable);
+	virtual void GetStatusDamage(Actor &from, int &min, int &max);
+	//TimeSpan GetDelay(Mobile attacker);
+};
 
-class Weapon : public Item
+class Weapon : public Item, public IWeapon
 {
 	//attr
 	DbEquipItem m_dbEquipItem;
@@ -17,3 +26,7 @@ public:
 };
 
 
+class Fists : public IWeapon
+{
+
+};
