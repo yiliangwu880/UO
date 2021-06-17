@@ -35,7 +35,7 @@ protected:
 	uint32 m_id = 0;//memory id
 	ItemObserver m_observer;
 	weak_ptr<Container> m_parent;
-	uint32 m_hue;
+	uint32 m_hue = 0;
 
 public:
 	virtual ~Item() {};

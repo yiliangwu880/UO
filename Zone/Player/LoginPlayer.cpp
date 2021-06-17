@@ -45,8 +45,9 @@ namespace
 }
 void LoginPlayer::Login()
 {
-	Scene &scene = SceneMgr::Ins().GetWorld(MapId::Felucca);
-	m_owner.m_Actor.EnterScene(scene);
+	Scene *scene = SceneMgr::Ins().GetWorld(MapId::Felucca);
+	L_COND_V(scene);
+	m_owner.m_Actor.EnterScene(*scene);
 	m_owner.FireEvent<EV_BEFORE_LOGIN>(); 
 	SendLogin();
 	//DoLogin(m_owner);

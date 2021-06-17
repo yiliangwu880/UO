@@ -502,7 +502,7 @@ bool MysqlCon::Query(const db::BaseTable &data, uint32_t limit_num, QueryResultR
 		do
 		{
 			unique_ptr<sql::ResultSet> ret(stmt->getResultSet());
-			if (0 == row_num && nullptr == ret) //一个数据都没有
+			if (0 == row_num || nullptr == ret) //一个数据都没有
 			{
 				L_ERROR("execute sql fail [%s]", sql_str.c_str());
 				return false;
@@ -554,7 +554,7 @@ bool MysqlCon::Query(uint16_t table_id, std::string &cond, uint32_t limit_num, Q
 		do
 		{
 			unique_ptr<sql::ResultSet> ret(stmt->getResultSet());
-			if (0 == row_num && nullptr == ret) //一个数据都没有
+			if (0 == row_num || nullptr == ret) //一个数据都没有
 			{
 				L_ERROR("execute sql fail [%s]", sql_str.c_str());
 				return false;

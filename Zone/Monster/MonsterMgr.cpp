@@ -13,7 +13,8 @@ void MonsterMgr::OnFinishWorld()
 
 		MonsterInit d;
 		d.cfg = pCfg;
-		d.scene = &SceneMgr::Ins().GetWorld(MapId::Felucca);
+		d.scene = SceneMgr::Ins().GetWorld(MapId::Felucca);
+		L_COND_V(d.scene);
 		d.pos = gComCfg.GetMiscCfg().bornPos;
 		m->Init(d);
 	}

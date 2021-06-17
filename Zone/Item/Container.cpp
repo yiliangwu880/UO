@@ -59,6 +59,7 @@ void Container::Add(SItem item)
 
 bool Container::EnableAdd(SItem item) const
 {
+	L_COND(item, false);
 	if (m_vecItem.size() + item->GetItemNum() >= m_maxItemNum)
 	{
 		L_DEBUG("container item is too max. %d+%d>= %d", m_vecItem.size(), item->GetItemNum(), m_maxItemNum);
@@ -67,7 +68,7 @@ bool Container::EnableAdd(SItem item) const
 	if (item->GetType() == ItemType::Container)
 	{
 		Container *p = dynamic_cast<Container *>(item.get());
-		L_ASSERT(p);
+		L_COND(p, false);
 		uint32 nestNum = 1;
 		nestNum += GetNestNum();
 		nestNum += p->GetSubNestNum();
@@ -117,6 +118,10 @@ uint32 Container::GetSubNestNum() const
 		{
 			const Container *p = dynamic_cast<const Container *>(item.get());
 			L_ASSERT(p);
+			if (nullptr == p)
+			{
+				continue;
+			}
 			uint32 t = p->GetSubNestNum()+1;
 			if (t > num)
 			{

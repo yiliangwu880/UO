@@ -11,7 +11,7 @@ public:
 
 
 public:
-	Scene &GetWorld(MapId mapId);
+	Scene *GetWorld(MapId mapId);
 	Scene *CreateFb(uint16 mapId);
 	Scene *Find(uint32 sceneId);
 	void Del(uint32 sceneId);

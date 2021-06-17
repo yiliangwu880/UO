@@ -16,7 +16,7 @@ public:
 
 	}
 };
-
+extern bool gTrue; //一直为true, 消除 TSC工具警告用
 struct Core
 {
 	static const bool T2A = true;

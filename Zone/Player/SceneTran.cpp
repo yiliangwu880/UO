@@ -54,8 +54,9 @@ void SceneTran::ReqZoneReserve(CenterCon &con, const proto::ReqZoneReserve &msg)
 	{
 		rsp.ret = false;
 		con.Send(rsp);
+		return;
 	}
-	player->m_SceneTran.m_State =WaitTranIn;
+	player->m_SceneTran.m_State = WaitTranIn;
 
 	rsp.ret = true;
 	con.Send(rsp);

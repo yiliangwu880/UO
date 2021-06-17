@@ -25,6 +25,8 @@
 #include "GlobalEvent.h"
 #include "Def.h"
 
+#include "ComMisc.h"
+
 //不区分命名空间
 namespace acc
 {

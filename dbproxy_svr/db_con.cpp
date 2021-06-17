@@ -34,6 +34,7 @@ IDbCon & DbConMgr::GetCon()
 	{
 		L_FATAL("DbConMgr havn't init");
 		L_ASSERT(false);
+		return *(IDbCon*)nullptr; //cancel tsc tool warning
 	}
 	return *m_con;
 }

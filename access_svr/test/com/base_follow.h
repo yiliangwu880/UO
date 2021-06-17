@@ -324,7 +324,7 @@ class BroadcastUinSvr : public ISvrCallBack
 public:
 
 	BaseFunTestMgr &m_mgr;
-	uint16 m_svr_id;
+	uint16 m_svr_id = 0;
 	SessionId m_sid;
 public:
 	BroadcastUinSvr(BaseFunTestMgr &mgr);

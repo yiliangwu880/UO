@@ -541,7 +541,7 @@ public:
 #endif
 
 	std::string m_CompiledBuffer;
-	int m_CompiledLength;
+	int m_CompiledLength = 0;
 
 	const std::string &Compile(bool compress)
 	{

@@ -67,12 +67,12 @@ public:
 
 		//IAccount acct = ns.Account;
 
-		if(1)//if (acct != null && acct.Limit >= 6)
+		if(gTrue)//if (acct != null && acct.Limit >= 6)
 		{
 			flags |= (int)FeatureFlags::LiveAccount;
 			flags &= ~(int)FeatureFlags::UOTD;
 
-			if(1)//if (acct.Limit > 6)
+			if(gTrue)//if (acct.Limit > 6)
 			{
 				flags |= (int)FeatureFlags::SeventhCharacterSlot;
 			}
@@ -82,7 +82,7 @@ public:
 			}
 		}
 
-		if(1)//if (ns.ExtendedSupportedFeatures)
+		if(gTrue)//if (ns.ExtendedSupportedFeatures)
 		{
 			m_Stream.Write((uint)flags);
 		}

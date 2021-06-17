@@ -68,10 +68,10 @@ namespace acc {
 	//当消息号为 CMD_NTF_FORWARD CMD_REQ_FORWARD时，消息体为MsgForward
 	struct MsgForward
 	{
-		uint64 cid;      //其中cid为 client到acc的连接id. 当个acc内唯一
+		uint64 cid=0;      //其中cid为 client到acc的连接id. 当个acc内唯一
 		uint32 cmd=0;      //client和svr层：cmd,msg. //UO没用
 		uint16 msg_len=0;  //msg字节数。网络包不包含这个内容
-		const char *msg; //UO接收包. 注意：你内存指针，别弄野了
+		const char *msg=nullptr; //UO接收包. 注意：你内存指针，别弄野了
 
 		bool Parse(const char *tcp_pack, uint16 tcp_pack_len);
 		//@para[out] std::string &tcp_pack

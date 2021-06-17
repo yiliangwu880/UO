@@ -36,15 +36,16 @@ void SceneMgr::InitWorld(MapId mapId)
 	SceneMgr::Ins().m_all.insert(make_pair(sceneId.id, p));
 }
 
-Scene &SceneMgr::GetWorld(MapId mapId)
+Scene *SceneMgr::GetWorld(MapId mapId)
 {
 	SceneId id((uint16)mapId, 0);
 	Scene *p =  Find(id.id);
 	if (nullptr == p)
 	{
-		L_FATAL("can't find world");
+		L_FATAL("can't find world. mapId=%d", (uint32)mapId);
+		return nullptr;
 	}
-	return *p;
+	return p;
 }
 
 Scene * SceneMgr::CreateFb(uint16 mapId)
