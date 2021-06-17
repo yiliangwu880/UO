@@ -4,7 +4,7 @@
 #include "dbTableDef.h"
 
 //ctrl login flow
-class LoginPlayer : public CPlayerSubCom
+class LoginPlayerC : public CPlayerSubCom
 {
 	enum State
 	{
@@ -16,7 +16,7 @@ class LoginPlayer : public CPlayerSubCom
 	State m_State = None;
 
 public:
-	LoginPlayer(PlayerC &owner)
+	LoginPlayerC(PlayerC &owner)
 		:CPlayerSubCom(owner)
 	{
 	}

@@ -2,7 +2,7 @@
 #include "ZoneSvr.h"
 #include "CAccMgr.h"
 #include "SceneTran.h"
-#include "LoginPlayer.h"
+#include "LoginPlayerC.h"
 #include "CBaseData.h"
 #include "PlayerSnC.h"
 
@@ -13,7 +13,7 @@ public:
 	BaseData m_BaseData;
 	PlayerSnC m_CPlayerSn;
 	SceneTran m_SceneTran;
-	LoginPlayer m_LoginPlayer;
+	LoginPlayerC m_LoginPlayer;
 
 public:
 	PlayerC(const DbPlayer &data);

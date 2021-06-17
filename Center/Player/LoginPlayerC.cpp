@@ -3,13 +3,13 @@
 using namespace proto;
 
 
-void LoginPlayer::SetState(State state)
+void LoginPlayerC::SetState(State state)
 {
 
 }
 
 
-void LoginPlayer::LoginZone(const DbPlayer &data, bool isCreate)
+void LoginPlayerC::LoginZone(const DbPlayer &data, bool isCreate)
 {
 	L_COND_V(None == m_State);
 	proto::ReqLoginZone_sc req;
@@ -20,7 +20,7 @@ void LoginPlayer::LoginZone(const DbPlayer &data, bool isCreate)
 	m_State = WaitLogin;
 }
 
-void LoginPlayer::ReLogin()
+void LoginPlayerC::ReLogin()
 {
 	L_COND_V(LoginOk == m_State);
 	ReqReLoginZone_sc req;
@@ -31,8 +31,8 @@ void LoginPlayer::ReLogin()
 
 }
 
-RegZoneMsg(LoginPlayer::RspLoginZone_cs);
-void LoginPlayer::RspLoginZone_cs(ZoneSvrCon &con, const proto::RspLoginZone_cs &msg)
+RegZoneMsg(LoginPlayerC::RspLoginZone_cs);
+void LoginPlayerC::RspLoginZone_cs(ZoneSvrCon &con, const proto::RspLoginZone_cs &msg)
 {
 	L_INFO("RspLoginZone_cs");
 	PlayerC *player = PlayerMgrC::Ins().FindPlayer(msg.uin);
@@ -41,8 +41,8 @@ void LoginPlayer::RspLoginZone_cs(ZoneSvrCon &con, const proto::RspLoginZone_cs 
 	player->m_LoginPlayer.m_State = LoginOk;
 }
 
-RegZoneMsg(LoginPlayer::RspReLoginZone_cs);
-void LoginPlayer::RspReLoginZone_cs(ZoneSvrCon &con, const proto::RspReLoginZone_cs &msg)
+RegZoneMsg(LoginPlayerC::RspReLoginZone_cs);
+void LoginPlayerC::RspReLoginZone_cs(ZoneSvrCon &con, const proto::RspReLoginZone_cs &msg)
 {
 	L_INFO("RspReLoginZone_cs");
 	PlayerC *player = PlayerMgrC::Ins().FindPlayer(msg.uin);
