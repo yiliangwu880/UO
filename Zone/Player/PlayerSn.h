@@ -14,12 +14,13 @@ public:
 		:PlayerSubCom(owner)
 	{
 	}
-
+	bool Reset(uint64 cid);
 	const acc::SessionId &GetSid() const { return m_sid; }
-	void SetSid(const acc::SessionId &val) { m_sid = val; }
 	void Send(Packet &packet);
 	void Dispose(); //save as Disconnect
 	void Disconnect(); //
+
+
 };
 
 

@@ -3,6 +3,7 @@
 */
 #pragma once
 #include "log_def.h"
+#define byte uint8_t
 
 class Compression
 {
@@ -227,3 +228,5 @@ public:
 
 #endif
 };
+
+#undef byte

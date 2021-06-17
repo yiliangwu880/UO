@@ -43,6 +43,8 @@ using namespace proto;
 using namespace std;
 using namespace db;
 
+#include "PacketsCom.h"
+
 #define RegZoneMsg(fun) STATIC_RUN(MsgDispatch<ZoneSvrCon>::Ins().RegMsgHandler(&fun));
 #define RegAccMsg(fun) STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&fun));
 //注册全局事件

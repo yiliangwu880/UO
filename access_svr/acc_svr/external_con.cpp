@@ -69,13 +69,14 @@ bool ExternalSvrCon::IsVerify()
 
 bool ExternalSvrCon::SendMsg(const char *msg, uint16 msg_len)
 {
-	string s;
-	s.append(msg, msg_len);
 	{
-		//L_DEBUG("Send client len=%d, %s", msg_len, StrUtil::BinaryToHex(s).c_str());
-		L_DEBUG("Send client 0x%x %d, ", (uint8)msg[0], msg_len);
+		//string s;
+		//s.append(msg, msg_len);
+		//{
+		//	//L_DEBUG("Send client len=%d, %s", msg_len, StrUtil::BinaryToHex(s).c_str());
+		//}
 	}
-	return SendData(s.c_str(), s.length());
+	return SendData(msg, msg_len);
 }
 
 

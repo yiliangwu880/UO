@@ -1,6 +1,18 @@
 #include "PlayerMgr.h"
 
 
+bool PlayerSn::Reset(uint64 cid)
+{
+	const Session *sn = AccMgr::Ins().FindSessionByCid(cid);
+	ZoneSnEx *pZoneSnEx = sn->GetEx<ZoneSnEx>();
+	L_COND(pZoneSnEx, false);
+	pZoneSnEx->m_pPlayer = m_owner;
+
+	m_sid.cid = cid;
+	m_ns.Init(*sn);
+	return true;
+}
+
 void PlayerSn::Send(Packet &packet)
 {
 	{//tmp log

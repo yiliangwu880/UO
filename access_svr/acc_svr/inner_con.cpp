@@ -28,7 +28,7 @@ namespace
 			for (auto &cmd : v.vecCmd)
 			{
 				bool r = g_AccSeting->m_cmd2GrpId.insert(make_pair(cmd, v.grpId)).second;
-				L_ERROR("repeated set cmd to grpId: %d -> %d", cmd, v.grpId);
+				L_ERROR("repeated set cmd to grpId: 0x%x -> %d", cmd, v.grpId);
 			}
 		}
 	}
@@ -413,6 +413,8 @@ void InnerSvrCon::OnRecv(const lc::MsgPack &msg)
 			L_ERROR("client is not verify. cid=%lld", f_msg.cid);
 			return;
 		}
+
+		L_DEBUG("Send client 0x%x %d, ", (uint8)f_msg.cmd, f_msg.msg_len);
 		pClient->SendMsg(f_msg.msg, f_msg.msg_len);
 
 	}

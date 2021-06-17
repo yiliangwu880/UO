@@ -18,7 +18,8 @@ struct NetState
 
 	void Dispose();
 	void Send(Packet &packet);
-	shared_ptr<Account> GetAccount();
+	shared_ptr<::Account> GetAccount();
+	shared_ptr<::Account> Account();
 	shared_ptr<PlayerC> GetPlayer();
 
 };

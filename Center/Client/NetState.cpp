@@ -1,5 +1,5 @@
 #include "NetState.h"
-#include "PacketsCom.h"
+#include "PacketsBase.h"
 #include "svr_util/include/str_util.h"
 #include "Account/AccountMgr.h"
 #include "DynCfgMgr.h"
@@ -32,12 +32,17 @@ void NetState::Send(Packet &packet)
 	m_accMgr.SendToClient(m_sn.id, 0, buffer.c_str(), buffer.length());
 }
 
-std::shared_ptr<Account> NetState::GetAccount()
+std::shared_ptr<::Account> NetState::GetAccount()
 {
 	CenterSnEx *p = m_sn.GetEx<CenterSnEx>();
 	L_COND(p, nullptr);
-	shared_ptr<Account> acc = p->m_pAccount.lock();
+	shared_ptr<::Account> acc = p->m_pAccount.lock();
 	return acc;
+}
+
+std::shared_ptr<::Account> NetState::Account()
+{
+  return GetAccount(); 
 }
 
 std::shared_ptr<PlayerC> NetState::GetPlayer()

@@ -138,17 +138,7 @@ void LoginPlayer::ReqLoginZone_sc(CenterCon &con, const proto::ReqLoginZone_sc &
 	Player *player = PlayerMgr::Ins().Create(playerData->uin, playerData->name);
 	L_COND_V(player);
 
-	{//init session
-		const Session *sn = AccMgr::Ins().FindSessionByCid(msg.cid);
-		ZoneSnEx *pZoneSnEx = sn->GetEx<ZoneSnEx>();
-		L_COND_V(pZoneSnEx);
-		pZoneSnEx->m_pPlayer = *player;
-
-		acc::SessionId sid;
-		sid.cid = msg.cid;
-		player->m_PlayerSn.SetSid(sid);
-		player->m_PlayerSn.m_ns.Init(*sn);
-	}
+	L_COND_V(player->m_PlayerSn.Reset(msg.cid));
 
 	RspLoginZone_cs rsp;
 	rsp.uin = playerData->uin;
@@ -174,13 +164,14 @@ void LoginPlayer::ReqReLoginZone_sc(CenterCon &con, const proto::ReqReLoginZone_
 	L_COND_V(player);
 
 	L_COND_V(LoginOk == player->m_LoginPlayer.m_State || OffLine == player->m_LoginPlayer.m_State);
-	const Session *sn = AccMgr::Ins().FindSessionByCid(msg.cid);
-	ZoneSnEx *pZoneSnEx = sn->GetEx<ZoneSnEx>();
-	L_COND_V(pZoneSnEx);
-	pZoneSnEx->m_pPlayer = *player;
+
+	L_COND_V(player->m_PlayerSn.Reset(msg.cid));
+
+
 	player->m_LoginPlayer.m_State = LoginOk;
 
 	RspReLoginZone_cs rsp;
 	rsp.ret = true;
 	CenterCon::Ins().Send(rsp);
+	player->m_LoginPlayer.Login();
 }

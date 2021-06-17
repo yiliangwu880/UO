@@ -11,7 +11,7 @@ namespace
 	const uint16 MAX_ZONE_GROUP_ID = 9;
 
 	const uint32 SAVE_INTERVAL_SEC = 60 * 1;//save db interval 
-	const uint32 MAX_CHAR_NUM_IN_ACC = 2; //CHAR NUM IN ACC
+	const uint32 MAX_CHAR_NUM_IN_ACC = 7; //CHAR NUM IN ACC
 	const uint32 MAX_CHAR_NAME = 30;
 }
 
@@ -25,7 +25,17 @@ enum class Notoriety
 	Murderer = 6,
 	Invulnerable = 7,
 };
+enum class HueColor
+{
+	Normal = 0x3B2,
+	YELLOW = 0x35,
+	Red1 = 0x22,
+	Red2 = 0x20,
+	RedDark = 0x484,
+	Write = 0x482,
+	Blue1 = 0x59
 
+};
 enum class MessageType
 {
 	Regular = 0x00,

@@ -6,6 +6,13 @@ class AccData : public AccountSubCom
 {
 
 	DbAccount m_data;
+
+public:
+	static void OnQuery(bool ret, const DbAccount &data, any para);
+	static void OnInsertPlayer(bool ret, const DbPlayer &data, any para);
+	static void OnQueryPlayer(bool ret, const DbPlayer &data, any para);
+private:
+
 public:
 	AccData(Account &owner, CStr &name);
 
@@ -15,11 +22,9 @@ public:
 	void CreateAccount(CStr &psw);
 	const std::vector<ActorBrief> &GetActorList();
 	void CreatePlayer(const DbPlayer &player);
+	void SelectActor(uint32 idx);
 
-	static void OnQuery(bool ret, const DbAccount &data, any para);
-	static void OnInsert(bool ret, const DbPlayer &data, any para);
-	static void OnSelect(bool ret, const DbPlayer &data, any para);
 private:
+	void LoginPlayerByDb(const DbPlayer &data, bool isCreate);
 
-	static void SelectActor(const acc::Session &sn);
 };

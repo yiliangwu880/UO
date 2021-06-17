@@ -1,9 +1,9 @@
 //发送消息包结构，参考 c#
 #pragma once
-#include "PacketsCom.h"
+#include "PacketsBase.h"
 #include "CenterMgr.h"
 #include "ExpansionInfo.h"
-#include "PacketsCom.h"
+#include "PacketsBase.h"
 //c#适配
 #define base Packet
 #define uint uint32
@@ -67,29 +67,29 @@ public:
 
 		//IAccount acct = ns.Account;
 
-		if(gTrue)//if (acct != null && acct.Limit >= 6)
+		//if(gTrue)//if (acct != null && acct.Limit >= 6)
 		{
 			flags |= (int)FeatureFlags::LiveAccount;
 			flags &= ~(int)FeatureFlags::UOTD;
 
-			if(gTrue)//if (acct.Limit > 6)
+			//if(gTrue)//if (acct.Limit > 6)
 			{
 				flags |= (int)FeatureFlags::SeventhCharacterSlot;
 			}
-			else
-			{
-				flags |= (int)FeatureFlags::SixthCharacterSlot;
-			}
+			//else
+			//{
+			//	flags |= (int)FeatureFlags::SixthCharacterSlot;
+			//}
 		}
 
-		if(gTrue)//if (ns.ExtendedSupportedFeatures)
+		//if(gTrue)//if (ns.ExtendedSupportedFeatures)
 		{
 			m_Stream.Write((uint)flags);
 		}
-		else
-		{
-			m_Stream.Write((ushort)flags);
-		}
+		//else
+		//{
+		//	m_Stream.Write((ushort)flags);
+		//}
 		{//temp B9 0 FF 92 DB
 			char ar[5]={ (char)0xB9, (char)0x0 , (char)0xFF , (char)0x92 , (char)0xDB };
 			string t;

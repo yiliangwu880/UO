@@ -1,6 +1,6 @@
 #pragma once
 #include "AccountSubCom.h"
-#include "PacketsCom.h"
+#include "PacketsBase.h"
 
 
 //first connect session, for server list
@@ -44,4 +44,6 @@ public:
 	void Disconnect(); //
 	void SetCompressionEnabled(bool val) { compressionEnabled = val; }
 	const acc::SessionId &GetSid() const { return m_sid; }
+	const Session *GetSn();
+	void SendMessage(HueColor hue, CStr &text);
 };

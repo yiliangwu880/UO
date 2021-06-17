@@ -5,7 +5,7 @@
 #include "./Account/AccountMgr.h"
 #include "MsgDispatch.h"
 #include "CenterClientMsgMgr.h"
-#include "PacketsCom.h"
+#include "PacketsBase.h"
 #include "NetState.h"
 
 using namespace std;

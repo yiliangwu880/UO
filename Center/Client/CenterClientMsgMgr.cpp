@@ -16,6 +16,38 @@ using namespace lc;
 //c#适配
 #define byte uint8_t
 
+GRegEvent(EV_SVR_CFG_INI, PacketHandlers::CfgInit);
+void PacketHandlers::CfgInit(bool &ret)
+{
+	PacketHandlers::Ins().Init();
+}
+
+
+void PacketHandlers::Register(uint8_t packetID, int length, bool ingame, OnPacketReceive onReceive)
+{
+	if (0 != m_Handlers[packetID].m_PacketID)
+	{
+		L_ERROR("repeated reg packetId %d", packetID);
+		return;
+	}
+	m_Handlers[packetID] = PacketHandler(packetID, length, ingame, onReceive);
+}
+
+PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
+{
+	if (packetID >= (int)m_Handlers.size())
+	{
+		L_ERROR("packetId overload %d", packetID);
+		return nullptr;
+	}
+	PacketHandler *p = &m_Handlers[packetID];
+	if (p->m_PacketID == 0)
+	{
+		return nullptr;
+	}
+	return p;
+}
+
 namespace
 {
 
@@ -116,24 +148,7 @@ namespace
 		Account *acc = AccountMgr::Ins().GetAcc(username);
 		L_COND_V(acc);
 		acc->m_Verify.GameLogin(state.m_sn.id, password);
-#if 0
 
-		// 接受登录
-		//state.CityInfo = e.CityInfo;
-		SupportedFeatures sf;
-		state.Send(sf);
-
-		//if (state.NewCharacterList)
-		//{
-			CharacterList cl;
-			state.Send(cl);
-		//}
-		//else
-		//{
-		//	state.Send(new CharacterListOld(state.Account, state.CityInfo));
-		//}
-
-#endif
 	}
 
 
@@ -210,40 +225,64 @@ namespace
 		pAcc->m_AccData.CreatePlayer(player);
 	}
 
-}
-
-
-GRegEvent(EV_SVR_CFG_INI, PacketHandlers::CfgInit);
-void PacketHandlers::CfgInit(bool &ret)
-{
-	PacketHandlers::Ins().Init();
-}
-
-
-void PacketHandlers::Register(uint8_t packetID, int length, bool ingame, OnPacketReceive onReceive)
-{
-	if (0 != m_Handlers[packetID].m_PacketID)
+	void PlayCharacter(NetState &state, PacketReader &pvSrc)
 	{
-		L_ERROR("repeated reg packetId %d", packetID);
-		return;
+		pvSrc.ReadInt32(); // 0xEDEDEDED
+
+		string name = pvSrc.ReadString(30);
+
+		pvSrc.Seek(2, SeekOrigin::Current);
+		int flags = pvSrc.ReadInt32();
+		
+		pvSrc.Seek(24, SeekOrigin::Current);
+		
+		int charSlot = pvSrc.ReadInt32();//idx, start 0
+		int clientIP = pvSrc.ReadInt32();
+
+		shared_ptr<Account> a = state.Account();
+		L_COND_V(a);
+		a->m_AccData.SelectActor(charSlot);
+
+			// Check if anyone is using this account
+			//for (int i = 0; i < a.Length; ++i)
+			//{
+			//	Mobile check = a[i];
+
+			//	if (check != null && check.Map != Map.Internal && check != m)
+			//	{
+			//		Utility.PushColor(ConsoleColor.Red);
+			//		Console.WriteLine("Login: {0}: Account In Use", state);
+			//		Utility.PopColor();
+
+			//		state.Send(new PopupMessage(PMMessage.CharInWorld));
+
+			//		return;
+			//	}
+			//}
+
+			//NetState.ProcessDisposedQueue();
+
+			//state.Flags = (ClientFlags)flags;//0x0000003f
+
+			//state.Mobile = m;
+			//m.NetState = state;
+
+			//if (state.Version == null)
+			//{
+			//	state.Send(new ClientVersionReq());
+
+			//	state.BlockAllPackets = true;
+
+			//	new LoginTimer(state).Start();
+			//}
+			//else
+			//{
+			//	DoLogin(state);
+			//}
 	}
-	m_Handlers[packetID] = PacketHandler(packetID, length, ingame, onReceive);
+
 }
 
-PacketHandler *PacketHandlers::GetHandler(uint8_t packetID)
-{
-	if (packetID >= (int)m_Handlers.size())
-	{
-		L_ERROR("packetId overload %d", packetID);
-		return nullptr;
-	}
-	PacketHandler *p = &m_Handlers[packetID];
-	if (p->m_PacketID == 0)
-	{
-		return nullptr;
-	}
-	return p;
-}
 
 
 void PacketHandlers::Init()
@@ -254,4 +293,5 @@ void PacketHandlers::Init()
 	Register(0xA0, 3, false, PlayServer);
 	Register(0x91, 65, false, GameLogin);////第二个链接
 	Register(0xF8, 106, false, CreateCharacter70160);
+	Register(0x5D, 73, false, PlayCharacter);
 }

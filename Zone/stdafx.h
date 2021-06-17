@@ -47,6 +47,7 @@ using namespace proto;
 using namespace std;
 using namespace db;
 
+#include "PacketsCom.h"
 
 #define RegCenterMsg(fun) STATIC_RUN(MsgDispatch<CenterCon>::Ins().RegMsgHandler(&fun))
 #define RegAccMsg(fun) STATIC_RUN(MsgDispatch<const Session>::Ins().RegMsgHandler(&fun));

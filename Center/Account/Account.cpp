@@ -22,3 +22,5 @@ void Account::Send(Packet &packet)
 {
 	m_AccSn.Send(packet);
 }
+
+

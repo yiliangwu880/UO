@@ -52,8 +52,7 @@ CharacterList::CharacterList(Account &acc)
 		}
 		else
 		{
-			m_Stream.Fill(MAX_CHAR_NAME);
-			m_Stream.Fill(MAX_CHAR_NAME);
+			m_Stream.Fill(60);
 		}
 	}
 
@@ -74,7 +73,7 @@ CharacterList::CharacterList(Account &acc)
 		m_Stream.Write(0);
 	}
 
-	int flags = (int)FeatureFlags::ExpansionEJ;//ExpansionInfo.CoreExpansion.CharacterListFlags;
+	int flags = (int)CharacterListFlags::ExpansionEJ;//ExpansionInfo.CoreExpansion.CharacterListFlags;
 
 	if (count > 6)
 	{

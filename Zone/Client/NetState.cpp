@@ -1,5 +1,5 @@
 #include "NetState.h"
-#include "PacketsCom.h"
+#include "PacketsBase.h"
 #include "svr_util/include/str_util.h"
 #include "Player/PlayerMgr.h"
 

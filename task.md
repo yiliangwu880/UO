@@ -1,6 +1,6 @@
 #tmp
  纸娃娃
-
+ 重复命名检查，给中文提示
  选择角色，顶号角色
 UO skill 结构
 World::FindItem
@@ -13,7 +13,7 @@ OPLInfo -- item.OPLPacket --Actor::DisplayPaperdollTo
 zone跨服协调。细节完善
 地图配置读取
 ##完善游戏内容
-	
+	重命名，先用uin命名，进入游戏
 
 
 #game com
