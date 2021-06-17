@@ -4,18 +4,18 @@
 
 void AccSn::Dispose()
 {
-	AccMgr::Ins().DisconClient(m_sid);
+	AccMgrC::Ins().DisconClient(m_sid);
 }
 
 void AccSn::Disconnect()
 {
 	if (m_sid.cid == 0)return;
-	AccMgr::Ins().DisconClient(m_sid);
+	AccMgrC::Ins().DisconClient(m_sid);
 }
 
 const acc::Session * AccSn::GetSn()
 {
-	return AccMgr::Ins().FindSession(m_sid);
+	return AccMgrC::Ins().FindSession(m_sid);
 }
 
 void AccSn::SendMessage(HueColor hue, CStr &text)
@@ -38,19 +38,19 @@ void AccSn::Send(Packet &packet)
 	uint32 cmd = packet.PacketID();
 	CStr &buffer = packet.Compile(compressionEnabled);
 	//L_DEBUG("Send client len=%d, %s", buffer.length(), StrUtil::BinaryToHex(buffer).c_str());
-	AccMgr::Ins().SendToClient(m_sid, cmd, buffer.c_str(), buffer.length());
+	AccMgrC::Ins().SendToClient(m_sid, cmd, buffer.c_str(), buffer.length());
 }
 
 
 void FirstSn::Dispose()
 {
-	AccMgr::Ins().DisconClient(m_sid);
+	AccMgrC::Ins().DisconClient(m_sid);
 }
 
 void FirstSn::Disconnect()
 {
 	if (m_sid.cid == 0)return;
-	AccMgr::Ins().DisconClient(m_sid);
+	AccMgrC::Ins().DisconClient(m_sid);
 }
 
 void FirstSn::Send(Packet &packet)
@@ -65,5 +65,5 @@ void FirstSn::Send(Packet &packet)
 	}
 	CStr &buffer = packet.Compile(compressionEnabled);
 	//L_DEBUG("Send client len=%d, %s", buffer.length(), StrUtil::BinaryToHex(buffer).c_str());
-	AccMgr::Ins().SendToClient(m_sid, 0, buffer.c_str(), buffer.length());
+	AccMgrC::Ins().SendToClient(m_sid, 0, buffer.c_str(), buffer.length());
 }

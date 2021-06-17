@@ -1,4 +1,4 @@
-#include "CAccMgr.h"
+#include "AccMgrC.h"
 #include "DynCfgMgr.h"
 #include "GlobalEvent.h"
 #include "CenterMgr.h"
@@ -13,8 +13,8 @@ using namespace su;
 using namespace acc;
 
 
-STATIC_RUN(RegEvent<EV_SVR_START>(AccMgr::Start));
-void AccMgr::Start(bool &ret)
+STATIC_RUN(RegEvent<EV_SVR_START>(AccMgrC::Start));
+void AccMgrC::Start(bool &ret)
 {
 	L_INFO("centerAD Start");
 	{//ACC SETING
@@ -32,7 +32,7 @@ void AccMgr::Start(bool &ret)
 			}
 			set.vecCmd2GrupId.push_back(d);
 		}
-		AccMgr::Ins().SetAccSeting(set);
+		AccMgrC::Ins().SetAccSeting(set);
 	}
 
 	std::vector<Addr> vec_addr;
@@ -40,10 +40,10 @@ void AccMgr::Start(bool &ret)
 	addr.ip = gDynCfg.ComCfg().access.inner_ip;
 	addr.port = gDynCfg.ComCfg().access.inner_port; 
 	vec_addr.push_back(addr);
-	AccMgr::Ins().Init(vec_addr, CENTER_GROUP_ID, true);
+	AccMgrC::Ins().Init(vec_addr, CENTER_GROUP_ID, true);
 }
 
-void AccMgr::OnRegResult(uint16 svr_id)
+void AccMgrC::OnRegResult(uint16 svr_id)
 {
 	//向acc注册成功
 	L_COND_V(svr_id != 0, "reg acc fail");
@@ -51,7 +51,7 @@ void AccMgr::OnRegResult(uint16 svr_id)
 	CenterMgr::Ins().SetAccOk();
 }
 
-void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, uint16 msg_len)
+void AccMgrC::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	L_COND_V(CenterMgr::Ins().Allok());
 	Session tmpSn;
@@ -65,7 +65,7 @@ void AccMgr::OnRevVerifyReq(const SessionId &id, uint32 cmd, const char *msg, ui
 	handler->m_OnReceive(ns, r);
 }
 
-void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint16 msg_len)
+void AccMgrC::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint16 msg_len)
 {
 	//L_INFO("OnRevClientMsg.");
 	L_COND_V(msg_len > 0);
@@ -82,7 +82,7 @@ void AccMgr::OnRevClientMsg(const Session &sn, uint32 cmd, const char *msg, uint
 	handler->m_OnReceive(ns, r);
 }
 
-void AccMgr::OnClientConnect(const acc::Session &sn)
+void AccMgrC::OnClientConnect(const acc::Session &sn)
 {
 	L_DEBUG("on client connect。 accName = %s", sn.accName.c_str());
 	if (sn.accName.empty())
@@ -99,7 +99,7 @@ void AccMgr::OnClientConnect(const acc::Session &sn)
 	acc->m_Verify.OnClientConFor2nd(sn.id);
 }
 
-void AccMgr::OnRevBroadcastUinToSession(const acc::Session &sn)
+void AccMgrC::OnRevBroadcastUinToSession(const acc::Session &sn)
 {
 	//Account *account = AccountMgr::Ins().GetAcc(sn.accName);
 	//L_COND_V(account);
@@ -111,7 +111,7 @@ void AccMgr::OnRevBroadcastUinToSession(const acc::Session &sn)
 	//account->m_Verify.SetVerifyOk(sn.id);
 }
 
-void AccMgr::OnClientDisCon(const acc::Session &sn)
+void AccMgrC::OnClientDisCon(const acc::Session &sn)
 {
 	CenterSnEx *p = sn.GetEx<CenterSnEx>();
 	L_COND_V(p);

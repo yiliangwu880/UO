@@ -1,7 +1,7 @@
 
 #pragma once
 #include "dbTableDef.h"
-#include "CAccMgr.h"
+#include "AccMgrC.h"
 #include "MsgDispatch.h"
 #include "Account.h"
 #include "DynCfgMgr.h"

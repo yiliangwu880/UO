@@ -1,7 +1,7 @@
 #pragma once
 #include "CBaseData.h"
 
-class SceneTran : public CPlayerSubCom
+class SceneTranC : public CPlayerSubCom
 {
 	enum State
 	{
@@ -10,7 +10,7 @@ class SceneTran : public CPlayerSubCom
 	};
 	State m_State = Playing;
 public:
-	SceneTran(PlayerC &owner)
+	SceneTranC(PlayerC &owner)
 		:CPlayerSubCom(owner)
 	{
 	}

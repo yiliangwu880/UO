@@ -1,7 +1,7 @@
 #pragma once
 #include "ZoneSvr.h"
-#include "CAccMgr.h"
-#include "SceneTran.h"
+#include "AccMgrC.h"
+#include "SceneTranC.h"
 #include "LoginPlayerC.h"
 #include "CBaseData.h"
 #include "PlayerSnC.h"
@@ -12,7 +12,7 @@ class PlayerC : public WeakPtr<PlayerC>
 public:
 	BaseData m_BaseData;
 	PlayerSnC m_CPlayerSn;
-	SceneTran m_SceneTran;
+	SceneTranC m_SceneTran;
 	LoginPlayerC m_LoginPlayer;
 
 public:

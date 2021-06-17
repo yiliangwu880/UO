@@ -1,6 +1,6 @@
 
 #pragma once
-#include "CAccMgr.h"
+#include "AccMgrC.h"
 #include "MsgDispatch.h"
 #include "Verify.h"
 #include "AccData.h"

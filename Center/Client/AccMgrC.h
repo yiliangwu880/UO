@@ -12,7 +12,7 @@ struct CenterSnEx
 
 };
 
-class AccMgr : public acc::ADFacadeMgr, public Singleton<AccMgr>
+class AccMgrC : public acc::ADFacadeMgr, public Singleton<AccMgrC>
 {
 public:
 	static void Start(bool &ret);

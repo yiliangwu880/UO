@@ -69,7 +69,7 @@ void Verify::GameLogin(const acc::SessionId &sid, CStr &psw)
 	VerifyRetStruct d;
 	d.is_success = true;
 	d.accName = m_owner.Name();
-	AccMgr::Ins().ReqVerifyRet(sid, d);
+	AccMgrC::Ins().ReqVerifyRet(sid, d);
 }
 
 void Verify::OnClientConFor2nd(const acc::SessionId &sid)
@@ -102,7 +102,7 @@ void Verify::SetVerifyOk(const acc::SessionId &id)
 
 	VerifyRetStruct d;
 	d.is_success = true;
-	AccMgr::Ins().ReqVerifyRet(id, d);
+	AccMgrC::Ins().ReqVerifyRet(id, d);
 
 	{//send svr list 
 		vector<ServerInfo> info;

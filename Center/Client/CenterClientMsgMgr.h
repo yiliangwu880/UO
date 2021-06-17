@@ -1,6 +1,6 @@
 //链接center
 #pragma once
-#include "CAccMgr.h"
+#include "AccMgrC.h"
 #include "UoProto.h"
 
 class Packet;
