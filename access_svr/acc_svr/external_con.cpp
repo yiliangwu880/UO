@@ -264,7 +264,10 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len, bool &isSeed)
 		{
 			return 0;
 		}
-		L_DEBUG("rev client 0x%x %d", packetID, packetLength);
+		if (0x73 != packetID) //73 pingpang 消息太多
+		{
+			L_DEBUG("rev client 0x%x %d", packetID, packetLength);
+		}
 		return packetLength ;
 
 	}

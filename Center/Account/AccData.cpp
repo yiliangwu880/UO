@@ -113,6 +113,7 @@ void AccData::OnInsertPlayer(bool ret, const DbPlayer &data, any para)
 		lastFailUin = data.uin;
 		DbPlayer newData = data;
 		newData.name = StrNum::NumToStr(data.uin);
+		newData.actor.actorBase.name = newData.name;
 		Dbproxy::Ins().Insert(newData, para);
 		L_DEBUG("insert player, name as uin");
 		//rsp fail

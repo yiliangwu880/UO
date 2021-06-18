@@ -417,7 +417,10 @@ void InnerSvrCon::OnRecv(const lc::MsgPack &msg)
 			return;
 		}
 
-		L_DEBUG("Send client 0x%x %d, ", (uint8)f_msg.cmd, f_msg.msg_len);
+		if ((uint8)f_msg.cmd != 0x0 && f_msg.msg_len != 2)//排除打印的情况， 的可能是 pingpang
+		{
+			L_DEBUG("Send client 0x%x %d, ", (uint8)f_msg.cmd, f_msg.msg_len);
+		}
 		pClient->SendMsg(f_msg.msg, f_msg.msg_len);
 
 	}
