@@ -49,5 +49,6 @@ void LoginPlayerC::RspReLoginZone_cs(ZoneSvrCon &con, const proto::RspReLoginZon
 	L_COND_V(player);
 	L_COND_V(WaitReLogin == player->m_LoginPlayer.m_State);
 	player->m_LoginPlayer.m_State = LoginOk;
+	L_DEBUG("RspReLoginZone_cs ok");
 
 }

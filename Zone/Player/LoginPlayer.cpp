@@ -172,6 +172,7 @@ void LoginPlayer::ReqReLoginZone_sc(CenterCon &con, const proto::ReqReLoginZone_
 
 	RspReLoginZone_cs rsp;
 	rsp.ret = true;
+	rsp.uin = player->Uin();
 	CenterCon::Ins().Send(rsp);
 	player->m_LoginPlayer.Login();
 }

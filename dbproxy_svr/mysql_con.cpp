@@ -215,7 +215,7 @@ bool MysqlCon::Insert(const db::BaseTable &data)
 		return true;
 	}
 	catch (sql::SQLException &e) {
-		L_ERROR("%s, MySQL error code:%d, SQLState:%s", e.what(), e.getErrorCode(), e.getSQLStateCStr());
+		L_DEBUG("%s, MySQL error code:%d, SQLState:%s", e.what(), e.getErrorCode(), e.getSQLStateCStr());
 		return false;
 	}
 }
@@ -502,10 +502,17 @@ bool MysqlCon::Query(const db::BaseTable &data, uint32_t limit_num, QueryResultR
 		do
 		{
 			unique_ptr<sql::ResultSet> ret(stmt->getResultSet());
-			if (0 == row_num || nullptr == ret) //一个数据都没有
+			if ( nullptr == ret) //一个数据都没有
 			{
-				L_ERROR("execute sql fail [%s]", sql_str.c_str());
-				return false;
+				if (row_num == 0)
+				{
+					L_ERROR("execute sql fail [%s]", sql_str.c_str());
+					return false;
+				}
+				else
+				{
+					break;
+				}
 			}
 			while (ret->next()) {
 				unique_ptr<db::BaseTable> pData = table->factor();
@@ -554,10 +561,17 @@ bool MysqlCon::Query(uint16_t table_id, std::string &cond, uint32_t limit_num, Q
 		do
 		{
 			unique_ptr<sql::ResultSet> ret(stmt->getResultSet());
-			if (0 == row_num || nullptr == ret) //一个数据都没有
+			if ( nullptr == ret) //一个数据都没有
 			{
-				L_ERROR("execute sql fail [%s]", sql_str.c_str());
-				return false;
+				if (row_num == 0)
+				{
+					L_ERROR("execute sql fail [%s]", sql_str.c_str());
+					return false;
+				}
+				else
+				{
+					break;
+				}
 			}
 			while (ret->next()) {
 				unique_ptr<db::BaseTable> pData = table->factor();
