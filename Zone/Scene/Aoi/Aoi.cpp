@@ -26,6 +26,11 @@ bool Aoi::Entity::Enter(Scene &scene, uint16_t x, uint16_t y)
 		L_ERROR("x,y is too big %d %d", x, y);
 		return false;
 	}
+	if (&scene == m_scene)
+	{
+		L_ERROR("repeated inter scene ");
+		return false;
+	}
 	//必须先离开，才能改位置. 保证scene能找到entity
 	if (m_scene)
 	{

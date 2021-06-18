@@ -27,6 +27,7 @@ void ActorBase::OnLoad(DbActor &data)
 	const DbActorBase &dbBase = data.actorBase;
 	m_data     = dbBase;
 	m_name = data.actorBase.name;
+	//L_DEBUG("pos =%d %d", dbBase.x, dbBase.y);
 }
 
 void ActorBase::OnSave(DbActor &data)

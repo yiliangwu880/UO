@@ -15,7 +15,7 @@ void PlayerDb::OnCreate(const DbPlayer &data)
 
 void PlayerDb::OnLoad(const DbPlayer &data)
 {
-	L_COND_V(m_data.uin != 0, "repeated load db data");
+	L_COND_V(m_data.uin == 0, "repeated load db data");
 	m_data = data;
 	m_owner.FireEvent<EV_LOAD_DB>(m_data.actor);
 	m_tm.StartTimerSec(SAVE_INTERVAL_SEC, std::bind(&PlayerDb::OnSave, this), true);

@@ -24,6 +24,7 @@ public:
 	}
 	virtual void OnExit() override
 	{
+		//libevent 某个timer调用，函数结束后，关闭服务
 		FireEvent<EV_SVR_EXIT>();
 	}
 };

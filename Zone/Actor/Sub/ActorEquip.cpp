@@ -6,7 +6,7 @@ ActorEquip::ActorEquip(Actor &actor)
 	Reg<EV_CREATE_DB>(&ActorEquip::OnCreate);
 	Reg<EV_LOAD_DB>(&ActorEquip::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorEquip::OnSave);
-	Reg<EV_BEFORE_LOGIN>(&ActorEquip::OnBeforeLogin);
+	Reg<EV_BEFORE_LOGIN_MSG>(&ActorEquip::OnBeforeLogin);
 }
 
 void ActorEquip::OnCreate(DbActor &dbActor)

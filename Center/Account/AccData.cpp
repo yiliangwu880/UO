@@ -157,6 +157,9 @@ void AccData::SelectActor(uint32 idx)
 	if (PlayerC *player = PlayerMgrC::Ins().FindPlayer(actorBrief.uin))
 	{
 		L_DEBUG("login player by replace");
+		const Session *sn = m_owner.m_AccSn.GetSn();
+		L_COND_V(sn);
+		player->m_CPlayerSn.SetSid(sn->id);
 		player->m_LoginPlayer.ReLogin();
 	}
 	else

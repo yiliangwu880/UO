@@ -48,7 +48,7 @@ void LoginPlayer::Login()
 	Scene *scene = SceneMgr::Ins().GetWorld(MapId::Felucca);
 	L_COND_V(scene);
 	m_owner.m_Actor.EnterScene(*scene);
-	m_owner.FireEvent<EV_BEFORE_LOGIN>(); 
+	m_owner.FireEvent<EV_BEFORE_LOGIN_MSG>(); 
 	SendLogin();
 	//DoLogin(m_owner);
 }
@@ -162,17 +162,18 @@ void LoginPlayer::ReqReLoginZone_sc(CenterCon &con, const proto::ReqReLoginZone_
 	L_INFO("ReqReLoginZone_sc");
 	Player *player = PlayerMgr::Ins().Find(msg.uin);
 	L_COND_V(player);
+	LoginPlayer &self = player->m_LoginPlayer;
 
-	L_COND_V(LoginOk == player->m_LoginPlayer.m_State || OffLine == player->m_LoginPlayer.m_State);
-
+	L_COND_V(LoginOk == self.m_State || OffLine == self.m_State);
 	L_COND_V(player->m_PlayerSn.Reset(msg.cid));
-
-
-	player->m_LoginPlayer.m_State = LoginOk;
-
+	self.m_State = LoginOk;
 	RspReLoginZone_cs rsp;
 	rsp.ret = true;
 	rsp.uin = player->Uin();
 	CenterCon::Ins().Send(rsp);
-	player->m_LoginPlayer.Login();
+	//{
+	//	Point3D pos = player->m_Actor.m_ActorBase.GetPos();
+	//	L_DEBUG("relogin , pos=%d %d", pos.X, pos.Y);
+	//}
+	self.SendLogin();
 }

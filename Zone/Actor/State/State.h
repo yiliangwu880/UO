@@ -26,7 +26,7 @@ public:
 		//
 	
 private:
-	void OnTImer()
+	void OnTimer()
 	{
 		//dec hp
 	}

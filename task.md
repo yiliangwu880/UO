@@ -1,11 +1,7 @@
 #tmp
 bug:
 {
-	acc :repeated set cmd to grpId: 0x5d -> 10  --/root/UO/access_svr/acc_svr/inner_con.cpp:31 Parse_CMD_REQ_ACC_SETING
-	
 	重命名流程有时候不流畅。
-
-
 }
  纸娃娃
  重复命名检查，给中文提示

@@ -11,7 +11,7 @@ enum InsEvent
 	EV_LOAD_DB = 2,
 	EV_SAVE_DB = 3,
 
-	EV_BEFORE_LOGIN = 7, //player别的模块已经加载DB完成。
+	EV_BEFORE_LOGIN_MSG = 7, //player别的模块已经加载DB完成。 再发登录消息给客户端前触发
 };
 
 namespace db

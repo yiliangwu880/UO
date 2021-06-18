@@ -275,7 +275,7 @@ int ExternalSvrCon::ParsePacket(const char *pMsg, int len, bool &isSeed)
 
 int ExternalSvrCon::OnRawRecv(const char *pMsg, int len)
 {
-	L_DEBUG("OnRawRecv msg len = %d", len);
+//	L_DEBUG("OnRawRecv msg len = %d", len);
 	int totalGetLen = 0;
 	for (;;)
 	{

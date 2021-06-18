@@ -28,7 +28,10 @@ namespace
 			for (auto &cmd : v.vecCmd)
 			{
 				bool r = g_AccSeting->m_cmd2GrpId.insert(make_pair(cmd, v.grpId)).second;
-				L_ERROR("repeated set cmd to grpId: 0x%x -> %d", cmd, v.grpId);
+				if (!r)
+				{
+					L_ERROR("repeated set cmd to grpId: 0x%x -> %d", cmd, v.grpId);
+				}
 			}
 		}
 	}

@@ -23,7 +23,7 @@ class Encoding : public Singleton<Encoding>
 	iconv_t m_utf8_2_utf16be = (iconv_t)-1;
 	iconv_t m_utf8_2_ascii = (iconv_t)-1;
 	iconv_t m_utf8_2_utf16le = (iconv_t)-1;
-	char m_dstArray[1024];
+	char m_dstArray[1024] = {};
 
 public:
 	Encoding();

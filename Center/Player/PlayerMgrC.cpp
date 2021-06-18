@@ -15,7 +15,10 @@ PlayerC * PlayerMgrC::CreatePlayer(const DbPlayer &data)
 PlayerC * PlayerMgrC::FindPlayer(uint64 uin)
 {
 	PCPlayer *pp = m_players.Find(uin);
-	L_COND(pp, nullptr, "uin=%ld", uin);
+	if (pp == nullptr)
+	{
+		return nullptr;
+	}
 	return *pp;
 }
 
