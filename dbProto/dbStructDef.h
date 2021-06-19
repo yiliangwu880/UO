@@ -97,6 +97,19 @@ namespace db
 		int16_t hairHuef = 0;
 	};
 
+	struct DbSkill
+	{
+		uint32 idx=0;
+		uint16 base = 0; //GM 1000
+		uint16 cap = 1000; //GM 1000
+		uint32 lock = 0;
+	};
+
+	struct DbSkills
+	{
+		std::vector<DbSkill> vecSkill;
+	};
+
 	struct DbActor //monster ,npc, playeractor com use
 	{
 		DbActorBase actorBase;
@@ -104,6 +117,7 @@ namespace db
 		DbPlayerBase playerBase;
 		DbEquips equips;
 		DbItem bag;
+		DbSkills skills;
 	};
 
 
@@ -184,12 +198,24 @@ namespace db
 	DB_FIELD(vecItem)\
 	DB_CLASS_END\
 \
+	DB_CLASS_NAME(DbSkill)\
+	DB_FIELD(idx)\
+	DB_FIELD(base)\
+	DB_FIELD(cap)\
+	DB_FIELD(lock)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(DbSkills)\
+	DB_FIELD(vecSkill)\
+	DB_CLASS_END\
+\
 	DB_CLASS_NAME(DbActor)\
 	DB_FIELD(actorBase)\
 	DB_FIELD(actorAttr)\
 	DB_FIELD(playerBase)\
 	DB_FIELD(equips)\
 	DB_FIELD(bag)\
+	DB_FIELD(skills)\
 	DB_CLASS_END\
 \
 

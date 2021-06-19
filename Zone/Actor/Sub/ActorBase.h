@@ -31,6 +31,7 @@ private:
 	void OnCreate(DbActor &data);
 	void OnLoad(DbActor &data);
 	void OnSave(DbActor &data);
+	void OnBeforeLogin();
 
 };
 

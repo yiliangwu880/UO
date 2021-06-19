@@ -8,19 +8,27 @@ struct SkillInfo
 	int skillID = 1; //cfgid
 	string name = "Anatomy"; //skill name
 };
-struct Skill
+
+class Skill
 {
-	uint16 base=0; //0~1200
-	int lockState=0;//unlock, up , down
-	SkillInfo Info;
-	SkillLock m_Lock = SkillLock::Up;
-	int CapFixedPoint() { return 1000; }
-	int BaseFixedPoint() { return 500; }
-	SkillLock Lock() { return m_Lock; }
+	const SkillCfg *m_SkillCfg = nullptr;
+	DbSkill *m_DbSkill = nullptr;
+
+public:
+
+	void Init(DbSkill *dbSkill);
+	int CapFixedPoint() { return m_DbSkill->cap; }//gm为1000点
+	int BaseFixedPoint() { return m_DbSkill->base; }//gm为1000点
+	SkillLock Lock();
+	const DbSkill &GetDbSkill() { return *m_DbSkill; };
+	const SkillCfg * GetCfg();
 };
+
 class ActorSkill : public ActorSubCom<ActorSkill>
 {
-	map<SkillName, Skill> m_all;
+	DbSkills *m_DbSkills = nullptr;
+	std::array<Skill, (uint32)SkillName::Max> m_all;
+
 public:
 	ActorSkill(Actor &actor);
 	uint32 Length() { return m_all.size(); }
@@ -29,6 +37,5 @@ public:
 private:
 	void OnCreate(DbActor &data);
 	void OnLoad(DbActor &data);
-	void OnSave(DbActor &data);
 
 };

@@ -9,6 +9,7 @@ ActorBase::ActorBase(Actor &actor, EntityType type)
 	Reg<EV_LOAD_DB>(&ActorBase::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorBase::OnSave);
 	Reg<EV_CREATE_DB>(&ActorBase::OnCreate);
+	Reg<EV_BEFORE_LOGIN_MSG>(&ActorBase::OnBeforeLogin);
 
 }
 
@@ -26,7 +27,7 @@ void ActorBase::OnLoad(DbActor &data)
 {
 	const DbActorBase &dbBase = data.actorBase;
 	m_data     = dbBase;
-	m_name = data.actorBase.name;
+	m_name = dbBase.name;
 	//L_DEBUG("pos =%d %d", dbBase.x, dbBase.y);
 }
 
@@ -37,7 +38,10 @@ void ActorBase::OnSave(DbActor &data)
 }
 
 
+void ActorBase::OnBeforeLogin()
+{
 
+}
 
 void ActorBase::InitMonster(const MonsterInit &data)
 {

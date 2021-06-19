@@ -27,9 +27,9 @@ public:
 	const EquipCfg *GetEquipCfg(uint16 id)const;
 	const WeaponCfg *GetWeaponCfg(uint16 id)const;
 	const MonsterCfg *GetMonsterCfg(uint32 id)const;
-	const SkillCfg *GetSkillCfgMgr(uint32 id)const;
-	const ActCfg *GetActCfgMgr(uint32 id)const;
-	const BuffCfg *GetBuffCfgMgr(BuffId id)const;
+	const SkillCfg *GetSkillCfg(uint32 id)const;
+	const ActCfg *GetActCfg(uint32 id)const;
+	const BuffCfg *GetBuffCfg(BuffId id)const;
 };
 extern const GCfg &gCfg;
 

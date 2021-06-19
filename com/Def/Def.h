@@ -13,6 +13,7 @@ namespace
 	const uint32 SAVE_INTERVAL_SEC = 60 * 1;//save db interval 
 	const uint32 MAX_CHAR_NUM_IN_ACC = 7; //CHAR NUM IN ACC
 	const uint32 MAX_CHAR_NAME = 30;
+
 }
 
 enum class Notoriety

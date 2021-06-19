@@ -593,8 +593,13 @@ SkillUpdate::SkillUpdate(ActorSkill &skills)
 		{
 			uv = 0xFFFF;
 		}
-
-		m_Stream.Write((ushort)(s.Info.skillID + 1));
+		const SkillCfg *cfg = s.GetCfg();
+		if (cfg == nullptr)
+		{
+			L_ERROR("");
+			return;
+		}
+		m_Stream.Write((ushort)(cfg->skillID + 1));
 		m_Stream.Write((ushort)uv);
 		m_Stream.Write((ushort)s.BaseFixedPoint());
 		m_Stream.Write((byte)s.Lock());

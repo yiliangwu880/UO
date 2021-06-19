@@ -13,6 +13,7 @@ class Monster : public WeakPtr<Monster>, public ActorOwner
 {
 	uint32 m_uin;
 public:
+	DbActor m_DbActor; //保持和player结构一样，有个DB结构，但不需要存库
 	Actor m_Actor;//战斗生物基本功能, 必须放第一，这样 m_ai 才能正确引用
 	Ai m_ai; 
 	MonsterBase m_MonsterBase;

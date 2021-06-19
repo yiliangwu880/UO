@@ -11,7 +11,7 @@ void ActSkill::Act(uint32 id, const UnionTarget &target)
 	auto it = m_id2lv.find(id);
 	L_COND_V(it != m_id2lv.end());
 	uint32 lv = it->second;
-	const ActCfg *cfg = gCfg.GetActCfgMgr(id);
+	const ActCfg *cfg = gCfg.GetActCfg(id);
 	L_COND_V(cfg);
 
 

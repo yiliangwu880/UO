@@ -42,7 +42,7 @@ Buff::Buff(Actor &actor)
 
 void Buff::Init(BuffId id, uint16 lv)
 {
-	m_cfg = gCfg.GetBuffCfgMgr(id);
+	m_cfg = gCfg.GetBuffCfg(id);
 	L_COND_V(m_cfg);
 
 	m_tm.StartTimerSec(m_cfg->sec, &Buff::OnTimerOut, this);
