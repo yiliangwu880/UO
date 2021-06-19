@@ -1,7 +1,6 @@
 #tmp
  纸娃娃
  选择角色，顶号角色
-UO skill 结构
 World::FindItem
 Body
 

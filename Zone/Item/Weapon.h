@@ -5,6 +5,7 @@
 class Actor;
 struct IWeapon
 {
+
 	//int MaxRange{ get; }
 	//void OnBeforeSwing(Mobile attacker, IDamageable damageable);
 	//TimeSpan OnSwing(Mobile attacker, IDamageable damageable);
@@ -14,6 +15,8 @@ struct IWeapon
 
 class Weapon : public Item, public IWeapon
 {
+	friend class ItemMgr;
+
 	//attr
 	DbEquipItem m_dbEquipItem;
 	const WeaponCfg *m_cfg = nullptr;
@@ -21,7 +24,7 @@ public:
 	virtual void OnLoad(const DbItem &dbItem) override;
 	virtual void OnSave(DbItem &dbItem) override;
 
-public:
+private:
 	Weapon(uint16 cfgId);
 };
 

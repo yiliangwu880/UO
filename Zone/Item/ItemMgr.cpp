@@ -13,8 +13,19 @@ void ItemMgr::Start(bool &ret)
 #undef ITEM_TYPE_NAME
 }
 
-std::shared_ptr<Item> ItemMgr::CreateItem(uint32 type, uint16 cfgId)
+SItem ItemMgr::Find(uint32 id)
 {
+	SItem *p = MapFind(m_id2Item, id);
+	if (nullptr == p)
+	{
+		return nullptr;
+	}
+	return *p;
+}
+
+std::shared_ptr<Item> ItemMgr::CreateItem(ItemType _type, uint16 cfgId)
+{
+	uint32 type = (uint32)_type;
 	auto it = m_type2Creator.find(type);
 	if (it == m_type2Creator.end())
 	{
@@ -22,7 +33,10 @@ std::shared_ptr<Item> ItemMgr::CreateItem(uint32 type, uint16 cfgId)
 		return nullptr;
 	}
 	ItemCreator f = it->second;
-	return f(cfgId);
+	SItem item = f(cfgId);
+	bool r = MapInsert(m_id2Item, item->Serial(), item);
+	L_COND(r, nullptr, "create new item fail, id=%d", item->Serial());
+	return item;
 }
 
 std::shared_ptr<Item> ItemMgr::CreateItem(const DbItem &item)
@@ -34,5 +48,5 @@ std::shared_ptr<Item> ItemMgr::CreateItem(const DbItem &item)
 		L_ERROR("find item cfg fail. id=%d", cfgId);
 		return nullptr;
 	}
-	return ItemMgr::Ins().CreateItem((uint32)cfg->type, cfgId);
+	return ItemMgr::Ins().CreateItem(cfg->type, cfgId);
 }

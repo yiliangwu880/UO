@@ -6,6 +6,7 @@
 class MonsterCfg;
 class Scene;
 class Actor;
+class Item;
 struct MonsterInit
 {
 	const MonsterCfg *cfg = nullptr;
@@ -21,10 +22,12 @@ public:
 };
 
 
+using SItem = shared_ptr<Item>;
 class World
 {
 public:
 	static Actor *FindMobile(uint32 id);
+	static SItem FindItem(uint32 id);
 };
 
 class Titles

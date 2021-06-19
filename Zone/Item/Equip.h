@@ -5,6 +5,8 @@
 
 class Equip : public Item
 {
+	friend class ItemMgr;
+
 	//attr
 	DbEquipItem m_dbEquipItem;
 	const EquipCfg *m_cfg = nullptr;
@@ -14,7 +16,7 @@ public:
 	virtual void OnSave(DbItem &dbItem) override;
 	virtual Layer GetLayer()const override;
 
-public:
+private:
 	Equip(uint16 cfgId);
 };
 

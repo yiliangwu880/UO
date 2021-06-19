@@ -1,4 +1,5 @@
 #include "Actor.h"
+#include "ItemMgr.h"
 
 ActorEquip::ActorEquip(Actor &actor)
 	:ActorSubCom<ActorEquip>(actor.m_owner, actor)
@@ -15,7 +16,7 @@ void ActorEquip::OnCreate(DbActor &dbActor)
 	if (m_Actor.m_ActorBase.GetType() == EntityType::Player)
 	{
 		{
-			SItem item = make_shared<Equip>(0x1F7B);
+			SItem item = ItemMgr::Ins().CreateItem(ItemType::Equip, 0x1F7B);
 			DbItem dbItem;
 			item->OnSave(dbItem);
 			equips.vecItem.push_back(dbItem);

@@ -6,6 +6,11 @@
 class Item;
 class Container;
 class Scene;
+class ItemMgr;
+
+
+using SItem = shared_ptr<Item>;
+
 class ItemObserver : public Aoi::Entity
 {
 	Item &m_Item;
@@ -20,9 +25,10 @@ public:
 	bool Leave();
 };
 
-using SItem = shared_ptr<Item>;
+
 class Item
 {
+	friend class ItemMgr;
 
 protected:
 	Point3D m_pos;
@@ -38,7 +44,7 @@ protected:
 	uint32 m_hue = 0;
 
 public:
-	virtual ~Item() {};
+	virtual ~Item();
 	virtual Layer GetLayer()const { return Layer::Invalid; }
 	virtual void OnLoad(const DbItem &dbItemBase);
 	virtual void OnSave(DbItem &dbItemBase);
@@ -46,14 +52,17 @@ public:
 	virtual uint16 GetItemNum() const  { return 1; }//容器内物品数，包括嵌套的 和 容器自己
 
 public:
-	Item(uint16 cfgId);
 	uint32 Serial() const { return m_id; }
 	uint32 GetHue() const { return m_hue; }
 	void SetPos(uint16 x, uint16 y, uint16 z = 0);
 	ItemType GetType() const;
 	Container *GetParent();
 	uint16 GetItemID() const { return m_cfgId; }
-	
+
+protected:
+	Item(uint16 cfgId); //不让用户直接构造
+
+private:
 };
 
 

@@ -17,6 +17,11 @@ Item::Item(uint16 cfgId)
 	m_cfg = p;
 }
 
+Item::~Item()
+{
+
+}
+
 void Item::OnLoad(const DbItem &dbItem)
 {
 	m_pos = Point3D(dbItem.dbItemBase.x, dbItem.dbItemBase.y, 0);
