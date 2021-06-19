@@ -136,64 +136,6 @@ public:
 	CharacterListFlags AdditionalFlags = CharacterListFlags::None;
 };
 
-//tmp Mobile
-struct MobileTmp
-{
-	int Serial=92;
-	int Body = 400;
-	int X	=350;
-	int Y	=257;
-	int Z	=14	;
-	Direction dir = Direction::North;
-
-};
-
-class LoginConfirm : public Packet
-{
-public:
-	 LoginConfirm(MobileTmp m)
-		: base(0x1B, 37)
-	{
-		m_Stream.Write(m.Serial);
-		m_Stream.Write(0);
-		m_Stream.Write((short)m.Body);
-		m_Stream.Write((short)m.X);
-		m_Stream.Write((short)m.Y);
-		m_Stream.Write((short)m.Z);
-		m_Stream.Write((byte)m.dir);
-		m_Stream.Write((byte)0);
-		m_Stream.Write(-1);
-
-		//Map map = m.Map;
-
-		//if (map == null || map == Map.Internal)
-		//{
-		//	map = m.LogoutMap;
-		//}
-
-		m_Stream.Write((short)0);
-		m_Stream.Write((short)0);
-		m_Stream.Write((short)(6144));//m_Stream.Write((short)(map == null ? 6144 : map.Width));
-		m_Stream.Write((short)(4096));//m_Stream.Write((short)(map == null ? 4096 : map.Height));
-
-		m_Stream.Fill();
-	}
-};
-
-class MapChange : public Packet
-{
-public:
-	 MapChange(MobileTmp m)
-		: base(0xBF)
-	{
-		EnsureCapacity(6);
-
-		m_Stream.Write((short)0x08);
-		m_Stream.Write((byte)1);//((byte)(m.Map == null ? 0 : m.Map.MapID));
-	}
-};
-
-
 class MapPatches : public Packet
 {
 public:

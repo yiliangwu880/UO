@@ -1,6 +1,11 @@
 #include "Packets.h"
 #include "Player.h"
 #include "svr_util/include/time/su_timestamp.h"
+#include <cstdarg>
+#include <stdio.h>
+#include <stdlib.h>
+#include "ZoneMisc.h"
+
 //c#适配
 #define base Packet
 #define uint uint32
@@ -670,4 +675,144 @@ DisplayPaperdoll::DisplayPaperdoll(Mobile &m, string text, bool canLift)
 	m_Stream.Write(m.Serial());
 	m_Stream.WriteAsciiFixed(text, 60);
 	m_Stream.Write(flags);
+}
+
+OPLInfo::OPLInfo(ObjectPropertyList &list)
+	: base(0xDC, 9)
+{
+	m_Stream.Write(list.Entity().Serial());
+	m_Stream.Write(list.Hash());
+}
+
+ObjectPropertyList::ObjectPropertyList(IEntity &e)
+	: base(0xD6)
+	, m_Entity(e)
+{
+	EnsureCapacity(128);
+
+	m_Stream.Write((short)1);
+	m_Stream.Write(e.Serial());
+	m_Stream.Write((byte)0);
+	m_Stream.Write((byte)0);
+	m_Stream.Write(e.Serial());
+}
+
+void ObjectPropertyList::Add(int number, const char* fmt, ...)
+{
+	string resultOUT;
+	va_list vl;
+	va_start(vl, fmt);
+
+	resultOUT.resize(1024, 0);
+	int len;
+	for (;;)
+	{
+		len = vsnprintf((char *)resultOUT.c_str(), resultOUT.size(), fmt, vl);
+		if (len == -1)
+		{
+			resultOUT.clear();
+			break;
+		}
+		if (len >= (int)resultOUT.size())
+		{
+			resultOUT.resize(resultOUT.size() * 2, 0);
+			va_start(vl, fmt);
+			continue;
+		}
+		break;
+	}
+	resultOUT.resize(len);
+
+	va_end(vl);
+
+	Add(number, resultOUT);
+}
+
+void ObjectPropertyList::Add(const char* fmt, ...)
+{
+	string resultOUT;
+	va_list vl;
+	va_start(vl, fmt);
+
+	resultOUT.resize(1024, 0);
+	int len;
+	for (;;)
+	{
+		len = vsnprintf((char *)resultOUT.c_str(), resultOUT.size(), fmt, vl);
+		if (len == -1)
+		{
+			resultOUT.clear();
+			break;
+		}
+		if (len >= (int)resultOUT.size())
+		{
+			resultOUT.resize(resultOUT.size() * 2, 0);
+			va_start(vl, fmt);
+			continue;
+		}
+		break;
+	}
+	resultOUT.resize(len);
+
+	va_end(vl);
+	Add(GetStringNumber(), resultOUT);
+}
+
+void ObjectPropertyList::Add(int number, CStr &arguments)
+{
+	if (number == 0)
+	{
+		return;
+	}
+
+	if (m_Header == 0)
+	{
+		m_Header = number;
+		m_HeaderArgs = arguments;
+	}
+
+	AddHash(number);
+	AddHash(std::hash<std::string>()(arguments));
+
+	m_Stream.Write(number);
+
+	string out;
+	Encoding::Ins().Unicode(arguments, out); 
+
+	m_Stream.Write((short)out.length());
+	m_Stream.Write(out.c_str(), 0, out.length());
+}
+
+void ObjectPropertyList::Add(int number)
+{
+	if (number == 0)
+	{
+		return;
+	}
+
+	AddHash(number);
+
+	if (m_Header == 0)
+	{
+		m_Header = number;
+		m_HeaderArgs = "";
+	}
+
+	m_Stream.Write(number);
+	m_Stream.Write((short)0);
+}
+
+
+void ObjectPropertyList::Terminate()
+{
+	m_Stream.Write(0);
+
+	m_Stream.Seek(11, SeekOrigin::Begin);//指针设置到偏移11位置
+	m_Stream.WriteBySeek(m_Hash); //覆盖写入索引 
+}
+
+void ObjectPropertyList::AddHash(int val)
+{
+	m_Hash ^= (val & 0x3FFFFFF);
+	m_Hash ^= (val >> 26) & 0x3F;
 }

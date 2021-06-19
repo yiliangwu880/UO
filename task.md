@@ -1,9 +1,6 @@
 #tmp
- 纸娃娃
- 选择角色，顶号角色
-World::FindItem
-Body
 
+GetProperties(m_PropertyList)
 OPLInfo -- item.OPLPacket --Actor::DisplayPaperdollTo
 #整体
 概要登录流程，新角色，登录旧角色

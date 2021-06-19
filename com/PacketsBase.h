@@ -8,6 +8,7 @@
 #include "svr_util/include/str_util.h"
 #include "svr_util/include/cnt_typedef.h"
 #include <iconv.h>
+#include "UoProto.h"
 
 //class Packet
 //{
@@ -101,6 +102,7 @@ public:
 	StreamAdaptor m_Stream;
 private:
 	int m_Capacity;//m_Stream长度
+	long m_offset=0; //支持seek用
 
 public:
 	PacketWriter()
@@ -117,6 +119,7 @@ public:
 	{
 		m_Stream.assign(str);
 	}	
+
 
 	void SetCapacity(int cap)
 	{
@@ -135,6 +138,46 @@ public:
 		m_Stream[offset++] = (char)(value >> 8);
 		m_Stream[offset] = (char)value;
 	}
+	//设置偏移后，用 WriteBySeek 配合写入
+	long Seek(long offset, SeekOrigin origin)
+	{
+		if (origin != SeekOrigin::Begin)
+		{
+			L_ERROR("unfinished type %d", (uint32)origin);
+			return m_offset;
+		}
+		if ((size_t)offset >= m_Stream.length() )
+		{
+			L_ERROR("WriteByOffset overflow offset,size=%d %d", offset, m_Stream.length());
+			return m_offset;
+		}
+		m_offset = offset;
+		return m_offset;
+	}
+	void WriteBySeek(ushort value)
+	{
+		if (m_Stream.length() < m_offset + sizeof(value))
+		{
+			L_ERROR("WriteByOffset overflow offset,size=%d %d", m_offset, m_Stream.length());
+			return;
+		}
+		m_Stream[m_offset++] = (byte)(value >> 8);
+		m_Stream[m_offset++] = (byte)value;
+	}
+	void WriteBySeek(int value)
+	{
+		if (m_Stream.length() < m_offset + sizeof(value))
+		{
+			L_ERROR("WriteByOffset overflow offset,size=%d %d", m_offset, m_Stream.length());
+			return;
+		}
+
+		m_Stream[m_offset++]=((byte)(value >> 24));
+		m_Stream[m_offset++]=((byte)(value >> 16));
+		m_Stream[m_offset++]=((byte)(value >> 8));
+		m_Stream[m_offset++]=((byte)value);
+	}
+
 	void Write(bool value)
 	{
 		m_Stream.WriteByte((byte)(value ? 1 : 0));

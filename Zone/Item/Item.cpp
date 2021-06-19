@@ -1,6 +1,7 @@
 #include "ItemMgr.h"
 #include "SceneMgr.h"
 #include "ZoneMisc.h"
+#include "Packets.h"
 
 Item::Item(uint16 cfgId)
 	:m_observer(*this)
@@ -15,6 +16,22 @@ Item::Item(uint16 cfgId)
 		m_cfgId = 0xE21;
 	}
 	m_cfg = p;
+}
+
+ObjectPropertyList & Item::PropertyList()
+{
+	if (m_PropertyList == nullptr)
+	{
+		m_PropertyList =  make_unique<ObjectPropertyList>(*this);
+		L_ERROR("unfinish")
+	//	GetProperties(m_PropertyList);
+	//	AppendChildProperties(m_PropertyList);
+
+		m_PropertyList->Terminate();
+		m_PropertyList->SetStatic();
+	}
+
+	return *(m_PropertyList.get());
 }
 
 Item::~Item()
@@ -68,6 +85,15 @@ Container *Item::GetParent()
 		return nullptr;
 	}
 	return p.get();
+}
+
+Packet & Item::OPLPacket()
+{
+	if (m_OPLInfo == nullptr)
+	{
+		m_OPLInfo = make_unique<OPLInfo>(PropertyList());
+	}
+	return *(m_OPLInfo.get());
 }
 
 ItemObserver::ItemObserver(Item &item)

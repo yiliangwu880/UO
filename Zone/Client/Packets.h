@@ -12,6 +12,7 @@
 class Actor;
 using Mobile = Actor;
 class ActorSkill;
+class IEntity;
 class LoginConfirm : public Packet
 {
 public:
@@ -27,6 +28,53 @@ struct MobileIncoming : Packet
 	//@beholder 客户端接收消息 actor, 
 	//@beheld 打包成消息内容的 actor
 	MobileIncoming(Actor &beholder, Actor &beheld);
+};
+
+struct ObjectPropertyList : Packet
+{
+	IEntity &m_Entity;
+	int m_Hash;
+	int m_Header;
+	int m_Strings;
+	string m_HeaderArgs;
+
+	IEntity &Entity() { return m_Entity; } 
+	int Hash() { return 0x40000000 + m_Hash;  }
+
+	int Header(){ return m_Header; }//get set, set还没做，用的时候加
+	string HeaderArgs(){ return m_HeaderArgs; }//
+
+	static const bool Enabled = true; //=Core.AOS;
+
+	ObjectPropertyList(IEntity &e);
+
+	void Add(int number);
+
+	void Terminate();
+
+	//private static byte[] m_Buffer = new byte[1024];
+	//private static readonly Encoding m_Encoding = Encoding.Unicode;
+
+	void AddHash(int val);
+
+	void Add(int number, CStr &arguments);
+
+	void Add(int number, const char* fmt, ...);
+
+	// Each of these are localized to "~1_NOTHING~" which allows the string argument to be used
+	constexpr static const int m_StringNumbers[2]={1042971, 1070722};
+	int GetStringNumber(){return m_StringNumbers[m_Strings++ % 2];}
+
+	void Add(CStr &text){Add(GetStringNumber(), text);}
+
+	void Add(const char* fmt, ...);
+
+};
+
+
+struct OPLInfo : Packet
+{
+	OPLInfo(ObjectPropertyList &list);
 };
 
 struct MessageLocalized : Packet

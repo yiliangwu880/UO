@@ -253,7 +253,7 @@ void Actor::DisplayPaperdollTo(Actor &from)
 			{
 				continue;
 			}
-			//beholder.Send(item.OPLPacket);
+			beholder.Send(item->OPLPacket());
 		}
 		// NOTE: OSI sends MobileUpdate when opening your own paperdoll.
 		// It has a very bad rubber-banding affect. What positive affects does it have?

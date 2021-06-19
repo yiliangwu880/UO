@@ -5,7 +5,6 @@ ActorBag::ActorBag(Actor &actor)
 	:ActorSubCom<ActorBag>(actor.m_owner, actor)
 	, m_Container(ItemMgr::Ins().CreateItemByType<Container>(0xE75))
 {
-	
 
 	Reg<EV_LOAD_DB>(&ActorBag::OnLoad);
 	Reg<EV_SAVE_DB>(&ActorBag::OnSave);

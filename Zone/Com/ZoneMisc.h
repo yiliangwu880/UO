@@ -14,6 +14,11 @@ struct MonsterInit
 	Point2D pos;
 };
 
+class IEntity
+{
+public:
+	virtual uint32 Serial() = 0;
+};
 
 class ActorOwner : public EventMgr, public Noncopyable
 {
