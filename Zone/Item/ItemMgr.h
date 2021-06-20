@@ -2,7 +2,7 @@
 #include "Item.h"
 #include "Container.h"
 #include "Equip.h"
-#include "ToolItem.h"
+#include "ItemTool.h"
 #include "Weapon.h"
 
 using ItemCreator = shared_ptr<Item> (*)(uint16 cfgId);

@@ -6,6 +6,7 @@ struct ItemCfg
 {
 	uint32 weight = 100; //400 == 4.00 石
 	ItemType type = ItemType::Base;
+	string name = "a";
 };
 
 

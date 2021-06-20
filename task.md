@@ -1,5 +1,7 @@
 #tmp
 
+item::m_parent.可以是item, Mobile
+AppendChildProperties
 GetProperties(m_PropertyList)
 OPLInfo -- item.OPLPacket --Actor::DisplayPaperdollTo
 #整体

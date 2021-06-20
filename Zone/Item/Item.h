@@ -35,9 +35,9 @@ class Item : public IEntity
 
 protected:
 	Point3D m_pos;
-	uint32 m_num = 1;
+	uint32 m_Amount = 1;
 	const ItemCfg *m_cfg = nullptr;
-	uint16 m_cfgId = 0;
+	uint16 m_ItemID = 0; //ItemCfg id
 
 	//below no save db
 	/////////////////////
@@ -47,6 +47,7 @@ protected:
 	uint32 m_hue = 0;
 	unique_ptr<OPLInfo> m_OPLInfo;
 	unique_ptr<ObjectPropertyList> m_PropertyList;
+	LootType m_LootType = LootType::Blessed;
 
 public:
 	virtual ~Item();
@@ -56,13 +57,14 @@ public:
 	virtual void OnAdd(Container *parent);//this 被放置到parent. parant == nullptr 表示没有父容器
 	virtual uint16 GetItemNum() const  { return 1; }//容器内物品数，包括嵌套的 和 容器自己
 	virtual uint32 Serial() { return m_id; };
+	virtual CStr &Name();
 
 public:
 	uint32 GetHue() const { return m_hue; }
 	void SetPos(uint16 x, uint16 y, uint16 z = 0);
 	ItemType GetType() const;
 	Container *GetParent();
-	uint16 GetItemID() const { return m_cfgId; }
+	uint16 GetItemID() const { return m_ItemID; }
 	Packet &OPLPacket();
 
 protected:
@@ -70,6 +72,22 @@ protected:
 
 private:
 	ObjectPropertyList &PropertyList();
+	void GetProperties(ObjectPropertyList &list);
+	void AddNameProperties(ObjectPropertyList &list);
+	void AddNameProperty(ObjectPropertyList &list);
+	int LabelNumber();
+	bool IsSecure() { return false; }
+	bool IsLockedDown() { return false; }
+	bool HonestyItem() { return false; }
+	bool QuestItem() { return false; }
+	bool DisplayLootType() { return true; }
+	bool DisplayWeight() { return true; }
+	bool Insured() { return true; }
+	int PileWeight();
+	void AddHonestyProperty(ObjectPropertyList &list);
+	void AddLootTypeProperty(ObjectPropertyList &list);
+	void AddWeightProperty(ObjectPropertyList &list);
+	void AppendChildNameProperties(ObjectPropertyList &list);
 };
 
 

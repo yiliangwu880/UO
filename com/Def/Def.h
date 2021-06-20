@@ -2,6 +2,11 @@
 	公共定义 以及 静态配置 
 */
 #pragma once
+
+
+//c#适配
+#define byte uint8_t
+
 using TimeSpan = uint32;
 namespace
 {
@@ -15,6 +20,29 @@ namespace
 	const uint32 MAX_CHAR_NAME = 30;
 
 }
+
+enum class LootType : byte
+{
+	/// <summary>
+	///     Stealable. Lootable.
+	/// </summary>
+	Regular = 0,
+
+	/// <summary>
+	///     Unstealable. Unlootable, unless owned by a murderer.
+	/// </summary>
+	Newbied = 1,
+
+	/// <summary>
+	///     Unstealable. Unlootable, always.
+	/// </summary>
+	Blessed = 2,
+
+	/// <summary>
+	///     Stealable. Lootable, always.
+	/// </summary>
+	Cursed = 3
+};
 
 enum class Notoriety
 {
@@ -149,14 +177,14 @@ enum class ItemType
 	Container=1,
 	Weapon=2,
 	Equip=3,
-	ToolItem =4,
+	ItemTool =4,
 };
 //所有 ItemType,其他代码会自动定义构造器
 #define ALL_ITEM_TYPE_NAME\
 	ITEM_TYPE_NAME(Container)\
 	ITEM_TYPE_NAME(Weapon)\
 	ITEM_TYPE_NAME(Equip)\
-	ITEM_TYPE_NAME(ToolItem)\
+	ITEM_TYPE_NAME(ItemTool)\
 
 enum class ItemQuality
 {
@@ -405,3 +433,7 @@ enum class Layer : uint8
 	SecureTrade = 0x1F,
 	Max,
 };
+
+
+
+#undef byte 
