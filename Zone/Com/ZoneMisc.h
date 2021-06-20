@@ -23,6 +23,10 @@ public:
 class ActorOwner : public EventMgr, public Noncopyable
 {
 public:
+	DbActor &m_DbActor;
+
+public:
+	ActorOwner(DbActor &dbActor);
 	virtual ~ActorOwner();
 };
 

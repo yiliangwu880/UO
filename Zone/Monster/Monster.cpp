@@ -3,7 +3,8 @@
 
 
 Monster::Monster(uint32 uin)
-	:m_Actor(*this)
+	:ActorOwner(m_DbActor)
+	,m_Actor(*this)
 	, m_ai(*this, m_Actor)
 	, m_MonsterBase(*this)
 {

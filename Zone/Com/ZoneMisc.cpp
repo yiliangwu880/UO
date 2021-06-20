@@ -11,6 +11,12 @@ SItem World::FindItem(uint32 id)
 	return ItemMgr::Ins().Find(id);
 }
 
+ActorOwner::ActorOwner(DbActor &dbActor)
+	:m_DbActor(dbActor)
+{
+
+}
+
 ActorOwner::~ActorOwner()
 {
 	
