@@ -17,7 +17,6 @@ void ActorSkill::OnCreate(DbActor &data)
 		dbSkill.idx = i;
 		data.skills.vecSkill.push_back(dbSkill);
 	}
-	OnLoad(data);
 }
 
 void ActorSkill::OnLoad(DbActor &data)

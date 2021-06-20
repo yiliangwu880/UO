@@ -26,7 +26,7 @@ struct ActorMiscData
 	bool m_Warmode = false;
 };
 //场景实体,包括人，怪，NPC
-class Actor : public Noncopyable, public EventCom<Actor>, public WeakPtr<Actor>
+class Actor : public Noncopyable, public IEntity,  public EventCom<Actor>, public WeakPtr<Actor>
 {
 public:
 	ActorOwner &m_owner;
@@ -44,16 +44,16 @@ public:
 	static const int BodyWeight=14; 
 	static const int ActionDelay = 500;
 
+
 public:
 	Actor(ActorOwner &owner, EntityType t= EntityType::Monster);
 	~Actor();
 	void InitMonster(const MonsterInit &data);
-	void InitNpc(); 
-
+	void InitNpc();
+	uint32 Serial() { return m_ActorBase.GetId(); };
 	void EnterScene(uint32 id);
 	bool EnterScene(Scene &scene, uint16 x, uint16 y);
 	uint32 GetId() const { return m_ActorBase.GetId(); };
-	uint32 Serial() const { return m_ActorBase.GetId(); };
 	const string &Name() const;
 	bool CanSee(SItem item) { return true; };
 	bool CanSee(Actor &actor) { return true; };

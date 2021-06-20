@@ -1,7 +1,7 @@
 #pragma once
 #include "Item.h"
 
-class Container : public Item, public std::enable_shared_from_this<Container>
+class Container : public Item, public WeakPtr<Container>
 {
 	friend class ItemMgr;
 

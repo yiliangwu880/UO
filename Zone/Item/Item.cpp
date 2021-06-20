@@ -2,7 +2,7 @@
 #include "SceneMgr.h"
 #include "ZoneMisc.h"
 #include "Packets.h"
-
+#include "ActorMgr.h"
 
 ItemObserver::ItemObserver(Item &item)
 	:Aoi::Entity(EntityType::Item)
@@ -29,7 +29,7 @@ bool ItemObserver::Enter(Scene &scene, uint16_t x, uint16_t y)
 		m_Item.SetPos(x, y);
 	}
 
-	m_Item.OnAdd(nullptr);
+	m_Item.OnAdd();
 	return r;
 }
 
@@ -60,7 +60,6 @@ ObjectPropertyList & Item::PropertyList()
 	{
 		m_PropertyList =  make_unique<ObjectPropertyList>(*this);
 		GetProperties(*(m_PropertyList.get()));
-		L_ERROR("unfinish")
 		//AppendChildProperties(m_PropertyList); //npc售价相关
 
 		m_PropertyList->Terminate();
@@ -252,18 +251,24 @@ void Item::OnSave(DbItem &dbItem)
 	dbItem.dbItemBase.y = m_pos.Y;
 }
 
-void Item::OnAdd(Container *parent)
+Container * Item::GetParentContainer()const
 {
-	if (auto p = m_parent.lock())
+	if (shared_ptr<IEntity> p = m_parent.lock())
 	{
-		p->Remove(this);
+		return dynamic_cast<Container *>(p.get());
+	}
+	return nullptr;
+}
+
+void Item::OnAdd(weak_ptr<IEntity> parent)
+{
+	if (Container *pc = GetParentContainer())
+	{
+		pc->Remove(this);
 	}
 
 	m_parent.reset();
-	if (nullptr != parent)
-	{
-		m_parent = parent->shared_from_this();
-	}
+	m_parent = parent;
 }
 
 void Item::SetPos(uint16 x, uint16 y, uint16 z /*= 0*/)
@@ -274,16 +279,6 @@ void Item::SetPos(uint16 x, uint16 y, uint16 z /*= 0*/)
 ItemType Item::GetType() const
 {
 	return m_cfg->type;
-}
-
-Container *Item::GetParent()
-{
-	auto p = m_parent.lock();
-	if (nullptr == p)
-	{
-		return nullptr;
-	}
-	return p.get();
 }
 
 Packet & Item::OPLPacket()
@@ -299,3 +294,29 @@ su::CStr & Item::Name()
 {
 	return m_cfg->name;
 }
+
+Actor * Item::GetParentActor()const
+{
+	shared_ptr<IEntity> p = m_parent.lock();
+	if (p == nullptr)
+	{
+		return nullptr;
+	}
+	else if(Container *c = dynamic_cast<Container *>(p.get()))
+	{
+		return c->GetParentActor();
+	}
+	else if (Actor *actor = dynamic_cast<Actor *>(p.get()))
+	{
+		return actor;
+	}
+	else
+	{
+		L_ERROR("unknow");
+		return nullptr;
+	}
+}
+
+
+
+

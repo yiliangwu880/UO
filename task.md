@@ -1,9 +1,5 @@
 #tmp
 
-item::m_parent.可以是item, Mobile
-AppendChildProperties
-GetProperties(m_PropertyList)
-OPLInfo -- item.OPLPacket --Actor::DisplayPaperdollTo
 #整体
 概要登录流程，新角色，登录旧角色
 

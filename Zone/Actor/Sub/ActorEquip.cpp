@@ -48,6 +48,7 @@ void ActorEquip::OnLoad(DbActor &dbActor)
 			continue;
 		}
 		m_items[idx] = p;
+		p->OnAdd(m_Actor.GetWeakPtr());
 	}
 }
 
@@ -88,6 +89,7 @@ void ActorEquip::Undress(SItem item)
 		if (item == v)
 		{
 			m_Actor.m_ActorBag.m_Container->Add(v);
+			v->OnAdd();
 			v = nullptr;
 		}
 	}
@@ -100,7 +102,7 @@ void ActorEquip::Dress(SItem item)
 	L_COND_V(idx < m_items.size());
 	L_COND_V(m_items[idx] == nullptr);
 	m_items[idx] = item;
-	item->OnAdd(nullptr);
+	item->OnAdd(m_Actor.GetWeakPtr());
 }
 
  EquipSItems & ActorEquip::GetItems() 

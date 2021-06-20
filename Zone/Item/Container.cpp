@@ -21,7 +21,7 @@ void Container::OnLoad(const DbItem &dbItem)
 		}
 		item->OnLoad(dbItem);
 
-		item->OnAdd(this);
+		item->OnAdd(GetWeakPtr());
 		m_vecItem.push_back(item);
 		m_itemNum += item->GetItemNum();
 	}
@@ -52,7 +52,7 @@ Container::Container(uint16 cfgId)
 void Container::Add(SItem item)
 {
 	L_COND_V(EnableAdd(item));
-	item->OnAdd(this);
+	item->OnAdd(GetWeakPtr());
 	m_vecItem.push_back(item);
 	m_itemNum += item->GetItemNum();
 }
@@ -102,7 +102,7 @@ void Container::Remove(Item *item)
 uint32 Container::GetNestNum() const
 {
 	uint32 num = 0;
-	if (auto p = m_parent.lock())
+	if (Container *p = GetParentContainer())
 	{
 		num = p->GetNestNum() + 1;
 	}
@@ -134,7 +134,7 @@ uint32 Container::GetSubNestNum() const
 
 uint32 Container::GetRootMaxNestNum() const
 {
-	if (auto p = m_parent.lock())
+	if (Container *p = GetParentContainer())
 	{
 		return p->GetRootMaxNestNum();
 	}
