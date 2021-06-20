@@ -2,6 +2,7 @@
 
 ActorSkill::ActorSkill(Actor &actor)
 	:ActorSubCom<ActorSkill>(actor.m_owner, actor)
+	, m_DbSkills(actor.m_owner.m_DbActor.skills)
 {
 	Reg<EV_CREATE_DB>(&ActorSkill::OnCreate);
 	Reg<EV_LOAD_DB>(&ActorSkill::OnLoad);
@@ -21,11 +22,10 @@ void ActorSkill::OnCreate(DbActor &data)
 
 void ActorSkill::OnLoad(DbActor &data)
 {
-	m_DbSkills = &data.skills;
-	L_COND_V(m_DbSkills->vecSkill.size() == m_all.size());
+	L_COND_V(data.skills.vecSkill.size() == m_all.size());
 	for (uint32 i = 0; i < m_all.size(); ++i)
 	{
-		m_all[i].Init(&(m_DbSkills->vecSkill[i]));
+		m_all[i].Init(&(data.skills.vecSkill[i]));
 	}
 }
 

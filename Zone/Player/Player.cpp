@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player(uint64 uin, CStr &name)
-	:ActorOwner(m_PlayerDb.m_data.actor)
+	:ActorOwner(m_PlayerDb.GetDataWritable().actor) //整个Player 构造完整，才读写数据就没事
 	,m_PlayerDb(*this)
 	, m_BaseData(*this)
 	, m_PlayerSn(*this)

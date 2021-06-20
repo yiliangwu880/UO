@@ -6,7 +6,6 @@
 class PlayerDb : public PlayerSubCom<PlayerDb>
 {
 	lc::Timer m_tm;
-public:
 	DbPlayer m_data;
 
 public:

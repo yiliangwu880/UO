@@ -13,7 +13,6 @@ class Skill
 {
 	const SkillCfg *m_SkillCfg = nullptr;
 	DbSkill *m_DbSkill = nullptr;
-
 public:
 
 	void Init(DbSkill *dbSkill);
@@ -26,8 +25,8 @@ public:
 
 class ActorSkill : public ActorSubCom<ActorSkill>
 {
-	DbSkills *m_DbSkills = nullptr;
 	std::array<Skill, (uint32)SkillName::Max> m_all;
+	DbSkills &m_DbSkills;
 
 public:
 	ActorSkill(Actor &actor);
