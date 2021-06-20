@@ -148,7 +148,7 @@ void Item::AddWeightProperty(ObjectPropertyList &list)
 	if (m_cfg->weight == 0)
 		return;
 
-	int weight = PileWeight() //+ TotalWeight();
+	int weight = PileWeight(); //+ TotalWeight();
 
 	if (weight == 1)
 	{
@@ -175,7 +175,7 @@ void Item::AddLootTypeProperty(ObjectPropertyList &list)
 	{
 		list.Add(1049643); // cursed
 	}
-	else if (Insured)
+	else if (Insured())
 	{
 		list.Add(1061682); // <b>insured</b>
 	}
@@ -206,7 +206,7 @@ void Item::AddNameProperty(ObjectPropertyList &list)
 		}
 		else
 		{
-			list.Add(1050039, "%d\t#%d", m_Amount, LabelNumber); // ~1_NUMBER~ ~2_ITEMNAME~
+			list.Add(1050039, "%d\t#%d", m_Amount, LabelNumber()); // ~1_NUMBER~ ~2_ITEMNAME~
 		}
 	}
 	else
@@ -217,7 +217,7 @@ void Item::AddNameProperty(ObjectPropertyList &list)
 		}
 		else
 		{
-			list.Add(1050039, "%d\t%d", m_Amount, Name); // ~1_NUMBER~ ~2_ITEMNAME~
+			list.Add(1050039, "%d\t%d", m_Amount, Name()); // ~1_NUMBER~ ~2_ITEMNAME~
 		}
 	}
 }
