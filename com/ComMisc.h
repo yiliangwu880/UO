@@ -30,6 +30,9 @@ struct Core
 	static const bool HS = true;
 	static const bool TOL = true;
 	static const bool EJ = true;
+
+	static const uint32 GlobalUpdateRange = 18;
+
 	//ms millisecond
 	static long TickCount();
 };

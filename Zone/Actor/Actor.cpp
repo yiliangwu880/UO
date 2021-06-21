@@ -282,6 +282,27 @@ bool Actor::AllowEquipFrom(Mobile &from)
 	return p->m_PlayerMiscData.m_AccessLevel;
 }
 
+void Actor::GetContextMenuEntries(Actor &from, vector<SContextMenuEntry> &list)
+{
+#if 0
+
+	if (CanPaperdollBeOpenedBy(from))
+	{
+		list.Add(new PaperdollEntry(this));
+	}
+
+	if (from == this && Backpack != null && CanSee(Backpack) && CheckAlive(false))
+	{
+		list.Add(new OpenBackpackEntry(this));
+	}
+
+	if (Spawner != null)
+	{
+		Spawner.GetSpawnContextEntries(this, from, list);
+	}
+#endif
+}
+
 void Actor::SendLocalizedMessage(int number)
 {
 	if (m_ActorBase.GetType() != EntityType::Player)

@@ -4,6 +4,7 @@
 #include "ZoneMisc.h"
 #include "SceneMgr.h"
 #include "Item/ItemMgr.h"
+#include "ContextMenu.h"
 #include "./State/StateMgr.h"
 #include "./Sub/ActorBase.h"
 #include "./Sub/ActorEquip.h"
@@ -113,6 +114,7 @@ public:
 	bool AllowEquipFrom(Actor &from);
 	::AccessLevel AccessLevel();
 	bool ViewOPL() { return true; }
+	void GetContextMenuEntries(Actor &from, vector<SContextMenuEntry> &list);
 };
 using WActor = std::weak_ptr<Actor>;
 using SActor = std::shared_ptr<Actor>;

@@ -295,6 +295,32 @@ su::CStr & Item::Name()
 	return m_cfg->name;
 }
 
+
+void Item::GetContextMenuEntries(Actor &from, vector<SContextMenuEntry> &list)
+{
+#if 0
+
+	if (m_Parent is Item)
+	{
+		((Item)m_Parent).GetChildContextMenuEntries(from, list, this);
+	}
+	else if (m_Parent is Mobile)
+	{
+		((Mobile)m_Parent).GetChildContextMenuEntries(from, list, this);
+	}
+
+	if (from.Region != null)
+	{
+		from.Region.GetContextMenuEntries(from, list, this);
+	}
+
+	if (Spawner != null)
+	{
+		Spawner.GetSpawnContextEntries(this, from, list);
+	}
+#endif
+}
+
 Actor * Item::GetParentActor()const
 {
 	shared_ptr<IEntity> p = m_parent.lock();

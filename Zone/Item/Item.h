@@ -3,6 +3,7 @@
 #include "dbStructDef.h"
 #include "Aoi/Aoi.h"
 #include "ZoneMisc.h"
+#include "ContextMenu.h"
 
 class Item;
 class Container;
@@ -60,6 +61,7 @@ public:
 	virtual uint16 GetItemNum() const  { return 1; }//容器内物品数，包括嵌套的 和 容器自己
 	virtual uint32 Serial() { return m_id; };
 	virtual CStr &Name();
+	virtual void GetContextMenuEntries(Actor &from, vector<SContextMenuEntry> &list);
 	
 
 public:

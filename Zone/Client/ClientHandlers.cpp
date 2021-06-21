@@ -191,9 +191,9 @@ namespace
 			}
 			else
 			{
-
 				L_ERROR("unfinish");
 #if 0
+
 				Serial s = value;
 
 				if (s.IsMobile())
@@ -209,9 +209,9 @@ namespace
 				{
 					L_ERROR("unfinish");
 
-					Item item = World::FindItem(s);
+					SItem item = World::FindItem(s);
 
-					if (item != null && !item.Deleted)
+					if (item != nullptr)
 					{
 						from.Use(item);
 					}
@@ -225,6 +225,26 @@ namespace
 		{
 			from.SendActionMessage();
 		}
+	}
+
+
+	void SetUpdateRange(NetState &state, PacketReader &pvSrc)
+	{
+		//设计更新范围，不处理，用统一范围
+		return;
+	}
+	//单击对象请求
+	void ContextMenuRequest(NetState &state, PacketReader &pvSrc)
+	{
+		L_COND_V(state.Mobile());
+		IEntity *target = World::FindEntity(pvSrc.ReadInt32());
+#if 0
+
+		if (target != nullptr)
+		{
+			ContextMenu::Display(*state.Mobile(), target);
+		}
+#endif
 	}
 }
 
@@ -242,10 +262,12 @@ void PacketHandlers::Init()
 	Register(0x34, 10, true, MobileQuery);
 	RegisterExtended(0x0F, false, Empty); // What's this?
 	Register(0x06, 5, true, UseReq);
+	Register(0xC8, 2, true, SetUpdateRange);
 
 	////////////////
 	RegisterExtended(0x05, false, ScreenSize);
 	RegisterExtended(0x0B, false, Language);
+	RegisterExtended(0x13, true, ContextMenuRequest);
 
 
 }

@@ -37,6 +37,7 @@ class World
 public:
 	static Actor *FindMobile(uint32 id);
 	static SItem FindItem(uint32 id);
+	static IEntity *FindEntity(uint32 id);
 };
 
 class Titles
