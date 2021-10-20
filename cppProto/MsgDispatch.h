@@ -1,4 +1,4 @@
-//链接center
+//最新代码，以 https://gitee.com/yiliangwu880/CppProto.git 项目为准。
 #pragma once
 #include "ProtoInclude.h"
 
