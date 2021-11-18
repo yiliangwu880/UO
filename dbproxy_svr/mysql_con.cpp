@@ -288,6 +288,11 @@ bool MysqlCon::ConnectDb(const comCfg::S_dbproxy &cfg)
 			, mysql_db.db_ip.c_str(), mysql_db.db_port);
 		sql::Driver* driver = sql::mysql::get_driver_instance();
 		m_con = driver->connect(connection_properties);
+		
+		string s = su::StrFormat::format("CREATE DATABASE IF NOT EXISTS %s DEFAULT CHARSET utf8 COLLATE utf8_general_ci;", mysql_db.db_name.c_str());
+		std::unique_ptr<sql::PreparedStatement> pstmt(m_con->prepareStatement(s));
+		pstmt->execute();
+
 		m_con->setSchema(mysql_db.db_name);
 		L_DEBUG("connect mysql db ok");
 		InitTable();
